@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E1B9A2719C1569F00AAAA0D /* TokenReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E1B9A2519C1569F00AAAA0D /* TokenReader.cpp */; };
+		3E1B9A2A19C15E5A00AAAA0D /* Token.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E1B9A2819C15E5A00AAAA0D /* Token.cpp */; };
 		3E606E6619BFF9C6009692B8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E606E6519BFF9C6009692B8 /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +25,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3E1B9A2519C1569F00AAAA0D /* TokenReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TokenReader.cpp; sourceTree = "<group>"; };
+		3E1B9A2619C1569F00AAAA0D /* TokenReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TokenReader.h; sourceTree = "<group>"; };
+		3E1B9A2819C15E5A00AAAA0D /* Token.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Token.cpp; sourceTree = "<group>"; };
+		3E1B9A2919C15E5A00AAAA0D /* Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Token.h; sourceTree = "<group>"; };
 		3E606E6219BFF9C6009692B8 /* Protocol */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Protocol; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E606E6519BFF9C6009692B8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,6 +64,10 @@
 			isa = PBXGroup;
 			children = (
 				3E606E6519BFF9C6009692B8 /* main.cpp */,
+				3E1B9A2519C1569F00AAAA0D /* TokenReader.cpp */,
+				3E1B9A2619C1569F00AAAA0D /* TokenReader.h */,
+				3E1B9A2819C15E5A00AAAA0D /* Token.cpp */,
+				3E1B9A2919C15E5A00AAAA0D /* Token.h */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -113,7 +123,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E1B9A2719C1569F00AAAA0D /* TokenReader.cpp in Sources */,
 				3E606E6619BFF9C6009692B8 /* main.cpp in Sources */,
+				3E1B9A2A19C15E5A00AAAA0D /* Token.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
