@@ -31,6 +31,7 @@
 		3E1B9A2919C15E5A00AAAA0D /* Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Token.h; sourceTree = "<group>"; };
 		3E606E6219BFF9C6009692B8 /* Protocol */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Protocol; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E606E6519BFF9C6009692B8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		3EF78A3119C4EDB100976ADA /* Designer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Designer.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +48,7 @@
 		3E606E5919BFF9C6009692B8 = {
 			isa = PBXGroup;
 			children = (
+				3EF78A2C19C4E9FA00976ADA /* Submodules */,
 				3E606E6419BFF9C6009692B8 /* Protocol */,
 				3E606E6319BFF9C6009692B8 /* Products */,
 			);
@@ -70,6 +72,30 @@
 				3E1B9A2919C15E5A00AAAA0D /* Token.h */,
 			);
 			path = Protocol;
+			sourceTree = "<group>";
+		};
+		3EF78A2C19C4E9FA00976ADA /* Submodules */ = {
+			isa = PBXGroup;
+			children = (
+				3EF78A2F19C4ED6500976ADA /* Designer */,
+			);
+			path = Submodules;
+			sourceTree = "<group>";
+		};
+		3EF78A2F19C4ED6500976ADA /* Designer */ = {
+			isa = PBXGroup;
+			children = (
+				3EF78A3019C4ED7900976ADA /* Designer */,
+			);
+			path = Designer;
+			sourceTree = "<group>";
+		};
+		3EF78A3019C4ED7900976ADA /* Designer */ = {
+			isa = PBXGroup;
+			children = (
+				3EF78A3119C4EDB100976ADA /* Designer.h */,
+			);
+			path = Designer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
