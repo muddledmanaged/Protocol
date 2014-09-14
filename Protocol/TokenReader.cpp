@@ -226,15 +226,22 @@ void Protocol::TokenReader::TokenIterator::moveNext ()
 
         mCurrent.reset(new Token(text, delimiter));
     }
+    else
+    {
+        mCurrent.reset(new Token());
+    }
 }
 
 Protocol::TokenReader::TokenIterator & Protocol::TokenReader::TokenIterator::operator ++ ()
 {
-    moveNext();
-
-    if (mpProtoStream == nullptr)
+    if (!mEnd)
     {
-        mEnd = true;
+        moveNext();
+
+        if (mpProtoStream == nullptr)
+        {
+            mEnd = true;
+        }
     }
 
     return *this;

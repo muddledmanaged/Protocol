@@ -32,6 +32,19 @@
 		3E1B9A2619C1569F00AAAA0D /* TokenReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TokenReader.h; sourceTree = "<group>"; };
 		3E1B9A2819C15E5A00AAAA0D /* Token.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Token.cpp; sourceTree = "<group>"; };
 		3E1B9A2919C15E5A00AAAA0D /* Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Token.h; sourceTree = "<group>"; };
+		3E28C49719C5FF0B00D5F4FD /* EmptyCommentSingleLine.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = EmptyCommentSingleLine.proto; sourceTree = "<group>"; };
+		3E28C49819C5FF2800D5F4FD /* EmptyCommentMultiLine.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = EmptyCommentMultiLine.proto; sourceTree = "<group>"; };
+		3E28C49919C5FF6F00D5F4FD /* Text.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = Text.proto; sourceTree = "<group>"; };
+		3E28C49A19C6010900D5F4FD /* MessageWhitespace.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = MessageWhitespace.proto; sourceTree = "<group>"; };
+		3E28C49B19C602D000D5F4FD /* TextWhitespace.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = TextWhitespace.proto; sourceTree = "<group>"; };
+		3E28C49C19C6061100D5F4FD /* MessageComment.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = MessageComment.proto; sourceTree = "<group>"; };
+		3E28C49D19C6068800D5F4FD /* EmptyComment.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = EmptyComment.proto; sourceTree = "<group>"; };
+		3E28C49E19C6094400D5F4FD /* EmptyCommentSingleLineEOF.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = EmptyCommentSingleLineEOF.proto; sourceTree = "<group>"; };
+		3E28C49F19C60EF800D5F4FD /* EmptyCommentMultiLineEOF.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = EmptyCommentMultiLineEOF.proto; sourceTree = "<group>"; };
+		3E28C4A019C610A900D5F4FD /* TextCommentSingleLineEOF.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = TextCommentSingleLineEOF.proto; sourceTree = "<group>"; };
+		3E28C4A119C6110900D5F4FD /* TextCommentSingleLine.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = TextCommentSingleLine.proto; sourceTree = "<group>"; };
+		3E28C4A219C6116800D5F4FD /* TextCommentMultiLine.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = TextCommentMultiLine.proto; sourceTree = "<group>"; };
+		3E28C4A319C6119800D5F4FD /* TextCommentMultiLineEOF.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = TextCommentMultiLineEOF.proto; sourceTree = "<group>"; };
 		3EF78A3119C4EDB100976ADA /* Designer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Designer.h; sourceTree = "<group>"; };
 		3EF78A4619C5321D00976ADA /* ProtocolDesign */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ProtocolDesign; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EF78A4819C5321E00976ADA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -39,7 +52,7 @@
 		3EF78A5219C5396300976ADA /* TokenReaderScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TokenReaderScenarios.cpp; sourceTree = "<group>"; };
 		3EF78A6119C53BD800976ADA /* libProtocol.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libProtocol.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EF78A6E19C5565F00976ADA /* Empty.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = Empty.proto; sourceTree = "<group>"; };
-		3EF78A6F19C5588C00976ADA /* EmptyMessage.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = EmptyMessage.proto; sourceTree = "<group>"; };
+		3EF78A6F19C5588C00976ADA /* Message.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = Message.proto; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,7 +143,20 @@
 			isa = PBXGroup;
 			children = (
 				3EF78A6E19C5565F00976ADA /* Empty.proto */,
-				3EF78A6F19C5588C00976ADA /* EmptyMessage.proto */,
+				3E28C49719C5FF0B00D5F4FD /* EmptyCommentSingleLine.proto */,
+				3E28C49E19C6094400D5F4FD /* EmptyCommentSingleLineEOF.proto */,
+				3E28C49819C5FF2800D5F4FD /* EmptyCommentMultiLine.proto */,
+				3E28C49F19C60EF800D5F4FD /* EmptyCommentMultiLineEOF.proto */,
+				3E28C49D19C6068800D5F4FD /* EmptyComment.proto */,
+				3E28C49919C5FF6F00D5F4FD /* Text.proto */,
+				3E28C4A119C6110900D5F4FD /* TextCommentSingleLine.proto */,
+				3E28C4A019C610A900D5F4FD /* TextCommentSingleLineEOF.proto */,
+				3E28C4A219C6116800D5F4FD /* TextCommentMultiLine.proto */,
+				3E28C4A319C6119800D5F4FD /* TextCommentMultiLineEOF.proto */,
+				3E28C49B19C602D000D5F4FD /* TextWhitespace.proto */,
+				3EF78A6F19C5588C00976ADA /* Message.proto */,
+				3E28C49A19C6010900D5F4FD /* MessageWhitespace.proto */,
+				3E28C49C19C6061100D5F4FD /* MessageComment.proto */,
 			);
 			path = Messages;
 			sourceTree = "<group>";
@@ -359,6 +385,7 @@
 				3EF78A4E19C5321E00976ADA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3EF78A6219C53BD800976ADA /* Build configuration list for PBXNativeTarget "Protocol" */ = {
 			isa = XCConfigurationList;
@@ -367,6 +394,7 @@
 				3EF78A6419C53BD800976ADA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
