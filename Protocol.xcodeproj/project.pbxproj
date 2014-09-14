@@ -38,6 +38,8 @@
 		3EF78A4F19C5333500976ADA /* TokenScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TokenScenarios.cpp; sourceTree = "<group>"; };
 		3EF78A5219C5396300976ADA /* TokenReaderScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TokenReaderScenarios.cpp; sourceTree = "<group>"; };
 		3EF78A6119C53BD800976ADA /* libProtocol.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libProtocol.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		3EF78A6E19C5565F00976ADA /* Empty.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = Empty.proto; sourceTree = "<group>"; };
+		3EF78A6F19C5588C00976ADA /* EmptyMessage.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = EmptyMessage.proto; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,11 +118,21 @@
 		3EF78A4719C5321D00976ADA /* ProtocolDesign */ = {
 			isa = PBXGroup;
 			children = (
+				3EF78A6D19C5558700976ADA /* Messages */,
 				3EF78A4819C5321E00976ADA /* main.cpp */,
 				3EF78A4F19C5333500976ADA /* TokenScenarios.cpp */,
 				3EF78A5219C5396300976ADA /* TokenReaderScenarios.cpp */,
 			);
 			path = ProtocolDesign;
+			sourceTree = "<group>";
+		};
+		3EF78A6D19C5558700976ADA /* Messages */ = {
+			isa = PBXGroup;
+			children = (
+				3EF78A6E19C5565F00976ADA /* Empty.proto */,
+				3EF78A6F19C5588C00976ADA /* EmptyMessage.proto */,
+			);
+			path = Messages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

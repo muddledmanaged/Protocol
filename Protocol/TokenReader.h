@@ -28,6 +28,12 @@ namespace MuddledManaged
                 static const std::string Delimiters;
 
             public:
+                TokenIterator (); // Constructs an end iterator.
+                TokenIterator (std::ifstream * protoStream); // Constructs a begin iterator.
+                TokenIterator (const TokenIterator & src);
+
+                TokenIterator & operator = (const TokenIterator & rhs);
+
                 bool operator != (const TokenIterator & rhs) const;
 
                 TokenIterator & operator ++ ();
@@ -41,12 +47,6 @@ namespace MuddledManaged
                 friend class TokenReader;
 
             private:
-                TokenIterator (); // Constructs an end iterator.
-                TokenIterator (std::ifstream * protoStream); // Constructs a begin iterator.
-                TokenIterator (const TokenIterator & src);
-
-                TokenIterator & operator = (const TokenIterator & rhs);
-
                 void moveNext ();
 
                 TokenIterator operator ++ (int) = delete; // We don't support this.
