@@ -8,8 +8,9 @@
 #include "Token.h"
 
 using namespace std;
+using namespace MuddledManaged;
 
-ostream & operator << (ostream & stream, const Token & token)
+ostream & operator << (ostream & stream, const Protocol::Token & token)
 {
     stream << "(\"" << token.text() << "\", '" << token.endingDelimiter() << "')";
 

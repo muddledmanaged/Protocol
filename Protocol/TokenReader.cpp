@@ -8,16 +8,17 @@
 #include "TokenReader.h"
 
 using namespace std;
+using namespace MuddledManaged;
 
-const string TokenReader::TokenIterator::Whitespace = " \t\r\n";
-const string TokenReader::TokenIterator::Delimiters = "{}[]=;\"";
+const string Protocol::TokenReader::TokenIterator::Whitespace = " \t\r\n";
+const string Protocol::TokenReader::TokenIterator::Delimiters = "{}[]=;\"";
 
-TokenReader::TokenIterator::TokenIterator ()
+Protocol::TokenReader::TokenIterator::TokenIterator ()
 : mEnd(true), mpProtoStream(nullptr), mCurrent(new Token()), mStringTokenStarted(false)
 {
 }
 
-TokenReader::TokenIterator::TokenIterator (ifstream * protoStream)
+Protocol::TokenReader::TokenIterator::TokenIterator (ifstream * protoStream)
 : mEnd(false), mpProtoStream(protoStream), mCurrent(new Token()), mStringTokenStarted(false)
 {
     // Advance to the first token right away. There will always be a first
@@ -25,7 +26,27 @@ TokenReader::TokenIterator::TokenIterator (ifstream * protoStream)
     moveNext();
 }
 
-bool TokenReader::TokenIterator::operator != (const TokenIterator & rhs) const
+Protocol::TokenReader::TokenIterator::TokenIterator (const Protocol::TokenReader::TokenIterator & src)
+: mEnd(src.mEnd), mpProtoStream(src.mpProtoStream), mCurrent(src.mCurrent), mStringTokenStarted(src.mStringTokenStarted)
+{
+}
+
+Protocol::TokenReader::TokenIterator & Protocol::TokenReader::TokenIterator::operator = (const Protocol::TokenReader::TokenIterator & rhs)
+{
+    if (this == &rhs)
+    {
+        return *this;
+    }
+
+    mEnd = rhs.mEnd;
+    mpProtoStream = rhs.mpProtoStream;
+    mCurrent = rhs.mCurrent;
+    mStringTokenStarted = rhs.mStringTokenStarted;
+
+    return *this;
+}
+
+bool Protocol::TokenReader::TokenIterator::operator != (const TokenIterator & rhs) const
 {
     if (!mEnd || !rhs.mEnd)
     {
@@ -34,7 +55,7 @@ bool TokenReader::TokenIterator::operator != (const TokenIterator & rhs) const
     return false;
 }
 
-void TokenReader::moveNext ()
+void Protocol::TokenReader::TokenIterator::moveNext ()
 {
     if (mpProtoStream != nullptr)
     {
@@ -116,10 +137,10 @@ void TokenReader::moveNext ()
             }
 
             string::size_type index = Delimiters.find(c);
-            if (index == str::npos)
+            if (index == string::npos)
             {
                 index = Whitespace.find(c);
-                if (index == str::npos)
+                if (index == string::npos)
                 {
                     if (c == '/')
                     {
@@ -203,12 +224,11 @@ void TokenReader::moveNext ()
             mpProtoStream = nullptr;
         }
 
-        unique_ptr<Token> nextToken(new Token(text, delimiter));
-        mCurrent = nextToken;
+        mCurrent.reset(new Token(text, delimiter));
     }
 }
 
-TokenReader::TokenIterator & TokenReader::TokenIterator::operator ++ ()
+Protocol::TokenReader::TokenIterator & Protocol::TokenReader::TokenIterator::operator ++ ()
 {
     moveNext();
 
@@ -220,27 +240,27 @@ TokenReader::TokenIterator & TokenReader::TokenIterator::operator ++ ()
     return *this;
 }
 
-Token & TokenReader::TokenIterator::operator * ()
+Protocol::Token & Protocol::TokenReader::TokenIterator::operator * ()
 {
     return *mCurrent;
 }
 
-const Token & TokenReader::TokenIterator::operator * () const
+const Protocol::Token & Protocol::TokenReader::TokenIterator::operator * () const
 {
     return *mCurrent;
 }
 
-Token * TokenReader::TokenIterator::operator -> ()
+Protocol::Token * Protocol::TokenReader::TokenIterator::operator -> ()
 {
-    return mCurrent->get();
+    return mCurrent.get();
 }
 
-const Token * TokenReader::TokenIterator::operator -> () const
+const Protocol::Token * Protocol::TokenReader::TokenIterator::operator -> () const
 {
-    return mCurrent->get();
+    return mCurrent.get();
 }
 
-TokenReader (const std::string & protoFileName)
+Protocol::TokenReader::TokenReader (const std::string & protoFileName)
 : mProtoStream(new ifstream(protoFileName))
 {
     if (!*mProtoStream)
@@ -249,11 +269,11 @@ TokenReader (const std::string & protoFileName)
     }
 }
 
-~TokenReader ()
+Protocol::TokenReader::~TokenReader ()
 {
 }
 
-TokenReader::iterator TokenReader::begin ()
+Protocol::TokenReader::iterator Protocol::TokenReader::begin ()
 {
     mProtoStream->clear();
     mProtoStream->seekg(0);
@@ -261,7 +281,7 @@ TokenReader::iterator TokenReader::begin ()
     return iterator(mProtoStream.get());
 }
 
-TokenReader::iterator TokenReader::end ()
+Protocol::TokenReader::iterator Protocol::TokenReader::end ()
 {
     return iterator();
 }

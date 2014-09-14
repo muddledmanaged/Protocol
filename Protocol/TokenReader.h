@@ -24,14 +24,17 @@ namespace MuddledManaged
             class TokenIterator
             {
             private:
-                const std::string Whitespace;
-                const std::string Delimiters;
+                static const std::string Whitespace;
+                static const std::string Delimiters;
 
             public:
                 bool operator != (const TokenIterator & rhs) const;
+
                 TokenIterator & operator ++ ();
+
                 Token & operator * ();
                 const Token & operator * () const;
+                
                 Token * operator -> ();
                 const Token * operator -> () const;
 
@@ -40,17 +43,18 @@ namespace MuddledManaged
             private:
                 TokenIterator (); // Constructs an end iterator.
                 TokenIterator (std::ifstream * protoStream); // Constructs a begin iterator.
+                TokenIterator (const TokenIterator & src);
+
+                TokenIterator & operator = (const TokenIterator & rhs);
 
                 void moveNext ();
 
-                TokenIterator (const TokenIterator & src) = delete;
-                TokenIterator & operator = (const TokenIterator & rhs) = delete;
                 TokenIterator operator ++ (int) = delete; // We don't support this.
 
                 bool mEnd;
                 bool mStringTokenStarted;
                 std::ifstream * mpProtoStream;
-                std::unique_ptr<Token> mCurrent;
+                std::shared_ptr<Token> mCurrent;
             };
 
             typedef TokenIterator iterator;
