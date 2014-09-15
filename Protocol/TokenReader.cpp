@@ -101,9 +101,12 @@ void Protocol::TokenReader::TokenIterator::moveNext ()
 
                 if (c != '\"' || previousEscape)
                 {
-                    text += '\\';
+                    if (previousEscape)
+                    {
+                        text += '\\';
+                        previousEscape = false;
+                    }
                     text += c;
-                    previousEscape = false;
                     continue;
                 }
 
@@ -117,13 +120,17 @@ void Protocol::TokenReader::TokenIterator::moveNext ()
             {
                 if (c == '/' && previousStar)
                 {
+                    previousStar = false;
                     ignoreToEndOfComment = false;
                 }
                 else if (c == '*')
                 {
                     previousStar = true;
                 }
-                previousStar = false;
+                else
+                {
+                    previousStar = false;
+                }
                 continue;
             }
 

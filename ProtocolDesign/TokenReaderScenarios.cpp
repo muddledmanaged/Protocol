@@ -329,3 +329,478 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate emp
     verifyEqual("", iter1->text());
     verifyEqual('\0', iter1->endingDelimiter());
 }
+
+DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate full message." )
+{
+    Protocol::TokenReader reader("MessageEverything.proto");
+    auto iter1 = reader.begin();
+    auto iter2 = reader.end();
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("import public", iter1->text());
+    verifyEqual('\"', iter1->endingDelimiter());
+    verifyEqual("", iter2->text());
+    verifyEqual('\0', iter2->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("MessageNamespace.proto", iter1->text());
+    verifyEqual('\"', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("package Uv.W.Xyz", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("message M1", iter1->text());
+    verifyEqual('{', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("oneof choices", iter1->text());
+    verifyEqual('{', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("string str", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("1", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("bool b", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("200", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("", iter1->text());
+    verifyEqual('}', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("", iter1->text());
+    verifyEqual('}', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("message M2", iter1->text());
+    verifyEqual('{', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("message M3", iter1->text());
+    verifyEqual('{', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("required Abc.Def.Simple s", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("1", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("", iter1->text());
+    verifyEqual('}', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("enum E1", iter1->text());
+    verifyEqual('{', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("option allow_alias", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("true", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("None", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("0", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("All", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("1", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("Everything", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("1", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("", iter1->text());
+    verifyEqual('}', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("required M1 msg1", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("1", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("optional M3 msg3", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("2", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("optional E1 e1", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("3", iter1->text());
+    verifyEqual('[', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("default", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("None", iter1->text());
+    verifyEqual(']', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("optional double d1", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("4", iter1->text());
+    verifyEqual('[', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("default", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("3.14", iter1->text());
+    verifyEqual(']', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("optional float f1", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("5", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("repeated int32 i1", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("6", iter1->text());
+    verifyEqual('[', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("packed", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("true", iter1->text());
+    verifyEqual(']', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("optional int64 i64", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("7", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("optional uint32 ui32", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("8", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("optional uint64 ui64", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("9", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("optional sint32 si32", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("10", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("optional sint64 si64", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("11", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("optional fixed32 fx32", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("12", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("optional fixed64 fx64", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("13", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("optional sfixed32 sfx32", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("14", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("optional sfixed64 sfx64", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("15", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("optiona bool b", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("16", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("required string str1", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("17", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("optional bytes bts", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("18", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("", iter1->text());
+    verifyEqual('}', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("message M4", iter1->text());
+    verifyEqual('{', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("repeated M2.M3 msg23", iter1->text());
+    verifyEqual('=', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("1", iter1->text());
+    verifyEqual(';', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("", iter1->text());
+    verifyEqual('}', iter1->endingDelimiter());
+    
+    ++iter1;
+
+    verifyFalse(iter1 != iter2);
+    verifyEqual("", iter1->text());
+    verifyEqual('\0', iter1->endingDelimiter());
+}

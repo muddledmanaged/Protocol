@@ -45,6 +45,8 @@
 		3E28C4A119C6110900D5F4FD /* TextCommentSingleLine.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = TextCommentSingleLine.proto; sourceTree = "<group>"; };
 		3E28C4A219C6116800D5F4FD /* TextCommentMultiLine.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = TextCommentMultiLine.proto; sourceTree = "<group>"; };
 		3E28C4A319C6119800D5F4FD /* TextCommentMultiLineEOF.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = TextCommentMultiLineEOF.proto; sourceTree = "<group>"; };
+		3ED087ED19C674B5001E4571 /* MessageEverything.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = MessageEverything.proto; sourceTree = "<group>"; };
+		3ED087EE19C67D9C001E4571 /* MessageNamespace.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageNamespace.proto; sourceTree = "<group>"; };
 		3EF78A3119C4EDB100976ADA /* Designer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Designer.h; sourceTree = "<group>"; };
 		3EF78A4619C5321D00976ADA /* ProtocolDesign */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ProtocolDesign; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EF78A4819C5321E00976ADA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -157,6 +159,8 @@
 				3EF78A6F19C5588C00976ADA /* Message.proto */,
 				3E28C49A19C6010900D5F4FD /* MessageWhitespace.proto */,
 				3E28C49C19C6061100D5F4FD /* MessageComment.proto */,
+				3ED087EE19C67D9C001E4571 /* MessageNamespace.proto */,
+				3ED087ED19C674B5001E4571 /* MessageEverything.proto */,
 			);
 			path = Messages;
 			sourceTree = "<group>";
