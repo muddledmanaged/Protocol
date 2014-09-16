@@ -275,14 +275,8 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/String", "TokenReader can iterate ran
 
     ++iter1;
 
-    verifyTrue(iter1 != iter2);
-    verifyEqual("With an unterminated string.", iter1->text());
-    verifyEqual('\0', iter1->endingDelimiter());
-
-    ++iter1;
-
     verifyFalse(iter1 != iter2);
-    verifyEqual("", iter1->text());
+    verifyEqual("With an unterminated string.", iter1->text());
     verifyEqual('\0', iter1->endingDelimiter());
 }
 
@@ -300,14 +294,8 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/String", "TokenReader can iterate ran
 
     ++iter1;
 
-    verifyTrue(iter1 != iter2);
-    verifyEqual("With a string on", iter1->text());
-    verifyEqual('\0', iter1->endingDelimiter());
-
-    ++iter1;
-
     verifyFalse(iter1 != iter2);
-    verifyEqual("", iter1->text());
+    verifyEqual("With a string on", iter1->text());
     verifyEqual('\0', iter1->endingDelimiter());
 }
 
