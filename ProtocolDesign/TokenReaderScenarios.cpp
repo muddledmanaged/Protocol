@@ -236,7 +236,82 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/EOF", "TokenReader can iterate random
     verifyEqual('\0', iter1->endingDelimiter());
 }
 
-DESIGNER_SCENARIO( TokenReader, "Iteration/Unrecognized", "TokenReader can iterate random text with whitespace." )
+DESIGNER_SCENARIO( TokenReader, "Iteration/String", "TokenReader can iterate random text with a string." )
+{
+    Protocol::TokenReader reader("TextString.proto");
+    auto iter1 = reader.begin();
+    auto iter2 = reader.end();
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("Just some text on a single line.", iter1->text());
+    verifyEqual('\"', iter1->endingDelimiter());
+    verifyEqual("", iter2->text());
+    verifyEqual('\0', iter2->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("With /* a */ \\\"string\\\" // that looks like a comment.", iter1->text());
+    verifyEqual('\"', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyFalse(iter1 != iter2);
+    verifyEqual("", iter1->text());
+    verifyEqual('\0', iter1->endingDelimiter());
+}
+
+DESIGNER_SCENARIO( TokenReader, "Iteration/String", "TokenReader can iterate random text with an unterminated string." )
+{
+    Protocol::TokenReader reader("TextStringEOF.proto");
+    auto iter1 = reader.begin();
+    auto iter2 = reader.end();
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("Just some text on a single line.", iter1->text());
+    verifyEqual('\"', iter1->endingDelimiter());
+    verifyEqual("", iter2->text());
+    verifyEqual('\0', iter2->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("With an unterminated string.", iter1->text());
+    verifyEqual('\0', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyFalse(iter1 != iter2);
+    verifyEqual("", iter1->text());
+    verifyEqual('\0', iter1->endingDelimiter());
+}
+
+DESIGNER_SCENARIO( TokenReader, "Iteration/String", "TokenReader can iterate random text with a string on multiple lines." )
+{
+    Protocol::TokenReader reader("TextStringMultiLine.proto");
+    auto iter1 = reader.begin();
+    auto iter2 = reader.end();
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("Just some text on a single line.", iter1->text());
+    verifyEqual('\"', iter1->endingDelimiter());
+    verifyEqual("", iter2->text());
+    verifyEqual('\0', iter2->endingDelimiter());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("With a string on", iter1->text());
+    verifyEqual('\0', iter1->endingDelimiter());
+
+    ++iter1;
+
+    verifyFalse(iter1 != iter2);
+    verifyEqual("", iter1->text());
+    verifyEqual('\0', iter1->endingDelimiter());
+}
+
+DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate random text with whitespace." )
 {
     Protocol::TokenReader reader("TextWhitespace.proto");
     auto iter1 = reader.begin();

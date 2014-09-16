@@ -45,6 +45,9 @@
 		3E28C4A119C6110900D5F4FD /* TextCommentSingleLine.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = TextCommentSingleLine.proto; sourceTree = "<group>"; };
 		3E28C4A219C6116800D5F4FD /* TextCommentMultiLine.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = TextCommentMultiLine.proto; sourceTree = "<group>"; };
 		3E28C4A319C6119800D5F4FD /* TextCommentMultiLineEOF.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = TextCommentMultiLineEOF.proto; sourceTree = "<group>"; };
+		3E2D269A19C7E43500BD2302 /* TextString.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextString.proto; sourceTree = "<group>"; };
+		3E2D269B19C7E62D00BD2302 /* TextStringEOF.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextStringEOF.proto; sourceTree = "<group>"; };
+		3E2D269C19C7E64B00BD2302 /* TextStringMultiLine.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextStringMultiLine.proto; sourceTree = "<group>"; };
 		3ED087ED19C674B5001E4571 /* MessageEverything.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = MessageEverything.proto; sourceTree = "<group>"; };
 		3ED087EE19C67D9C001E4571 /* MessageNamespace.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageNamespace.proto; sourceTree = "<group>"; };
 		3EF78A3119C4EDB100976ADA /* Designer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Designer.h; sourceTree = "<group>"; };
@@ -155,6 +158,9 @@
 				3E28C4A019C610A900D5F4FD /* TextCommentSingleLineEOF.proto */,
 				3E28C4A219C6116800D5F4FD /* TextCommentMultiLine.proto */,
 				3E28C4A319C6119800D5F4FD /* TextCommentMultiLineEOF.proto */,
+				3E2D269A19C7E43500BD2302 /* TextString.proto */,
+				3E2D269B19C7E62D00BD2302 /* TextStringEOF.proto */,
+				3E2D269C19C7E64B00BD2302 /* TextStringMultiLine.proto */,
 				3E28C49B19C602D000D5F4FD /* TextWhitespace.proto */,
 				3EF78A6F19C5588C00976ADA /* Message.proto */,
 				3E28C49A19C6010900D5F4FD /* MessageWhitespace.proto */,
