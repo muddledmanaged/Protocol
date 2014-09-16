@@ -236,7 +236,7 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/EOF", "TokenReader can iterate random
     verifyEqual('\0', iter1->endingDelimiter());
 }
 
-DESIGNER_SCENARIO( TokenReader, "Iteration/String", "TokenReader can iterate random text with a string." )
+DESIGNER_SCENARIO( TokenReader, "Iteration/Unrecognized", "TokenReader can iterate random text with a string." )
 {
     Protocol::TokenReader reader("TextString.proto");
     auto iter1 = reader.begin();
@@ -261,7 +261,7 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/String", "TokenReader can iterate ran
     verifyEqual('\0', iter1->endingDelimiter());
 }
 
-DESIGNER_SCENARIO( TokenReader, "Iteration/String", "TokenReader can iterate random text with an unterminated string." )
+DESIGNER_SCENARIO( TokenReader, "Iteration/EOF", "TokenReader can iterate random text with an unterminated string." )
 {
     Protocol::TokenReader reader("TextStringEOF.proto");
     auto iter1 = reader.begin();
@@ -280,7 +280,7 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/String", "TokenReader can iterate ran
     verifyEqual('\0', iter1->endingDelimiter());
 }
 
-DESIGNER_SCENARIO( TokenReader, "Iteration/String", "TokenReader can iterate random text with a string on multiple lines." )
+DESIGNER_SCENARIO( TokenReader, "Iteration/EOF", "TokenReader can iterate random text with a string on multiple lines." )
 {
     Protocol::TokenReader reader("TextStringMultiLine.proto");
     auto iter1 = reader.begin();
