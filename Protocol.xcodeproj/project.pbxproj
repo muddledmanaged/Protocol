@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3EE9089419C9339C00C75919 /* ProtoParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EE9089219C9339C00C75919 /* ProtoParser.cpp */; };
+		3EE9089519C9339C00C75919 /* ProtoParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EE9089319C9339C00C75919 /* ProtoParser.h */; };
+		3EE9089819C9361400C75919 /* ProtoModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EE9089619C9361400C75919 /* ProtoModel.cpp */; };
+		3EE9089919C9361400C75919 /* ProtoModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EE9089719C9361400C75919 /* ProtoModel.h */; };
 		3EF78A4919C5321E00976ADA /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EF78A4819C5321E00976ADA /* main.cpp */; };
-		3EF78A5119C5333500976ADA /* TokenScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EF78A4F19C5333500976ADA /* TokenScenarios.cpp */; };
 		3EF78A5419C5396300976ADA /* TokenReaderScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EF78A5219C5396300976ADA /* TokenReaderScenarios.cpp */; };
 		3EF78A6619C53DAF00976ADA /* TokenReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E1B9A2519C1569F00AAAA0D /* TokenReader.cpp */; };
-		3EF78A6719C53DAF00976ADA /* Token.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E1B9A2819C15E5A00AAAA0D /* Token.cpp */; };
 		3EF78A6C19C5408600976ADA /* libProtocol.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF78A6119C53BD800976ADA /* libProtocol.a */; };
 /* End PBXBuildFile section */
 
@@ -30,8 +32,6 @@
 /* Begin PBXFileReference section */
 		3E1B9A2519C1569F00AAAA0D /* TokenReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TokenReader.cpp; sourceTree = "<group>"; };
 		3E1B9A2619C1569F00AAAA0D /* TokenReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TokenReader.h; sourceTree = "<group>"; };
-		3E1B9A2819C15E5A00AAAA0D /* Token.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Token.cpp; sourceTree = "<group>"; };
-		3E1B9A2919C15E5A00AAAA0D /* Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Token.h; sourceTree = "<group>"; };
 		3E28C49719C5FF0B00D5F4FD /* EmptyCommentSingleLine.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = EmptyCommentSingleLine.proto; sourceTree = "<group>"; };
 		3E28C49819C5FF2800D5F4FD /* EmptyCommentMultiLine.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = EmptyCommentMultiLine.proto; sourceTree = "<group>"; };
 		3E28C49919C5FF6F00D5F4FD /* Text.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = Text.proto; sourceTree = "<group>"; };
@@ -48,12 +48,16 @@
 		3E2D269A19C7E43500BD2302 /* TextString.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextString.proto; sourceTree = "<group>"; };
 		3E2D269B19C7E62D00BD2302 /* TextStringEOF.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextStringEOF.proto; sourceTree = "<group>"; };
 		3E2D269C19C7E64B00BD2302 /* TextStringMultiLine.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextStringMultiLine.proto; sourceTree = "<group>"; };
+		3E2D269D19C7F0F200BD2302 /* Package.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Package.proto; sourceTree = "<group>"; };
 		3ED087ED19C674B5001E4571 /* MessageEverything.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = MessageEverything.proto; sourceTree = "<group>"; };
 		3ED087EE19C67D9C001E4571 /* MessageNamespace.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageNamespace.proto; sourceTree = "<group>"; };
+		3EE9089219C9339C00C75919 /* ProtoParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtoParser.cpp; sourceTree = "<group>"; };
+		3EE9089319C9339C00C75919 /* ProtoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtoParser.h; sourceTree = "<group>"; };
+		3EE9089619C9361400C75919 /* ProtoModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtoModel.cpp; sourceTree = "<group>"; };
+		3EE9089719C9361400C75919 /* ProtoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtoModel.h; sourceTree = "<group>"; };
 		3EF78A3119C4EDB100976ADA /* Designer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Designer.h; sourceTree = "<group>"; };
 		3EF78A4619C5321D00976ADA /* ProtocolDesign */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ProtocolDesign; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EF78A4819C5321E00976ADA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		3EF78A4F19C5333500976ADA /* TokenScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TokenScenarios.cpp; sourceTree = "<group>"; };
 		3EF78A5219C5396300976ADA /* TokenReaderScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TokenReaderScenarios.cpp; sourceTree = "<group>"; };
 		3EF78A6119C53BD800976ADA /* libProtocol.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libProtocol.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EF78A6E19C5565F00976ADA /* Empty.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = Empty.proto; sourceTree = "<group>"; };
@@ -103,8 +107,10 @@
 			children = (
 				3E1B9A2519C1569F00AAAA0D /* TokenReader.cpp */,
 				3E1B9A2619C1569F00AAAA0D /* TokenReader.h */,
-				3E1B9A2819C15E5A00AAAA0D /* Token.cpp */,
-				3E1B9A2919C15E5A00AAAA0D /* Token.h */,
+				3EE9089219C9339C00C75919 /* ProtoParser.cpp */,
+				3EE9089319C9339C00C75919 /* ProtoParser.h */,
+				3EE9089619C9361400C75919 /* ProtoModel.cpp */,
+				3EE9089719C9361400C75919 /* ProtoModel.h */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -138,7 +144,6 @@
 			children = (
 				3EF78A6D19C5558700976ADA /* Messages */,
 				3EF78A4819C5321E00976ADA /* main.cpp */,
-				3EF78A4F19C5333500976ADA /* TokenScenarios.cpp */,
 				3EF78A5219C5396300976ADA /* TokenReaderScenarios.cpp */,
 			);
 			path = ProtocolDesign;
@@ -167,6 +172,7 @@
 				3E28C49C19C6061100D5F4FD /* MessageComment.proto */,
 				3ED087EE19C67D9C001E4571 /* MessageNamespace.proto */,
 				3ED087ED19C674B5001E4571 /* MessageEverything.proto */,
+				3E2D269D19C7F0F200BD2302 /* Package.proto */,
 			);
 			path = Messages;
 			sourceTree = "<group>";
@@ -178,6 +184,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EE9089519C9339C00C75919 /* ProtoParser.h in Headers */,
+				3EE9089919C9361400C75919 /* ProtoModel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,7 +260,6 @@
 			files = (
 				3EF78A5419C5396300976ADA /* TokenReaderScenarios.cpp in Sources */,
 				3EF78A4919C5321E00976ADA /* main.cpp in Sources */,
-				3EF78A5119C5333500976ADA /* TokenScenarios.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,8 +267,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EE9089819C9361400C75919 /* ProtoModel.cpp in Sources */,
+				3EE9089419C9339C00C75919 /* ProtoParser.cpp in Sources */,
 				3EF78A6619C53DAF00976ADA /* TokenReader.cpp in Sources */,
-				3EF78A6719C53DAF00976ADA /* Token.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

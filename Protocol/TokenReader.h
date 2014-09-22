@@ -12,14 +12,27 @@
 #include <memory>
 #include <string>
 
-#include "Token.h"
-
 namespace MuddledManaged
 {
     namespace Protocol
     {
         class TokenReader
         {
+        private:
+            struct TokenReaderData
+            {
+                TokenReaderData (std::ifstream * protoStream);
+
+                void reset ();
+                
+                // All begin iterators share this data;
+                bool mEnd;
+                bool mStringMode;
+                char mDelimiter;
+                std::string mCurrentToken;
+                std::unique_ptr<std::ifstream> mProtoStream;
+            };
+
         public:
             class TokenIterator
             {
@@ -29,7 +42,6 @@ namespace MuddledManaged
 
             public:
                 TokenIterator (); // Constructs an end iterator.
-                TokenIterator (std::ifstream * protoStream); // Constructs a begin iterator.
                 TokenIterator (const TokenIterator & src);
 
                 TokenIterator & operator = (const TokenIterator & rhs);
@@ -38,23 +50,20 @@ namespace MuddledManaged
 
                 TokenIterator & operator ++ ();
 
-                Token & operator * ();
-                const Token & operator * () const;
-                
-                Token * operator -> ();
-                const Token * operator -> () const;
-
-                friend class TokenReader;
+                std::string operator * () const;
 
             private:
+                friend class TokenReader;
+                
+                TokenIterator (TokenReaderData * pData); // Constructs a begin iterator.
+
                 void moveNext ();
+
+                bool atEnd () const;
 
                 TokenIterator operator ++ (int) = delete; // We don't support this.
 
-                bool mEnd;
-                bool mStringTokenStarted;
-                std::ifstream * mpProtoStream;
-                std::shared_ptr<Token> mCurrent;
+                TokenReaderData * mpData;
             };
 
             typedef TokenIterator iterator;
@@ -66,7 +75,7 @@ namespace MuddledManaged
             iterator end ();
 
         private:
-            std::unique_ptr<std::ifstream> mProtoStream;
+            std::unique_ptr<TokenReaderData> mData;
         };
 
     } // namespace Protocol

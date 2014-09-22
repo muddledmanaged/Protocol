@@ -49,7 +49,7 @@ message M2
     optional fixed64 fx64 = 13;
     optional sfixed32 sfx32 = 14;
     optional sfixed64 sfx64 = 15;
-    optiona bool b = 16;
+    optional bool b = 16;
     required string str1 = 17; // Required fields can be anywhere.
     optional bytes bts = 18;
 }
