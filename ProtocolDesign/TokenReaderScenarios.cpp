@@ -203,6 +203,27 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/EOF", "TokenReader can iterate random
     verifyEqual("", *iter1);
 }
 
+DESIGNER_SCENARIO( TokenReader, "Iteration/Unrecognized", "TokenReader can iterate random text with adjacent comments." )
+{
+    Protocol::TokenReader reader("TextCommentNoSpace.proto");
+    auto iter1 = reader.begin();
+    auto iter2 = reader.end();
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("text", *iter1);
+    verifyEqual("", *iter2);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("more", *iter1);
+
+    ++iter1;
+
+    verifyFalse(iter1 != iter2);
+    verifyEqual("", *iter1);
+}
+
 DESIGNER_SCENARIO( TokenReader, "Iteration/Unrecognized", "TokenReader can iterate random text with a string." )
 {
     Protocol::TokenReader reader("TextString.proto");
@@ -222,6 +243,88 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/Unrecognized", "TokenReader can itera
 
     verifyTrue(iter1 != iter2);
     verifyEqual("With /* a */ \\\"string\\\" // that looks like a comment.", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("\"", *iter1);
+
+    ++iter1;
+
+    verifyFalse(iter1 != iter2);
+    verifyEqual("", *iter1);
+}
+
+DESIGNER_SCENARIO( TokenReader, "Iteration/Unrecognized", "TokenReader can iterate random text with multiple delimiters." )
+{
+    Protocol::TokenReader reader("TextDelimiterMultiple.proto");
+    auto iter1 = reader.begin();
+    auto iter2 = reader.end();
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual(";", *iter1);
+    verifyEqual("", *iter2);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("text", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("{", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("}", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("[", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("]", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("=", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual(";", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("\"", *iter1);
+
+    ++iter1;
+
+    verifyFalse(iter1 != iter2);
+    verifyEqual("", *iter1);
+}
+
+DESIGNER_SCENARIO( TokenReader, "Iteration/Unrecognized", "TokenReader can iterate an empty string." )
+{
+    Protocol::TokenReader reader("TextStringEmpty.proto");
+    auto iter1 = reader.begin();
+    auto iter2 = reader.end();
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("\"", *iter1);
+    verifyEqual("", *iter2);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("", *iter1);
 
     ++iter1;
 
@@ -289,6 +392,70 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/EOF", "TokenReader can iterate random
 
     verifyTrue(iter1 != iter2);
     verifyEqual("lines.", *iter1);
+
+    ++iter1;
+
+    verifyFalse(iter1 != iter2);
+    verifyEqual("", *iter1);
+}
+
+DESIGNER_SCENARIO( TokenReader, "Iteration/EOF", "TokenReader can iterate random text with unterminated strings ending with escape." )
+{
+    Protocol::TokenReader reader("TextStringEndingEscape.proto");
+    auto iter1 = reader.begin();
+    auto iter2 = reader.end();
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("\"", *iter1);
+    verifyEqual("", *iter2);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("unterminated string with \\", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("\"", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("another at the end \\", *iter1);
+
+    ++iter1;
+
+    verifyFalse(iter1 != iter2);
+    verifyEqual("", *iter1);
+}
+
+DESIGNER_SCENARIO( TokenReader, "Iteration/EOF", "TokenReader can iterate random text with unterminated strings at end of line and file." )
+{
+    // The empty token after the first quote is needed to differentiate
+    // this scenario from a legitimate "text"
+    Protocol::TokenReader reader("TextStringEndingQuote.proto");
+    auto iter1 = reader.begin();
+    auto iter2 = reader.end();
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("\"", *iter1);
+    verifyEqual("", *iter2);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("text", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("\"", *iter1);
 
     ++iter1;
 

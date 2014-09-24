@@ -152,6 +152,13 @@ void Protocol::TokenReader::TokenIterator::moveNext ()
             if (c == '\n')
             {
                 ignoreToEndOfLine = false;
+
+                if (!text.empty())
+                {
+                    // Treat the end of the line like whitespace if we already
+                    // have text.
+                    break;
+                }
             }
             continue;
         }

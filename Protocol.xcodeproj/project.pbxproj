@@ -49,6 +49,11 @@
 		3E2D269B19C7E62D00BD2302 /* TextStringEOF.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextStringEOF.proto; sourceTree = "<group>"; };
 		3E2D269C19C7E64B00BD2302 /* TextStringMultiLine.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextStringMultiLine.proto; sourceTree = "<group>"; };
 		3E2D269D19C7F0F200BD2302 /* Package.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Package.proto; sourceTree = "<group>"; };
+		3EA6589919D25D970057E591 /* TextCommentNoSpace.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextCommentNoSpace.proto; sourceTree = "<group>"; };
+		3EA6589B19D25FB60057E591 /* TextStringEmpty.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextStringEmpty.proto; sourceTree = "<group>"; };
+		3EA6589C19D261960057E591 /* TextStringEndingEscape.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextStringEndingEscape.proto; sourceTree = "<group>"; };
+		3EA6589E19D26B220057E591 /* TextStringEndingQuote.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextStringEndingQuote.proto; sourceTree = "<group>"; };
+		3EA658A019D26DAF0057E591 /* TextDelimiterMultiple.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextDelimiterMultiple.proto; sourceTree = "<group>"; };
 		3ED087ED19C674B5001E4571 /* MessageEverything.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = MessageEverything.proto; sourceTree = "<group>"; };
 		3ED087EE19C67D9C001E4571 /* MessageNamespace.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageNamespace.proto; sourceTree = "<group>"; };
 		3EE9089219C9339C00C75919 /* ProtoParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtoParser.cpp; sourceTree = "<group>"; };
@@ -163,9 +168,14 @@
 				3E28C4A019C610A900D5F4FD /* TextCommentSingleLineEOF.proto */,
 				3E28C4A219C6116800D5F4FD /* TextCommentMultiLine.proto */,
 				3E28C4A319C6119800D5F4FD /* TextCommentMultiLineEOF.proto */,
+				3EA6589919D25D970057E591 /* TextCommentNoSpace.proto */,
+				3EA658A019D26DAF0057E591 /* TextDelimiterMultiple.proto */,
 				3E2D269A19C7E43500BD2302 /* TextString.proto */,
+				3EA6589B19D25FB60057E591 /* TextStringEmpty.proto */,
 				3E2D269B19C7E62D00BD2302 /* TextStringEOF.proto */,
 				3E2D269C19C7E64B00BD2302 /* TextStringMultiLine.proto */,
+				3EA6589C19D261960057E591 /* TextStringEndingEscape.proto */,
+				3EA6589E19D26B220057E591 /* TextStringEndingQuote.proto */,
 				3E28C49B19C602D000D5F4FD /* TextWhitespace.proto */,
 				3EF78A6F19C5588C00976ADA /* Message.proto */,
 				3E28C49A19C6010900D5F4FD /* MessageWhitespace.proto */,
