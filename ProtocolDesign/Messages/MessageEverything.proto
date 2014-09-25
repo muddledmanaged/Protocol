@@ -52,6 +52,13 @@ message M2
     optional bool b = 16;
     required string str1 = 17; // Required fields can be anywhere.
     optional bytes bts = 18;
+    optional E3 e3 = 19;
+}
+
+enum E3
+{
+    Good = 0;
+    Better = 1;
 }
 
 message M4

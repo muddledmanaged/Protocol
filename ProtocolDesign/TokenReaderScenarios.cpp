@@ -1525,6 +1525,96 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate ful
     ++iter1;
 
     verifyTrue(iter1 != iter2);
+    verifyEqual("optional", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("E3", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("e3", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("=", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("19", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual(";", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("}", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("enum", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("E3", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("{", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("Good", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("=", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("0", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual(";", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("Better", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("=", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("1", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual(";", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
     verifyEqual("}", *iter1);
 
     ++iter1;
@@ -1573,7 +1663,7 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate ful
     verifyEqual(";", *iter1);
 
     ++iter1;
-
+    
     verifyTrue(iter1 != iter2);
     verifyEqual("}", *iter1);
 
