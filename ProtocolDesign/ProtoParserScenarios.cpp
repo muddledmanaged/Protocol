@@ -14,12 +14,18 @@
 using namespace std;
 using namespace MuddledManaged;
 
+DESIGNER_SCENARIO( ProtoParser, "Construction/Normal", "ProtoParser can be constructed." )
+{
+    Protocol::ProtoParser parser("Package.proto");
+}
+
 DESIGNER_SCENARIO( ProtoParser, "Operation/Normal", "ProtoParser can parse package." )
 {
     shared_ptr<Protocol::ProtoModel> model;
     string package = "MuddledManaged.Platform";
 
-    model = Protocol::ProtoParser::parse("Package.proto");
+    Protocol::ProtoParser parser("Package.proto");
+    model = parser.parse();
 
     verifyEqual(package, model->package());
 }

@@ -11,23 +11,32 @@
 using namespace std;
 using namespace MuddledManaged;
 
-shared_ptr<Protocol::ProtoModel> Protocol::ProtoParser::parse (const string & protoFileName)
+Protocol::ProtoParser::ProtoParser (const string & protoFileName)
+: mReader(new TokenReader(protoFileName))
 {
-    shared_ptr<Protocol::ProtoModel> model(new Protocol::ProtoModel());
-    Protocol::TokenReader reader(protoFileName);
-    auto beginIter = reader.begin();
-    auto endIter = reader.end();
+}
 
-    while (beginIter != endIter)
+shared_ptr<Protocol::ProtoModel> Protocol::ProtoParser::parse ()
+{
+    mModel.reset(new Protocol::ProtoModel());
+    auto begin = mReader->begin();
+    auto end = mReader->end();
+
+    while (begin != end)
     {
-        if (*beginIter == "package")
+        if (*begin == "package")
         {
-            ++beginIter; // Get the package name.
-            model->setPackage(*beginIter);
-            ++beginIter; // Get the ending semicolon.
+            parsePackage(begin, end);
         }
-        ++beginIter;
+        ++begin;
     }
 
-    return model;
+    return mModel;
+}
+
+void Protocol::ProtoParser::parsePackage (Protocol::TokenReader::iterator begin, Protocol::TokenReader::iterator end)
+{
+    ++begin; // Get the package name.
+    mModel->setPackage(*begin);
+    ++begin; // Get the ending semicolon.
 }
