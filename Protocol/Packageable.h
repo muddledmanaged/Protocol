@@ -17,16 +17,26 @@ namespace MuddledManaged
         class Packageable
         {
         public:
-            Packageable (const Packageable & src)
-            : mPackage(src.mPackage)
-            { }
-
             virtual ~Packageable ()
             { }
 
             std::string package () const
             {
                 return mPackage;
+            }
+
+        protected:
+            Packageable (const std::string & package = "")
+            : mPackage(package)
+            { }
+
+            Packageable (const Packageable & src)
+            : mPackage(src.mPackage)
+            { }
+
+            void setPackage (const std::string & package)
+            {
+                mPackage = package;
             }
 
             Packageable & operator = (const Packageable & rhs)
@@ -39,16 +49,6 @@ namespace MuddledManaged
                 mPackage = rhs.mPackage;
                 
                 return *this;
-            }
-
-        protected:
-            Packageable (const std::string & package = "")
-            : mPackage(package)
-            { }
-
-            void setPackage (const std::string & package)
-            {
-                mPackage = package;
             }
 
         private:
