@@ -24,7 +24,17 @@ void Protocol::ProtoModel::setCurrentPackage (const string & package)
     setPackage(package);
 }
 
-void Protocol::ProtoModel::addMessage (shared_ptr<MessageModel> message)
+void Protocol::ProtoModel::addMessage (MessageModelCollection::value_type message)
 {
+    mMessages.push_back(message);
+}
 
+Protocol::ProtoModel::MessageModelCollection::const_iterator Protocol::ProtoModel::cbeginMessage () const
+{
+    return mMessages.cbegin();
+}
+
+Protocol::ProtoModel::MessageModelCollection::const_iterator Protocol::ProtoModel::cendMessage () const
+{
+    return mMessages.cend();
 }

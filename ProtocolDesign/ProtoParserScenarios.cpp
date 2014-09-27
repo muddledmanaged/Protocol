@@ -18,14 +18,3 @@ DESIGNER_SCENARIO( ProtoParser, "Construction/Normal", "ProtoParser can be const
 {
     Protocol::ProtoParser parser("Package.proto");
 }
-
-DESIGNER_SCENARIO( ProtoParser, "Operation/Normal", "ProtoParser can parse package." )
-{
-    shared_ptr<Protocol::ProtoModel> model;
-    string package = "MuddledManaged.Platform";
-
-    Protocol::ProtoParser parser("Package.proto");
-    model = parser.parse();
-
-    verifyEqual(package, model->currentPackage());
-}
