@@ -42,6 +42,11 @@ Protocol::TokenReader::TokenIterator & Protocol::TokenReader::TokenIterator::ope
     return *this;
 }
 
+bool Protocol::TokenReader::TokenIterator::operator == (const TokenIterator & rhs) const
+{
+    return !this->operator!=(rhs);
+}
+
 bool Protocol::TokenReader::TokenIterator::operator != (const TokenIterator & rhs) const
 {
     if (!atEnd() || !rhs.atEnd())
@@ -292,6 +297,16 @@ std::string Protocol::TokenReader::TokenIterator::operator * () const
     }
     
     return mpData->mCurrentToken;
+}
+
+const std::string * Protocol::TokenReader::TokenIterator::operator -> () const
+{
+    if (mpData == nullptr)
+    {
+        return nullptr;
+    }
+
+    return &mpData->mCurrentToken;
 }
 
 Protocol::TokenReader::TokenReaderData::TokenReaderData (ifstream * protoStream)

@@ -740,6 +740,21 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate ful
     ++iter1;
 
     verifyTrue(iter1 != iter2);
+    verifyEqual("package", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("Uv", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual(";", *iter1);
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
     verifyEqual("message", *iter1);
 
     ++iter1;

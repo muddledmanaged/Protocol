@@ -27,5 +27,5 @@ DESIGNER_SCENARIO( ProtoParser, "Operation/Normal", "ProtoParser can parse packa
     Protocol::ProtoParser parser("Package.proto");
     model = parser.parse();
 
-    verifyEqual(package, model->package());
+    verifyEqual(package, model->currentPackage());
 }

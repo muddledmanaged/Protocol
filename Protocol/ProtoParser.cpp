@@ -5,8 +5,12 @@
 //  Created by Wahid Tanner on 9/16/14.
 //
 
+#include <memory>
+
 #include "ProtoParser.h"
 #include "TokenReader.h"
+#include "PackageParser.h"
+#include "MessageParser.h"
 
 using namespace std;
 using namespace MuddledManaged;
@@ -14,6 +18,8 @@ using namespace MuddledManaged;
 Protocol::ProtoParser::ProtoParser (const string & protoFileName)
 : mReader(new TokenReader(protoFileName))
 {
+    mParsers.push_back(unique_ptr<ParserInterface>(new PackageParser()));
+    mParsers.push_back(unique_ptr<ParserInterface>(new MessageParser()));
 }
 
 shared_ptr<Protocol::ProtoModel> Protocol::ProtoParser::parse ()
@@ -24,19 +30,15 @@ shared_ptr<Protocol::ProtoModel> Protocol::ProtoParser::parse ()
 
     while (begin != end)
     {
-        if (*begin == "package")
+        for (auto & parser: mParsers)
         {
-            parsePackage(begin, end);
+            if (parser->parse(begin, end, mModel))
+            {
+                break;
+            }
         }
         ++begin;
     }
 
     return mModel;
-}
-
-void Protocol::ProtoParser::parsePackage (Protocol::TokenReader::iterator begin, Protocol::TokenReader::iterator end)
-{
-    ++begin; // Get the package name.
-    mModel->setPackage(*begin);
-    ++begin; // Get the ending semicolon.
 }

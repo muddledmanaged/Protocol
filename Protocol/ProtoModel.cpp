@@ -12,15 +12,19 @@ using namespace MuddledManaged;
 
 Protocol::ProtoModel::ProtoModel ()
 {
-    mPackage = "";
 }
 
-string Protocol::ProtoModel::package () const
+std::string Protocol::ProtoModel::currentPackage () const
 {
-    return mPackage;
+    return package();
 }
 
-void Protocol::ProtoModel::setPackage (const string & package)
+void Protocol::ProtoModel::setCurrentPackage (const string & package)
 {
-    mPackage = package;
+    setPackage(package);
+}
+
+void Protocol::ProtoModel::addMessage (shared_ptr<MessageModel> message)
+{
+
 }

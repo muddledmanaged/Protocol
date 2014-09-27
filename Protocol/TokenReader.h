@@ -46,11 +46,13 @@ namespace MuddledManaged
 
                 TokenIterator & operator = (const TokenIterator & rhs);
 
+                bool operator == (const TokenIterator & rhs) const;
                 bool operator != (const TokenIterator & rhs) const;
 
                 TokenIterator & operator ++ ();
 
                 std::string operator * () const;
+                const std::string * operator -> () const;
 
             private:
                 friend class TokenReader;

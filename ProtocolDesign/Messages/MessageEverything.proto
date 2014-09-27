@@ -11,6 +11,8 @@ message M1
     }
 }
 
+package Uv; // Package declaration redefinitions are supported in this implementation.
+
 message M2
 {
     message M3

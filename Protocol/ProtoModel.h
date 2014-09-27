@@ -8,22 +8,27 @@
 #ifndef Protocol_ProtoModel_h
 #define Protocol_ProtoModel_h
 
+#include <memory>
 #include <string>
+
+#include "Packageable.h"
+#include "MessageModel.h"
 
 namespace MuddledManaged
 {
     namespace Protocol
     {
-        class ProtoModel
+        class ProtoModel : private Packageable
         {
         public:
             ProtoModel ();
 
-            std::string package () const;
-            void setPackage (const std::string & package);
+            std::string currentPackage () const;
+            void setCurrentPackage (const std::string & package);
+
+            void addMessage (std::shared_ptr<MessageModel> message);
 
         private:
-            std::string mPackage;
         };
 
     } // namespace Protocol

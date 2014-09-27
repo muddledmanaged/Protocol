@@ -8,9 +8,11 @@
 #ifndef Protocol_ProtoParser_h
 #define Protocol_ProtoParser_h
 
+#include <list>
 #include <memory>
 #include <string>
 
+#include "ParserInterface.h"
 #include "ProtoModel.h"
 #include "TokenReader.h"
 
@@ -26,10 +28,9 @@ namespace MuddledManaged
             std::shared_ptr<ProtoModel> parse ();
 
         private:
-            void parsePackage (Protocol::TokenReader::iterator begin, Protocol::TokenReader::iterator end);
-
             std::shared_ptr<ProtoModel> mModel;
             std::unique_ptr<TokenReader> mReader;
+            std::list<std::unique_ptr<ParserInterface>> mParsers;
         };
 
     } // namespace Protocol
