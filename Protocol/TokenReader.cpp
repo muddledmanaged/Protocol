@@ -65,8 +65,8 @@ void Protocol::TokenReader::TokenIterator::moveNext ()
 
     if (mpData->mDelimiter != '\0')
     {
-        // When we find a delimiter, that means we have
-        // already read it from the stream. We just set this delimiter
+        // When we find a delimiter, that means we have already read it from the
+        // stream and are about to read the next character. We just set this delimiter
         // and return on the subsequent moveNext() call
         mpData->mCurrentToken = mpData->mDelimiter;
         mpData->mDelimiter = '\0';
@@ -310,7 +310,12 @@ void Protocol::TokenReader::TokenIterator::moveNext ()
             // If there was nothing found, then we must be at the end.
             mpData->mCurrentToken = "";
             mpData->mEnd = true;
+            
+            // Increase the column count by 1 to account for the EOF and make sure
+            // we never return column 0.
+            mpData->mColumn++;
         }
+        
         mpData->mCurrentTokenLine = mpData->mLine;
         mpData->mCurrentTokenColumn = mpData->mColumn;
     }
