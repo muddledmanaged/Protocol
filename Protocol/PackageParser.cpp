@@ -8,6 +8,7 @@
 #include <stdexcept>
 
 #include "PackageParser.h"
+#include "InvalidProtoException.h"
 
 using namespace std;
 using namespace MuddledManaged;
@@ -15,23 +16,23 @@ using namespace MuddledManaged;
 Protocol::PackageParser::PackageParser ()
 { }
 
-bool Protocol::PackageParser::parse (TokenReader::iterator begin, TokenReader::iterator end, std::shared_ptr<ProtoModel> model)
+bool Protocol::PackageParser::parse (TokenReader::iterator current, TokenReader::iterator end, std::shared_ptr<ProtoModel> model)
 {
-    if (begin != end && *begin == "package")
+    if (current != end && *current == "package")
     {
         // Move to the package name.
-        ++begin;
-        if (begin == end || begin->empty())
+        ++current;
+        if (current == end || current->empty())
         {
-            throw std::logic_error("");
+            throw InvalidProtoException(current.line(), current.column(), "Expected package name.");
         }
-        model->setCurrentPackage(*begin);
+        model->setCurrentPackage(*current);
 
         // Move to the semicolon.
-        ++begin;
-        if (begin == end || *begin != ";")
+        ++current;
+        if (current == end || *current != ";")
         {
-            throw std::logic_error("");
+            throw InvalidProtoException(current.line(), current.column(), "Expected ; character.");
         }
 
         return true;

@@ -19,7 +19,7 @@ namespace MuddledManaged
         public:
             PackageParser ();
 
-            virtual bool parse (TokenReader::iterator begin, TokenReader::iterator end, std::shared_ptr<ProtoModel> model);
+            virtual bool parse (TokenReader::iterator current, TokenReader::iterator end, std::shared_ptr<ProtoModel> model);
         };
 
     } // namespace Protocol

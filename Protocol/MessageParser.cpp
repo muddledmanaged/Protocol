@@ -7,6 +7,7 @@
 
 #include "MessageModel.h"
 #include "MessageParser.h"
+#include "InvalidProtoException.h"
 
 using namespace std;
 using namespace MuddledManaged;
@@ -14,31 +15,31 @@ using namespace MuddledManaged;
 Protocol::MessageParser::MessageParser ()
 { }
 
-bool Protocol::MessageParser::parse (TokenReader::iterator begin, TokenReader::iterator end, shared_ptr<ProtoModel> model)
+bool Protocol::MessageParser::parse (TokenReader::iterator current, TokenReader::iterator end, shared_ptr<ProtoModel> model)
 {
-    if (begin != end && *begin == "message")
+    if (current != end && *current == "message")
     {
         // Move to the message name.
-        ++begin;
-        if (begin == end || begin->empty())
+        ++current;
+        if (current == end || current->empty())
         {
-            throw std::logic_error("");
+            throw InvalidProtoException(current.line(), current.column(), "Expected message name.");
         }
-        shared_ptr<MessageModel> message(new MessageModel(*begin));
+        shared_ptr<MessageModel> message(new MessageModel(*current));
         model->addMessage(message);
 
         // Move to the opening brace.
-        ++begin;
-        if (begin == end || *begin != "{")
+        ++current;
+        if (current == end || *current != "{")
         {
-            throw std::logic_error("");
+            throw InvalidProtoException(current.line(), current.column(), "Expected { character.");
         }
 
         // Move to the closing brace.
-        ++begin;
-        if (begin == end || *begin != "}")
+        ++current;
+        if (current == end || *current != "}")
         {
-            throw std::logic_error("");
+            throw InvalidProtoException(current.line(), current.column(), "Expected } character or field definition.");
         }
 
         return true;

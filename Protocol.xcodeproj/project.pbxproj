@@ -79,6 +79,7 @@
 		3ED087EE19C67D9C001E4571 /* MessageNamespace.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageNamespace.proto; sourceTree = "<group>"; };
 		3EDF794A19D7663F00AD2103 /* PackageParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PackageParserScenarios.cpp; sourceTree = "<group>"; };
 		3EDF794C19D7666800AD2103 /* MessageParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageParserScenarios.cpp; sourceTree = "<group>"; };
+		3EDF794E19D79E7200AD2103 /* InvalidProtoException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvalidProtoException.h; sourceTree = "<group>"; };
 		3EE9089219C9339C00C75919 /* ProtoParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtoParser.cpp; sourceTree = "<group>"; };
 		3EE9089319C9339C00C75919 /* ProtoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtoParser.h; sourceTree = "<group>"; };
 		3EE9089619C9361400C75919 /* ProtoModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtoModel.cpp; sourceTree = "<group>"; };
@@ -147,6 +148,7 @@
 				3E9EE99819D663D000AEF047 /* MessageModel.cpp */,
 				3E9EE99919D663D000AEF047 /* MessageModel.h */,
 				3E9EE99E19D6727A00AEF047 /* Packageable.h */,
+				3EDF794E19D79E7200AD2103 /* InvalidProtoException.h */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";

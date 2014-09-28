@@ -29,6 +29,10 @@ namespace MuddledManaged
                 bool mEnd;
                 bool mStringMode;
                 char mDelimiter;
+                int mLine;
+                int mCurrentTokenLine;
+                int mColumn;
+                int mCurrentTokenColumn;
                 std::string mCurrentToken;
                 std::unique_ptr<std::ifstream> mProtoStream;
             };
@@ -53,6 +57,9 @@ namespace MuddledManaged
 
                 std::string operator * () const;
                 const std::string * operator -> () const;
+
+                int line () const;
+                int column () const;
 
             private:
                 friend class TokenReader;

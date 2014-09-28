@@ -70,6 +70,8 @@ void Protocol::TokenReader::TokenIterator::moveNext ()
         // and return on the subsequent moveNext() call
         mpData->mCurrentToken = mpData->mDelimiter;
         mpData->mDelimiter = '\0';
+        mpData->mCurrentTokenLine = mpData->mLine;
+        mpData->mCurrentTokenColumn = mpData->mColumn;
         return;
     }
 
@@ -80,6 +82,7 @@ void Protocol::TokenReader::TokenIterator::moveNext ()
     bool ignoreToEndOfLine = false;
     bool ignoreToEndOfComment = false;
     bool returningString = false;
+    bool startOfTokenFound = false;
     char c;
     while (mpData->mProtoStream->get(c))
     {
@@ -87,9 +90,17 @@ void Protocol::TokenReader::TokenIterator::moveNext ()
         {
             // An opening quote was found for the last token. That
             // begins string processing for this token until the end quote is
-            // found or the end of the line. Strings are not allowed to span
-            // lines, so if we find a newline before the end quote, then return
-            // what we have.
+            // found or the end of the line.
+            mpData->mColumn++;
+            if (!startOfTokenFound)
+            {
+                mpData->mCurrentTokenLine = mpData->mLine;
+                mpData->mCurrentTokenColumn = mpData->mColumn;
+
+                startOfTokenFound = true;
+            }
+            // Strings are not allowed to span lines, so if we find a newline
+            // before the end quote, then return what we have.
             if (c == '\n')
             {
                 // It's possible that an opening quote could appear at the end
@@ -97,6 +108,9 @@ void Protocol::TokenReader::TokenIterator::moveNext ()
                 // empty.
                 mpData->mStringMode = false;
                 returningString = true;
+
+                mpData->mLine++;
+                mpData->mColumn = 0;
                 break;
             }
 
@@ -132,6 +146,25 @@ void Protocol::TokenReader::TokenIterator::moveNext ()
             mpData->mDelimiter = '\"';
             returningString = true;
             break;
+        }
+
+        if (c == '\n')
+        {
+            mpData->mLine++;
+            mpData->mColumn = 0;
+        }
+        else
+        {
+            mpData->mColumn++;
+        }
+        
+        if (!startOfTokenFound && !previousForwardSlash)
+        {
+            // Keep advancing the current token location until we find it.
+            // It's possible that a single forward slash will be the token so
+            // don't advance just yet if the last char was a forward slash.
+            mpData->mCurrentTokenLine = mpData->mLine;
+            mpData->mCurrentTokenColumn = mpData->mColumn;
         }
 
         if (ignoreToEndOfComment)
@@ -202,7 +235,10 @@ void Protocol::TokenReader::TokenIterator::moveNext ()
                     {
                         text += '/';
                     }
+                    previousForwardSlash = false;
+
                     text += c;
+                    startOfTokenFound = true;
                 }
             }
             else
@@ -248,6 +284,12 @@ void Protocol::TokenReader::TokenIterator::moveNext ()
         text += '\\';
     }
 
+    if (previousForwardSlash)
+    {
+        // Just in case there is a single forward slash char at the end of the file.
+        text += '/';
+    }
+
     if (returningString || !text.empty())
     {
         // Return what was found. This could be nothing if it is
@@ -269,6 +311,8 @@ void Protocol::TokenReader::TokenIterator::moveNext ()
             mpData->mCurrentToken = "";
             mpData->mEnd = true;
         }
+        mpData->mCurrentTokenLine = mpData->mLine;
+        mpData->mCurrentTokenColumn = mpData->mColumn;
     }
 }
 
@@ -309,9 +353,24 @@ const std::string * Protocol::TokenReader::TokenIterator::operator -> () const
     return &mpData->mCurrentToken;
 }
 
-Protocol::TokenReader::TokenReaderData::TokenReaderData (ifstream * protoStream)
-: mEnd(false), mStringMode(false), mDelimiter('\0'), mCurrentToken(""), mProtoStream(protoStream)
+int Protocol::TokenReader::TokenIterator::line () const
 {
+    return mpData->mCurrentTokenLine;
+}
+
+int Protocol::TokenReader::TokenIterator::column () const
+{
+    return mpData->mCurrentTokenColumn;
+}
+
+Protocol::TokenReader::TokenReaderData::TokenReaderData (ifstream * protoStream)
+: mEnd(false), mStringMode(false), mDelimiter('\0'), mLine(1), mCurrentTokenLine(1),
+  mColumn(0), mCurrentTokenColumn(0), mCurrentToken(""), mProtoStream(protoStream)
+{
+    // The line starts at 1 always even for a completely empty file.
+
+    // The column is set to 0 initially and will be incremented to
+    // 1 as long as there is at least one character on the line.
 }
 
 void Protocol::TokenReader::TokenReaderData::reset ()
@@ -320,6 +379,10 @@ void Protocol::TokenReader::TokenReaderData::reset ()
     mStringMode = false;
     mDelimiter = '\0';
     mCurrentToken = "";
+    mLine = 1;
+    mCurrentTokenLine = 1;
+    mColumn = 0;
+    mCurrentTokenColumn = 0;
     mProtoStream->clear();
     mProtoStream->seekg(0);
 }

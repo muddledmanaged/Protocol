@@ -25,19 +25,19 @@ Protocol::ProtoParser::ProtoParser (const string & protoFileName)
 shared_ptr<Protocol::ProtoModel> Protocol::ProtoParser::parse ()
 {
     mModel.reset(new Protocol::ProtoModel());
-    auto begin = mReader->begin();
+    auto current = mReader->begin();
     auto end = mReader->end();
 
-    while (begin != end)
+    while (current != end)
     {
         for (auto & parser: mParsers)
         {
-            if (parser->parse(begin, end, mModel))
+            if (parser->parse(current, end, mModel))
             {
                 break;
             }
         }
-        ++begin;
+        ++current;
     }
 
     return mModel;
