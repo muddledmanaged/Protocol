@@ -20,7 +20,7 @@ DESIGNER_SCENARIO( PackageParser, "Construction/Normal", "PackageParser can be c
     Protocol::PackageParser parser;
 }
 
-DESIGNER_SCENARIO( PackageParser, "Operation/Normal", "ProtoParser can parse package." )
+DESIGNER_SCENARIO( PackageParser, "Parsing/Normal", "ProtoParser can parse package." )
 {
     shared_ptr<Protocol::ProtoModel> model;
     string package = "MuddledManaged.Platform";
@@ -31,7 +31,7 @@ DESIGNER_SCENARIO( PackageParser, "Operation/Normal", "ProtoParser can parse pac
     verifyEqual(package, model->currentPackage());
 }
 
-DESIGNER_SCENARIO( PackageParser, "Operation/Normal", "ProtoParser can parse multiple packages." )
+DESIGNER_SCENARIO( PackageParser, "Parsing/Normal", "ProtoParser can parse multiple packages." )
 {
     shared_ptr<Protocol::ProtoModel> model;
     string package = "MuddledManaged.Platform";

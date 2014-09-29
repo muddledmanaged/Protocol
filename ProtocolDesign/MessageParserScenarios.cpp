@@ -20,7 +20,7 @@ DESIGNER_SCENARIO( MessageParser, "Construction/Normal", "MessageParser can be c
     Protocol::MessageParser parser;
 }
 
-DESIGNER_SCENARIO( MessageParser, "Operation/Normal", "ProtoParser can parse empty message." )
+DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "ProtoParser can parse empty message." )
 {
     shared_ptr<Protocol::ProtoModel> model;
     string name = "empty";
@@ -42,7 +42,7 @@ DESIGNER_SCENARIO( MessageParser, "Operation/Normal", "ProtoParser can parse emp
     verifyEqual(1, count);
 }
 
-DESIGNER_SCENARIO( MessageParser, "Operation/Normal", "ProtoParser can parse multiple empty messages." )
+DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "ProtoParser can parse multiple empty messages." )
 {
     shared_ptr<Protocol::ProtoModel> model;
 

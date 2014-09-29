@@ -105,7 +105,7 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate emp
     verifyEqual(3, iter1.column());
 }
 
-DESIGNER_SCENARIO( TokenReader, "Iteration/Unrecognized", "TokenReader can iterate random text." )
+DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate random text." )
 {
     Protocol::TokenReader reader("Text.proto");
     auto iter1 = reader.begin();
@@ -167,7 +167,7 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/Unrecognized", "TokenReader can itera
     verifyEqual(33, iter1.column());
 }
 
-DESIGNER_SCENARIO( TokenReader, "Iteration/Unrecognized", "TokenReader can iterate random text with a single-line comment." )
+DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate random text with a single-line comment." )
 {
     Protocol::TokenReader reader("TextCommentSingleLine.proto");
     auto iter1 = reader.begin();
@@ -207,7 +207,7 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/EOF", "TokenReader can iterate random
     verifyEqual(32, iter1.column());
 }
 
-DESIGNER_SCENARIO( TokenReader, "Iteration/Unrecognized", "TokenReader can iterate random text with a multi-line comment." )
+DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate random text with a multi-line comment." )
 {
     Protocol::TokenReader reader("TextCommentMultiLine.proto");
     auto iter1 = reader.begin();
@@ -247,7 +247,7 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/EOF", "TokenReader can iterate random
     verifyEqual(1, iter1.column());
 }
 
-DESIGNER_SCENARIO( TokenReader, "Iteration/Unrecognized", "TokenReader can iterate random text with adjacent comments." )
+DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate random text with adjacent comments." )
 {
     Protocol::TokenReader reader("TextCommentNoSpace.proto");
     auto iter1 = reader.begin();
@@ -274,7 +274,7 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/Unrecognized", "TokenReader can itera
     verifyEqual(1, iter1.column());
 }
 
-DESIGNER_SCENARIO( TokenReader, "Iteration/Unrecognized", "TokenReader can iterate random text with a string." )
+DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate random text with a string." )
 {
     Protocol::TokenReader reader("TextString.proto");
     auto iter1 = reader.begin();
@@ -315,7 +315,7 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/Unrecognized", "TokenReader can itera
     verifyEqual(61, iter1.column());
 }
 
-DESIGNER_SCENARIO( TokenReader, "Iteration/Unrecognized", "TokenReader can iterate random text with multiple delimiters." )
+DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate random text with multiple delimiters." )
 {
     Protocol::TokenReader reader("TextDelimiterMultiple.proto");
     auto iter1 = reader.begin();
@@ -391,7 +391,7 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/Unrecognized", "TokenReader can itera
     verifyEqual(13, iter1.column());
 }
 
-DESIGNER_SCENARIO( TokenReader, "Iteration/Unrecognized", "TokenReader can iterate an empty string." )
+DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate an empty string." )
 {
     Protocol::TokenReader reader("TextStringEmpty.proto");
     auto iter1 = reader.begin();
