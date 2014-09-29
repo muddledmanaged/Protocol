@@ -41,3 +41,31 @@ DESIGNER_SCENARIO( MessageParser, "Operation/Normal", "ProtoParser can parse emp
 
     verifyEqual(1, count);
 }
+
+DESIGNER_SCENARIO( MessageParser, "Operation/Normal", "ProtoParser can parse multiple empty messages." )
+{
+    shared_ptr<Protocol::ProtoModel> model;
+
+    Protocol::ProtoParser parser("MessageMultiple.proto");
+    model = parser.parse();
+
+    int count = 0;
+    auto begin = model->cbeginMessage();
+    auto end = model->cendMessage();
+    while (begin != end)
+    {
+        count++;
+        auto message = *begin;
+        if (count == 1)
+        {
+            verifyEqual("one", message->name());
+        }
+        else
+        {
+            verifyEqual("two", message->name());
+        }
+        begin++;
+    }
+
+    verifyEqual(2, count);
+}
