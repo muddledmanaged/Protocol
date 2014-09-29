@@ -20,7 +20,7 @@ DESIGNER_SCENARIO( MessageParser, "Construction/Normal", "MessageParser can be c
     Protocol::MessageParser parser;
 }
 
-DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "ProtoParser can parse empty message." )
+DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "MessageParser can parse empty message." )
 {
     shared_ptr<Protocol::ProtoModel> model;
     string name = "empty";
@@ -42,7 +42,7 @@ DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "ProtoParser can parse empty
     verifyEqual(1, count);
 }
 
-DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "ProtoParser can parse multiple empty messages." )
+DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "MessageParser can parse multiple empty messages." )
 {
     shared_ptr<Protocol::ProtoModel> model;
 
@@ -63,6 +63,35 @@ DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "ProtoParser can parse multi
         else
         {
             verifyEqual("two", message->name());
+        }
+        verifyEqual("", message->package());
+        begin++;
+    }
+
+    verifyEqual(2, count);
+}
+
+DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "MessageParser can assign current package." )
+{
+    shared_ptr<Protocol::ProtoModel> model;
+
+    Protocol::ProtoParser parser("MessageMultiplePackage.proto");
+    model = parser.parse();
+
+    int count = 0;
+    auto begin = model->cbeginMessage();
+    auto end = model->cendMessage();
+    while (begin != end)
+    {
+        count++;
+        auto message = *begin;
+        if (count == 1)
+        {
+            verifyEqual("abc", message->package());
+        }
+        else
+        {
+            verifyEqual("def", message->package());
         }
         begin++;
     }
