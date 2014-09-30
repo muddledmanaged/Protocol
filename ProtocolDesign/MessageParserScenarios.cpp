@@ -98,3 +98,49 @@ DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "MessageParser can assign cu
 
     verifyEqual(2, count);
 }
+
+DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "MessageParser can parse multiple nested messages." )
+{
+    shared_ptr<Protocol::ProtoModel> model;
+
+    Protocol::ProtoParser parser("MessageNested.proto");
+    model = parser.parse();
+
+    int count1 = 0;
+    auto begin1 = model->cbeginMessage();
+    auto end1 = model->cendMessage();
+    while (begin1 != end1)
+    {
+        count1++;
+        auto message1 = *begin1;
+        verifyEqual("one", message1->name());
+
+        int count2 = 0;
+        auto begin2 = message1->cbeginMessage();
+        auto end2 = message1->cendMessage();
+        while (begin2 != end2)
+        {
+            count2++;
+            auto message2 = *begin2;
+            verifyEqual("two", message2->name());
+
+            int count3 = 0;
+            auto begin3 = message2->cbeginMessage();
+            auto end3 = message2->cendMessage();
+            while (begin3 != end3)
+            {
+                count3++;
+                auto message3 = *begin3;
+                verifyEqual("three", message3->name());
+                begin3++;
+            }
+            verifyEqual(1, count3);
+            
+            begin2++;
+        }
+        verifyEqual(1, count2);
+
+        begin1++;
+    }
+    verifyEqual(1, count1);
+}

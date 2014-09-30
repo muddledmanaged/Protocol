@@ -5,6 +5,7 @@
 //  Created by Wahid Tanner on 9/26/14.
 //
 
+#include "ParserManager.h"
 #include "MessageModel.h"
 #include "MessageParser.h"
 #include "InvalidProtoException.h"
@@ -13,7 +14,8 @@ using namespace std;
 using namespace MuddledManaged;
 
 Protocol::MessageParser::MessageParser ()
-{ }
+{
+}
 
 bool Protocol::MessageParser::parse (TokenReader::iterator current, TokenReader::iterator end, shared_ptr<ProtoModel> model)
 {
@@ -35,12 +37,39 @@ bool Protocol::MessageParser::parse (TokenReader::iterator current, TokenReader:
             throw InvalidProtoException(current.line(), current.column(), "Expected { character.");
         }
 
-        // Move to the closing brace.
+        // Process the contents.
+        ParserManager * parserMgr = ParserManager::instance();
+        bool closingBraceFound = false;
         ++current;
-        if (current == end || *current != "}")
+        while (current != end)
         {
+            if (*current == "}")
+            {
+                closingBraceFound = true;
+                break;
+            }
+
+            bool parserFound = false;
+            for (auto & parser: parserMgr->parsers())
+            {
+                if (parser->parse(current, end, model))
+                {
+                    parserFound = true;
+                    break;
+                }
+            }
+            if (!parserFound)
+            {
+                throw InvalidProtoException(current.line(), current.column(), "Unexpected message content found.");
+            }
+            ++current;
+        }
+        if (!closingBraceFound)
+        {
+            // We reached the end of the file without finding the closing brace.
             throw InvalidProtoException(current.line(), current.column(), "Expected } character or field definition.");
         }
+        model->completeMessage();
 
         return true;
     }

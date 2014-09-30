@@ -8,9 +8,9 @@
 #ifndef Protocol_ProtoModel_h
 #define Protocol_ProtoModel_h
 
-#include <list>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "Packageable.h"
 #include "MessageModel.h"
@@ -22,7 +22,7 @@ namespace MuddledManaged
         class ProtoModel : private Packageable
         {
         public:
-            typedef std::list<std::shared_ptr<MessageModel>> MessageModelCollection;
+            typedef std::vector<std::shared_ptr<MessageModel>> MessageModelCollection;
 
             ProtoModel ();
 
@@ -30,12 +30,14 @@ namespace MuddledManaged
             void setCurrentPackage (const std::string & package);
 
             void addMessage (MessageModelCollection::value_type message);
+            void completeMessage ();
 
             MessageModelCollection::const_iterator cbeginMessage () const;
             MessageModelCollection::const_iterator cendMessage () const;
 
         private:
             MessageModelCollection mMessages;
+            MessageModelCollection mMessageQueue;
         };
 
     } // namespace Protocol

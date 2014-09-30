@@ -30,7 +30,6 @@ namespace MuddledManaged
         private:
             std::shared_ptr<ProtoModel> mModel;
             std::unique_ptr<TokenReader> mReader;
-            std::list<std::unique_ptr<ParserInterface>> mParsers;
         };
 
     } // namespace Protocol

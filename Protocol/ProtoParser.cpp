@@ -9,8 +9,7 @@
 
 #include "ProtoParser.h"
 #include "TokenReader.h"
-#include "PackageParser.h"
-#include "MessageParser.h"
+#include "ParserManager.h"
 
 using namespace std;
 using namespace MuddledManaged;
@@ -18,8 +17,6 @@ using namespace MuddledManaged;
 Protocol::ProtoParser::ProtoParser (const string & protoFileName)
 : mReader(new TokenReader(protoFileName))
 {
-    mParsers.push_back(unique_ptr<ParserInterface>(new PackageParser()));
-    mParsers.push_back(unique_ptr<ParserInterface>(new MessageParser()));
 }
 
 shared_ptr<Protocol::ProtoModel> Protocol::ProtoParser::parse ()
@@ -27,10 +24,11 @@ shared_ptr<Protocol::ProtoModel> Protocol::ProtoParser::parse ()
     mModel.reset(new Protocol::ProtoModel());
     auto current = mReader->begin();
     auto end = mReader->end();
+    ParserManager * parserMgr = ParserManager::instance();
 
     while (current != end)
     {
-        for (auto & parser: mParsers)
+        for (auto & parser: parserMgr->parsers())
         {
             if (parser->parse(current, end, mModel))
             {

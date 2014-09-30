@@ -16,6 +16,8 @@
 		3E9EE99A19D663D000AEF047 /* MessageModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E9EE99819D663D000AEF047 /* MessageModel.cpp */; };
 		3E9EE99B19D663D000AEF047 /* MessageModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E9EE99919D663D000AEF047 /* MessageModel.h */; };
 		3E9EE9A019D6727A00AEF047 /* Packageable.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E9EE99E19D6727A00AEF047 /* Packageable.h */; };
+		3EB0FA2419DA4B66003633C8 /* ParserManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB0FA2219DA4B65003633C8 /* ParserManager.cpp */; };
+		3EB0FA2519DA4B66003633C8 /* ParserManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EB0FA2319DA4B65003633C8 /* ParserManager.h */; };
 		3EDF794B19D7663F00AD2103 /* PackageParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EDF794A19D7663F00AD2103 /* PackageParserScenarios.cpp */; };
 		3EDF794D19D7666800AD2103 /* MessageParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EDF794C19D7666800AD2103 /* MessageParserScenarios.cpp */; };
 		3EE9089419C9339C00C75919 /* ProtoParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EE9089219C9339C00C75919 /* ProtoParser.cpp */; };
@@ -63,6 +65,7 @@
 		3E5B5C4419D8CEB6006EEE50 /* PackageRedefined.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PackageRedefined.proto; sourceTree = "<group>"; };
 		3E5B5C4619D8D0B6006EEE50 /* MessageMultiple.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageMultiple.proto; sourceTree = "<group>"; };
 		3E5B5C4A19D8F0F3006EEE50 /* MessageMultiplePackage.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageMultiplePackage.proto; sourceTree = "<group>"; };
+		3E5B5C4C19D8F79B006EEE50 /* MessageNested.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageNested.proto; sourceTree = "<group>"; };
 		3E9888D119D2945B00505B28 /* ProtoModelScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtoModelScenarios.cpp; sourceTree = "<group>"; };
 		3E9888D319D2971F00505B28 /* ProtoParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtoParserScenarios.cpp; sourceTree = "<group>"; };
 		3E9EE99019D6634F00AEF047 /* PackageParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PackageParser.cpp; sourceTree = "<group>"; };
@@ -78,6 +81,8 @@
 		3EA6589C19D261960057E591 /* TextStringEndingEscape.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextStringEndingEscape.proto; sourceTree = "<group>"; };
 		3EA6589E19D26B220057E591 /* TextStringEndingQuote.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextStringEndingQuote.proto; sourceTree = "<group>"; };
 		3EA658A019D26DAF0057E591 /* TextDelimiterMultiple.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextDelimiterMultiple.proto; sourceTree = "<group>"; };
+		3EB0FA2219DA4B65003633C8 /* ParserManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParserManager.cpp; sourceTree = "<group>"; };
+		3EB0FA2319DA4B65003633C8 /* ParserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParserManager.h; sourceTree = "<group>"; };
 		3ED087ED19C674B5001E4571 /* MessageEverything.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = MessageEverything.proto; sourceTree = "<group>"; };
 		3ED087EE19C67D9C001E4571 /* MessageNamespace.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageNamespace.proto; sourceTree = "<group>"; };
 		3EDF794A19D7663F00AD2103 /* PackageParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PackageParserScenarios.cpp; sourceTree = "<group>"; };
@@ -140,6 +145,8 @@
 				3E1B9A2519C1569F00AAAA0D /* TokenReader.cpp */,
 				3E1B9A2619C1569F00AAAA0D /* TokenReader.h */,
 				3E9EE99C19D6680E00AEF047 /* ParserInterface.h */,
+				3EB0FA2219DA4B65003633C8 /* ParserManager.cpp */,
+				3EB0FA2319DA4B65003633C8 /* ParserManager.h */,
 				3EE9089219C9339C00C75919 /* ProtoParser.cpp */,
 				3EE9089319C9339C00C75919 /* ProtoParser.h */,
 				3EE9089619C9361400C75919 /* ProtoModel.cpp */,
@@ -224,6 +231,7 @@
 				3ED087ED19C674B5001E4571 /* MessageEverything.proto */,
 				3E5B5C4619D8D0B6006EEE50 /* MessageMultiple.proto */,
 				3E5B5C4A19D8F0F3006EEE50 /* MessageMultiplePackage.proto */,
+				3E5B5C4C19D8F79B006EEE50 /* MessageNested.proto */,
 				3E2D269D19C7F0F200BD2302 /* Package.proto */,
 				3E5B5C4419D8CEB6006EEE50 /* PackageRedefined.proto */,
 			);
@@ -239,6 +247,7 @@
 			files = (
 				3E9EE99319D6634F00AEF047 /* PackageParser.h in Headers */,
 				3EE9089519C9339C00C75919 /* ProtoParser.h in Headers */,
+				3EB0FA2519DA4B66003633C8 /* ParserManager.h in Headers */,
 				3E9EE99B19D663D000AEF047 /* MessageModel.h in Headers */,
 				3E9EE9A019D6727A00AEF047 /* Packageable.h in Headers */,
 				3EE9089919C9361400C75919 /* ProtoModel.h in Headers */,
@@ -331,6 +340,7 @@
 				3E9EE99619D6636B00AEF047 /* MessageParser.cpp in Sources */,
 				3EE9089819C9361400C75919 /* ProtoModel.cpp in Sources */,
 				3EE9089419C9339C00C75919 /* ProtoParser.cpp in Sources */,
+				3EB0FA2419DA4B66003633C8 /* ParserManager.cpp in Sources */,
 				3E9EE99A19D663D000AEF047 /* MessageModel.cpp in Sources */,
 				3EF78A6619C53DAF00976ADA /* TokenReader.cpp in Sources */,
 				3E9EE99219D6634F00AEF047 /* PackageParser.cpp in Sources */,
