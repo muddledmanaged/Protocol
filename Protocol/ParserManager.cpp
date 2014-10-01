@@ -6,6 +6,7 @@
 //
 
 #include "ParserManager.h"
+#include "EnumParser.h"
 #include "PackageParser.h"
 #include "MessageParser.h"
 
@@ -16,6 +17,7 @@ Protocol::ParserManager::ParserManager ()
 {
     mParsers.push_back(unique_ptr<ParserInterface>(new PackageParser()));
     mParsers.push_back(unique_ptr<ParserInterface>(new MessageParser()));
+    mParsers.push_back(unique_ptr<ParserInterface>(new EnumParser()));
 }
 
 Protocol::ParserManager::~ParserManager ()

@@ -20,9 +20,24 @@ string Protocol::MessageModel::name () const
     return mName;
 }
 
+void Protocol::MessageModel::addEnum (EnumModelCollection::value_type enumeration)
+{
+    mEnums.push_back(enumeration);
+}
+
 void Protocol::MessageModel::addMessage (MessageModelCollection::value_type message)
 {
     mMessages.push_back(message);
+}
+
+Protocol::MessageModel::EnumModelCollection::const_iterator Protocol::MessageModel::cbeginEnum () const
+{
+    return mEnums.cbegin();
+}
+
+Protocol::MessageModel::EnumModelCollection::const_iterator Protocol::MessageModel::cendEnum () const
+{
+    return mEnums.cend();
 }
 
 Protocol::MessageModel::MessageModelCollection::const_iterator Protocol::MessageModel::cbeginMessage () const

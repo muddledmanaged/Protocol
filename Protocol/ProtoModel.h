@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "Packageable.h"
+#include "EnumModel.h"
 #include "MessageModel.h"
 
 namespace MuddledManaged
@@ -22,6 +23,7 @@ namespace MuddledManaged
         class ProtoModel : private Packageable
         {
         public:
+            typedef std::vector<std::shared_ptr<EnumModel>> EnumModelCollection;
             typedef std::vector<std::shared_ptr<MessageModel>> MessageModelCollection;
 
             ProtoModel ();
@@ -29,13 +31,20 @@ namespace MuddledManaged
             std::string currentPackage () const;
             void setCurrentPackage (const std::string & package);
 
+            void addEnum (EnumModelCollection::value_type enumeration);
+            void completeEnum ();
+
             void addMessage (MessageModelCollection::value_type message);
             void completeMessage ();
+
+            EnumModelCollection::const_iterator cbeginEnum () const;
+            EnumModelCollection::const_iterator cendEnum () const;
 
             MessageModelCollection::const_iterator cbeginMessage () const;
             MessageModelCollection::const_iterator cendMessage () const;
 
         private:
+            EnumModelCollection mEnums;
             MessageModelCollection mMessages;
             MessageModelCollection mMessageQueue;
         };
