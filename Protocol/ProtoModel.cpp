@@ -58,22 +58,12 @@ void Protocol::ProtoModel::completeMessage ()
     mMessageQueue.pop_back();
 }
 
-Protocol::ProtoModel::EnumModelCollection::const_iterator Protocol::ProtoModel::cbeginEnum () const
+const Protocol::ProtoModel::EnumModelCollection * Protocol::ProtoModel::enums () const
 {
-    return mEnums.cbegin();
+    return &mEnums;
 }
 
-Protocol::ProtoModel::EnumModelCollection::const_iterator Protocol::ProtoModel::cendEnum () const
+const Protocol::ProtoModel::MessageModelCollection * Protocol::ProtoModel::messages () const
 {
-    return mEnums.cend();
-}
-
-Protocol::ProtoModel::MessageModelCollection::const_iterator Protocol::ProtoModel::cbeginMessage () const
-{
-    return mMessages.cbegin();
-}
-
-Protocol::ProtoModel::MessageModelCollection::const_iterator Protocol::ProtoModel::cendMessage () const
-{
-    return mMessages.cend();
+    return &mMessages;
 }

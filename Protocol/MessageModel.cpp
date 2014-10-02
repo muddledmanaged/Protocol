@@ -30,22 +30,12 @@ void Protocol::MessageModel::addMessage (MessageModelCollection::value_type mess
     mMessages.push_back(message);
 }
 
-Protocol::MessageModel::EnumModelCollection::const_iterator Protocol::MessageModel::cbeginEnum () const
+const Protocol::MessageModel::EnumModelCollection * Protocol::MessageModel::enums () const
 {
-    return mEnums.cbegin();
+    return &mEnums;
 }
 
-Protocol::MessageModel::EnumModelCollection::const_iterator Protocol::MessageModel::cendEnum () const
+const Protocol::MessageModel::MessageModelCollection * Protocol::MessageModel::messages () const
 {
-    return mEnums.cend();
-}
-
-Protocol::MessageModel::MessageModelCollection::const_iterator Protocol::MessageModel::cbeginMessage () const
-{
-    return mMessages.cbegin();
-}
-
-Protocol::MessageModel::MessageModelCollection::const_iterator Protocol::MessageModel::cendMessage () const
-{
-    return mMessages.cend();
+    return &mMessages;
 }

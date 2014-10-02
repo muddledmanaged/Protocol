@@ -29,8 +29,8 @@ DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "MessageParser can parse emp
     model = parser.parse();
 
     int count = 0;
-    auto begin = model->cbeginMessage();
-    auto end = model->cendMessage();
+    auto begin = model->messages()->cbegin();
+    auto end = model->messages()->cend();
     while (begin != end)
     {
         count++;
@@ -50,8 +50,8 @@ DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "MessageParser can parse mul
     model = parser.parse();
 
     int count = 0;
-    auto begin = model->cbeginMessage();
-    auto end = model->cendMessage();
+    auto begin = model->messages()->cbegin();
+    auto end = model->messages()->cend();
     while (begin != end)
     {
         count++;
@@ -79,8 +79,8 @@ DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "MessageParser can assign cu
     model = parser.parse();
 
     int count = 0;
-    auto begin = model->cbeginMessage();
-    auto end = model->cendMessage();
+    auto begin = model->messages()->cbegin();
+    auto end = model->messages()->cend();
     while (begin != end)
     {
         count++;
@@ -107,8 +107,8 @@ DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "MessageParser can parse mul
     model = parser.parse();
 
     int count1 = 0;
-    auto begin1 = model->cbeginMessage();
-    auto end1 = model->cendMessage();
+    auto begin1 = model->messages()->cbegin();
+    auto end1 = model->messages()->cend();
     while (begin1 != end1)
     {
         count1++;
@@ -116,8 +116,8 @@ DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "MessageParser can parse mul
         verifyEqual("one", message1->name());
 
         int count2 = 0;
-        auto begin2 = message1->cbeginMessage();
-        auto end2 = message1->cendMessage();
+        auto begin2 = message1->messages()->cbegin();
+        auto end2 = message1->messages()->cend();
         while (begin2 != end2)
         {
             count2++;
@@ -125,8 +125,8 @@ DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "MessageParser can parse mul
             verifyEqual("two", message2->name());
 
             int count3 = 0;
-            auto begin3 = message2->cbeginMessage();
-            auto end3 = message2->cendMessage();
+            auto begin3 = message2->messages()->cbegin();
+            auto end3 = message2->messages()->cend();
             while (begin3 != end3)
             {
                 count3++;

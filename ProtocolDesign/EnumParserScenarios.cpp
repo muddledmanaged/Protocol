@@ -29,8 +29,8 @@ DESIGNER_SCENARIO( EnumParser, "Parsing/Normal", "EnumParser can parse empty enu
     model = parser.parse();
 
     int count = 0;
-    auto begin = model->cbeginEnum();
-    auto end = model->cendEnum();
+    auto begin = model->enums()->cbegin();
+    auto end = model->enums()->cend();
     while (begin != end)
     {
         count++;
@@ -50,8 +50,8 @@ DESIGNER_SCENARIO( EnumParser, "Parsing/Normal", "EnumParser can parse multiple 
     model = parser.parse();
 
     int count = 0;
-    auto begin = model->cbeginEnum();
-    auto end = model->cendEnum();
+    auto begin = model->enums()->cbegin();
+    auto end = model->enums()->cend();
     while (begin != end)
     {
         count++;
@@ -79,8 +79,8 @@ DESIGNER_SCENARIO( EnumParser, "Parsing/Normal", "EnumParser can assign current 
     model = parser.parse();
 
     int count = 0;
-    auto begin = model->cbeginEnum();
-    auto end = model->cendEnum();
+    auto begin = model->enums()->cbegin();
+    auto end = model->enums()->cend();
     while (begin != end)
     {
         count++;

@@ -37,11 +37,9 @@ namespace MuddledManaged
             void addMessage (MessageModelCollection::value_type message);
             void completeMessage ();
 
-            EnumModelCollection::const_iterator cbeginEnum () const;
-            EnumModelCollection::const_iterator cendEnum () const;
+            const EnumModelCollection * enums () const;
 
-            MessageModelCollection::const_iterator cbeginMessage () const;
-            MessageModelCollection::const_iterator cendMessage () const;
+            const MessageModelCollection * messages () const;
 
         private:
             EnumModelCollection mEnums;
