@@ -105,6 +105,7 @@
 		3EE9089319C9339C00C75919 /* ProtoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtoParser.h; sourceTree = "<group>"; };
 		3EE9089619C9361400C75919 /* ProtoModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtoModel.cpp; sourceTree = "<group>"; };
 		3EE9089719C9361400C75919 /* ProtoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtoModel.h; sourceTree = "<group>"; };
+		3EEDCF0419DE3D6700D79A30 /* EnumMultipleMessage.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EnumMultipleMessage.proto; sourceTree = "<group>"; };
 		3EF78A3119C4EDB100976ADA /* Designer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Designer.h; sourceTree = "<group>"; };
 		3EF78A4619C5321D00976ADA /* ProtocolDesign */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ProtocolDesign; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EF78A4819C5321E00976ADA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -254,6 +255,7 @@
 				3E5B5C4419D8CEB6006EEE50 /* PackageRedefined.proto */,
 				3E3051D419DCEB9D008245F5 /* Enum.proto */,
 				3E3051D919DCEC19008245F5 /* EnumMultiple.proto */,
+				3EEDCF0419DE3D6700D79A30 /* EnumMultipleMessage.proto */,
 				3E3051DA19DCEC38008245F5 /* EnumMultiplePackage.proto */,
 			);
 			path = Messages;

@@ -38,7 +38,6 @@ DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "MessageParser can parse emp
         verifyEqual(name, message->name());
         begin++;
     }
-
     verifyEqual(1, count);
 }
 
@@ -67,7 +66,6 @@ DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "MessageParser can parse mul
         verifyEqual("", message->package());
         begin++;
     }
-
     verifyEqual(2, count);
 }
 
@@ -95,7 +93,6 @@ DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "MessageParser can assign cu
         }
         begin++;
     }
-
     verifyEqual(2, count);
 }
 
@@ -135,11 +132,9 @@ DESIGNER_SCENARIO( MessageParser, "Parsing/Normal", "MessageParser can parse mul
                 begin3++;
             }
             verifyEqual(1, count3);
-            
             begin2++;
         }
         verifyEqual(1, count2);
-
         begin1++;
     }
     verifyEqual(1, count1);
