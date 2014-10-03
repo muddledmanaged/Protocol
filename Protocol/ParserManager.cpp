@@ -35,7 +35,7 @@ Protocol::ParserManager * Protocol::ParserManager::instance ()
     return singleton;
 }
 
-const std::list<std::shared_ptr<Protocol::ParserInterface>> & Protocol::ParserManager::parsers () const
+const Protocol::ParserManager::ParserCollection * Protocol::ParserManager::parsers () const
 {
-    return mParsers;
+    return &mParsers;
 }

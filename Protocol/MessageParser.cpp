@@ -50,7 +50,7 @@ bool Protocol::MessageParser::parse (TokenReader::iterator current, TokenReader:
             }
 
             bool parserFound = false;
-            for (auto & parser: parserMgr->parsers())
+            for (auto & parser: *parserMgr->parsers())
             {
                 if (parser->parse(current, end, model))
                 {

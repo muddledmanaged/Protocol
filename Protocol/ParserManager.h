@@ -9,7 +9,7 @@
 #define Protocol_ParserManager_h
 
 #include <memory>
-#include <list>
+#include <vector>
 
 #include "ParserInterface.h"
 
@@ -20,18 +20,20 @@ namespace MuddledManaged
         class ParserManager
         {
         public:
+            typedef std::vector<std::shared_ptr<ParserInterface>> ParserCollection;
+
             ~ParserManager ();
 
             static ParserManager * instance ();
 
-            const std::list<std::shared_ptr<ParserInterface>> & parsers () const;
+            const ParserCollection * parsers () const;
 
         private:
             ParserManager ();
             ParserManager (const ParserManager & src) = delete;
             ParserManager & operator = (const ParserManager & rhs) = delete;
 
-            std::list<std::shared_ptr<ParserInterface>> mParsers;
+            ParserCollection mParsers;
         };
 
     } // namespace Protocol

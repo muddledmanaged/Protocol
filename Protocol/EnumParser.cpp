@@ -50,7 +50,7 @@ bool Protocol::EnumParser::parse (TokenReader::iterator current, TokenReader::it
             }
 
             bool parserFound = false;
-            for (auto & parser: parserMgr->parsers())
+            for (auto & parser: *parserMgr->parsers())
             {
                 if (parser->parse(current, end, model))
                 {
