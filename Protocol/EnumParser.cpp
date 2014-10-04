@@ -28,7 +28,7 @@ bool Protocol::EnumParser::parse (TokenReader::iterator current, TokenReader::it
             throw InvalidProtoException(current.line(), current.column(), "Expected enum name.");
         }
         shared_ptr<EnumModel> enumeration(new EnumModel(*current, model->currentPackage()));
-        model->addEnum(enumeration);
+        model->addEnum(current, enumeration);
 
         // Move to the opening brace.
         ++current;

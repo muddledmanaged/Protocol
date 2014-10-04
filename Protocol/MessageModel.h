@@ -14,6 +14,7 @@
 
 #include "Packageable.h"
 #include "EnumModel.h"
+#include "MessageFieldModel.h"
 
 namespace MuddledManaged
 {
@@ -22,6 +23,7 @@ namespace MuddledManaged
         class MessageModel : public Packageable
         {
         public:
+            typedef std::vector<std::shared_ptr<MessageFieldModel>> MessageFieldModelCollection;
             typedef std::vector<std::shared_ptr<EnumModel>> EnumModelCollection;
             typedef std::vector<std::shared_ptr<MessageModel>> MessageModelCollection;
 
@@ -29,9 +31,13 @@ namespace MuddledManaged
 
             std::string name () const;
 
+            void addField (MessageFieldModelCollection::value_type field);
+
             void addEnum (EnumModelCollection::value_type enumeration);
 
             void addMessage (MessageModelCollection::value_type message);
+
+            const MessageFieldModelCollection * fields () const;
 
             const EnumModelCollection * enums () const;
 
@@ -39,6 +45,7 @@ namespace MuddledManaged
 
         private:
             std::string mName;
+            MessageFieldModelCollection mFields;
             EnumModelCollection mEnums;
             MessageModelCollection mMessages;
         };

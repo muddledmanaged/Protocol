@@ -20,6 +20,11 @@ string Protocol::MessageModel::name () const
     return mName;
 }
 
+void Protocol::MessageModel::addField (MessageFieldModelCollection::value_type field)
+{
+    mFields.push_back(field);
+}
+
 void Protocol::MessageModel::addEnum (EnumModelCollection::value_type enumeration)
 {
     mEnums.push_back(enumeration);
@@ -28,6 +33,11 @@ void Protocol::MessageModel::addEnum (EnumModelCollection::value_type enumeratio
 void Protocol::MessageModel::addMessage (MessageModelCollection::value_type message)
 {
     mMessages.push_back(message);
+}
+
+const Protocol::MessageModel::MessageFieldModelCollection * Protocol::MessageModel::fields () const
+{
+    return &mFields;
 }
 
 const Protocol::MessageModel::EnumModelCollection * Protocol::MessageModel::enums () const

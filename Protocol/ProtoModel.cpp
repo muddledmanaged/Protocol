@@ -6,6 +6,7 @@
 //
 
 #include "ProtoModel.h"
+#include "InvalidProtoException.h"
 
 using namespace std;
 using namespace MuddledManaged;
@@ -24,7 +25,19 @@ void Protocol::ProtoModel::setCurrentPackage (const string & package)
     setPackage(package);
 }
 
-void Protocol::ProtoModel::addEnum (EnumModelCollection::value_type enumeration)
+void Protocol::ProtoModel::addField (TokenReader::iterator current, MessageFieldModelCollection::value_type field)
+{
+    if (mMessageQueue.empty())
+    {
+        throw InvalidProtoException(current.line(), current.column(), "Required message not found.");
+    }
+    else
+    {
+        mMessageQueue.back()->addField(field);
+    }
+}
+
+void Protocol::ProtoModel::addEnum (TokenReader::iterator current, EnumModelCollection::value_type enumeration)
 {
     if (mMessageQueue.empty())
     {
@@ -40,7 +53,7 @@ void Protocol::ProtoModel::completeEnum ()
 {
 }
 
-void Protocol::ProtoModel::addMessage (MessageModelCollection::value_type message)
+void Protocol::ProtoModel::addMessage (TokenReader::iterator current, MessageModelCollection::value_type message)
 {
     if (mMessageQueue.empty())
     {
