@@ -1,0 +1,4 @@
+message messageOne
+{
+    required string sOne = 1;
+}

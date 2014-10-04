@@ -9,6 +9,7 @@
 #include "EnumParser.h"
 #include "PackageParser.h"
 #include "MessageParser.h"
+#include "MessageFieldParser.h"
 
 using namespace std;
 using namespace MuddledManaged;
@@ -18,6 +19,7 @@ Protocol::ParserManager::ParserManager ()
     mParsers.push_back(unique_ptr<ParserInterface>(new PackageParser()));
     mParsers.push_back(unique_ptr<ParserInterface>(new MessageParser()));
     mParsers.push_back(unique_ptr<ParserInterface>(new EnumParser()));
+    mParsers.push_back(unique_ptr<ParserInterface>(new MessageFieldParser()));
 }
 
 Protocol::ParserManager::~ParserManager ()

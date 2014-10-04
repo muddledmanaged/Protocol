@@ -12,6 +12,7 @@
 		3E37A5D019DF916600BED294 /* MessageFieldModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E37A5CE19DF916600BED294 /* MessageFieldModel.h */; };
 		3E37A5D319DF918200BED294 /* MessageFieldParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E37A5D119DF918200BED294 /* MessageFieldParser.cpp */; };
 		3E37A5D419DF918200BED294 /* MessageFieldParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E37A5D219DF918200BED294 /* MessageFieldParser.h */; };
+		3E37A5D919DFA3DE00BED294 /* MessageFieldParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E37A5D819DFA3DE00BED294 /* MessageFieldParserScenarios.cpp */; };
 		3E9888D219D2945B00505B28 /* ProtoModelScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E9888D119D2945B00505B28 /* ProtoModelScenarios.cpp */; };
 		3E9888D419D2971F00505B28 /* ProtoParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E9888D319D2971F00505B28 /* ProtoParserScenarios.cpp */; };
 		3E9EE99219D6634F00AEF047 /* PackageParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E9EE99019D6634F00AEF047 /* PackageParser.cpp */; };
@@ -79,6 +80,9 @@
 		3E37A5CE19DF916600BED294 /* MessageFieldModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageFieldModel.h; sourceTree = "<group>"; };
 		3E37A5D119DF918200BED294 /* MessageFieldParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFieldParser.cpp; sourceTree = "<group>"; };
 		3E37A5D219DF918200BED294 /* MessageFieldParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageFieldParser.h; sourceTree = "<group>"; };
+		3E37A5D519DFA26E00BED294 /* MessageField.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageField.proto; sourceTree = "<group>"; };
+		3E37A5D719DFA29700BED294 /* MessageFieldMultiple.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageFieldMultiple.proto; sourceTree = "<group>"; };
+		3E37A5D819DFA3DE00BED294 /* MessageFieldParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFieldParserScenarios.cpp; sourceTree = "<group>"; };
 		3E5B5C4419D8CEB6006EEE50 /* PackageRedefined.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PackageRedefined.proto; sourceTree = "<group>"; };
 		3E5B5C4619D8D0B6006EEE50 /* MessageMultiple.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageMultiple.proto; sourceTree = "<group>"; };
 		3E5B5C4A19D8F0F3006EEE50 /* MessageMultiplePackage.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageMultiplePackage.proto; sourceTree = "<group>"; };
@@ -227,6 +231,7 @@
 				3E9888D319D2971F00505B28 /* ProtoParserScenarios.cpp */,
 				3EDF794A19D7663F00AD2103 /* PackageParserScenarios.cpp */,
 				3EDF794C19D7666800AD2103 /* MessageParserScenarios.cpp */,
+				3E37A5D819DFA3DE00BED294 /* MessageFieldParserScenarios.cpp */,
 				3E3051DB19DCED6A008245F5 /* EnumParserScenarios.cpp */,
 			);
 			path = ProtocolDesign;
@@ -269,6 +274,8 @@
 				3E3051D919DCEC19008245F5 /* EnumMultiple.proto */,
 				3EEDCF0419DE3D6700D79A30 /* EnumMultipleMessage.proto */,
 				3E3051DA19DCEC38008245F5 /* EnumMultiplePackage.proto */,
+				3E37A5D519DFA26E00BED294 /* MessageField.proto */,
+				3E37A5D719DFA29700BED294 /* MessageFieldMultiple.proto */,
 			);
 			path = Messages;
 			sourceTree = "<group>";
@@ -368,6 +375,7 @@
 				3EDF794B19D7663F00AD2103 /* PackageParserScenarios.cpp in Sources */,
 				3EDF794D19D7666800AD2103 /* MessageParserScenarios.cpp in Sources */,
 				3E9888D419D2971F00505B28 /* ProtoParserScenarios.cpp in Sources */,
+				3E37A5D919DFA3DE00BED294 /* MessageFieldParserScenarios.cpp in Sources */,
 				3EF78A5419C5396300976ADA /* TokenReaderScenarios.cpp in Sources */,
 				3EF78A4919C5321E00976ADA /* main.cpp in Sources */,
 			);

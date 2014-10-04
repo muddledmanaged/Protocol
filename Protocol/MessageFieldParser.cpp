@@ -72,7 +72,7 @@ bool Protocol::MessageFieldParser::parse (TokenReader::iterator current, TokenRe
         unsigned int index = stoi(*current);
 
         shared_ptr<MessageFieldModel> field(new MessageFieldModel(requiredness, fieldType, name, index));
-        model->addField(field);
+        model->addField(current, field);
 
         // Move to the semicolon.
         ++current;
