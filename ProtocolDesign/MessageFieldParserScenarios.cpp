@@ -24,6 +24,58 @@ DESIGNER_SCENARIO( MessageFieldParser, "Parsing/Normal", "MessageFieldParser can
 {
     shared_ptr<Protocol::ProtoModel> model;
 
+    Protocol::ProtoParser parser("MessageField.proto");
+    model = parser.parse();
+
+    int messageCount = 0;
+    auto begin1 = model->messages()->cbegin();
+    auto end1 = model->messages()->cend();
+    while (begin1 != end1)
+    {
+        messageCount++;
+        auto message = *begin1;
+        verifyEqual("messageOne", message->name());
+
+        int fieldCount = 0;
+        auto begin2 = message->fields()->cbegin();
+        auto end2 = message->fields()->cend();
+        while (begin2 != end2)
+        {
+            fieldCount++;
+            auto field = *begin2;
+            if (fieldCount == 1)
+            {
+                verifyTrue(Protocol::MessageFieldModel::Requiredness::required == field->requiredness());
+                verifyEqual("string", field->fieldType());
+                verifyEqual("sOne", field->name());
+                verifyEqual(1, field->index());
+            }
+            else if (fieldCount == 2)
+            {
+                verifyTrue(Protocol::MessageFieldModel::Requiredness::optional == field->requiredness());
+                verifyEqual("bool", field->fieldType());
+                verifyEqual("bOne", field->name());
+                verifyEqual(2, field->index());
+            }
+            else if (fieldCount == 3)
+            {
+                verifyTrue(Protocol::MessageFieldModel::Requiredness::repeated == field->requiredness());
+                verifyEqual("int32", field->fieldType());
+                verifyEqual("iOne", field->name());
+                verifyEqual(3, field->index());
+            }
+            begin2++;
+        }
+        verifyEqual(3, fieldCount);
+        begin1++;
+    }
+    verifyEqual(1, messageCount);
+}
+
+DESIGNER_SCENARIO( MessageFieldParser, "Parsing/Normal", "MessageFieldParser can parse multiple nested messages with fields." )
+{
+    shared_ptr<Protocol::ProtoModel> model;
+
     Protocol::ProtoParser parser("MessageFieldMultiple.proto");
     model = parser.parse();
 
@@ -81,48 +133,4 @@ DESIGNER_SCENARIO( MessageFieldParser, "Parsing/Normal", "MessageFieldParser can
         begin1++;
     }
     verifyEqual(1, message1Count);
-}
-
-DESIGNER_SCENARIO( MessageFieldParser, "Parsing/Normal", "MessageFieldParser can parse multiple nested messages with fields." )
-{
-    shared_ptr<Protocol::ProtoModel> model;
-
-    Protocol::ProtoParser parser("MessageNested.proto");
-    model = parser.parse();
-
-    int count1 = 0;
-    auto begin1 = model->messages()->cbegin();
-    auto end1 = model->messages()->cend();
-    while (begin1 != end1)
-    {
-        count1++;
-        auto message1 = *begin1;
-        verifyEqual("one", message1->name());
-
-        int count2 = 0;
-        auto begin2 = message1->messages()->cbegin();
-        auto end2 = message1->messages()->cend();
-        while (begin2 != end2)
-        {
-            count2++;
-            auto message2 = *begin2;
-            verifyEqual("two", message2->name());
-
-            int count3 = 0;
-            auto begin3 = message2->messages()->cbegin();
-            auto end3 = message2->messages()->cend();
-            while (begin3 != end3)
-            {
-                count3++;
-                auto message3 = *begin3;
-                verifyEqual("three", message3->name());
-                begin3++;
-            }
-            verifyEqual(1, count3);
-            begin2++;
-        }
-        verifyEqual(1, count2);
-        begin1++;
-    }
-    verifyEqual(1, count1);
 }
