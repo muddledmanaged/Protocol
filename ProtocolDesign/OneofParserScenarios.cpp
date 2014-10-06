@@ -57,21 +57,24 @@ DESIGNER_SCENARIO( OneofParser, "Parsing/Normal", "OneofParser can parse simple 
                     verifyTrue(Protocol::MessageFieldModel::Requiredness::optional == field->requiredness());
                     verifyEqual("string", field->fieldType());
                     verifyEqual("sOne", field->name());
-                    verifyEqual(1, field->index());
+                    unsigned int expectedIndex = 1;
+                    verifyEqual(expectedIndex, field->index());
                 }
                 else if (fieldCount == 2)
                 {
                     verifyTrue(Protocol::MessageFieldModel::Requiredness::optional == field->requiredness());
                     verifyEqual("bool", field->fieldType());
                     verifyEqual("bOne", field->name());
-                    verifyEqual(2, field->index());
+                    unsigned int expectedIndex = 2;
+                    verifyEqual(expectedIndex, field->index());
                 }
                 else if (fieldCount == 3)
                 {
                     verifyTrue(Protocol::MessageFieldModel::Requiredness::optional == field->requiredness());
                     verifyEqual("int32", field->fieldType());
                     verifyEqual("iOne", field->name());
-                    verifyEqual(3, field->index());
+                    unsigned int expectedIndex = 3;
+                    verifyEqual(expectedIndex, field->index());
                 }
                 begin3++;
             }
@@ -98,8 +101,9 @@ DESIGNER_SCENARIO( OneofParser, "Parsing/Normal", "OneofParser can parse multipl
     {
         message1Count++;
         auto message1 = *begin1;
+        unsigned long expectedSize = 1;
         verifyEqual("messageOne", message1->name());
-        verifyEqual(1, message1->fields()->size());
+        verifyEqual(expectedSize, message1->fields()->size());
 
         int oneof1Count = 0;
         auto begin2 = message1->oneofs()->cbegin();
@@ -123,14 +127,16 @@ DESIGNER_SCENARIO( OneofParser, "Parsing/Normal", "OneofParser can parse multipl
                         verifyTrue(Protocol::MessageFieldModel::Requiredness::optional == field->requiredness());
                         verifyEqual("string", field->fieldType());
                         verifyEqual("sOne", field->name());
-                        verifyEqual(1, field->index());
+                        unsigned int expectedIndex = 1;
+                        verifyEqual(expectedIndex, field->index());
                     }
                     else if (fieldCount == 2)
                     {
                         verifyTrue(Protocol::MessageFieldModel::Requiredness::optional == field->requiredness());
                         verifyEqual("bool", field->fieldType());
                         verifyEqual("bOne", field->name());
-                        verifyEqual(2, field->index());
+                        unsigned int expectedIndex = 2;
+                        verifyEqual(expectedIndex, field->index());
                     }
                 }
                 else if (oneof1Count == 2)
@@ -140,14 +146,16 @@ DESIGNER_SCENARIO( OneofParser, "Parsing/Normal", "OneofParser can parse multipl
                         verifyTrue(Protocol::MessageFieldModel::Requiredness::optional == field->requiredness());
                         verifyEqual("bool", field->fieldType());
                         verifyEqual("bThree", field->name());
-                        verifyEqual(3, field->index());
+                        unsigned int expectedIndex = 3;
+                        verifyEqual(expectedIndex, field->index());
                     }
                     else if (fieldCount == 2)
                     {
                         verifyTrue(Protocol::MessageFieldModel::Requiredness::optional == field->requiredness());
                         verifyEqual("int32", field->fieldType());
                         verifyEqual("iThree", field->name());
-                        verifyEqual(4, field->index());
+                        unsigned int expectedIndex = 4;
+                        verifyEqual(expectedIndex, field->index());
                     }
                 }
                 begin3++;
@@ -164,7 +172,7 @@ DESIGNER_SCENARIO( OneofParser, "Parsing/Normal", "OneofParser can parse multipl
             message2Count++;
             auto message2 = *begin4;
             verifyEqual("messageTwo", message2->name());
-            verifyEqual(1, message2->fields()->size());
+            verifyEqual(expectedSize, message2->fields()->size());
 
             int oneof2Count = 0;
             auto begin5 = message2->oneofs()->cbegin();
@@ -186,14 +194,16 @@ DESIGNER_SCENARIO( OneofParser, "Parsing/Normal", "OneofParser can parse multipl
                         verifyTrue(Protocol::MessageFieldModel::Requiredness::optional == field->requiredness());
                         verifyEqual("string", field->fieldType());
                         verifyEqual("sTwo", field->name());
-                        verifyEqual(1, field->index());
+                        unsigned int expectedIndex = 1;
+                        verifyEqual(expectedIndex, field->index());
                     }
                     else if (fieldCount == 2)
                     {
                         verifyTrue(Protocol::MessageFieldModel::Requiredness::optional == field->requiredness());
                         verifyEqual("int32", field->fieldType());
                         verifyEqual("iTwo", field->name());
-                        verifyEqual(2, field->index());
+                        unsigned int expectedIndex = 2;
+                        verifyEqual(expectedIndex, field->index());
                     }
                     begin6++;
                 }

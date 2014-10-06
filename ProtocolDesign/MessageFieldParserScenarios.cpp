@@ -48,21 +48,24 @@ DESIGNER_SCENARIO( MessageFieldParser, "Parsing/Normal", "MessageFieldParser can
                 verifyTrue(Protocol::MessageFieldModel::Requiredness::required == field->requiredness());
                 verifyEqual("string", field->fieldType());
                 verifyEqual("sOne", field->name());
-                verifyEqual(1, field->index());
+                unsigned int expectedIndex = 1;
+                verifyEqual(expectedIndex, field->index());
             }
             else if (fieldCount == 2)
             {
                 verifyTrue(Protocol::MessageFieldModel::Requiredness::optional == field->requiredness());
                 verifyEqual("bool", field->fieldType());
                 verifyEqual("bOne", field->name());
-                verifyEqual(2, field->index());
+                unsigned int expectedIndex = 2;
+                verifyEqual(expectedIndex, field->index());
             }
             else if (fieldCount == 3)
             {
                 verifyTrue(Protocol::MessageFieldModel::Requiredness::repeated == field->requiredness());
                 verifyEqual("int32", field->fieldType());
                 verifyEqual("iOne", field->name());
-                verifyEqual(3, field->index());
+                unsigned int expectedIndex = 3;
+                verifyEqual(expectedIndex, field->index());
             }
             begin2++;
         }
