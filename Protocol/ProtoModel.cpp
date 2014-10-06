@@ -12,6 +12,7 @@ using namespace std;
 using namespace MuddledManaged;
 
 Protocol::ProtoModel::ProtoModel ()
+: mCurrentOneof(nullptr)
 {
 }
 
@@ -33,7 +34,14 @@ void Protocol::ProtoModel::addField (TokenReader::iterator current, MessageField
     }
     else
     {
-        mMessageQueue.back()->addField(field);
+        if (mCurrentOneof != nullptr)
+        {
+            mCurrentOneof->addField(field);
+        }
+        else
+        {
+            mMessageQueue.back()->addField(field);
+        }
     }
 }
 
@@ -80,11 +88,13 @@ void Protocol::ProtoModel::addOneof (TokenReader::iterator current, OneofModelCo
     else
     {
         mMessageQueue.back()->addOneof(oneof);
+        mCurrentOneof = oneof;
     }
 }
 
 void Protocol::ProtoModel::completeOneof ()
 {
+    mCurrentOneof = nullptr;
 }
 
 const Protocol::ProtoModel::EnumModelCollection * Protocol::ProtoModel::enums () const

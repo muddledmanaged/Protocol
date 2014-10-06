@@ -54,6 +54,7 @@ namespace MuddledManaged
             EnumModelCollection mEnums;
             MessageModelCollection mMessages;
             MessageModelCollection mMessageQueue;
+            OneofModelCollection::value_type mCurrentOneof;
         };
 
     } // namespace Protocol
