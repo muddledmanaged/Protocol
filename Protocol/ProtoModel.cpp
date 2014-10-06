@@ -71,6 +71,22 @@ void Protocol::ProtoModel::completeMessage ()
     mMessageQueue.pop_back();
 }
 
+void Protocol::ProtoModel::addOneof (TokenReader::iterator current, OneofModelCollection::value_type oneof)
+{
+    if (mMessageQueue.empty())
+    {
+        throw InvalidProtoException(current.line(), current.column(), "Required message not found.");
+    }
+    else
+    {
+        mMessageQueue.back()->addOneof(oneof);
+    }
+}
+
+void Protocol::ProtoModel::completeOneof ()
+{
+}
+
 const Protocol::ProtoModel::EnumModelCollection * Protocol::ProtoModel::enums () const
 {
     return &mEnums;

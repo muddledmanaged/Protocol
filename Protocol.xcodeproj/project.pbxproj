@@ -22,6 +22,12 @@
 		3E9EE99A19D663D000AEF047 /* MessageModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E9EE99819D663D000AEF047 /* MessageModel.cpp */; };
 		3E9EE99B19D663D000AEF047 /* MessageModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E9EE99919D663D000AEF047 /* MessageModel.h */; };
 		3E9EE9A019D6727A00AEF047 /* Packageable.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E9EE99E19D6727A00AEF047 /* Packageable.h */; };
+		3EB0EBCA19E225CD0097929D /* OneofModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB0EBC819E225CD0097929D /* OneofModel.cpp */; };
+		3EB0EBCB19E225CD0097929D /* OneofModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EB0EBC919E225CD0097929D /* OneofModel.h */; };
+		3EB0EBCE19E225F40097929D /* OneofParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB0EBCC19E225F40097929D /* OneofParser.cpp */; };
+		3EB0EBCF19E225F40097929D /* OneofParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EB0EBCD19E225F40097929D /* OneofParser.h */; };
+		3EB0EBD219E235810097929D /* OneofFieldParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB0EBD019E235810097929D /* OneofFieldParser.cpp */; };
+		3EB0EBD319E235810097929D /* OneofFieldParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EB0EBD119E235810097929D /* OneofFieldParser.h */; };
 		3EB0FA2419DA4B66003633C8 /* ParserManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB0FA2219DA4B65003633C8 /* ParserManager.cpp */; };
 		3EB0FA2519DA4B66003633C8 /* ParserManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EB0FA2319DA4B65003633C8 /* ParserManager.h */; };
 		3ECE389D19DBAA3100A042B4 /* EnumParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ECE389B19DBAA3100A042B4 /* EnumParser.cpp */; };
@@ -102,6 +108,12 @@
 		3EA6589C19D261960057E591 /* TextStringEndingEscape.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextStringEndingEscape.proto; sourceTree = "<group>"; };
 		3EA6589E19D26B220057E591 /* TextStringEndingQuote.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextStringEndingQuote.proto; sourceTree = "<group>"; };
 		3EA658A019D26DAF0057E591 /* TextDelimiterMultiple.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextDelimiterMultiple.proto; sourceTree = "<group>"; };
+		3EB0EBC819E225CD0097929D /* OneofModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OneofModel.cpp; sourceTree = "<group>"; };
+		3EB0EBC919E225CD0097929D /* OneofModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OneofModel.h; sourceTree = "<group>"; };
+		3EB0EBCC19E225F40097929D /* OneofParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OneofParser.cpp; sourceTree = "<group>"; };
+		3EB0EBCD19E225F40097929D /* OneofParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OneofParser.h; sourceTree = "<group>"; };
+		3EB0EBD019E235810097929D /* OneofFieldParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OneofFieldParser.cpp; sourceTree = "<group>"; };
+		3EB0EBD119E235810097929D /* OneofFieldParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OneofFieldParser.h; sourceTree = "<group>"; };
 		3EB0FA2219DA4B65003633C8 /* ParserManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParserManager.cpp; sourceTree = "<group>"; };
 		3EB0FA2319DA4B65003633C8 /* ParserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParserManager.h; sourceTree = "<group>"; };
 		3ECE389B19DBAA3100A042B4 /* EnumParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnumParser.cpp; sourceTree = "<group>"; };
@@ -168,31 +180,37 @@
 		3E606E6419BFF9C6009692B8 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
-				3E1B9A2519C1569F00AAAA0D /* TokenReader.cpp */,
-				3E1B9A2619C1569F00AAAA0D /* TokenReader.h */,
+				3ECE389F19DBAAEF00A042B4 /* EnumModel.cpp */,
+				3ECE38A019DBAAEF00A042B4 /* EnumModel.h */,
+				3ECE389B19DBAA3100A042B4 /* EnumParser.cpp */,
+				3ECE389C19DBAA3100A042B4 /* EnumParser.h */,
+				3EDF794E19D79E7200AD2103 /* InvalidProtoException.h */,
+				3E9EE99819D663D000AEF047 /* MessageModel.cpp */,
+				3E9EE99919D663D000AEF047 /* MessageModel.h */,
+				3E9EE99419D6636B00AEF047 /* MessageParser.cpp */,
+				3E9EE99519D6636B00AEF047 /* MessageParser.h */,
+				3E37A5CD19DF916600BED294 /* MessageFieldModel.cpp */,
+				3E37A5CE19DF916600BED294 /* MessageFieldModel.h */,
+				3E37A5D119DF918200BED294 /* MessageFieldParser.cpp */,
+				3E37A5D219DF918200BED294 /* MessageFieldParser.h */,
+				3EB0EBC819E225CD0097929D /* OneofModel.cpp */,
+				3EB0EBC919E225CD0097929D /* OneofModel.h */,
+				3EB0EBCC19E225F40097929D /* OneofParser.cpp */,
+				3EB0EBCD19E225F40097929D /* OneofParser.h */,
+				3EB0EBD019E235810097929D /* OneofFieldParser.cpp */,
+				3EB0EBD119E235810097929D /* OneofFieldParser.h */,
+				3E9EE99E19D6727A00AEF047 /* Packageable.h */,
+				3E9EE99019D6634F00AEF047 /* PackageParser.cpp */,
+				3E9EE99119D6634F00AEF047 /* PackageParser.h */,
 				3E9EE99C19D6680E00AEF047 /* ParserInterface.h */,
 				3EB0FA2219DA4B65003633C8 /* ParserManager.cpp */,
 				3EB0FA2319DA4B65003633C8 /* ParserManager.h */,
-				3EE9089219C9339C00C75919 /* ProtoParser.cpp */,
-				3EE9089319C9339C00C75919 /* ProtoParser.h */,
 				3EE9089619C9361400C75919 /* ProtoModel.cpp */,
 				3EE9089719C9361400C75919 /* ProtoModel.h */,
-				3ECE389B19DBAA3100A042B4 /* EnumParser.cpp */,
-				3ECE389C19DBAA3100A042B4 /* EnumParser.h */,
-				3ECE389F19DBAAEF00A042B4 /* EnumModel.cpp */,
-				3ECE38A019DBAAEF00A042B4 /* EnumModel.h */,
-				3E9EE99019D6634F00AEF047 /* PackageParser.cpp */,
-				3E9EE99119D6634F00AEF047 /* PackageParser.h */,
-				3E9EE99419D6636B00AEF047 /* MessageParser.cpp */,
-				3E9EE99519D6636B00AEF047 /* MessageParser.h */,
-				3E9EE99819D663D000AEF047 /* MessageModel.cpp */,
-				3E9EE99919D663D000AEF047 /* MessageModel.h */,
-				3E37A5D119DF918200BED294 /* MessageFieldParser.cpp */,
-				3E37A5D219DF918200BED294 /* MessageFieldParser.h */,
-				3E37A5CD19DF916600BED294 /* MessageFieldModel.cpp */,
-				3E37A5CE19DF916600BED294 /* MessageFieldModel.h */,
-				3E9EE99E19D6727A00AEF047 /* Packageable.h */,
-				3EDF794E19D79E7200AD2103 /* InvalidProtoException.h */,
+				3EE9089219C9339C00C75919 /* ProtoParser.cpp */,
+				3EE9089319C9339C00C75919 /* ProtoParser.h */,
+				3E1B9A2519C1569F00AAAA0D /* TokenReader.cpp */,
+				3E1B9A2619C1569F00AAAA0D /* TokenReader.h */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -268,14 +286,14 @@
 				3E5B5C4619D8D0B6006EEE50 /* MessageMultiple.proto */,
 				3E5B5C4A19D8F0F3006EEE50 /* MessageMultiplePackage.proto */,
 				3E5B5C4C19D8F79B006EEE50 /* MessageNested.proto */,
+				3E37A5D519DFA26E00BED294 /* MessageField.proto */,
+				3E37A5D719DFA29700BED294 /* MessageFieldMultiple.proto */,
 				3E2D269D19C7F0F200BD2302 /* Package.proto */,
 				3E5B5C4419D8CEB6006EEE50 /* PackageRedefined.proto */,
 				3E3051D419DCEB9D008245F5 /* Enum.proto */,
 				3E3051D919DCEC19008245F5 /* EnumMultiple.proto */,
 				3EEDCF0419DE3D6700D79A30 /* EnumMultipleMessage.proto */,
 				3E3051DA19DCEC38008245F5 /* EnumMultiplePackage.proto */,
-				3E37A5D519DFA26E00BED294 /* MessageField.proto */,
-				3E37A5D719DFA29700BED294 /* MessageFieldMultiple.proto */,
 			);
 			path = Messages;
 			sourceTree = "<group>";
@@ -289,10 +307,13 @@
 			files = (
 				3E9EE99319D6634F00AEF047 /* PackageParser.h in Headers */,
 				3EE9089519C9339C00C75919 /* ProtoParser.h in Headers */,
+				3EB0EBD319E235810097929D /* OneofFieldParser.h in Headers */,
 				3ECE38A219DBAAEF00A042B4 /* EnumModel.h in Headers */,
 				3EB0FA2519DA4B66003633C8 /* ParserManager.h in Headers */,
 				3E9EE99B19D663D000AEF047 /* MessageModel.h in Headers */,
 				3E37A5D019DF916600BED294 /* MessageFieldModel.h in Headers */,
+				3EB0EBCB19E225CD0097929D /* OneofModel.h in Headers */,
+				3EB0EBCF19E225F40097929D /* OneofParser.h in Headers */,
 				3ECE389E19DBAA3100A042B4 /* EnumParser.h in Headers */,
 				3E9EE9A019D6727A00AEF047 /* Packageable.h in Headers */,
 				3EE9089919C9361400C75919 /* ProtoModel.h in Headers */,
@@ -388,10 +409,13 @@
 				3E9EE99619D6636B00AEF047 /* MessageParser.cpp in Sources */,
 				3E37A5D319DF918200BED294 /* MessageFieldParser.cpp in Sources */,
 				3ECE389D19DBAA3100A042B4 /* EnumParser.cpp in Sources */,
+				3EB0EBD219E235810097929D /* OneofFieldParser.cpp in Sources */,
 				3EE9089819C9361400C75919 /* ProtoModel.cpp in Sources */,
 				3EE9089419C9339C00C75919 /* ProtoParser.cpp in Sources */,
 				3E37A5CF19DF916600BED294 /* MessageFieldModel.cpp in Sources */,
+				3EB0EBCE19E225F40097929D /* OneofParser.cpp in Sources */,
 				3EB0FA2419DA4B66003633C8 /* ParserManager.cpp in Sources */,
+				3EB0EBCA19E225CD0097929D /* OneofModel.cpp in Sources */,
 				3ECE38A119DBAAEF00A042B4 /* EnumModel.cpp in Sources */,
 				3E9EE99A19D663D000AEF047 /* MessageModel.cpp in Sources */,
 				3EF78A6619C53DAF00976ADA /* TokenReader.cpp in Sources */,

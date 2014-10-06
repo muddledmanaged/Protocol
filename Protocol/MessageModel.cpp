@@ -35,6 +35,11 @@ void Protocol::MessageModel::addMessage (MessageModelCollection::value_type mess
     mMessages.push_back(message);
 }
 
+void Protocol::MessageModel::addOneof (OneofModelCollection::value_type oneof)
+{
+    mOneofs.push_back(oneof);
+}
+
 const Protocol::MessageModel::MessageFieldModelCollection * Protocol::MessageModel::fields () const
 {
     return &mFields;
@@ -48,4 +53,9 @@ const Protocol::MessageModel::EnumModelCollection * Protocol::MessageModel::enum
 const Protocol::MessageModel::MessageModelCollection * Protocol::MessageModel::messages () const
 {
     return &mMessages;
+}
+
+const Protocol::MessageModel::OneofModelCollection * Protocol::MessageModel::oneofs () const
+{
+    return &mOneofs;
 }

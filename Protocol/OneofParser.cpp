@@ -1,34 +1,34 @@
 //
-//  MessageParser.cpp
+//  OneofParser.cpp
 //  Protocol
 //
-//  Created by Wahid Tanner on 9/26/14.
+//  Created by Wahid Tanner on 10/5/14.
 //
 
 #include "ParserManager.h"
-#include "MessageModel.h"
-#include "MessageParser.h"
+#include "OneofModel.h"
+#include "OneofParser.h"
 #include "InvalidProtoException.h"
 
 using namespace std;
 using namespace MuddledManaged;
 
-Protocol::MessageParser::MessageParser ()
+Protocol::OneofParser::OneofParser ()
 {
 }
 
-bool Protocol::MessageParser::parse (TokenReader::iterator current, TokenReader::iterator end, shared_ptr<ProtoModel> model)
+bool Protocol::OneofParser::parse (TokenReader::iterator current, TokenReader::iterator end, shared_ptr<ProtoModel> model)
 {
-    if (current != end && *current == "message")
+    if (current != end && *current == "oneof")
     {
-        // Move to the message name.
+        // Move to the oneof name.
         ++current;
         if (current == end || current->empty())
         {
-            throw InvalidProtoException(current.line(), current.column(), "Expected message name.");
+            throw InvalidProtoException(current.line(), current.column(), "Expected oneof name.");
         }
-        shared_ptr<MessageModel> message(new MessageModel(*current, model->currentPackage()));
-        model->addMessage(current, message);
+        shared_ptr<OneofModel> oneof(new OneofModel(*current));
+        model->addOneof(current, oneof);
 
         // Move to the opening brace.
         ++current;
@@ -50,7 +50,7 @@ bool Protocol::MessageParser::parse (TokenReader::iterator current, TokenReader:
             }
 
             bool parserFound = false;
-            for (auto & parser: *parserMgr->parsers("general"))
+            for (auto & parser: *parserMgr->parsers("oneof"))
             {
                 if (parser->parse(current, end, model))
                 {
@@ -60,7 +60,7 @@ bool Protocol::MessageParser::parse (TokenReader::iterator current, TokenReader:
             }
             if (!parserFound)
             {
-                throw InvalidProtoException(current.line(), current.column(), "Unexpected message content found.");
+                throw InvalidProtoException(current.line(), current.column(), "Unexpected oneof content found.");
             }
             ++current;
         }
@@ -69,7 +69,7 @@ bool Protocol::MessageParser::parse (TokenReader::iterator current, TokenReader:
             // We reached the end of the file without finding the closing brace.
             throw InvalidProtoException(current.line(), current.column(), "Expected } character or field definition.");
         }
-        model->completeMessage();
+        model->completeOneof();
 
         return true;
     }

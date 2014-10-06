@@ -26,6 +26,7 @@ namespace MuddledManaged
         {
         public:
             typedef MessageModel::MessageFieldModelCollection MessageFieldModelCollection;
+            typedef MessageModel::OneofModelCollection OneofModelCollection;
             typedef std::vector<std::shared_ptr<EnumModel>> EnumModelCollection;
             typedef std::vector<std::shared_ptr<MessageModel>> MessageModelCollection;
 
@@ -41,6 +42,9 @@ namespace MuddledManaged
 
             void addMessage (TokenReader::iterator current, MessageModelCollection::value_type message);
             void completeMessage ();
+
+            void addOneof (TokenReader::iterator current, OneofModelCollection::value_type oneof);
+            void completeOneof ();
 
             const EnumModelCollection * enums () const;
 
