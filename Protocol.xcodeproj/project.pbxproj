@@ -372,7 +372,7 @@
 		3E606E5A19BFF9C6009692B8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = MuddledManaged;
 			};
 			buildConfigurationList = 3E606E5D19BFF9C6009692B8 /* Build configuration list for PBXProject "Protocol" */;
@@ -525,6 +525,7 @@
 		3EF78A6319C53BD800976ADA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -537,6 +538,7 @@
 		3EF78A6419C53BD800976ADA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
