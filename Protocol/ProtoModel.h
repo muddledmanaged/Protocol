@@ -15,6 +15,7 @@
 #include "TokenReader.h"
 #include "Packageable.h"
 #include "EnumModel.h"
+#include "EnumValueModel.h"
 #include "MessageModel.h"
 #include "MessageFieldModel.h"
 
@@ -26,6 +27,7 @@ namespace MuddledManaged
         {
         public:
             typedef MessageModel::MessageFieldModelCollection MessageFieldModelCollection;
+            typedef EnumModel::EnumValueModelCollection EnumValueModelCollection;
             typedef MessageModel::OneofModelCollection OneofModelCollection;
             typedef std::vector<std::shared_ptr<EnumModel>> EnumModelCollection;
             typedef std::vector<std::shared_ptr<MessageModel>> MessageModelCollection;
@@ -39,6 +41,8 @@ namespace MuddledManaged
 
             void addEnum (TokenReader::iterator current, EnumModelCollection::value_type enumeration);
             void completeEnum ();
+
+            void addEnumValue (TokenReader::iterator current, EnumValueModelCollection::value_type value);
 
             void addMessage (TokenReader::iterator current, MessageModelCollection::value_type message);
             void completeMessage ();
@@ -55,6 +59,7 @@ namespace MuddledManaged
             MessageModelCollection mMessages;
             MessageModelCollection mMessageQueue;
             OneofModelCollection::value_type mCurrentOneof;
+            EnumModelCollection::value_type mCurrentEnum;
         };
 
     } // namespace Protocol

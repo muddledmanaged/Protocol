@@ -37,6 +37,10 @@
 		3ECE38A219DBAAEF00A042B4 /* EnumModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 3ECE38A019DBAAEF00A042B4 /* EnumModel.h */; };
 		3EDF794B19D7663F00AD2103 /* PackageParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EDF794A19D7663F00AD2103 /* PackageParserScenarios.cpp */; };
 		3EDF794D19D7666800AD2103 /* MessageParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EDF794C19D7666800AD2103 /* MessageParserScenarios.cpp */; };
+		3EE5ACC819E39604001AEC6C /* EnumValueModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EE5ACC619E39604001AEC6C /* EnumValueModel.cpp */; };
+		3EE5ACC919E39604001AEC6C /* EnumValueModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EE5ACC719E39604001AEC6C /* EnumValueModel.h */; };
+		3EE5ACCC19E39621001AEC6C /* EnumValueParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EE5ACCA19E39621001AEC6C /* EnumValueParser.cpp */; };
+		3EE5ACCD19E39621001AEC6C /* EnumValueParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EE5ACCB19E39621001AEC6C /* EnumValueParser.h */; };
 		3EE9089419C9339C00C75919 /* ProtoParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EE9089219C9339C00C75919 /* ProtoParser.cpp */; };
 		3EE9089519C9339C00C75919 /* ProtoParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EE9089319C9339C00C75919 /* ProtoParser.h */; };
 		3EE9089819C9361400C75919 /* ProtoModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EE9089619C9361400C75919 /* ProtoModel.cpp */; };
@@ -129,6 +133,10 @@
 		3EDF794A19D7663F00AD2103 /* PackageParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PackageParserScenarios.cpp; sourceTree = "<group>"; };
 		3EDF794C19D7666800AD2103 /* MessageParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageParserScenarios.cpp; sourceTree = "<group>"; };
 		3EDF794E19D79E7200AD2103 /* InvalidProtoException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvalidProtoException.h; sourceTree = "<group>"; };
+		3EE5ACC619E39604001AEC6C /* EnumValueModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnumValueModel.cpp; sourceTree = "<group>"; };
+		3EE5ACC719E39604001AEC6C /* EnumValueModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnumValueModel.h; sourceTree = "<group>"; };
+		3EE5ACCA19E39621001AEC6C /* EnumValueParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnumValueParser.cpp; sourceTree = "<group>"; };
+		3EE5ACCB19E39621001AEC6C /* EnumValueParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnumValueParser.h; sourceTree = "<group>"; };
 		3EE9089219C9339C00C75919 /* ProtoParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtoParser.cpp; sourceTree = "<group>"; };
 		3EE9089319C9339C00C75919 /* ProtoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtoParser.h; sourceTree = "<group>"; };
 		3EE9089619C9361400C75919 /* ProtoModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtoModel.cpp; sourceTree = "<group>"; };
@@ -188,6 +196,10 @@
 				3ECE38A019DBAAEF00A042B4 /* EnumModel.h */,
 				3ECE389B19DBAA3100A042B4 /* EnumParser.cpp */,
 				3ECE389C19DBAA3100A042B4 /* EnumParser.h */,
+				3EE5ACC619E39604001AEC6C /* EnumValueModel.cpp */,
+				3EE5ACC719E39604001AEC6C /* EnumValueModel.h */,
+				3EE5ACCA19E39621001AEC6C /* EnumValueParser.cpp */,
+				3EE5ACCB19E39621001AEC6C /* EnumValueParser.h */,
 				3EDF794E19D79E7200AD2103 /* InvalidProtoException.h */,
 				3E9EE99819D663D000AEF047 /* MessageModel.cpp */,
 				3E9EE99919D663D000AEF047 /* MessageModel.h */,
@@ -318,6 +330,7 @@
 				3ECE38A219DBAAEF00A042B4 /* EnumModel.h in Headers */,
 				3EB0FA2519DA4B66003633C8 /* ParserManager.h in Headers */,
 				3E9EE99B19D663D000AEF047 /* MessageModel.h in Headers */,
+				3EE5ACCD19E39621001AEC6C /* EnumValueParser.h in Headers */,
 				3E37A5D019DF916600BED294 /* MessageFieldModel.h in Headers */,
 				3EB0EBCB19E225CD0097929D /* OneofModel.h in Headers */,
 				3EB0EBCF19E225F40097929D /* OneofParser.h in Headers */,
@@ -326,6 +339,7 @@
 				3EE9089919C9361400C75919 /* ProtoModel.h in Headers */,
 				3E37A5D419DF918200BED294 /* MessageFieldParser.h in Headers */,
 				3E9EE99719D6636B00AEF047 /* MessageParser.h in Headers */,
+				3EE5ACC919E39604001AEC6C /* EnumValueModel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -417,10 +431,12 @@
 				3E9EE99619D6636B00AEF047 /* MessageParser.cpp in Sources */,
 				3E37A5D319DF918200BED294 /* MessageFieldParser.cpp in Sources */,
 				3ECE389D19DBAA3100A042B4 /* EnumParser.cpp in Sources */,
+				3EE5ACCC19E39621001AEC6C /* EnumValueParser.cpp in Sources */,
 				3EB0EBD219E235810097929D /* OneofFieldParser.cpp in Sources */,
 				3EE9089819C9361400C75919 /* ProtoModel.cpp in Sources */,
 				3EE9089419C9339C00C75919 /* ProtoParser.cpp in Sources */,
 				3E37A5CF19DF916600BED294 /* MessageFieldModel.cpp in Sources */,
+				3EE5ACC819E39604001AEC6C /* EnumValueModel.cpp in Sources */,
 				3EB0EBCE19E225F40097929D /* OneofParser.cpp in Sources */,
 				3EB0FA2419DA4B66003633C8 /* ParserManager.cpp in Sources */,
 				3EB0EBCA19E225CD0097929D /* OneofModel.cpp in Sources */,

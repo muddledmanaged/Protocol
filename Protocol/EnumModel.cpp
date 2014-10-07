@@ -19,3 +19,13 @@ string Protocol::EnumModel::name () const
 {
     return mName;
 }
+
+void Protocol::EnumModel::addEnumValue (EnumValueModelCollection::value_type value)
+{
+    mValues.push_back(value);
+}
+
+const Protocol::EnumModel::EnumValueModelCollection * Protocol::EnumModel::values () const
+{
+    return &mValues;
+}
