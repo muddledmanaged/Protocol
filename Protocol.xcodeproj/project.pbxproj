@@ -31,6 +31,7 @@
 		3EB0EBD819E23E580097929D /* OneofParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB0EBD719E23E580097929D /* OneofParserScenarios.cpp */; };
 		3EB0FA2419DA4B66003633C8 /* ParserManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB0FA2219DA4B65003633C8 /* ParserManager.cpp */; };
 		3EB0FA2519DA4B66003633C8 /* ParserManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EB0FA2319DA4B65003633C8 /* ParserManager.h */; };
+		3EC1F8DA19E4E24D0035376F /* EnumValueParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EC1F8D919E4E24D0035376F /* EnumValueParserScenarios.cpp */; };
 		3ECE389D19DBAA3100A042B4 /* EnumParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ECE389B19DBAA3100A042B4 /* EnumParser.cpp */; };
 		3ECE389E19DBAA3100A042B4 /* EnumParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3ECE389C19DBAA3100A042B4 /* EnumParser.h */; };
 		3ECE38A119DBAAEF00A042B4 /* EnumModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ECE389F19DBAAEF00A042B4 /* EnumModel.cpp */; };
@@ -124,6 +125,9 @@
 		3EB0EBD719E23E580097929D /* OneofParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OneofParserScenarios.cpp; sourceTree = "<group>"; };
 		3EB0FA2219DA4B65003633C8 /* ParserManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParserManager.cpp; sourceTree = "<group>"; };
 		3EB0FA2319DA4B65003633C8 /* ParserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParserManager.h; sourceTree = "<group>"; };
+		3EC1F8D619E4DFE80035376F /* EnumValue.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EnumValue.proto; sourceTree = "<group>"; };
+		3EC1F8D819E4E02B0035376F /* EnumValueMultipleMessage.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EnumValueMultipleMessage.proto; sourceTree = "<group>"; };
+		3EC1F8D919E4E24D0035376F /* EnumValueParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnumValueParserScenarios.cpp; sourceTree = "<group>"; };
 		3ECE389B19DBAA3100A042B4 /* EnumParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnumParser.cpp; sourceTree = "<group>"; };
 		3ECE389C19DBAA3100A042B4 /* EnumParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnumParser.h; sourceTree = "<group>"; };
 		3ECE389F19DBAAEF00A042B4 /* EnumModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnumModel.cpp; sourceTree = "<group>"; };
@@ -260,14 +264,15 @@
 			children = (
 				3EF78A6D19C5558700976ADA /* Messages */,
 				3EF78A4819C5321E00976ADA /* main.cpp */,
-				3EF78A5219C5396300976ADA /* TokenReaderScenarios.cpp */,
-				3E9888D119D2945B00505B28 /* ProtoModelScenarios.cpp */,
-				3E9888D319D2971F00505B28 /* ProtoParserScenarios.cpp */,
-				3EDF794A19D7663F00AD2103 /* PackageParserScenarios.cpp */,
+				3E3051DB19DCED6A008245F5 /* EnumParserScenarios.cpp */,
+				3EC1F8D919E4E24D0035376F /* EnumValueParserScenarios.cpp */,
 				3EDF794C19D7666800AD2103 /* MessageParserScenarios.cpp */,
 				3E37A5D819DFA3DE00BED294 /* MessageFieldParserScenarios.cpp */,
-				3E3051DB19DCED6A008245F5 /* EnumParserScenarios.cpp */,
 				3EB0EBD719E23E580097929D /* OneofParserScenarios.cpp */,
+				3EDF794A19D7663F00AD2103 /* PackageParserScenarios.cpp */,
+				3E9888D119D2945B00505B28 /* ProtoModelScenarios.cpp */,
+				3E9888D319D2971F00505B28 /* ProtoParserScenarios.cpp */,
+				3EF78A5219C5396300976ADA /* TokenReaderScenarios.cpp */,
 			);
 			path = ProtocolDesign;
 			sourceTree = "<group>";
@@ -313,6 +318,8 @@
 				3E3051D919DCEC19008245F5 /* EnumMultiple.proto */,
 				3EEDCF0419DE3D6700D79A30 /* EnumMultipleMessage.proto */,
 				3E3051DA19DCEC38008245F5 /* EnumMultiplePackage.proto */,
+				3EC1F8D619E4DFE80035376F /* EnumValue.proto */,
+				3EC1F8D819E4E02B0035376F /* EnumValueMultipleMessage.proto */,
 			);
 			path = Messages;
 			sourceTree = "<group>";
@@ -417,6 +424,7 @@
 				3EDF794B19D7663F00AD2103 /* PackageParserScenarios.cpp in Sources */,
 				3EDF794D19D7666800AD2103 /* MessageParserScenarios.cpp in Sources */,
 				3E9888D419D2971F00505B28 /* ProtoParserScenarios.cpp in Sources */,
+				3EC1F8DA19E4E24D0035376F /* EnumValueParserScenarios.cpp in Sources */,
 				3E37A5D919DFA3DE00BED294 /* MessageFieldParserScenarios.cpp in Sources */,
 				3EF78A5419C5396300976ADA /* TokenReaderScenarios.cpp in Sources */,
 				3EF78A4919C5321E00976ADA /* main.cpp in Sources */,
