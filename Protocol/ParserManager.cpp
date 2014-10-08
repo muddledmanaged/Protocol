@@ -7,6 +7,7 @@
 
 #include "ParserManager.h"
 #include "EnumParser.h"
+#include "EnumValueParser.h"
 #include "MessageParser.h"
 #include "MessageFieldParser.h"
 #include "OneofParser.h"
@@ -18,13 +19,16 @@ using namespace MuddledManaged;
 
 Protocol::ParserManager::ParserManager ()
 {
+    mParserMap.emplace("none", shared_ptr<ParserCollection>(new ParserCollection()));
     mParserMap.emplace("all", shared_ptr<ParserCollection>(new ParserCollection()));
     mParserMap.emplace("general", shared_ptr<ParserCollection>(new ParserCollection()));
     mParserMap.emplace("oneof", shared_ptr<ParserCollection>(new ParserCollection()));
+    mParserMap.emplace("enum", shared_ptr<ParserCollection>(new ParserCollection()));
 
     shared_ptr<ParserInterface> packageParser(new PackageParser());
     shared_ptr<ParserInterface> messageParser(new MessageParser());
     shared_ptr<ParserInterface> enumParser(new EnumParser());
+    shared_ptr<ParserInterface> enumValueParser(new EnumValueParser());
     shared_ptr<ParserInterface> messageFieldParser(new MessageFieldParser());
     shared_ptr<ParserInterface> oneofParser(new OneofParser());
     shared_ptr<ParserInterface> oneofFieldParser(new OneofFieldParser());
@@ -35,6 +39,7 @@ Protocol::ParserManager::ParserManager ()
         parserIter->second->push_back(packageParser);
         parserIter->second->push_back(messageParser);
         parserIter->second->push_back(enumParser);
+        parserIter->second->push_back(enumValueParser);
         parserIter->second->push_back(messageFieldParser);
         parserIter->second->push_back(oneofParser);
         parserIter->second->push_back(oneofFieldParser);
@@ -54,6 +59,12 @@ Protocol::ParserManager::ParserManager ()
     if (parserIter != mParserMap.end())
     {
         parserIter->second->push_back(oneofFieldParser);
+    }
+
+    parserIter = mParserMap.find("enum");
+    if (parserIter != mParserMap.end())
+    {
+        parserIter->second->push_back(enumValueParser);
     }
 }
 
@@ -79,6 +90,14 @@ const Protocol::ParserManager::ParserCollection * Protocol::ParserManager::parse
     if (parserIter != mParserMap.end())
     {
         pCollection = parserIter->second.get();
+    }
+    else
+    {
+        parserIter = mParserMap.find("none");
+        if (parserIter != mParserMap.end())
+        {
+            pCollection = parserIter->second.get();
+        }
     }
 
     return pCollection;
