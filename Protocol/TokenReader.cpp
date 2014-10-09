@@ -11,7 +11,7 @@ using namespace std;
 using namespace MuddledManaged;
 
 const string Protocol::TokenReader::TokenIterator::Whitespace = " \t\r\n";
-const string Protocol::TokenReader::TokenIterator::Delimiters = "{}[]=;\"";
+const string Protocol::TokenReader::TokenIterator::Delimiters = "{}[]()=;,\"";
 
 Protocol::TokenReader::TokenIterator::TokenIterator ()
 : mpData(nullptr)

@@ -365,30 +365,51 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate ran
     ++iter1;
 
     verifyTrue(iter1 != iter2);
-    verifyEqual("=", *iter1);
+    verifyEqual("(", *iter1);
     verifyEqual(1, iter1.line());
     verifyEqual(10, iter1.column());
 
     ++iter1;
 
     verifyTrue(iter1 != iter2);
-    verifyEqual(";", *iter1);
+    verifyEqual(")", *iter1);
     verifyEqual(1, iter1.line());
     verifyEqual(11, iter1.column());
 
     ++iter1;
 
     verifyTrue(iter1 != iter2);
-    verifyEqual("\"", *iter1);
+    verifyEqual("=", *iter1);
     verifyEqual(1, iter1.line());
     verifyEqual(12, iter1.column());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual(";", *iter1);
+    verifyEqual(1, iter1.line());
+    verifyEqual(13, iter1.column());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual(",", *iter1);
+    verifyEqual(1, iter1.line());
+    verifyEqual(14, iter1.column());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("\"", *iter1);
+    verifyEqual(1, iter1.line());
+    verifyEqual(15, iter1.column());
 
     ++iter1;
 
     verifyFalse(iter1 != iter2);
     verifyEqual("", *iter1);
     verifyEqual(1, iter1.line());
-    verifyEqual(13, iter1.column());
+    verifyEqual(16, iter1.column());
 }
 
 DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate an empty string." )
