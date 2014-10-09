@@ -155,9 +155,16 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate ran
     ++iter1;
 
     verifyTrue(iter1 != iter2);
-    verifyEqual("line.", *iter1);
+    verifyEqual("line", *iter1);
     verifyEqual(1, iter1.line());
     verifyEqual(28, iter1.column());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual(".", *iter1);
+    verifyEqual(1, iter1.line());
+    verifyEqual(32, iter1.column());
 
     ++iter1;
 
@@ -516,9 +523,16 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/EOF", "TokenReader can iterate random
     ++iter1;
 
     verifyTrue(iter1 != iter2);
-    verifyEqual("lines.", *iter1);
+    verifyEqual("lines", *iter1);
     verifyEqual(2, iter1.line());
     verifyEqual(10, iter1.column());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual(".", *iter1);
+    verifyEqual(2, iter1.line());
+    verifyEqual(15, iter1.column());
 
     ++iter1;
 
@@ -655,9 +669,16 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate ran
     ++iter1;
 
     verifyTrue(iter1 != iter2);
-    verifyEqual("lines.", *iter1);
+    verifyEqual("lines", *iter1);
     verifyEqual(3, iter1.line());
     verifyEqual(27, iter1.column());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual(".", *iter1);
+    verifyEqual(3, iter1.line());
+    verifyEqual(32, iter1.column());
 
     ++iter1;
 
@@ -847,9 +868,37 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate ful
     ++iter1;
 
     verifyTrue(iter1 != iter2);
-    verifyEqual("Uv.W.Xyz", *iter1);
+    verifyEqual("Uv", *iter1);
     verifyEqual(3, iter1.line());
     verifyEqual(9, iter1.column());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual(".", *iter1);
+    verifyEqual(3, iter1.line());
+    verifyEqual(11, iter1.column());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("W", *iter1);
+    verifyEqual(3, iter1.line());
+    verifyEqual(12, iter1.column());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual(".", *iter1);
+    verifyEqual(3, iter1.line());
+    verifyEqual(13, iter1.column());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("Xyz", *iter1);
+    verifyEqual(3, iter1.line());
+    verifyEqual(14, iter1.column());
 
     ++iter1;
 
@@ -1057,9 +1106,37 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate ful
     ++iter1;
 
     verifyTrue(iter1 != iter2);
-    verifyEqual("Abc.Def.Simple", *iter1);
+    verifyEqual("Abc", *iter1);
     verifyEqual(20, iter1.line());
     verifyEqual(18, iter1.column());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual(".", *iter1);
+    verifyEqual(20, iter1.line());
+    verifyEqual(21, iter1.column());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("Def", *iter1);
+    verifyEqual(20, iter1.line());
+    verifyEqual(22, iter1.column());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual(".", *iter1);
+    verifyEqual(20, iter1.line());
+    verifyEqual(25, iter1.column());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("Simple", *iter1);
+    verifyEqual(20, iter1.line());
+    verifyEqual(26, iter1.column());
 
     ++iter1;
 
@@ -1463,9 +1540,23 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate ful
     ++iter1;
 
     verifyTrue(iter1 != iter2);
-    verifyEqual("3.14", *iter1);
+    verifyEqual("3", *iter1);
     verifyEqual(42, iter1.line());
     verifyEqual(39, iter1.column());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual(".", *iter1);
+    verifyEqual(42, iter1.line());
+    verifyEqual(40, iter1.column());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("14", *iter1);
+    verifyEqual(42, iter1.line());
+    verifyEqual(41, iter1.column());
 
     ++iter1;
 
@@ -2268,9 +2359,23 @@ DESIGNER_SCENARIO( TokenReader, "Iteration/Normal", "TokenReader can iterate ful
     ++iter1;
 
     verifyTrue(iter1 != iter2);
-    verifyEqual("M2.M3", *iter1);
+    verifyEqual("M2", *iter1);
     verifyEqual(68, iter1.line());
     verifyEqual(14, iter1.column());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual(".", *iter1);
+    verifyEqual(68, iter1.line());
+    verifyEqual(16, iter1.column());
+
+    ++iter1;
+
+    verifyTrue(iter1 != iter2);
+    verifyEqual("M3", *iter1);
+    verifyEqual(68, iter1.line());
+    verifyEqual(17, iter1.column());
 
     ++iter1;
 

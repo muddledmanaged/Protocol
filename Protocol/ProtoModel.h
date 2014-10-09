@@ -36,6 +36,7 @@ namespace MuddledManaged
 
             std::string currentPackage () const;
             void setCurrentPackage (const std::string & package);
+            void addToCurrentPackage (const std::string & additionalPackage);
 
             void addField (TokenReader::iterator current, MessageFieldModelCollection::value_type field);
 

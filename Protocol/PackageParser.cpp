@@ -28,11 +28,29 @@ bool Protocol::PackageParser::parse (TokenReader::iterator current, TokenReader:
         }
         model->setCurrentPackage(*current);
 
-        // Move to the semicolon.
+        // Move to the semicolon or further package names.
         ++current;
-        if (current == end || *current != ";")
+        if (current == end)
         {
-            throw InvalidProtoException(current.line(), current.column(), "Expected ; character.");
+            throw InvalidProtoException(current.line(), current.column(), "Expected ; character or further package names.");
+        }
+        while (*current != ";")
+        {
+            if (*current != ".")
+            {
+                throw InvalidProtoException(current.line(), current.column(), "Expected ; or . character.");
+            }
+
+            // Move to the next package name.
+            ++current;
+            if (current == end || current->empty())
+            {
+                throw InvalidProtoException(current.line(), current.column(), "Expected package name.");
+            }
+            model->addToCurrentPackage(*current);
+
+            // Move to the semicolon or further package names.
+            ++current;
         }
 
         return true;

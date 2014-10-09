@@ -26,6 +26,11 @@ void Protocol::ProtoModel::setCurrentPackage (const string & package)
     setPackage(package);
 }
 
+void Protocol::ProtoModel::addToCurrentPackage (const string & additionalPackage)
+{
+    setPackage(package() + "." + additionalPackage);
+}
+
 void Protocol::ProtoModel::addField (TokenReader::iterator current, MessageFieldModelCollection::value_type field)
 {
     if (mMessageQueue.empty())
