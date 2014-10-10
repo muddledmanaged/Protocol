@@ -12,7 +12,7 @@ using namespace std;
 using namespace MuddledManaged;
 
 Protocol::ProtoModel::ProtoModel ()
-: mCurrentOneof(nullptr), mCurrentEnum(nullptr)
+: mCurrentField(nullptr), mCurrentOneof(nullptr), mCurrentEnum(nullptr)
 {
 }
 
@@ -48,6 +48,12 @@ void Protocol::ProtoModel::addField (TokenReader::iterator current, MessageField
             mMessageQueue.back()->addField(field);
         }
     }
+    mCurrentField = field;
+}
+
+void Protocol::ProtoModel::completeField ()
+{
+    mCurrentField = nullptr;
 }
 
 void Protocol::ProtoModel::addEnum (TokenReader::iterator current, EnumModelCollection::value_type enumeration)
@@ -116,6 +122,18 @@ void Protocol::ProtoModel::completeOneof ()
     mCurrentOneof = nullptr;
 }
 
+void Protocol::ProtoModel::addOption (TokenReader::iterator current, OptionModelCollection::value_type option)
+{
+    if (mCurrentField != nullptr)
+    {
+        mCurrentField->addOption(option);
+    }
+    else
+    {
+        mOptions.push_back(option);
+    }
+}
+
 const Protocol::ProtoModel::EnumModelCollection * Protocol::ProtoModel::enums () const
 {
     return &mEnums;
@@ -124,4 +142,9 @@ const Protocol::ProtoModel::EnumModelCollection * Protocol::ProtoModel::enums ()
 const Protocol::ProtoModel::MessageModelCollection * Protocol::ProtoModel::messages () const
 {
     return &mMessages;
+}
+
+const Protocol::ProtoModel::OptionModelCollection * Protocol::ProtoModel::options () const
+{
+    return &mOptions;
 }

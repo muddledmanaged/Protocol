@@ -8,6 +8,7 @@
 #include <memory>
 #include <stdexcept>
 
+#include "ParserManager.h"
 #include "MessageFieldModel.h"
 #include "MessageFieldParser.h"
 #include "InvalidProtoException.h"
@@ -74,12 +75,69 @@ bool Protocol::MessageFieldParser::parse (TokenReader::iterator current, TokenRe
         shared_ptr<MessageFieldModel> field(new MessageFieldModel(requiredness, fieldType, name, index));
         model->addField(current, field);
 
-        // Move to the semicolon.
+        // Move to the semicolon or inline options.
+        ParserManager * parserMgr = ParserManager::instance();
+        bool optionFound = false;
         ++current;
-        if (current == end || *current != ";")
+        if (current == end)
         {
-            throw InvalidProtoException(current.line(), current.column(), "Expected ; character.");
+            throw InvalidProtoException(current.line(), current.column(), "Expected ; or [ character.");
         }
+        while (*current != ";")
+        {
+            if (optionFound)
+            {
+                if (current == end)
+                {
+                    throw InvalidProtoException(current.line(), current.column(), "Expected , or ] character.");
+                }
+                if (*current == "]")
+                {
+                    // Move to the semicolon.
+                    ++current;
+                    if (current == end || *current != ";")
+                    {
+                        throw InvalidProtoException(current.line(), current.column(), "Expected ; character.");
+                    }
+                    break;
+                }
+                if (*current != ",")
+                {
+                    throw InvalidProtoException(current.line(), current.column(), "Expected , or ] character.");
+                }
+            }
+            else
+            {
+                if (*current != "[")
+                {
+                    throw InvalidProtoException(current.line(), current.column(), "Expected ; or [ character.");
+                }
+                optionFound = true;
+            }
+            ++current;
+            if (current == end)
+            {
+                throw InvalidProtoException(current.line(), current.column(), "Expected option name.");
+            }
+
+            bool parserFound = false;
+            for (auto & parser: *parserMgr->parsers("optionInline"))
+            {
+                if (parser->parse(current, end, model))
+                {
+                    parserFound = true;
+                    break;
+                }
+            }
+            if (!parserFound)
+            {
+                throw InvalidProtoException(current.line(), current.column(), "Unexpected option content found.");
+            }
+
+            // Move to the comma or closing bracket.
+            ++current;
+        }
+        model->completeField();
 
         return true;
     }

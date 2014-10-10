@@ -34,3 +34,13 @@ unsigned int Protocol::MessageFieldModel::index () const
 {
     return mIndex;
 }
+
+void Protocol::MessageFieldModel::addOption (OptionModelCollection::value_type option)
+{
+    mOptions.push_back(option);
+}
+
+const Protocol::MessageFieldModel::OptionModelCollection * Protocol::MessageFieldModel::options () const
+{
+    return &mOptions;
+}

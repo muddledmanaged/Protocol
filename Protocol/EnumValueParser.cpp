@@ -22,7 +22,7 @@ bool Protocol::EnumValueParser::parse (TokenReader::iterator current, TokenReade
 {
     if (current != end)
     {
-        // Get to the value name.
+        // Get the value name.
         if (current->empty())
         {
             throw InvalidProtoException(current.line(), current.column(), "Expected enum value name.");

@@ -12,6 +12,8 @@
 #include "MessageFieldParser.h"
 #include "OneofParser.h"
 #include "OneofFieldParser.h"
+#include "OptionInlineParser.h"
+#include "OptionStandaloneParser.h"
 #include "PackageParser.h"
 
 using namespace std;
@@ -24,6 +26,7 @@ Protocol::ParserManager::ParserManager ()
     mParserMap.emplace("general", shared_ptr<ParserCollection>(new ParserCollection()));
     mParserMap.emplace("oneof", shared_ptr<ParserCollection>(new ParserCollection()));
     mParserMap.emplace("enum", shared_ptr<ParserCollection>(new ParserCollection()));
+    mParserMap.emplace("optionInline", shared_ptr<ParserCollection>(new ParserCollection()));
 
     shared_ptr<ParserInterface> packageParser(new PackageParser());
     shared_ptr<ParserInterface> messageParser(new MessageParser());
@@ -32,6 +35,8 @@ Protocol::ParserManager::ParserManager ()
     shared_ptr<ParserInterface> messageFieldParser(new MessageFieldParser());
     shared_ptr<ParserInterface> oneofParser(new OneofParser());
     shared_ptr<ParserInterface> oneofFieldParser(new OneofFieldParser());
+    shared_ptr<ParserInterface> optionInlineParser(new OptionInlineParser());
+    shared_ptr<ParserInterface> optionStandaloneParser(new OptionStandaloneParser());
 
     auto parserIter = mParserMap.find("all");
     if (parserIter != mParserMap.end())
@@ -43,6 +48,8 @@ Protocol::ParserManager::ParserManager ()
         parserIter->second->push_back(messageFieldParser);
         parserIter->second->push_back(oneofParser);
         parserIter->second->push_back(oneofFieldParser);
+        parserIter->second->push_back(optionInlineParser);
+        parserIter->second->push_back(optionStandaloneParser);
     }
 
     parserIter = mParserMap.find("general");
@@ -53,6 +60,7 @@ Protocol::ParserManager::ParserManager ()
         parserIter->second->push_back(enumParser);
         parserIter->second->push_back(messageFieldParser);
         parserIter->second->push_back(oneofParser);
+        parserIter->second->push_back(optionStandaloneParser);
     }
 
     parserIter = mParserMap.find("oneof");
@@ -65,6 +73,12 @@ Protocol::ParserManager::ParserManager ()
     if (parserIter != mParserMap.end())
     {
         parserIter->second->push_back(enumValueParser);
+    }
+
+    parserIter = mParserMap.find("optionInline");
+    if (parserIter != mParserMap.end())
+    {
+        parserIter->second->push_back(optionInlineParser);
     }
 }
 

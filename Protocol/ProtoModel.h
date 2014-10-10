@@ -18,6 +18,7 @@
 #include "EnumValueModel.h"
 #include "MessageModel.h"
 #include "MessageFieldModel.h"
+#include "OptionModel.h"
 
 namespace MuddledManaged
 {
@@ -31,6 +32,7 @@ namespace MuddledManaged
             typedef MessageModel::OneofModelCollection OneofModelCollection;
             typedef std::vector<std::shared_ptr<EnumModel>> EnumModelCollection;
             typedef std::vector<std::shared_ptr<MessageModel>> MessageModelCollection;
+            typedef std::vector<std::shared_ptr<OptionModel>> OptionModelCollection;
 
             ProtoModel ();
 
@@ -39,6 +41,7 @@ namespace MuddledManaged
             void addToCurrentPackage (const std::string & additionalPackage);
 
             void addField (TokenReader::iterator current, MessageFieldModelCollection::value_type field);
+            void completeField ();
 
             void addEnum (TokenReader::iterator current, EnumModelCollection::value_type enumeration);
             void completeEnum ();
@@ -51,14 +54,20 @@ namespace MuddledManaged
             void addOneof (TokenReader::iterator current, OneofModelCollection::value_type oneof);
             void completeOneof ();
 
+            void addOption (TokenReader::iterator current, OptionModelCollection::value_type option);
+
             const EnumModelCollection * enums () const;
 
             const MessageModelCollection * messages () const;
 
+            const OptionModelCollection * options () const;
+
         private:
             EnumModelCollection mEnums;
             MessageModelCollection mMessages;
+            OptionModelCollection mOptions;
             MessageModelCollection mMessageQueue;
+            MessageFieldModelCollection::value_type mCurrentField;
             OneofModelCollection::value_type mCurrentOneof;
             EnumModelCollection::value_type mCurrentEnum;
         };

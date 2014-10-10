@@ -8,7 +8,11 @@
 #ifndef Protocol_MessageFieldModel_h
 #define Protocol_MessageFieldModel_h
 
+#include <memory>
 #include <string>
+#include <vector>
+
+#include "OptionModel.h"
 
 namespace MuddledManaged
 {
@@ -17,6 +21,8 @@ namespace MuddledManaged
         class MessageFieldModel
         {
         public:
+            typedef std::vector<std::shared_ptr<OptionModel>> OptionModelCollection;
+
             enum class Requiredness
             {
                 required = 0,
@@ -34,11 +40,16 @@ namespace MuddledManaged
 
             unsigned int index () const;
 
+            void addOption (OptionModelCollection::value_type option);
+
+            const OptionModelCollection * options () const;
+
         private:
             Requiredness mRequiredness;
             std::string mFieldType;
             std::string mName;
             unsigned int mIndex;
+            OptionModelCollection mOptions;
         };
 
     } // namespace Protocol
