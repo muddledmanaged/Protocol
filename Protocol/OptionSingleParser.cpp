@@ -1,5 +1,5 @@
 //
-//  OptionStandaloneParser.cpp
+//  OptionSingleParser.cpp
 //  Protocol
 //
 //  Created by Wahid Tanner on 10/9/14.
@@ -9,16 +9,16 @@
 #include <stdexcept>
 
 #include "OptionModel.h"
-#include "OptionStandaloneParser.h"
+#include "OptionSingleParser.h"
 #include "InvalidProtoException.h"
 
 using namespace std;
 using namespace MuddledManaged;
 
-Protocol::OptionStandaloneParser::OptionStandaloneParser ()
+Protocol::OptionSingleParser::OptionSingleParser ()
 { }
 
-bool Protocol::OptionStandaloneParser::parse (TokenReader::iterator current, TokenReader::iterator end, std::shared_ptr<ProtoModel> model)
+bool Protocol::OptionSingleParser::parse (TokenReader::iterator current, TokenReader::iterator end, std::shared_ptr<ProtoModel> model)
 {
     if (current != end && *current == "option")
     {

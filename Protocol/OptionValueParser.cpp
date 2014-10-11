@@ -1,5 +1,5 @@
 //
-//  OptionInlineParser.cpp
+//  OptionValueParser.cpp
 //  Protocol
 //
 //  Created by Wahid Tanner on 10/9/14.
@@ -9,47 +9,44 @@
 #include <stdexcept>
 
 #include "OptionModel.h"
-#include "OptionInlineParser.h"
+#include "OptionValueParser.h"
 #include "InvalidProtoException.h"
 
 using namespace std;
 using namespace MuddledManaged;
 
-Protocol::OptionInlineParser::OptionInlineParser ()
+Protocol::OptionValueParser::OptionValueParser ()
 { }
 
-bool Protocol::OptionInlineParser::parse (TokenReader::iterator current, TokenReader::iterator end, std::shared_ptr<ProtoModel> model)
+bool Protocol::OptionValueParser::parse (TokenReader::iterator current, TokenReader::iterator end, std::shared_ptr<ProtoModel> model)
 {
-    if (current != end)
+    // Move to the option name.
+    ++current;
+    if (current == end || current->empty())
     {
-        // Get the option name.
-        if (current->empty())
-        {
-            throw InvalidProtoException(current.line(), current.column(), "Expected option name.");
-        }
-        string name = *current;
-
-        // Move to the equal.
-        ++current;
-        if (current == end || *current != "=")
-        {
-            throw InvalidProtoException(current.line(), current.column(), "Expected = character.");
-        }
-
-        // Move to the option value.
-        ++current;
-        if (current == end || current->empty())
-        {
-            throw InvalidProtoException(current.line(), current.column(), "Expected option value.");
-        }
-        string value = *current;
-
-        shared_ptr<OptionModel> option(new OptionModel(name, value));
-        model->addOption(current, option);
-
-        // This parser does not move to the terminating character because there could be multiple options.
-
-        return true;
+        throw InvalidProtoException(current.line(), current.column(), "Expected option name.");
     }
-    return false;
+    string name = *current;
+
+    // Move to the equal.
+    ++current;
+    if (current == end || *current != "=")
+    {
+        throw InvalidProtoException(current.line(), current.column(), "Expected = character.");
+    }
+
+    // Move to the option value.
+    ++current;
+    if (current == end || current->empty())
+    {
+        throw InvalidProtoException(current.line(), current.column(), "Expected option value.");
+    }
+    string value = *current;
+
+    shared_ptr<OptionModel> option(new OptionModel(name, value));
+    model->addOption(current, option);
+
+    // This parser is designed to be used by either the OptionSingleParser or the OptionGroupParser and
+    // does not move to the terminating character because there could be multiple options.
+    return true;
 }

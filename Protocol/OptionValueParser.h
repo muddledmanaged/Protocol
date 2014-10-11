@@ -1,12 +1,12 @@
 //
-//  OptionInlineParser.h
+//  OptionValueParser.h
 //  Protocol
 //
 //  Created by Wahid Tanner on 10/9/14.
 //
 
-#ifndef Protocol_OptionInlineParser_h
-#define Protocol_OptionInlineParser_h
+#ifndef Protocol_OptionValueParser_h
+#define Protocol_OptionValueParser_h
 
 #include "ParserInterface.h"
 
@@ -14,10 +14,10 @@ namespace MuddledManaged
 {
     namespace Protocol
     {
-        class OptionInlineParser : public ParserInterface
+        class OptionValueParser : public ParserInterface
         {
         public:
-            OptionInlineParser ();
+            OptionValueParser ();
 
             virtual bool parse (TokenReader::iterator current, TokenReader::iterator end, std::shared_ptr<ProtoModel> model);
         };
@@ -26,4 +26,4 @@ namespace MuddledManaged
 
 } // namespace MuddledManaged
 
-#endif // Protocol_OptionInlineParser_h
+#endif // Protocol_OptionValueParser_h
