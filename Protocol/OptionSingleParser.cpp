@@ -8,7 +8,7 @@
 #include <memory>
 #include <stdexcept>
 
-#include "OptionModel.h"
+#include "ParserManager.h"
 #include "OptionSingleParser.h"
 #include "InvalidProtoException.h"
 
@@ -22,31 +22,22 @@ bool Protocol::OptionSingleParser::parse (TokenReader::iterator current, TokenRe
 {
     if (current != end && *current == "option")
     {
-        // Move to the option name.
+        // Process the contents.
+        ParserManager * parserMgr = ParserManager::instance();
+        bool parserFound = false;
         ++current;
-        if (current == end || current->empty())
+        for (auto & parser: *parserMgr->parsers("option"))
         {
-            throw InvalidProtoException(current.line(), current.column(), "Expected option name.");
+            if (parser->parse(current, end, model))
+            {
+                parserFound = true;
+                break;
+            }
         }
-        string name = *current;
-
-        // Move to the equal.
-        ++current;
-        if (current == end || *current != "=")
+        if (!parserFound)
         {
-            throw InvalidProtoException(current.line(), current.column(), "Expected = character.");
+            throw InvalidProtoException(current.line(), current.column(), "Unexpected option content found.");
         }
-
-        // Move to the option value.
-        ++current;
-        if (current == end || current->empty())
-        {
-            throw InvalidProtoException(current.line(), current.column(), "Expected option value.");
-        }
-        string value = *current;
-
-        shared_ptr<OptionModel> option(new OptionModel(name, value));
-        model->addOption(current, option);
 
         // Move to the semicolon.
         ++current;

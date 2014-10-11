@@ -8,6 +8,7 @@
 #include <memory>
 #include <stdexcept>
 
+#include "ParserManager.h"
 #include "EnumValueModel.h"
 #include "EnumValueParser.h"
 #include "InvalidProtoException.h"
@@ -47,13 +48,38 @@ bool Protocol::EnumValueParser::parse (TokenReader::iterator current, TokenReade
         shared_ptr<EnumValueModel> value(new EnumValueModel(name, index));
         model->addEnumValue(current, value);
 
-        // Move to the semicolon.
+        // Move to the semicolon or inline options.
+        ParserManager * parserMgr = ParserManager::instance();
         ++current;
-        if (current == end || *current != ";")
+        if (current == end)
         {
-            throw InvalidProtoException(current.line(), current.column(), "Expected ; character.");
+            throw InvalidProtoException(current.line(), current.column(), "Expected ; or [ character.");
         }
-        
+        if (*current != ";")
+        {
+            bool parserFound = false;
+            for (auto & parser: *parserMgr->parsers("enumValue"))
+            {
+                if (parser->parse(current, end, model))
+                {
+                    parserFound = true;
+                    break;
+                }
+            }
+            if (!parserFound)
+            {
+                throw InvalidProtoException(current.line(), current.column(), "Unexpected option content found.");
+            }
+
+            // Move to the semicolon.
+            ++current;
+            if (current == end || *current != ";")
+            {
+                throw InvalidProtoException(current.line(), current.column(), "Expected ; character.");
+            }
+        }
+        model->completeEnumValue();
+
         return true;
     }
     return false;

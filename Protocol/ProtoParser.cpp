@@ -28,7 +28,7 @@ shared_ptr<Protocol::ProtoModel> Protocol::ProtoParser::parse ()
 
     while (current != end)
     {
-        for (auto & parser: *parserMgr->parsers("general"))
+        for (auto & parser: *parserMgr->parsers("proto"))
         {
             if (parser->parse(current, end, mModel))
             {

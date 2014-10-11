@@ -47,6 +47,7 @@ namespace MuddledManaged
             void completeEnum ();
 
             void addEnumValue (TokenReader::iterator current, EnumValueModelCollection::value_type value);
+            void completeEnumValue ();
 
             void addMessage (TokenReader::iterator current, MessageModelCollection::value_type message);
             void completeMessage ();
@@ -70,6 +71,7 @@ namespace MuddledManaged
             MessageFieldModelCollection::value_type mCurrentField;
             OneofModelCollection::value_type mCurrentOneof;
             EnumModelCollection::value_type mCurrentEnum;
+            EnumValueModelCollection::value_type mCurrentEnumValue;
         };
 
     } // namespace Protocol

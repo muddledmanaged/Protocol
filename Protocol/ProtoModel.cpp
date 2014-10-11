@@ -12,7 +12,7 @@ using namespace std;
 using namespace MuddledManaged;
 
 Protocol::ProtoModel::ProtoModel ()
-: mCurrentField(nullptr), mCurrentOneof(nullptr), mCurrentEnum(nullptr)
+: mCurrentField(nullptr), mCurrentOneof(nullptr), mCurrentEnum(nullptr), mCurrentEnumValue(nullptr)
 {
 }
 
@@ -84,6 +84,12 @@ void Protocol::ProtoModel::addEnumValue (TokenReader::iterator current, EnumValu
     {
         throw InvalidProtoException(current.line(), current.column(), "Required enum not found.");
     }
+    mCurrentEnumValue = value;
+}
+
+void Protocol::ProtoModel::completeEnumValue ()
+{
+    mCurrentEnumValue = nullptr;
 }
 
 void Protocol::ProtoModel::addMessage (TokenReader::iterator current, MessageModelCollection::value_type message)
@@ -127,6 +133,10 @@ void Protocol::ProtoModel::addOption (TokenReader::iterator current, OptionModel
     if (mCurrentField != nullptr)
     {
         mCurrentField->addOption(option);
+    }
+    else if (mCurrentEnumValue != nullptr)
+    {
+        mCurrentEnumValue->addOption(option);
     }
     else
     {

@@ -24,3 +24,13 @@ unsigned int Protocol::EnumValueModel::value () const
 {
     return mValue;
 }
+
+void Protocol::EnumValueModel::addOption (OptionModelCollection::value_type option)
+{
+    mOptions.push_back(option);
+}
+
+const Protocol::EnumValueModel::OptionModelCollection * Protocol::EnumValueModel::options () const
+{
+    return &mOptions;
+}

@@ -20,8 +20,7 @@ Protocol::OptionValueParser::OptionValueParser ()
 
 bool Protocol::OptionValueParser::parse (TokenReader::iterator current, TokenReader::iterator end, std::shared_ptr<ProtoModel> model)
 {
-    // Move to the option name.
-    ++current;
+    // Get the option name.
     if (current == end || current->empty())
     {
         throw InvalidProtoException(current.line(), current.column(), "Expected option name.");

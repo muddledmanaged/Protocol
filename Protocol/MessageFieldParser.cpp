@@ -77,51 +77,15 @@ bool Protocol::MessageFieldParser::parse (TokenReader::iterator current, TokenRe
 
         // Move to the semicolon or inline options.
         ParserManager * parserMgr = ParserManager::instance();
-        bool optionFound = false;
         ++current;
         if (current == end)
         {
             throw InvalidProtoException(current.line(), current.column(), "Expected ; or [ character.");
         }
-        while (*current != ";")
+        if (*current != ";")
         {
-            if (optionFound)
-            {
-                if (current == end)
-                {
-                    throw InvalidProtoException(current.line(), current.column(), "Expected , or ] character.");
-                }
-                if (*current == "]")
-                {
-                    // Move to the semicolon.
-                    ++current;
-                    if (current == end || *current != ";")
-                    {
-                        throw InvalidProtoException(current.line(), current.column(), "Expected ; character.");
-                    }
-                    break;
-                }
-                if (*current != ",")
-                {
-                    throw InvalidProtoException(current.line(), current.column(), "Expected , or ] character.");
-                }
-            }
-            else
-            {
-                if (*current != "[")
-                {
-                    throw InvalidProtoException(current.line(), current.column(), "Expected ; or [ character.");
-                }
-                optionFound = true;
-            }
-            ++current;
-            if (current == end)
-            {
-                throw InvalidProtoException(current.line(), current.column(), "Expected option name.");
-            }
-
             bool parserFound = false;
-            for (auto & parser: *parserMgr->parsers("optionInline"))
+            for (auto & parser: *parserMgr->parsers("messageField"))
             {
                 if (parser->parse(current, end, model))
                 {
@@ -134,8 +98,12 @@ bool Protocol::MessageFieldParser::parse (TokenReader::iterator current, TokenRe
                 throw InvalidProtoException(current.line(), current.column(), "Unexpected option content found.");
             }
 
-            // Move to the comma or closing bracket.
+            // Move to the semicolon.
             ++current;
+            if (current == end || *current != ";")
+            {
+                throw InvalidProtoException(current.line(), current.column(), "Expected ; character.");
+            }
         }
         model->completeField();
 

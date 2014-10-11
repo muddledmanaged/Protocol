@@ -13,6 +13,8 @@
 		3E37A5D319DF918200BED294 /* MessageFieldParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E37A5D119DF918200BED294 /* MessageFieldParser.cpp */; };
 		3E37A5D419DF918200BED294 /* MessageFieldParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E37A5D219DF918200BED294 /* MessageFieldParser.h */; };
 		3E37A5D919DFA3DE00BED294 /* MessageFieldParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E37A5D819DFA3DE00BED294 /* MessageFieldParserScenarios.cpp */; };
+		3E8422B919E8C91800FA1222 /* OptionGroupParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E8422B719E8C91800FA1222 /* OptionGroupParser.cpp */; };
+		3E8422BA19E8C91800FA1222 /* OptionGroupParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E8422B819E8C91800FA1222 /* OptionGroupParser.h */; };
 		3E9888D219D2945B00505B28 /* ProtoModelScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E9888D119D2945B00505B28 /* ProtoModelScenarios.cpp */; };
 		3E9888D419D2971F00505B28 /* ProtoParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E9888D319D2971F00505B28 /* ProtoParserScenarios.cpp */; };
 		3E9B75BB19E77E94004B59A7 /* OptionModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E9B75B919E77E94004B59A7 /* OptionModel.cpp */; };
@@ -105,6 +107,8 @@
 		3E5B5C4619D8D0B6006EEE50 /* MessageMultiple.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageMultiple.proto; sourceTree = "<group>"; };
 		3E5B5C4A19D8F0F3006EEE50 /* MessageMultiplePackage.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageMultiplePackage.proto; sourceTree = "<group>"; };
 		3E5B5C4C19D8F79B006EEE50 /* MessageNested.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageNested.proto; sourceTree = "<group>"; };
+		3E8422B719E8C91800FA1222 /* OptionGroupParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionGroupParser.cpp; sourceTree = "<group>"; };
+		3E8422B819E8C91800FA1222 /* OptionGroupParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionGroupParser.h; sourceTree = "<group>"; };
 		3E9888D119D2945B00505B28 /* ProtoModelScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtoModelScenarios.cpp; sourceTree = "<group>"; };
 		3E9888D319D2971F00505B28 /* ProtoParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtoParserScenarios.cpp; sourceTree = "<group>"; };
 		3E9B75B919E77E94004B59A7 /* OptionModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionModel.cpp; sourceTree = "<group>"; };
@@ -233,10 +237,12 @@
 				3EB0EBD119E235810097929D /* OneofFieldParser.h */,
 				3E9B75B919E77E94004B59A7 /* OptionModel.cpp */,
 				3E9B75BA19E77E94004B59A7 /* OptionModel.h */,
-				3E9B75BD19E7809A004B59A7 /* OptionValueParser.cpp */,
-				3E9B75BE19E7809A004B59A7 /* OptionValueParser.h */,
+				3E8422B719E8C91800FA1222 /* OptionGroupParser.cpp */,
+				3E8422B819E8C91800FA1222 /* OptionGroupParser.h */,
 				3E9B75C119E780D1004B59A7 /* OptionSingleParser.cpp */,
 				3E9B75C219E780D1004B59A7 /* OptionSingleParser.h */,
+				3E9B75BD19E7809A004B59A7 /* OptionValueParser.cpp */,
+				3E9B75BE19E7809A004B59A7 /* OptionValueParser.h */,
 				3E9EE99E19D6727A00AEF047 /* Packageable.h */,
 				3E9EE99019D6634F00AEF047 /* PackageParser.cpp */,
 				3E9EE99119D6634F00AEF047 /* PackageParser.h */,
@@ -357,6 +363,7 @@
 				3E9EE99B19D663D000AEF047 /* MessageModel.h in Headers */,
 				3EE5ACCD19E39621001AEC6C /* EnumValueParser.h in Headers */,
 				3E37A5D019DF916600BED294 /* MessageFieldModel.h in Headers */,
+				3E8422BA19E8C91800FA1222 /* OptionGroupParser.h in Headers */,
 				3E9B75C419E780D1004B59A7 /* OptionSingleParser.h in Headers */,
 				3EB0EBCB19E225CD0097929D /* OneofModel.h in Headers */,
 				3EB0EBCF19E225F40097929D /* OneofParser.h in Headers */,
@@ -474,6 +481,7 @@
 				3ECE38A119DBAAEF00A042B4 /* EnumModel.cpp in Sources */,
 				3E9EE99A19D663D000AEF047 /* MessageModel.cpp in Sources */,
 				3EF78A6619C53DAF00976ADA /* TokenReader.cpp in Sources */,
+				3E8422B919E8C91800FA1222 /* OptionGroupParser.cpp in Sources */,
 				3E9EE99219D6634F00AEF047 /* PackageParser.cpp in Sources */,
 				3E9B75BB19E77E94004B59A7 /* OptionModel.cpp in Sources */,
 			);
