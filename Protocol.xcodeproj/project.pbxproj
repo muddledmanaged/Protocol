@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E03213519EB20FB00E21D52 /* ImportParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E03213319EB20FB00E21D52 /* ImportParser.cpp */; };
+		3E03213619EB20FB00E21D52 /* ImportParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E03213419EB20FB00E21D52 /* ImportParser.h */; };
 		3E3051DC19DCED6A008245F5 /* EnumParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E3051DB19DCED6A008245F5 /* EnumParserScenarios.cpp */; };
 		3E37A5CF19DF916600BED294 /* MessageFieldModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E37A5CD19DF916600BED294 /* MessageFieldModel.cpp */; };
 		3E37A5D019DF916600BED294 /* MessageFieldModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E37A5CE19DF916600BED294 /* MessageFieldModel.h */; };
@@ -76,6 +78,8 @@
 /* Begin PBXFileReference section */
 		3E03213019EB16D900E21D52 /* OptionValueFloat.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OptionValueFloat.proto; sourceTree = "<group>"; };
 		3E03213219EB16F800E21D52 /* OptionValueString.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OptionValueString.proto; sourceTree = "<group>"; };
+		3E03213319EB20FB00E21D52 /* ImportParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImportParser.cpp; sourceTree = "<group>"; };
+		3E03213419EB20FB00E21D52 /* ImportParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportParser.h; sourceTree = "<group>"; };
 		3E1B9A2519C1569F00AAAA0D /* TokenReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TokenReader.cpp; sourceTree = "<group>"; };
 		3E1B9A2619C1569F00AAAA0D /* TokenReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TokenReader.h; sourceTree = "<group>"; };
 		3E28C49719C5FF0B00D5F4FD /* EmptyCommentSingleLine.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = EmptyCommentSingleLine.proto; sourceTree = "<group>"; };
@@ -233,6 +237,8 @@
 				3EE5ACC719E39604001AEC6C /* EnumValueModel.h */,
 				3EE5ACCA19E39621001AEC6C /* EnumValueParser.cpp */,
 				3EE5ACCB19E39621001AEC6C /* EnumValueParser.h */,
+				3E03213319EB20FB00E21D52 /* ImportParser.cpp */,
+				3E03213419EB20FB00E21D52 /* ImportParser.h */,
 				3EDF794E19D79E7200AD2103 /* InvalidProtoException.h */,
 				3E9EE99819D663D000AEF047 /* MessageModel.cpp */,
 				3E9EE99919D663D000AEF047 /* MessageModel.h */,
@@ -392,6 +398,7 @@
 				3E9B75C419E780D1004B59A7 /* OptionSingleParser.h in Headers */,
 				3EB0EBCB19E225CD0097929D /* OneofModel.h in Headers */,
 				3EB0EBCF19E225F40097929D /* OneofParser.h in Headers */,
+				3E03213619EB20FB00E21D52 /* ImportParser.h in Headers */,
 				3ECE389E19DBAA3100A042B4 /* EnumParser.h in Headers */,
 				3E9EE9A019D6727A00AEF047 /* Packageable.h in Headers */,
 				3EE9089919C9361400C75919 /* ProtoModel.h in Headers */,
@@ -503,6 +510,7 @@
 				3EB0EBCE19E225F40097929D /* OneofParser.cpp in Sources */,
 				3EB0FA2419DA4B66003633C8 /* ParserManager.cpp in Sources */,
 				3EB0EBCA19E225CD0097929D /* OneofModel.cpp in Sources */,
+				3E03213519EB20FB00E21D52 /* ImportParser.cpp in Sources */,
 				3E9B75BF19E7809A004B59A7 /* OptionValueParser.cpp in Sources */,
 				3ECE38A119DBAAEF00A042B4 /* EnumModel.cpp in Sources */,
 				3E9EE99A19D663D000AEF047 /* MessageModel.cpp in Sources */,

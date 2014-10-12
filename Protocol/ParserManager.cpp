@@ -8,6 +8,7 @@
 #include "ParserManager.h"
 #include "EnumParser.h"
 #include "EnumValueParser.h"
+#include "ImportParser.h"
 #include "MessageParser.h"
 #include "MessageFieldParser.h"
 #include "OneofParser.h"
@@ -37,6 +38,7 @@ Protocol::ParserManager::ParserManager ()
     shared_ptr<ParserInterface> messageParser(new MessageParser());
     shared_ptr<ParserInterface> enumParser(new EnumParser());
     shared_ptr<ParserInterface> enumValueParser(new EnumValueParser());
+    shared_ptr<ParserInterface> importParser(new ImportParser());
     shared_ptr<ParserInterface> messageFieldParser(new MessageFieldParser());
     shared_ptr<ParserInterface> oneofParser(new OneofParser());
     shared_ptr<ParserInterface> oneofFieldParser(new OneofFieldParser());
@@ -51,6 +53,7 @@ Protocol::ParserManager::ParserManager ()
         parserIter->second->push_back(messageParser);
         parserIter->second->push_back(enumParser);
         parserIter->second->push_back(enumValueParser);
+        parserIter->second->push_back(importParser);
         parserIter->second->push_back(messageFieldParser);
         parserIter->second->push_back(oneofParser);
         parserIter->second->push_back(oneofFieldParser);
@@ -62,6 +65,7 @@ Protocol::ParserManager::ParserManager ()
     parserIter = mParserMap.find("proto");
     if (parserIter != mParserMap.end())
     {
+        parserIter->second->push_back(importParser);
         parserIter->second->push_back(packageParser);
         parserIter->second->push_back(messageParser);
         parserIter->second->push_back(enumParser);
