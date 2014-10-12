@@ -17,14 +17,14 @@
 using namespace std;
 using namespace MuddledManaged;
 
-DESIGNER_SCENARIO( EnumParser, "Construction/Normal", "OptionParser can be constructed." )
+DESIGNER_SCENARIO( OptionParser, "Construction/Normal", "OptionParser can be constructed." )
 {
     Protocol::OptionGroupParser groupParser;
     Protocol::OptionSingleParser singleParser;
     Protocol::OptionValueParser valueParser;
 }
 
-DESIGNER_SCENARIO( EnumParser, "Parsing/Normal", "OptionParser can parse enum option." )
+DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse enum option." )
 {
     shared_ptr<Protocol::ProtoModel> model;
     Protocol::ProtoParser parser("OptionEnum.proto");
@@ -56,7 +56,7 @@ DESIGNER_SCENARIO( EnumParser, "Parsing/Normal", "OptionParser can parse enum op
     verifyEqual(1, enumCount);
 }
 
-DESIGNER_SCENARIO( EnumParser, "Parsing/Normal", "OptionParser can parse enum value option." )
+DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse enum value option." )
 {
     shared_ptr<Protocol::ProtoModel> model;
     Protocol::ProtoParser parser("OptionEnumValue.proto");
@@ -112,7 +112,7 @@ DESIGNER_SCENARIO( EnumParser, "Parsing/Normal", "OptionParser can parse enum va
     verifyEqual(1, enumCount);
 }
 
-DESIGNER_SCENARIO( EnumParser, "Parsing/Normal", "OptionParser can parse message option." )
+DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse message option." )
 {
     shared_ptr<Protocol::ProtoModel> model;
     Protocol::ProtoParser parser("OptionMessage.proto");
@@ -144,7 +144,7 @@ DESIGNER_SCENARIO( EnumParser, "Parsing/Normal", "OptionParser can parse message
     verifyEqual(1, messageCount);
 }
 
-DESIGNER_SCENARIO( EnumParser, "Parsing/Normal", "OptionParser can parse message field option." )
+DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse message field option." )
 {
     shared_ptr<Protocol::ProtoModel> model;
     Protocol::ProtoParser parser("OptionMessageField.proto");
@@ -200,7 +200,7 @@ DESIGNER_SCENARIO( EnumParser, "Parsing/Normal", "OptionParser can parse message
     verifyEqual(1, messageCount);
 }
 
-DESIGNER_SCENARIO( EnumParser, "Parsing/Normal", "OptionParser can parse oneof option." )
+DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse oneof option." )
 {
     shared_ptr<Protocol::ProtoModel> model;
     Protocol::ProtoParser parser("OptionOneof.proto");
@@ -244,7 +244,7 @@ DESIGNER_SCENARIO( EnumParser, "Parsing/Normal", "OptionParser can parse oneof o
     verifyEqual(1, messageCount);
 }
 
-DESIGNER_SCENARIO( EnumParser, "Parsing/Normal", "OptionParser can parse oneof field option." )
+DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse oneof field option." )
 {
     shared_ptr<Protocol::ProtoModel> model;
     Protocol::ProtoParser parser("OptionOneofField.proto");
@@ -303,7 +303,7 @@ DESIGNER_SCENARIO( EnumParser, "Parsing/Normal", "OptionParser can parse oneof f
     verifyEqual(1, messageCount);
 }
 
-DESIGNER_SCENARIO( EnumParser, "Parsing/Normal", "OptionParser can parse proto option." )
+DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse proto option." )
 {
     shared_ptr<Protocol::ProtoModel> model;
     Protocol::ProtoParser parser("OptionProto.proto");

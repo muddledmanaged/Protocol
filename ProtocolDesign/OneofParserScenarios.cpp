@@ -87,7 +87,7 @@ DESIGNER_SCENARIO( OneofParser, "Parsing/Normal", "OneofParser can parse simple 
     verifyEqual(1, messageCount);
 }
 
-DESIGNER_SCENARIO( MessageFieldParser, "Parsing/Normal", "OneofParser can parse oneof field with qualified type." )
+DESIGNER_SCENARIO( OneofParser, "Parsing/Normal", "OneofParser can parse oneof field with qualified type." )
 {
     shared_ptr<Protocol::ProtoModel> model;
 
