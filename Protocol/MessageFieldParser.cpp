@@ -48,9 +48,21 @@ bool Protocol::MessageFieldParser::parse (TokenReader::iterator current, TokenRe
             throw InvalidProtoException(current.line(), current.column(), "Expected field type.");
         }
         string fieldType = *current;
-
-        // Move to the field name.
+        // Either move to the name or keep adding to the type if we find a dot.
         ++current;
+        while (current != end && *current == ".")
+        {
+            fieldType += ".";
+            ++current;
+            if (current == end || current->empty())
+            {
+                throw InvalidProtoException(current.line(), current.column(), "Expected additional field type.");
+            }
+            fieldType += *current;
+            ++current;
+        }
+
+        // Get the field name.
         if (current == end || current->empty())
         {
             throw InvalidProtoException(current.line(), current.column(), "Expected field name.");

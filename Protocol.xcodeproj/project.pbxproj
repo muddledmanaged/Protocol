@@ -104,6 +104,8 @@
 		3E37A5D519DFA26E00BED294 /* MessageField.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageField.proto; sourceTree = "<group>"; };
 		3E37A5D719DFA29700BED294 /* MessageFieldMultiple.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageFieldMultiple.proto; sourceTree = "<group>"; };
 		3E37A5D819DFA3DE00BED294 /* MessageFieldParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFieldParserScenarios.cpp; sourceTree = "<group>"; };
+		3E4ECEE019EAEE8C00739243 /* MessageFieldQualified.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageFieldQualified.proto; sourceTree = "<group>"; };
+		3E4ECEE219EAEF9700739243 /* MessageOneofQualified.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageOneofQualified.proto; sourceTree = "<group>"; };
 		3E5B5C4419D8CEB6006EEE50 /* PackageRedefined.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PackageRedefined.proto; sourceTree = "<group>"; };
 		3E5B5C4619D8D0B6006EEE50 /* MessageMultiple.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageMultiple.proto; sourceTree = "<group>"; };
 		3E5B5C4A19D8F0F3006EEE50 /* MessageMultiplePackage.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageMultiplePackage.proto; sourceTree = "<group>"; };
@@ -336,8 +338,10 @@
 				3E5B5C4C19D8F79B006EEE50 /* MessageNested.proto */,
 				3E37A5D519DFA26E00BED294 /* MessageField.proto */,
 				3E37A5D719DFA29700BED294 /* MessageFieldMultiple.proto */,
+				3E4ECEE019EAEE8C00739243 /* MessageFieldQualified.proto */,
 				3EB0EBD419E23C560097929D /* MessageOneof.proto */,
 				3EB0EBD619E23C720097929D /* MessageOneofMultiple.proto */,
+				3E4ECEE219EAEF9700739243 /* MessageOneofQualified.proto */,
 				3EE9C53219E9C66F008EF427 /* OptionEnum.proto */,
 				3EE9C53319E9C692008EF427 /* OptionEnumValue.proto */,
 				3EE9C53419E9C6B9008EF427 /* OptionMessage.proto */,

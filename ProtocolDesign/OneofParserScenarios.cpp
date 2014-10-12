@@ -87,6 +87,54 @@ DESIGNER_SCENARIO( OneofParser, "Parsing/Normal", "OneofParser can parse simple 
     verifyEqual(1, messageCount);
 }
 
+DESIGNER_SCENARIO( MessageFieldParser, "Parsing/Normal", "OneofParser can parse oneof field with qualified type." )
+{
+    shared_ptr<Protocol::ProtoModel> model;
+
+    Protocol::ProtoParser parser("MessageOneofQualified.proto");
+    model = parser.parse();
+
+    int messageCount = 0;
+    auto messageBegin = model->messages()->cbegin();
+    auto messageEnd = model->messages()->cend();
+    while (messageBegin != messageEnd)
+    {
+        messageCount++;
+        auto message = *messageBegin;
+        verifyEqual("messageOne", message->name());
+
+        int oneofCount = 0;
+        auto oneofBegin = message->oneofs()->cbegin();
+        auto oneofEnd = message->oneofs()->cend();
+        while (oneofBegin != oneofEnd)
+        {
+            oneofCount++;
+            auto oneof = *oneofBegin;
+            verifyEqual("choicesOne", oneof->name());
+
+            int fieldCount = 0;
+            auto fieldBegin = oneof->fields()->cbegin();
+            auto fieldEnd = oneof->fields()->cend();
+            while (fieldBegin != fieldEnd)
+            {
+                fieldCount++;
+                auto field = *fieldBegin;
+                verifyTrue(Protocol::MessageFieldModel::Requiredness::optional == field->requiredness());
+                verifyEqual("Abc.Simple", field->fieldType());
+                verifyEqual("sOne", field->name());
+                unsigned int expectedIndex = 1;
+                verifyEqual(expectedIndex, field->index());
+                fieldBegin++;
+            }
+            verifyEqual(1, fieldCount);
+            oneofBegin++;
+        }
+        verifyEqual(1, oneofCount);
+        messageBegin++;
+    }
+    verifyEqual(1, messageCount);
+}
+
 DESIGNER_SCENARIO( OneofParser, "Parsing/Normal", "OneofParser can parse multiple nested messages with oneofs." )
 {
     shared_ptr<Protocol::ProtoModel> model;

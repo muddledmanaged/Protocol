@@ -37,12 +37,12 @@ DESIGNER_SCENARIO( MessageFieldParser, "Parsing/Normal", "MessageFieldParser can
         verifyEqual("messageOne", message->name());
 
         int fieldCount = 0;
-        auto begin2 = message->fields()->cbegin();
-        auto end2 = message->fields()->cend();
-        while (begin2 != end2)
+        auto fieldBegin = message->fields()->cbegin();
+        auto fieldEnd = message->fields()->cend();
+        while (fieldBegin != fieldEnd)
         {
             fieldCount++;
-            auto field = *begin2;
+            auto field = *fieldBegin;
             if (fieldCount == 1)
             {
                 verifyTrue(Protocol::MessageFieldModel::Requiredness::required == field->requiredness());
@@ -67,9 +67,45 @@ DESIGNER_SCENARIO( MessageFieldParser, "Parsing/Normal", "MessageFieldParser can
                 unsigned int expectedIndex = 3;
                 verifyEqual(expectedIndex, field->index());
             }
-            begin2++;
+            fieldBegin++;
         }
         verifyEqual(3, fieldCount);
+        messageBegin++;
+    }
+    verifyEqual(1, messageCount);
+}
+
+DESIGNER_SCENARIO( MessageFieldParser, "Parsing/Normal", "MessageFieldParser can parse message field with qualified type." )
+{
+    shared_ptr<Protocol::ProtoModel> model;
+
+    Protocol::ProtoParser parser("MessageFieldQualified.proto");
+    model = parser.parse();
+
+    int messageCount = 0;
+    auto messageBegin = model->messages()->cbegin();
+    auto messageEnd = model->messages()->cend();
+    while (messageBegin != messageEnd)
+    {
+        messageCount++;
+        auto message = *messageBegin;
+        verifyEqual("messageOne", message->name());
+
+        int fieldCount = 0;
+        auto fieldBegin = message->fields()->cbegin();
+        auto fieldEnd = message->fields()->cend();
+        while (fieldBegin != fieldEnd)
+        {
+            fieldCount++;
+            auto field = *fieldBegin;
+            verifyTrue(Protocol::MessageFieldModel::Requiredness::required == field->requiredness());
+            verifyEqual("Abc.Simple", field->fieldType());
+            verifyEqual("sOne", field->name());
+            unsigned int expectedIndex = 1;
+            verifyEqual(expectedIndex, field->index());
+            fieldBegin++;
+        }
+        verifyEqual(1, fieldCount);
         messageBegin++;
     }
     verifyEqual(1, messageCount);
