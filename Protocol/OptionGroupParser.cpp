@@ -57,7 +57,6 @@ bool Protocol::OptionGroupParser::parse (TokenReader::iterator current, TokenRea
             }
 
             // Check for either the end of the group or another expected option.
-            ++current;
             if (current != end && *current == "]")
             {
                 break;

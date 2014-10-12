@@ -322,3 +322,43 @@ DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse proto
     }
     verifyEqual(1, optionCount);
 }
+
+DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse floating point option value." )
+{
+    shared_ptr<Protocol::ProtoModel> model;
+    Protocol::ProtoParser parser("OptionValueFloat.proto");
+    model = parser.parse();
+
+    int optionCount = 0;
+    auto optionBegin = model->options()->cbegin();
+    auto optionEnd = model->options()->cend();
+    while (optionBegin != optionEnd)
+    {
+        optionCount++;
+        auto option = *optionBegin;
+        verifyEqual("optionOne", option->name());
+        verifyEqual("3.14", option->value());
+        optionBegin++;
+    }
+    verifyEqual(1, optionCount);
+}
+
+DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse string option value." )
+{
+    shared_ptr<Protocol::ProtoModel> model;
+    Protocol::ProtoParser parser("OptionValueString.proto");
+    model = parser.parse();
+
+    int optionCount = 0;
+    auto optionBegin = model->options()->cbegin();
+    auto optionEnd = model->options()->cend();
+    while (optionBegin != optionEnd)
+    {
+        optionCount++;
+        auto option = *optionBegin;
+        verifyEqual("optionOne", option->name());
+        verifyEqual("This is a string option value.", option->value());
+        optionBegin++;
+    }
+    verifyEqual(1, optionCount);
+}

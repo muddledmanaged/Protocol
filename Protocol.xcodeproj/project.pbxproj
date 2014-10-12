@@ -74,6 +74,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3E03213019EB16D900E21D52 /* OptionValueFloat.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OptionValueFloat.proto; sourceTree = "<group>"; };
+		3E03213219EB16F800E21D52 /* OptionValueString.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OptionValueString.proto; sourceTree = "<group>"; };
 		3E1B9A2519C1569F00AAAA0D /* TokenReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TokenReader.cpp; sourceTree = "<group>"; };
 		3E1B9A2619C1569F00AAAA0D /* TokenReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TokenReader.h; sourceTree = "<group>"; };
 		3E28C49719C5FF0B00D5F4FD /* EmptyCommentSingleLine.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = EmptyCommentSingleLine.proto; sourceTree = "<group>"; };
@@ -349,6 +351,8 @@
 				3EE9C53619E9C6FE008EF427 /* OptionOneof.proto */,
 				3EE9C53719E9C714008EF427 /* OptionOneofField.proto */,
 				3EE9C53019E9C64A008EF427 /* OptionProto.proto */,
+				3E03213019EB16D900E21D52 /* OptionValueFloat.proto */,
+				3E03213219EB16F800E21D52 /* OptionValueString.proto */,
 				3E2D269D19C7F0F200BD2302 /* Package.proto */,
 				3E5B5C4419D8CEB6006EEE50 /* PackageRedefined.proto */,
 				3E28C49919C5FF6F00D5F4FD /* Text.proto */,

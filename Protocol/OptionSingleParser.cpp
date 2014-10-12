@@ -51,8 +51,7 @@ bool Protocol::OptionSingleParser::parse (TokenReader::iterator current, TokenRe
             }
         }
 
-        // Move to the semicolon.
-        ++current;
+        // Get the semicolon.
         if (current == end || *current != ";")
         {
             throw InvalidProtoException(current.line(), current.column(), "Expected ; character.");

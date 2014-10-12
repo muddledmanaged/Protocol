@@ -45,12 +45,51 @@ bool Protocol::OptionValueParser::parse (TokenReader::iterator current, TokenRea
     {
         throw InvalidProtoException(current.line(), current.column(), "Expected option value.");
     }
-    string value = *current;
+    string value = "";
+    if (*current == "\"")
+    {
+        ++current;
+        if (current == end || current->empty())
+        {
+            throw InvalidProtoException(current.line(), current.column(), "Expected option value.");
+        }
+        value = *current;
+
+        // Make sure there is a terminating quote.
+        ++current;
+        if (current == end || current->empty() || *current != "\"")
+        {
+            throw InvalidProtoException(current.line(), current.column(), "Expected ending quote character.");
+        }
+        // Move to the next token to be consistent with how we look for floating point values.
+        ++current;
+    }
+    else
+    {
+        value = *current;
+        // Either move to the terminating character or add to the value if we find a dot. This is not
+        // like qualified type names where there can be multiple dots. Here, a dot is intended to be used
+        // for a floating point value so there should only be one.
+        ++current;
+        if (current != end && *current == ".")
+        {
+            value += ".";
+            ++current;
+            if (current == end || current->empty())
+            {
+                throw InvalidProtoException(current.line(), current.column(), "Expected additional value.");
+            }
+            value += *current;
+            // Move to the next token to be consistent with what happens if we do not find a dot.
+            ++current;
+        }
+    }
 
     shared_ptr<OptionModel> option(new OptionModel(name, value));
     model->addOption(current, option);
 
     // This parser is designed to be used by either the OptionSingleParser or the OptionGroupParser and
-    // does not move to the terminating character because there could be multiple options.
+    // does not verify the terminating character because there could be multiple options. It does have to
+    // move to the terminating character in order to check if there is a dot.
     return true;
 }
