@@ -28,12 +28,12 @@ DESIGNER_SCENARIO( MessageFieldParser, "Parsing/Normal", "MessageFieldParser can
     model = parser.parse();
 
     int messageCount = 0;
-    auto begin1 = model->messages()->cbegin();
-    auto end1 = model->messages()->cend();
-    while (begin1 != end1)
+    auto messageBegin = model->messages()->cbegin();
+    auto messageEnd = model->messages()->cend();
+    while (messageBegin != messageEnd)
     {
         messageCount++;
-        auto message = *begin1;
+        auto message = *messageBegin;
         verifyEqual("messageOne", message->name());
 
         int fieldCount = 0;
@@ -70,7 +70,7 @@ DESIGNER_SCENARIO( MessageFieldParser, "Parsing/Normal", "MessageFieldParser can
             begin2++;
         }
         verifyEqual(3, fieldCount);
-        begin1++;
+        messageBegin++;
     }
     verifyEqual(1, messageCount);
 }
@@ -82,58 +82,58 @@ DESIGNER_SCENARIO( MessageFieldParser, "Parsing/Normal", "MessageFieldParser can
     Protocol::ProtoParser parser("MessageFieldMultiple.proto");
     model = parser.parse();
 
-    int message1Count = 0;
-    auto begin1 = model->messages()->cbegin();
-    auto end1 = model->messages()->cend();
-    while (begin1 != end1)
+    int messageCount = 0;
+    auto messageBegin = model->messages()->cbegin();
+    auto messageEnd = model->messages()->cend();
+    while (messageBegin != messageEnd)
     {
-        message1Count++;
-        auto message1 = *begin1;
-        verifyEqual("messageOne", message1->name());
+        messageCount++;
+        auto messageOne = *messageBegin;
+        verifyEqual("messageOne", messageOne->name());
 
-        int field1Count = 0;
-        auto begin2 = message1->fields()->cbegin();
-        auto end2 = message1->fields()->cend();
-        while (begin2 != end2)
+        int messageOneFieldCount = 0;
+        auto messageOneFieldBegin = messageOne->fields()->cbegin();
+        auto messageOneFieldEnd = messageOne->fields()->cend();
+        while (messageOneFieldBegin != messageOneFieldEnd)
         {
-            field1Count++;
-            auto field1 = *begin2;
-            if (field1Count == 1)
+            messageOneFieldCount++;
+            auto field = *messageOneFieldBegin;
+            if (messageOneFieldCount == 1)
             {
-                verifyEqual("sOne", field1->name());
+                verifyEqual("sOne", field->name());
             }
             else
             {
-                verifyEqual("bOne", field1->name());
+                verifyEqual("bOne", field->name());
             }
-            begin2++;
+            messageOneFieldBegin++;
         }
 
-        int message2Count = 0;
-        auto begin3 = message1->messages()->cbegin();
-        auto end3 = message1->messages()->cend();
-        while (begin3 != end3)
+        int messageOneMessageCount = 0;
+        auto messageOneMessageBegin = messageOne->messages()->cbegin();
+        auto messageOneMessageEnd = messageOne->messages()->cend();
+        while (messageOneMessageBegin != messageOneMessageEnd)
         {
-            message2Count++;
-            auto message2 = *begin3;
-            verifyEqual("messageTwo", message2->name());
+            messageOneMessageCount++;
+            auto messageTwo = *messageOneMessageBegin;
+            verifyEqual("messageTwo", messageTwo->name());
 
-            int field2Count = 0;
-            auto begin4 = message2->fields()->cbegin();
-            auto end4 = message2->fields()->cend();
-            while (begin4 != end4)
+            int messageTwoFieldCount = 0;
+            auto messageTwoFieldBegin = messageTwo->fields()->cbegin();
+            auto messageTwoFieldEnd = messageTwo->fields()->cend();
+            while (messageTwoFieldBegin != messageTwoFieldEnd)
             {
-                field2Count++;
-                auto field2 = *begin4;
-                verifyEqual("sTwo", field2->name());
-                begin4++;
+                messageTwoFieldCount++;
+                auto field = *messageTwoFieldBegin;
+                verifyEqual("sTwo", field->name());
+                messageTwoFieldBegin++;
             }
-            verifyEqual(1, field2Count);
-            begin3++;
+            verifyEqual(1, messageTwoFieldCount);
+            messageOneMessageBegin++;
         }
-        verifyEqual(2, field1Count);
-        verifyEqual(1, message2Count);
-        begin1++;
+        verifyEqual(2, messageOneFieldCount);
+        verifyEqual(1, messageOneMessageCount);
+        messageBegin++;
     }
-    verifyEqual(1, message1Count);
+    verifyEqual(1, messageCount);
 }
