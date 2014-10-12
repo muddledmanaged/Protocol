@@ -17,7 +17,7 @@ Protocol::EnumParser::EnumParser ()
 {
 }
 
-bool Protocol::EnumParser::parse (TokenReader::iterator current, TokenReader::iterator end, shared_ptr<ProtoModel> model)
+bool Protocol::EnumParser::parse (TokenReader::iterator current, TokenReader::iterator end, bool firstChance, shared_ptr<ProtoModel> model)
 {
     if (current != end && *current == "enum")
     {
@@ -52,7 +52,7 @@ bool Protocol::EnumParser::parse (TokenReader::iterator current, TokenReader::it
             bool parserFound = false;
             for (auto & parser: *parserMgr->parsers("enum"))
             {
-                if (parser->parse(current, end, model))
+                if (parser->parse(current, end, true, model))
                 {
                     parserFound = true;
                     break;
@@ -60,7 +60,19 @@ bool Protocol::EnumParser::parse (TokenReader::iterator current, TokenReader::it
             }
             if (!parserFound)
             {
-                throw InvalidProtoException(current.line(), current.column(), "Unexpected enum content found.");
+                // Try again for the second chance parsers.
+                for (auto & parser: *parserMgr->parsers("enum"))
+                {
+                    if (parser->parse(current, end, false, model))
+                    {
+                        parserFound = true;
+                        break;
+                    }
+                }
+                if (!parserFound)
+                {
+                    throw InvalidProtoException(current.line(), current.column(), "Unexpected enum content found.");
+                }
             }
             ++current;
         }

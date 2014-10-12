@@ -16,7 +16,7 @@ using namespace MuddledManaged;
 Protocol::PackageParser::PackageParser ()
 { }
 
-bool Protocol::PackageParser::parse (TokenReader::iterator current, TokenReader::iterator end, std::shared_ptr<ProtoModel> model)
+bool Protocol::PackageParser::parse (TokenReader::iterator current, TokenReader::iterator end, bool firstChance, std::shared_ptr<ProtoModel> model)
 {
     if (current != end && *current == "package")
     {

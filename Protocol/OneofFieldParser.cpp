@@ -17,8 +17,13 @@ Protocol::OneofFieldParser::OneofFieldParser ()
 {
 }
 
-bool Protocol::OneofFieldParser::parse (TokenReader::iterator current, TokenReader::iterator end, shared_ptr<ProtoModel> model)
+bool Protocol::OneofFieldParser::parse (TokenReader::iterator current, TokenReader::iterator end, bool firstChance, shared_ptr<ProtoModel> model)
 {
+    if (firstChance)
+    {
+        // This is a second chance parser.
+        return false;
+    }
     if (current != end)
     {
         // Get the field type.
@@ -66,7 +71,7 @@ bool Protocol::OneofFieldParser::parse (TokenReader::iterator current, TokenRead
             bool parserFound = false;
             for (auto & parser: *parserMgr->parsers("oneofField"))
             {
-                if (parser->parse(current, end, model))
+                if (parser->parse(current, end, true, model))
                 {
                     parserFound = true;
                     break;
@@ -74,7 +79,19 @@ bool Protocol::OneofFieldParser::parse (TokenReader::iterator current, TokenRead
             }
             if (!parserFound)
             {
-                throw InvalidProtoException(current.line(), current.column(), "Unexpected option content found.");
+                // Try again for the second chance parsers.
+                for (auto & parser: *parserMgr->parsers("oneofField"))
+                {
+                    if (parser->parse(current, end, false, model))
+                    {
+                        parserFound = true;
+                        break;
+                    }
+                }
+                if (!parserFound)
+                {
+                    throw InvalidProtoException(current.line(), current.column(), "Unexpected option content found.");
+                }
             }
 
             // Move to the semicolon.

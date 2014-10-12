@@ -24,7 +24,7 @@ namespace MuddledManaged
             virtual ~ParserInterface ()
             { }
 
-            virtual bool parse (TokenReader::iterator current, TokenReader::iterator end, std::shared_ptr<ProtoModel> model) = 0;
+            virtual bool parse (TokenReader::iterator current, TokenReader::iterator end, bool firstChance, std::shared_ptr<ProtoModel> model) = 0;
 
         protected:
             ParserInterface ()

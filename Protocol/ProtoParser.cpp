@@ -10,6 +10,7 @@
 #include "ProtoParser.h"
 #include "TokenReader.h"
 #include "ParserManager.h"
+#include "InvalidProtoException.h"
 
 using namespace std;
 using namespace MuddledManaged;
@@ -28,11 +29,29 @@ shared_ptr<Protocol::ProtoModel> Protocol::ProtoParser::parse ()
 
     while (current != end)
     {
+        bool parserFound = false;
         for (auto & parser: *parserMgr->parsers("proto"))
         {
-            if (parser->parse(current, end, mModel))
+            if (parser->parse(current, end, true, mModel))
             {
+                parserFound = true;
                 break;
+            }
+        }
+        if (!parserFound)
+        {
+            // Try again for the second chance parsers.
+            for (auto & parser: *parserMgr->parsers("proto"))
+            {
+                if (parser->parse(current, end, false, mModel))
+                {
+                    parserFound = true;
+                    break;
+                }
+            }
+            if (!parserFound)
+            {
+                throw InvalidProtoException(current.line(), current.column(), "Unexpected proto content found.");
             }
         }
         ++current;

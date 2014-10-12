@@ -19,8 +19,13 @@ using namespace MuddledManaged;
 Protocol::EnumValueParser::EnumValueParser ()
 { }
 
-bool Protocol::EnumValueParser::parse (TokenReader::iterator current, TokenReader::iterator end, std::shared_ptr<ProtoModel> model)
+bool Protocol::EnumValueParser::parse (TokenReader::iterator current, TokenReader::iterator end, bool firstChance, std::shared_ptr<ProtoModel> model)
 {
+    if (firstChance)
+    {
+        // This is a second chance parser.
+        return false;
+    }
     if (current != end)
     {
         // Get the value name.
@@ -60,7 +65,7 @@ bool Protocol::EnumValueParser::parse (TokenReader::iterator current, TokenReade
             bool parserFound = false;
             for (auto & parser: *parserMgr->parsers("enumValue"))
             {
-                if (parser->parse(current, end, model))
+                if (parser->parse(current, end, true, model))
                 {
                     parserFound = true;
                     break;
@@ -68,7 +73,19 @@ bool Protocol::EnumValueParser::parse (TokenReader::iterator current, TokenReade
             }
             if (!parserFound)
             {
-                throw InvalidProtoException(current.line(), current.column(), "Unexpected option content found.");
+                // Try again for the second chance parsers.
+                for (auto & parser: *parserMgr->parsers("enumValue"))
+                {
+                    if (parser->parse(current, end, false, model))
+                    {
+                        parserFound = true;
+                        break;
+                    }
+                }
+                if (!parserFound)
+                {
+                    throw InvalidProtoException(current.line(), current.column(), "Unexpected option content found.");
+                }
             }
 
             // Move to the semicolon.

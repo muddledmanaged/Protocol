@@ -18,8 +18,13 @@ using namespace MuddledManaged;
 Protocol::OptionValueParser::OptionValueParser ()
 { }
 
-bool Protocol::OptionValueParser::parse (TokenReader::iterator current, TokenReader::iterator end, std::shared_ptr<ProtoModel> model)
+bool Protocol::OptionValueParser::parse (TokenReader::iterator current, TokenReader::iterator end, bool firstChance, std::shared_ptr<ProtoModel> model)
 {
+    if (firstChance)
+    {
+        // This is a second chance parser.
+        return false;
+    }
     // Get the option name.
     if (current == end || current->empty())
     {

@@ -19,7 +19,7 @@ using namespace MuddledManaged;
 Protocol::MessageFieldParser::MessageFieldParser ()
 { }
 
-bool Protocol::MessageFieldParser::parse (TokenReader::iterator current, TokenReader::iterator end, std::shared_ptr<ProtoModel> model)
+bool Protocol::MessageFieldParser::parse (TokenReader::iterator current, TokenReader::iterator end, bool firstChance, std::shared_ptr<ProtoModel> model)
 {
     if (current != end)
     {
@@ -87,7 +87,7 @@ bool Protocol::MessageFieldParser::parse (TokenReader::iterator current, TokenRe
             bool parserFound = false;
             for (auto & parser: *parserMgr->parsers("messageField"))
             {
-                if (parser->parse(current, end, model))
+                if (parser->parse(current, end, true, model))
                 {
                     parserFound = true;
                     break;
@@ -95,7 +95,19 @@ bool Protocol::MessageFieldParser::parse (TokenReader::iterator current, TokenRe
             }
             if (!parserFound)
             {
-                throw InvalidProtoException(current.line(), current.column(), "Unexpected option content found.");
+                // Try again for the second chance parsers.
+                for (auto & parser: *parserMgr->parsers("messageField"))
+                {
+                    if (parser->parse(current, end, false, model))
+                    {
+                        parserFound = true;
+                        break;
+                    }
+                }
+                if (!parserFound)
+                {
+                    throw InvalidProtoException(current.line(), current.column(), "Unexpected option content found.");
+                }
             }
 
             // Move to the semicolon.
