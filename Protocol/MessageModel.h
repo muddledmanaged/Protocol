@@ -16,6 +16,7 @@
 #include "EnumModel.h"
 #include "MessageFieldModel.h"
 #include "OneofModel.h"
+#include "OptionModel.h"
 
 namespace MuddledManaged
 {
@@ -28,6 +29,7 @@ namespace MuddledManaged
             typedef std::vector<std::shared_ptr<EnumModel>> EnumModelCollection;
             typedef std::vector<std::shared_ptr<MessageModel>> MessageModelCollection;
             typedef std::vector<std::shared_ptr<OneofModel>> OneofModelCollection;
+            typedef std::vector<std::shared_ptr<OptionModel>> OptionModelCollection;
 
             explicit MessageModel (const std::string & name, const std::string & package = "");
 
@@ -41,6 +43,8 @@ namespace MuddledManaged
 
             void addOneof (OneofModelCollection::value_type oneof);
 
+            void addOption (OptionModelCollection::value_type option);
+
             const MessageFieldModelCollection * fields () const;
 
             const EnumModelCollection * enums () const;
@@ -49,12 +53,15 @@ namespace MuddledManaged
 
             const OneofModelCollection * oneofs () const;
 
+            const OptionModelCollection * options () const;
+
         private:
             std::string mName;
             MessageFieldModelCollection mFields;
             EnumModelCollection mEnums;
             MessageModelCollection mMessages;
             OneofModelCollection mOneofs;
+            OptionModelCollection mOptions;
         };
 
     } // namespace Protocol

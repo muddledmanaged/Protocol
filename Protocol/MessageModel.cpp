@@ -40,6 +40,11 @@ void Protocol::MessageModel::addOneof (OneofModelCollection::value_type oneof)
     mOneofs.push_back(oneof);
 }
 
+void Protocol::MessageModel::addOption (OptionModelCollection::value_type option)
+{
+    mOptions.push_back(option);
+}
+
 const Protocol::MessageModel::MessageFieldModelCollection * Protocol::MessageModel::fields () const
 {
     return &mFields;
@@ -58,4 +63,9 @@ const Protocol::MessageModel::MessageModelCollection * Protocol::MessageModel::m
 const Protocol::MessageModel::OneofModelCollection * Protocol::MessageModel::oneofs () const
 {
     return &mOneofs;
+}
+
+const Protocol::MessageModel::OptionModelCollection * Protocol::MessageModel::options () const
+{
+    return &mOptions;
 }

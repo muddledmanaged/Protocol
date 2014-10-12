@@ -54,6 +54,7 @@
 		3EE9089519C9339C00C75919 /* ProtoParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EE9089319C9339C00C75919 /* ProtoParser.h */; };
 		3EE9089819C9361400C75919 /* ProtoModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EE9089619C9361400C75919 /* ProtoModel.cpp */; };
 		3EE9089919C9361400C75919 /* ProtoModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EE9089719C9361400C75919 /* ProtoModel.h */; };
+		3EE9C53919EA135B008EF427 /* OptionParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EE9C53819EA135B008EF427 /* OptionParserScenarios.cpp */; };
 		3EF78A4919C5321E00976ADA /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EF78A4819C5321E00976ADA /* main.cpp */; };
 		3EF78A5419C5396300976ADA /* TokenReaderScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EF78A5219C5396300976ADA /* TokenReaderScenarios.cpp */; };
 		3EF78A6619C53DAF00976ADA /* TokenReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E1B9A2519C1569F00AAAA0D /* TokenReader.cpp */; };
@@ -161,6 +162,14 @@
 		3EE9089319C9339C00C75919 /* ProtoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtoParser.h; sourceTree = "<group>"; };
 		3EE9089619C9361400C75919 /* ProtoModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtoModel.cpp; sourceTree = "<group>"; };
 		3EE9089719C9361400C75919 /* ProtoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtoModel.h; sourceTree = "<group>"; };
+		3EE9C53019E9C64A008EF427 /* OptionProto.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OptionProto.proto; sourceTree = "<group>"; };
+		3EE9C53219E9C66F008EF427 /* OptionEnum.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OptionEnum.proto; sourceTree = "<group>"; };
+		3EE9C53319E9C692008EF427 /* OptionEnumValue.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OptionEnumValue.proto; sourceTree = "<group>"; };
+		3EE9C53419E9C6B9008EF427 /* OptionMessage.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OptionMessage.proto; sourceTree = "<group>"; };
+		3EE9C53519E9C6D2008EF427 /* OptionMessageField.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OptionMessageField.proto; sourceTree = "<group>"; };
+		3EE9C53619E9C6FE008EF427 /* OptionOneof.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OptionOneof.proto; sourceTree = "<group>"; };
+		3EE9C53719E9C714008EF427 /* OptionOneofField.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OptionOneofField.proto; sourceTree = "<group>"; };
+		3EE9C53819EA135B008EF427 /* OptionParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionParserScenarios.cpp; sourceTree = "<group>"; };
 		3EEDCF0419DE3D6700D79A30 /* EnumMultipleMessage.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EnumMultipleMessage.proto; sourceTree = "<group>"; };
 		3EF78A3119C4EDB100976ADA /* Designer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Designer.h; sourceTree = "<group>"; };
 		3EF78A4619C5321D00976ADA /* ProtocolDesign */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ProtocolDesign; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -297,6 +306,7 @@
 				3E9888D119D2945B00505B28 /* ProtoModelScenarios.cpp */,
 				3E9888D319D2971F00505B28 /* ProtoParserScenarios.cpp */,
 				3EF78A5219C5396300976ADA /* TokenReaderScenarios.cpp */,
+				3EE9C53819EA135B008EF427 /* OptionParserScenarios.cpp */,
 			);
 			path = ProtocolDesign;
 			sourceTree = "<group>";
@@ -310,6 +320,33 @@
 				3E28C49819C5FF2800D5F4FD /* EmptyCommentMultiLine.proto */,
 				3E28C49F19C60EF800D5F4FD /* EmptyCommentMultiLineEOF.proto */,
 				3E28C49D19C6068800D5F4FD /* EmptyComment.proto */,
+				3E3051D419DCEB9D008245F5 /* Enum.proto */,
+				3E3051D919DCEC19008245F5 /* EnumMultiple.proto */,
+				3EEDCF0419DE3D6700D79A30 /* EnumMultipleMessage.proto */,
+				3E3051DA19DCEC38008245F5 /* EnumMultiplePackage.proto */,
+				3EC1F8D619E4DFE80035376F /* EnumValue.proto */,
+				3EC1F8D819E4E02B0035376F /* EnumValueMultipleMessage.proto */,
+				3EF78A6F19C5588C00976ADA /* Message.proto */,
+				3E28C49A19C6010900D5F4FD /* MessageWhitespace.proto */,
+				3E28C49C19C6061100D5F4FD /* MessageComment.proto */,
+				3ED087EE19C67D9C001E4571 /* MessageNamespace.proto */,
+				3ED087ED19C674B5001E4571 /* MessageEverything.proto */,
+				3E5B5C4619D8D0B6006EEE50 /* MessageMultiple.proto */,
+				3E5B5C4A19D8F0F3006EEE50 /* MessageMultiplePackage.proto */,
+				3E5B5C4C19D8F79B006EEE50 /* MessageNested.proto */,
+				3E37A5D519DFA26E00BED294 /* MessageField.proto */,
+				3E37A5D719DFA29700BED294 /* MessageFieldMultiple.proto */,
+				3EB0EBD419E23C560097929D /* MessageOneof.proto */,
+				3EB0EBD619E23C720097929D /* MessageOneofMultiple.proto */,
+				3EE9C53219E9C66F008EF427 /* OptionEnum.proto */,
+				3EE9C53319E9C692008EF427 /* OptionEnumValue.proto */,
+				3EE9C53419E9C6B9008EF427 /* OptionMessage.proto */,
+				3EE9C53519E9C6D2008EF427 /* OptionMessageField.proto */,
+				3EE9C53619E9C6FE008EF427 /* OptionOneof.proto */,
+				3EE9C53719E9C714008EF427 /* OptionOneofField.proto */,
+				3EE9C53019E9C64A008EF427 /* OptionProto.proto */,
+				3E2D269D19C7F0F200BD2302 /* Package.proto */,
+				3E5B5C4419D8CEB6006EEE50 /* PackageRedefined.proto */,
 				3E28C49919C5FF6F00D5F4FD /* Text.proto */,
 				3E28C4A119C6110900D5F4FD /* TextCommentSingleLine.proto */,
 				3E28C4A019C610A900D5F4FD /* TextCommentSingleLineEOF.proto */,
@@ -324,26 +361,6 @@
 				3EA6589C19D261960057E591 /* TextStringEndingEscape.proto */,
 				3EA6589E19D26B220057E591 /* TextStringEndingQuote.proto */,
 				3E28C49B19C602D000D5F4FD /* TextWhitespace.proto */,
-				3EF78A6F19C5588C00976ADA /* Message.proto */,
-				3E28C49A19C6010900D5F4FD /* MessageWhitespace.proto */,
-				3E28C49C19C6061100D5F4FD /* MessageComment.proto */,
-				3ED087EE19C67D9C001E4571 /* MessageNamespace.proto */,
-				3ED087ED19C674B5001E4571 /* MessageEverything.proto */,
-				3E5B5C4619D8D0B6006EEE50 /* MessageMultiple.proto */,
-				3E5B5C4A19D8F0F3006EEE50 /* MessageMultiplePackage.proto */,
-				3E5B5C4C19D8F79B006EEE50 /* MessageNested.proto */,
-				3E37A5D519DFA26E00BED294 /* MessageField.proto */,
-				3E37A5D719DFA29700BED294 /* MessageFieldMultiple.proto */,
-				3EB0EBD419E23C560097929D /* MessageOneof.proto */,
-				3EB0EBD619E23C720097929D /* MessageOneofMultiple.proto */,
-				3E2D269D19C7F0F200BD2302 /* Package.proto */,
-				3E5B5C4419D8CEB6006EEE50 /* PackageRedefined.proto */,
-				3E3051D419DCEB9D008245F5 /* Enum.proto */,
-				3E3051D919DCEC19008245F5 /* EnumMultiple.proto */,
-				3EEDCF0419DE3D6700D79A30 /* EnumMultipleMessage.proto */,
-				3E3051DA19DCEC38008245F5 /* EnumMultiplePackage.proto */,
-				3EC1F8D619E4DFE80035376F /* EnumValue.proto */,
-				3EC1F8D819E4E02B0035376F /* EnumValueMultipleMessage.proto */,
 			);
 			path = Messages;
 			sourceTree = "<group>";
@@ -457,6 +474,7 @@
 				3EF78A5419C5396300976ADA /* TokenReaderScenarios.cpp in Sources */,
 				3EF78A4919C5321E00976ADA /* main.cpp in Sources */,
 				3EB0EBD819E23E580097929D /* OneofParserScenarios.cpp in Sources */,
+				3EE9C53919EA135B008EF427 /* OptionParserScenarios.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -138,9 +138,21 @@ void Protocol::ProtoModel::addOption (TokenReader::iterator current, OptionModel
     {
         mCurrentEnumValue->addOption(option);
     }
-    else
+    else if (mCurrentEnum != nullptr)
+    {
+        mCurrentEnum->addOption(option);
+    }
+    else if (mCurrentOneof != nullptr)
+    {
+        mCurrentOneof->addOption(option);
+    }
+    else if (mMessageQueue.empty())
     {
         mOptions.push_back(option);
+    }
+    else
+    {
+        mMessageQueue.back()->addOption(option);
     }
 }
 

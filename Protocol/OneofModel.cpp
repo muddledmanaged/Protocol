@@ -29,3 +29,13 @@ const Protocol::OneofModel::MessageFieldModelCollection * Protocol::OneofModel::
 {
     return &mFields;
 }
+
+void Protocol::OneofModel::addOption (OptionModelCollection::value_type option)
+{
+    mOptions.push_back(option);
+}
+
+const Protocol::OneofModel::OptionModelCollection * Protocol::OneofModel::options () const
+{
+    return &mOptions;
+}

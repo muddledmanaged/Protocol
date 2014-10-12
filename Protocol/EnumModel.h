@@ -14,6 +14,7 @@
 
 #include "Packageable.h"
 #include "EnumValueModel.h"
+#include "OptionModel.h"
 
 namespace MuddledManaged
 {
@@ -23,6 +24,7 @@ namespace MuddledManaged
         {
         public:
             typedef std::vector<std::shared_ptr<EnumValueModel>> EnumValueModelCollection;
+            typedef std::vector<std::shared_ptr<OptionModel>> OptionModelCollection;
 
             explicit EnumModel (const std::string & name, const std::string & package = "");
 
@@ -30,11 +32,16 @@ namespace MuddledManaged
 
             void addEnumValue (EnumValueModelCollection::value_type value);
 
+            void addOption (OptionModelCollection::value_type option);
+
             const EnumValueModelCollection * values () const;
+
+            const OptionModelCollection * options () const;
 
         private:
             std::string mName;
             EnumValueModelCollection mValues;
+            OptionModelCollection mOptions;
         };
 
     } // namespace Protocol

@@ -29,3 +29,13 @@ const Protocol::EnumModel::EnumValueModelCollection * Protocol::EnumModel::value
 {
     return &mValues;
 }
+
+void Protocol::EnumModel::addOption (OptionModelCollection::value_type option)
+{
+    mOptions.push_back(option);
+}
+
+const Protocol::EnumModel::OptionModelCollection * Protocol::EnumModel::options () const
+{
+    return &mOptions;
+}
