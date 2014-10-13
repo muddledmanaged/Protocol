@@ -15,6 +15,7 @@
 		3E37A5D319DF918200BED294 /* MessageFieldParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E37A5D119DF918200BED294 /* MessageFieldParser.cpp */; };
 		3E37A5D419DF918200BED294 /* MessageFieldParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E37A5D219DF918200BED294 /* MessageFieldParser.h */; };
 		3E37A5D919DFA3DE00BED294 /* MessageFieldParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E37A5D819DFA3DE00BED294 /* MessageFieldParserScenarios.cpp */; };
+		3E50659F19EB4B40006C86B6 /* ImportParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E50659E19EB4B40006C86B6 /* ImportParserScenarios.cpp */; };
 		3E8422B919E8C91800FA1222 /* OptionGroupParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E8422B719E8C91800FA1222 /* OptionGroupParser.cpp */; };
 		3E8422BA19E8C91800FA1222 /* OptionGroupParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E8422B819E8C91800FA1222 /* OptionGroupParser.h */; };
 		3E9888D219D2945B00505B28 /* ProtoModelScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E9888D119D2945B00505B28 /* ProtoModelScenarios.cpp */; };
@@ -112,6 +113,11 @@
 		3E37A5D819DFA3DE00BED294 /* MessageFieldParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFieldParserScenarios.cpp; sourceTree = "<group>"; };
 		3E4ECEE019EAEE8C00739243 /* MessageFieldQualified.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageFieldQualified.proto; sourceTree = "<group>"; };
 		3E4ECEE219EAEF9700739243 /* MessageOneofQualified.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageOneofQualified.proto; sourceTree = "<group>"; };
+		3E50659A19EB49E5006C86B6 /* ImportNone.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ImportNone.proto; sourceTree = "<group>"; };
+		3E50659C19EB4A10006C86B6 /* ImportPrivate.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ImportPrivate.proto; sourceTree = "<group>"; };
+		3E50659D19EB4A25006C86B6 /* ImportPublic.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ImportPublic.proto; sourceTree = "<group>"; };
+		3E50659E19EB4B40006C86B6 /* ImportParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImportParserScenarios.cpp; sourceTree = "<group>"; };
+		3E5065A019EB73F8006C86B6 /* Nestable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Nestable.h; sourceTree = "<group>"; };
 		3E5B5C4419D8CEB6006EEE50 /* PackageRedefined.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PackageRedefined.proto; sourceTree = "<group>"; };
 		3E5B5C4619D8D0B6006EEE50 /* MessageMultiple.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageMultiple.proto; sourceTree = "<group>"; };
 		3E5B5C4A19D8F0F3006EEE50 /* MessageMultiplePackage.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageMultiplePackage.proto; sourceTree = "<group>"; };
@@ -248,6 +254,7 @@
 				3E37A5CE19DF916600BED294 /* MessageFieldModel.h */,
 				3E37A5D119DF918200BED294 /* MessageFieldParser.cpp */,
 				3E37A5D219DF918200BED294 /* MessageFieldParser.h */,
+				3E5065A019EB73F8006C86B6 /* Nestable.h */,
 				3EB0EBC819E225CD0097929D /* OneofModel.cpp */,
 				3EB0EBC919E225CD0097929D /* OneofModel.h */,
 				3EB0EBCC19E225F40097929D /* OneofParser.cpp */,
@@ -309,6 +316,7 @@
 				3EF78A4819C5321E00976ADA /* main.cpp */,
 				3E3051DB19DCED6A008245F5 /* EnumParserScenarios.cpp */,
 				3EC1F8D919E4E24D0035376F /* EnumValueParserScenarios.cpp */,
+				3E50659E19EB4B40006C86B6 /* ImportParserScenarios.cpp */,
 				3EDF794C19D7666800AD2103 /* MessageParserScenarios.cpp */,
 				3E37A5D819DFA3DE00BED294 /* MessageFieldParserScenarios.cpp */,
 				3EB0EBD719E23E580097929D /* OneofParserScenarios.cpp */,
@@ -336,6 +344,9 @@
 				3E3051DA19DCEC38008245F5 /* EnumMultiplePackage.proto */,
 				3EC1F8D619E4DFE80035376F /* EnumValue.proto */,
 				3EC1F8D819E4E02B0035376F /* EnumValueMultipleMessage.proto */,
+				3E50659A19EB49E5006C86B6 /* ImportNone.proto */,
+				3E50659C19EB4A10006C86B6 /* ImportPrivate.proto */,
+				3E50659D19EB4A25006C86B6 /* ImportPublic.proto */,
 				3EF78A6F19C5588C00976ADA /* Message.proto */,
 				3E28C49A19C6010900D5F4FD /* MessageWhitespace.proto */,
 				3E28C49C19C6061100D5F4FD /* MessageComment.proto */,
@@ -480,6 +491,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E3051DC19DCED6A008245F5 /* EnumParserScenarios.cpp in Sources */,
+				3E50659F19EB4B40006C86B6 /* ImportParserScenarios.cpp in Sources */,
 				3E9888D219D2945B00505B28 /* ProtoModelScenarios.cpp in Sources */,
 				3EDF794B19D7663F00AD2103 /* PackageParserScenarios.cpp in Sources */,
 				3EDF794D19D7666800AD2103 /* MessageParserScenarios.cpp in Sources */,

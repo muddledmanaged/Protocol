@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "Packageable.h"
+#include "Nestable.h"
 #include "EnumModel.h"
 #include "MessageFieldModel.h"
 #include "OneofModel.h"
@@ -22,7 +23,7 @@ namespace MuddledManaged
 {
     namespace Protocol
     {
-        class MessageModel : public Packageable
+        class MessageModel : public Packageable, public Nestable
         {
         public:
             typedef std::vector<std::shared_ptr<MessageFieldModel>> MessageFieldModelCollection;
@@ -31,9 +32,11 @@ namespace MuddledManaged
             typedef std::vector<std::shared_ptr<OneofModel>> OneofModelCollection;
             typedef std::vector<std::shared_ptr<OptionModel>> OptionModelCollection;
 
-            explicit MessageModel (const std::string & name, const std::string & package = "");
+            explicit MessageModel (const std::string & name, const std::string & package = "", const std::string & parentTypes = "");
 
             std::string name () const;
+
+            std::string fullName () const;
 
             void addField (MessageFieldModelCollection::value_type field);
 

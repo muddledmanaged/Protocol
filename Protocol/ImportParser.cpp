@@ -9,8 +9,6 @@
 
 #include "ImportParser.h"
 #include "ProtoParser.h"
-#include "TokenReader.h"
-#include "ParserManager.h"
 #include "InvalidProtoException.h"
 
 using namespace std;
@@ -59,9 +57,32 @@ bool Protocol::ImportParser::parse (TokenReader::iterator current, TokenReader::
             throw InvalidProtoException(current.line(), current.column(), "Expected ; character.");
         }
 
-        shared_ptr<Protocol::ProtoModel> model;
+        shared_ptr<Protocol::ProtoModel> importedModel;
         Protocol::ProtoParser parser(protoName);
-        model = parser.parse();
+        importedModel = parser.parse();
+
+        if (publicFlag)
+        {
+            for (auto & publicEnumType: *importedModel->publicEnumTypes())
+            {
+                model->addPublicEnumType(current, publicEnumType);
+            }
+            for (auto & publicMessageType: *importedModel->publicMessageTypes())
+            {
+                model->addPublicMessageType(current, publicMessageType);
+            }
+        }
+        else
+        {
+            for (auto & publicEnumType: *importedModel->publicEnumTypes())
+            {
+                model->addPrivateEnumType(current, publicEnumType);
+            }
+            for (auto & publicMessageType: *importedModel->publicMessageTypes())
+            {
+                model->addPrivateMessageType(current, publicMessageType);
+            }
+        }
 
         return true;
     }

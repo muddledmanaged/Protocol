@@ -26,7 +26,7 @@ bool Protocol::PackageParser::parse (TokenReader::iterator current, TokenReader:
         {
             throw InvalidProtoException(current.line(), current.column(), "Expected package name.");
         }
-        model->setCurrentPackage(*current);
+        string packageName = *current;
 
         // Move to the semicolon or further package names.
         ++current;
@@ -40,6 +40,7 @@ bool Protocol::PackageParser::parse (TokenReader::iterator current, TokenReader:
             {
                 throw InvalidProtoException(current.line(), current.column(), "Expected ; or . character.");
             }
+            packageName += ".";
 
             // Move to the next package name.
             ++current;
@@ -47,11 +48,12 @@ bool Protocol::PackageParser::parse (TokenReader::iterator current, TokenReader:
             {
                 throw InvalidProtoException(current.line(), current.column(), "Expected package name.");
             }
-            model->addToCurrentPackage(*current);
+            packageName += *current;
 
             // Move to the semicolon or further package names.
             ++current;
         }
+        model->setCurrentPackage(packageName);
 
         return true;
     }

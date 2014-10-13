@@ -10,14 +10,32 @@
 using namespace std;
 using namespace MuddledManaged;
 
-Protocol::MessageModel::MessageModel (const string & name, const string & package)
-: Packageable(package), mName(name)
+Protocol::MessageModel::MessageModel (const string & name, const string & package, const string & parentTypes)
+: Packageable(package), Nestable(parentTypes), mName(name)
 {
 }
 
 string Protocol::MessageModel::name () const
 {
     return mName;
+}
+
+string Protocol::MessageModel::fullName () const
+{
+    string fullName = package();
+    if (!fullName.empty())
+    {
+        fullName += ".";
+    }
+
+    fullName += parentTypes();
+    if (!parentTypes().empty())
+    {
+        fullName += ".";
+    }
+    fullName += name();
+
+    return fullName;
 }
 
 void Protocol::MessageModel::addField (MessageFieldModelCollection::value_type field)

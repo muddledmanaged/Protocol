@@ -33,12 +33,14 @@ namespace MuddledManaged
             typedef std::vector<std::shared_ptr<EnumModel>> EnumModelCollection;
             typedef std::vector<std::shared_ptr<MessageModel>> MessageModelCollection;
             typedef std::vector<std::shared_ptr<OptionModel>> OptionModelCollection;
+            typedef std::vector<std::string> NamedTypeCollection;
 
             ProtoModel ();
 
+            std::string currentNestedType () const;
+
             std::string currentPackage () const;
             void setCurrentPackage (const std::string & package);
-            void addToCurrentPackage (const std::string & additionalPackage);
 
             void addField (TokenReader::iterator current, MessageFieldModelCollection::value_type field);
             void completeField ();
@@ -57,13 +59,33 @@ namespace MuddledManaged
 
             void addOption (TokenReader::iterator current, OptionModelCollection::value_type option);
 
+            void addPrivateEnumType (TokenReader::iterator current, const std::string & namedType);
+
+            void addPublicEnumType (TokenReader::iterator current, const std::string & namedType);
+
+            void addPrivateMessageType (TokenReader::iterator current, const std::string & namedType);
+
+            void addPublicMessageType (TokenReader::iterator current, const std::string & namedType);
+
             const EnumModelCollection * enums () const;
 
             const MessageModelCollection * messages () const;
 
             const OptionModelCollection * options () const;
 
+            const NamedTypeCollection * privateEnumTypes () const;
+
+            const NamedTypeCollection * publicEnumTypes () const;
+
+            const NamedTypeCollection * privateMessageTypes () const;
+
+            const NamedTypeCollection * publicMessageTypes () const;
+
         private:
+            bool typeExists (std::string namedType) const;
+            void updateCurrentNestedType ();
+
+            std::string mCurrentNestedType;
             EnumModelCollection mEnums;
             MessageModelCollection mMessages;
             OptionModelCollection mOptions;
@@ -72,6 +94,10 @@ namespace MuddledManaged
             OneofModelCollection::value_type mCurrentOneof;
             EnumModelCollection::value_type mCurrentEnum;
             EnumValueModelCollection::value_type mCurrentEnumValue;
+            NamedTypeCollection mPrivateEnumTypes;
+            NamedTypeCollection mPublicEnumTypes;
+            NamedTypeCollection mPrivateMessageTypes;
+            NamedTypeCollection mPublicMessageTypes;
         };
 
     } // namespace Protocol
