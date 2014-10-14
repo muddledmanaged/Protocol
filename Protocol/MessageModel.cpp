@@ -38,27 +38,27 @@ string Protocol::MessageModel::fullName () const
     return fullName;
 }
 
-void Protocol::MessageModel::addField (MessageFieldModelCollection::value_type field)
+void Protocol::MessageModel::addField (MessageFieldModelCollection::value_type & field)
 {
     mFields.push_back(field);
 }
 
-void Protocol::MessageModel::addEnum (EnumModelCollection::value_type enumeration)
+void Protocol::MessageModel::addEnum (EnumModelCollection::value_type & enumeration)
 {
     mEnums.push_back(enumeration);
 }
 
-void Protocol::MessageModel::addMessage (MessageModelCollection::value_type message)
+void Protocol::MessageModel::addMessage (MessageModelCollection::value_type & message)
 {
     mMessages.push_back(message);
 }
 
-void Protocol::MessageModel::addOneof (OneofModelCollection::value_type oneof)
+void Protocol::MessageModel::addOneof (OneofModelCollection::value_type & oneof)
 {
     mOneofs.push_back(oneof);
 }
 
-void Protocol::MessageModel::addOption (OptionModelCollection::value_type option)
+void Protocol::MessageModel::addOption (OptionModelCollection::value_type & option)
 {
     mOptions.push_back(option);
 }

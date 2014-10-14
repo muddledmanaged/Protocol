@@ -49,7 +49,7 @@ void Protocol::ProtoModel::setCurrentPackage (const string & package)
     setPackage(package);
 }
 
-void Protocol::ProtoModel::addField (TokenReader::iterator current, MessageFieldModelCollection::value_type field)
+void Protocol::ProtoModel::addField (TokenReader::iterator current, MessageFieldModelCollection::value_type & field)
 {
     if (mMessageQueue.empty())
     {
@@ -74,7 +74,7 @@ void Protocol::ProtoModel::completeField ()
     mCurrentField = nullptr;
 }
 
-void Protocol::ProtoModel::addEnum (TokenReader::iterator current, EnumModelCollection::value_type enumeration)
+void Protocol::ProtoModel::addEnum (TokenReader::iterator current, EnumModelCollection::value_type & enumeration)
 {
     addPublicEnumType(current, enumeration->fullName());
 
@@ -94,7 +94,7 @@ void Protocol::ProtoModel::completeEnum ()
     mCurrentEnum = nullptr;
 }
 
-void Protocol::ProtoModel::addEnumValue (TokenReader::iterator current, EnumValueModelCollection::value_type value)
+void Protocol::ProtoModel::addEnumValue (TokenReader::iterator current, EnumValueModelCollection::value_type & value)
 {
     if (mCurrentEnum != nullptr)
     {
@@ -112,7 +112,7 @@ void Protocol::ProtoModel::completeEnumValue ()
     mCurrentEnumValue = nullptr;
 }
 
-void Protocol::ProtoModel::addMessage (TokenReader::iterator current, MessageModelCollection::value_type message)
+void Protocol::ProtoModel::addMessage (TokenReader::iterator current, MessageModelCollection::value_type & message)
 {
     addPublicMessageType(current, message->fullName());
 
@@ -134,7 +134,7 @@ void Protocol::ProtoModel::completeMessage ()
     updateCurrentNestedType();
 }
 
-void Protocol::ProtoModel::addOneof (TokenReader::iterator current, OneofModelCollection::value_type oneof)
+void Protocol::ProtoModel::addOneof (TokenReader::iterator current, OneofModelCollection::value_type & oneof)
 {
     if (mMessageQueue.empty())
     {
@@ -152,7 +152,7 @@ void Protocol::ProtoModel::completeOneof ()
     mCurrentOneof = nullptr;
 }
 
-void Protocol::ProtoModel::addOption (TokenReader::iterator current, OptionModelCollection::value_type option)
+void Protocol::ProtoModel::addOption (TokenReader::iterator current, OptionModelCollection::value_type & option)
 {
     if (mCurrentField != nullptr)
     {
@@ -182,26 +182,26 @@ void Protocol::ProtoModel::addOption (TokenReader::iterator current, OptionModel
 
 bool Protocol::ProtoModel::typeExists (string namedType) const
 {
-//    auto typeIter = mPrivateEnumTypes.find(namedType);
-//    if (typeIter != mPrivateEnumTypes.end())
-//    {
-//        return true;
-//    }
-//    typeIter = mPublicEnumTypes.find(namedType);
-//    if (typeIter != mPublicEnumTypes.end())
-//    {
-//        return true;
-//    }
-//    typeIter = mPrivateMessageTypes.find(namedType);
-//    if (typeIter != mPrivateMessageTypes.end())
-//    {
-//        return true;
-//    }
-//    typeIter = mPublicMessageTypes.find(namedType);
-//    if (typeIter != mPublicMessageTypes.end())
-//    {
-//        return true;
-//    }
+    auto typeIter = mPrivateEnumTypes.find(namedType);
+    if (typeIter != mPrivateEnumTypes.end())
+    {
+        return true;
+    }
+    typeIter = mPublicEnumTypes.find(namedType);
+    if (typeIter != mPublicEnumTypes.end())
+    {
+        return true;
+    }
+    typeIter = mPrivateMessageTypes.find(namedType);
+    if (typeIter != mPrivateMessageTypes.end())
+    {
+        return true;
+    }
+    typeIter = mPublicMessageTypes.find(namedType);
+    if (typeIter != mPublicMessageTypes.end())
+    {
+        return true;
+    }
     return false;
 }
 
@@ -211,7 +211,7 @@ void Protocol::ProtoModel::addPrivateEnumType (TokenReader::iterator current, co
     {
         throw InvalidProtoException(current.line(), current.column(), "Duplicate type names are not allowed.");
     }
-    mPrivateEnumTypes.push_back(namedType);
+    mPrivateEnumTypes.emplace(namedType);
 }
 
 void Protocol::ProtoModel::addPublicEnumType (TokenReader::iterator current, const string & namedType)
@@ -220,7 +220,7 @@ void Protocol::ProtoModel::addPublicEnumType (TokenReader::iterator current, con
     {
         throw InvalidProtoException(current.line(), current.column(), "Duplicate type names are not allowed.");
     }
-    mPublicEnumTypes.push_back(namedType);
+    mPublicEnumTypes.emplace(namedType);
 }
 
 void Protocol::ProtoModel::addPrivateMessageType (TokenReader::iterator current, const string & namedType)
@@ -229,7 +229,7 @@ void Protocol::ProtoModel::addPrivateMessageType (TokenReader::iterator current,
     {
         throw InvalidProtoException(current.line(), current.column(), "Duplicate type names are not allowed.");
     }
-    mPrivateMessageTypes.push_back(namedType);
+    mPrivateMessageTypes.emplace(namedType);
 }
 
 void Protocol::ProtoModel::addPublicMessageType (TokenReader::iterator current, const string & namedType)
@@ -238,7 +238,7 @@ void Protocol::ProtoModel::addPublicMessageType (TokenReader::iterator current, 
     {
         throw InvalidProtoException(current.line(), current.column(), "Duplicate type names are not allowed.");
     }
-    mPublicMessageTypes.push_back(namedType);
+    mPublicMessageTypes.emplace(namedType);
 }
 
 const Protocol::ProtoModel::EnumModelCollection * Protocol::ProtoModel::enums () const

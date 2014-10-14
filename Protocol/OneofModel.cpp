@@ -20,7 +20,7 @@ string Protocol::OneofModel::name () const
     return mName;
 }
 
-void Protocol::OneofModel::addField (MessageFieldModelCollection::value_type field)
+void Protocol::OneofModel::addField (MessageFieldModelCollection::value_type & field)
 {
     mFields.push_back(field);
 }
@@ -30,7 +30,7 @@ const Protocol::OneofModel::MessageFieldModelCollection * Protocol::OneofModel::
     return &mFields;
 }
 
-void Protocol::OneofModel::addOption (OptionModelCollection::value_type option)
+void Protocol::OneofModel::addOption (OptionModelCollection::value_type & option)
 {
     mOptions.push_back(option);
 }

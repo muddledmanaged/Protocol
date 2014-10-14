@@ -11,6 +11,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <unordered_set>
 
 #include "TokenReader.h"
 #include "Packageable.h"
@@ -33,7 +34,7 @@ namespace MuddledManaged
             typedef std::vector<std::shared_ptr<EnumModel>> EnumModelCollection;
             typedef std::vector<std::shared_ptr<MessageModel>> MessageModelCollection;
             typedef std::vector<std::shared_ptr<OptionModel>> OptionModelCollection;
-            typedef std::vector<std::string> NamedTypeCollection;
+            typedef std::unordered_set<std::string> NamedTypeCollection;
 
             ProtoModel ();
 
@@ -42,22 +43,22 @@ namespace MuddledManaged
             std::string currentPackage () const;
             void setCurrentPackage (const std::string & package);
 
-            void addField (TokenReader::iterator current, MessageFieldModelCollection::value_type field);
+            void addField (TokenReader::iterator current, MessageFieldModelCollection::value_type & field);
             void completeField ();
 
-            void addEnum (TokenReader::iterator current, EnumModelCollection::value_type enumeration);
+            void addEnum (TokenReader::iterator current, EnumModelCollection::value_type & enumeration);
             void completeEnum ();
 
-            void addEnumValue (TokenReader::iterator current, EnumValueModelCollection::value_type value);
+            void addEnumValue (TokenReader::iterator current, EnumValueModelCollection::value_type & value);
             void completeEnumValue ();
 
-            void addMessage (TokenReader::iterator current, MessageModelCollection::value_type message);
+            void addMessage (TokenReader::iterator current, MessageModelCollection::value_type & message);
             void completeMessage ();
 
-            void addOneof (TokenReader::iterator current, OneofModelCollection::value_type oneof);
+            void addOneof (TokenReader::iterator current, OneofModelCollection::value_type & oneof);
             void completeOneof ();
 
-            void addOption (TokenReader::iterator current, OptionModelCollection::value_type option);
+            void addOption (TokenReader::iterator current, OptionModelCollection::value_type & option);
 
             void addPrivateEnumType (TokenReader::iterator current, const std::string & namedType);
 

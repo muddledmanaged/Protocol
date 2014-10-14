@@ -38,7 +38,7 @@ string Protocol::EnumModel::fullName () const
     return fullName;
 }
 
-void Protocol::EnumModel::addEnumValue (EnumValueModelCollection::value_type value)
+void Protocol::EnumModel::addEnumValue (EnumValueModelCollection::value_type & value)
 {
     mValues.push_back(value);
 }
@@ -48,7 +48,7 @@ const Protocol::EnumModel::EnumValueModelCollection * Protocol::EnumModel::value
     return &mValues;
 }
 
-void Protocol::EnumModel::addOption (OptionModelCollection::value_type option)
+void Protocol::EnumModel::addOption (OptionModelCollection::value_type & option)
 {
     mOptions.push_back(option);
 }

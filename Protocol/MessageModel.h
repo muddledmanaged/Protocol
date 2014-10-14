@@ -38,15 +38,15 @@ namespace MuddledManaged
 
             std::string fullName () const;
 
-            void addField (MessageFieldModelCollection::value_type field);
+            void addField (MessageFieldModelCollection::value_type & field);
 
-            void addEnum (EnumModelCollection::value_type enumeration);
+            void addEnum (EnumModelCollection::value_type & enumeration);
 
-            void addMessage (MessageModelCollection::value_type message);
+            void addMessage (MessageModelCollection::value_type & message);
 
-            void addOneof (OneofModelCollection::value_type oneof);
+            void addOneof (OneofModelCollection::value_type & oneof);
 
-            void addOption (OptionModelCollection::value_type option);
+            void addOption (OptionModelCollection::value_type & option);
 
             const MessageFieldModelCollection * fields () const;
 

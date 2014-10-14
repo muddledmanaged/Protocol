@@ -29,9 +29,9 @@ namespace MuddledManaged
 
             std::string name () const;
 
-            void addField (MessageFieldModelCollection::value_type field);
+            void addField (MessageFieldModelCollection::value_type & field);
 
-            void addOption (OptionModelCollection::value_type option);
+            void addOption (OptionModelCollection::value_type & option);
 
             const MessageFieldModelCollection * fields () const;
 

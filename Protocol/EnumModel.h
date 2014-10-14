@@ -33,9 +33,9 @@ namespace MuddledManaged
 
             std::string fullName () const;
 
-            void addEnumValue (EnumValueModelCollection::value_type value);
+            void addEnumValue (EnumValueModelCollection::value_type & value);
 
-            void addOption (OptionModelCollection::value_type option);
+            void addOption (OptionModelCollection::value_type & option);
 
             const EnumValueModelCollection * values () const;
 

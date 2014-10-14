@@ -40,7 +40,7 @@ namespace MuddledManaged
 
             unsigned int index () const;
 
-            void addOption (OptionModelCollection::value_type option);
+            void addOption (OptionModelCollection::value_type & option);
 
             const OptionModelCollection * options () const;
 

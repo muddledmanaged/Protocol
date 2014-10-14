@@ -1,5 +1,5 @@
-import "Message.proto"
-import "EnumMultipleMessage.proto"
+import "Message.proto";
+import "EnumMultipleMessage.proto";
 
 message LocalMessage
 {
