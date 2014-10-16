@@ -34,6 +34,8 @@ namespace MuddledManaged
 
             explicit MessageModel (const std::string & name, const std::string & package = "", const std::string & parentTypes = "");
 
+            MessageModel (const MessageModel & src);
+
             std::string name () const;
 
             std::string fullName () const;
@@ -57,6 +59,8 @@ namespace MuddledManaged
             const OneofModelCollection * oneofs () const;
 
             const OptionModelCollection * options () const;
+
+            MessageModel & operator = (const MessageModel & rhs);
 
         private:
             std::string mName;

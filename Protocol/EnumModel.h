@@ -29,6 +29,8 @@ namespace MuddledManaged
 
             explicit EnumModel (const std::string & name, const std::string & package = "", const std::string & parentTypes = "");
 
+            EnumModel (const EnumModel & src);
+
             std::string name () const;
 
             std::string fullName () const;
@@ -40,6 +42,8 @@ namespace MuddledManaged
             const EnumValueModelCollection * values () const;
 
             const OptionModelCollection * options () const;
+
+            EnumModel & operator = (const EnumModel & rhs);
 
         private:
             std::string mName;

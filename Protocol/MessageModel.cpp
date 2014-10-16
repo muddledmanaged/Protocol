@@ -15,6 +15,12 @@ Protocol::MessageModel::MessageModel (const string & name, const string & packag
 {
 }
 
+Protocol::MessageModel::MessageModel (const MessageModel & src)
+: Packageable(src), Nestable(src), mName(src.mName), mFields(src.mFields), mEnums(src.mEnums), mMessages(src.mMessages),
+  mOneofs(src.mOneofs), mOptions(src.mOptions)
+{
+}
+
 string Protocol::MessageModel::name () const
 {
     return mName;
@@ -86,4 +92,24 @@ const Protocol::MessageModel::OneofModelCollection * Protocol::MessageModel::one
 const Protocol::MessageModel::OptionModelCollection * Protocol::MessageModel::options () const
 {
     return &mOptions;
+}
+
+Protocol::MessageModel & Protocol::MessageModel::operator = (const MessageModel & rhs)
+{
+    if (this == &rhs)
+    {
+        return *this;
+    }
+
+    Packageable::operator=(rhs);
+    Nestable::operator=(rhs);
+
+    mName = rhs.mName;
+    mFields = rhs.mFields;
+    mEnums = rhs.mEnums;
+    mMessages = rhs.mMessages;
+    mOneofs = rhs.mOneofs;
+    mOptions = rhs.mOptions;
+
+    return *this;
 }

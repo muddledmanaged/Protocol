@@ -15,6 +15,11 @@ Protocol::EnumModel::EnumModel (const string & name, const string & package, con
 {
 }
 
+Protocol::EnumModel::EnumModel (const EnumModel & src)
+: Packageable(src), Nestable(src), mName(src.mName), mValues(src.mValues), mOptions(src.mOptions)
+{
+}
+
 string Protocol::EnumModel::name () const
 {
     return mName;
@@ -56,4 +61,21 @@ void Protocol::EnumModel::addOption (OptionModelCollection::value_type & option)
 const Protocol::EnumModel::OptionModelCollection * Protocol::EnumModel::options () const
 {
     return &mOptions;
+}
+
+Protocol::EnumModel & Protocol::EnumModel::operator = (const EnumModel & rhs)
+{
+    if (this == &rhs)
+    {
+        return *this;
+    }
+
+    Packageable::operator=(rhs);
+    Nestable::operator=(rhs);
+
+    mName = rhs.mName;
+    mValues = rhs.mValues;
+    mOptions = rhs.mOptions;
+
+    return *this;
 }
