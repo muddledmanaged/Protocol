@@ -28,6 +28,7 @@ namespace MuddledManaged
             std::shared_ptr<ProtoModel> parse ();
 
         private:
+            std::string mFileName;
             std::shared_ptr<ProtoModel> mModel;
             std::unique_ptr<TokenReader> mReader;
         };

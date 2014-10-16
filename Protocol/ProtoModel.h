@@ -36,7 +36,11 @@ namespace MuddledManaged
             typedef std::vector<std::shared_ptr<OptionModel>> OptionModelCollection;
             typedef std::unordered_set<std::string> NamedTypeCollection;
 
-            ProtoModel ();
+            explicit ProtoModel (const std::string & fileName);
+
+            ProtoModel (const ProtoModel & src);
+
+            std::string fileName () const;
 
             std::string currentNestedType () const;
 
@@ -82,10 +86,13 @@ namespace MuddledManaged
 
             const NamedTypeCollection * publicMessageTypes () const;
 
+            ProtoModel & operator = (const ProtoModel & rhs);
+
         private:
             bool typeExists (std::string namedType) const;
             void updateCurrentNestedType ();
 
+            std::string mFileName;
             std::string mCurrentNestedType;
             EnumModelCollection mEnums;
             MessageModelCollection mMessages;

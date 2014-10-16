@@ -11,9 +11,23 @@
 using namespace std;
 using namespace MuddledManaged;
 
-Protocol::ProtoModel::ProtoModel ()
-: mCurrentNestedType(""), mCurrentField(nullptr), mCurrentOneof(nullptr), mCurrentEnum(nullptr), mCurrentEnumValue(nullptr)
+Protocol::ProtoModel::ProtoModel (const std::string & fileName)
+: mFileName(fileName), mCurrentNestedType(""), mCurrentField(nullptr), mCurrentOneof(nullptr), mCurrentEnum(nullptr),
+  mCurrentEnumValue(nullptr)
 {
+}
+
+Protocol::ProtoModel::ProtoModel (const ProtoModel & src)
+: Packageable(src), mFileName(src.mFileName), mCurrentNestedType(src.mCurrentNestedType), mEnums(src.mEnums), mMessages(src.mMessages),
+  mOptions(src.mOptions), mMessageQueue(src.mMessageQueue), mCurrentField(src.mCurrentField), mCurrentOneof(src.mCurrentOneof),
+  mCurrentEnum(src.mCurrentEnum), mCurrentEnumValue(src.mCurrentEnumValue), mPrivateEnumTypes(src.mPrivateEnumTypes),
+  mPublicEnumTypes(src.mPublicEnumTypes), mPrivateMessageTypes(src.mPrivateMessageTypes), mPublicMessageTypes(src.mPublicMessageTypes)
+{
+}
+
+string Protocol::ProtoModel::fileName () const
+{
+    return mFileName;
 }
 
 string Protocol::ProtoModel::currentNestedType () const
@@ -274,4 +288,31 @@ const Protocol::ProtoModel::NamedTypeCollection * Protocol::ProtoModel::privateM
 const Protocol::ProtoModel::NamedTypeCollection * Protocol::ProtoModel::publicMessageTypes () const
 {
     return &mPublicMessageTypes;
+}
+
+Protocol::ProtoModel & Protocol::ProtoModel::operator = (const ProtoModel & rhs)
+{
+    if (this == &rhs)
+    {
+        return *this;
+    }
+
+    Packageable::operator=(rhs);
+
+    mFileName = rhs.mFileName;
+    mCurrentNestedType = rhs.mCurrentNestedType;
+    mEnums = rhs.mEnums;
+    mMessages = rhs.mMessages;
+    mOptions = rhs.mOptions;
+    mMessageQueue = rhs.mMessageQueue;
+    mCurrentField = rhs.mCurrentField;
+    mCurrentOneof = rhs.mCurrentOneof;
+    mCurrentEnum = rhs.mCurrentEnum;
+    mCurrentEnumValue = rhs.mCurrentEnumValue;
+    mPrivateEnumTypes = rhs.mPrivateEnumTypes;
+    mPublicEnumTypes = rhs.mPublicEnumTypes;
+    mPrivateMessageTypes = rhs.mPrivateMessageTypes;
+    mPublicMessageTypes = rhs.mPublicMessageTypes;
+
+    return *this;
 }

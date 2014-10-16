@@ -16,14 +16,14 @@ using namespace MuddledManaged;
 
 DESIGNER_SCENARIO( ProtoModel, "Construction/Normal", "ProtoModel can be constructed." )
 {
-    Protocol::ProtoModel model;
+    Protocol::ProtoModel model("test.proto");
 
     verifyEqual("", model.currentPackage());
 }
 
 DESIGNER_SCENARIO( ProtoModel, "Operation/Properties", "ProtoModel knows current package." )
 {
-    Protocol::ProtoModel model;
+    Protocol::ProtoModel model("test.proto");
     string package = "MuddledManaged.Protocol";
 
     model.setCurrentPackage(package);
