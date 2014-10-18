@@ -62,6 +62,10 @@
 		3EF78A5419C5396300976ADA /* TokenReaderScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EF78A5219C5396300976ADA /* TokenReaderScenarios.cpp */; };
 		3EF78A6619C53DAF00976ADA /* TokenReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E1B9A2519C1569F00AAAA0D /* TokenReader.cpp */; };
 		3EF78A6C19C5408600976ADA /* libProtocol.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF78A6119C53BD800976ADA /* libProtocol.a */; };
+		3EFCB8A719F2074100771D5B /* CodeGeneratorManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EFCB8A519F2074100771D5B /* CodeGeneratorManager.cpp */; };
+		3EFCB8A819F2074100771D5B /* CodeGeneratorManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EFCB8A619F2074100771D5B /* CodeGeneratorManager.h */; };
+		3EFCB8AB19F20B1400771D5B /* CodeGeneratorCPP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EFCB8A919F20B1400771D5B /* CodeGeneratorCPP.cpp */; };
+		3EFCB8AC19F20B1400771D5B /* CodeGeneratorCPP.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EFCB8AA19F20B1400771D5B /* CodeGeneratorCPP.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -81,6 +85,7 @@
 		3E03213219EB16F800E21D52 /* OptionValueString.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OptionValueString.proto; sourceTree = "<group>"; };
 		3E03213319EB20FB00E21D52 /* ImportParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImportParser.cpp; sourceTree = "<group>"; };
 		3E03213419EB20FB00E21D52 /* ImportParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportParser.h; sourceTree = "<group>"; };
+		3E05239919F00C68000493EB /* CodeGeneratorInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeGeneratorInterface.h; sourceTree = "<group>"; };
 		3E1B9A2519C1569F00AAAA0D /* TokenReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TokenReader.cpp; sourceTree = "<group>"; };
 		3E1B9A2619C1569F00AAAA0D /* TokenReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TokenReader.h; sourceTree = "<group>"; };
 		3E28C49719C5FF0B00D5F4FD /* EmptyCommentSingleLine.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = EmptyCommentSingleLine.proto; sourceTree = "<group>"; };
@@ -192,6 +197,10 @@
 		3EF78A6119C53BD800976ADA /* libProtocol.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libProtocol.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EF78A6E19C5565F00976ADA /* Empty.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = Empty.proto; sourceTree = "<group>"; };
 		3EF78A6F19C5588C00976ADA /* Message.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = Message.proto; sourceTree = "<group>"; };
+		3EFCB8A519F2074100771D5B /* CodeGeneratorManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CodeGeneratorManager.cpp; sourceTree = "<group>"; };
+		3EFCB8A619F2074100771D5B /* CodeGeneratorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodeGeneratorManager.h; sourceTree = "<group>"; };
+		3EFCB8A919F20B1400771D5B /* CodeGeneratorCPP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CodeGeneratorCPP.cpp; sourceTree = "<group>"; };
+		3EFCB8AA19F20B1400771D5B /* CodeGeneratorCPP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodeGeneratorCPP.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,6 +290,11 @@
 				3EE9089319C9339C00C75919 /* ProtoParser.h */,
 				3E1B9A2519C1569F00AAAA0D /* TokenReader.cpp */,
 				3E1B9A2619C1569F00AAAA0D /* TokenReader.h */,
+				3E05239919F00C68000493EB /* CodeGeneratorInterface.h */,
+				3EFCB8A519F2074100771D5B /* CodeGeneratorManager.cpp */,
+				3EFCB8A619F2074100771D5B /* CodeGeneratorManager.h */,
+				3EFCB8A919F20B1400771D5B /* CodeGeneratorCPP.cpp */,
+				3EFCB8AA19F20B1400771D5B /* CodeGeneratorCPP.h */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -403,6 +417,7 @@
 				3ECE38A219DBAAEF00A042B4 /* EnumModel.h in Headers */,
 				3EB0FA2519DA4B66003633C8 /* ParserManager.h in Headers */,
 				3E9EE99B19D663D000AEF047 /* MessageModel.h in Headers */,
+				3EFCB8AC19F20B1400771D5B /* CodeGeneratorCPP.h in Headers */,
 				3EE5ACCD19E39621001AEC6C /* EnumValueParser.h in Headers */,
 				3E37A5D019DF916600BED294 /* MessageFieldModel.h in Headers */,
 				3E8422BA19E8C91800FA1222 /* OptionGroupParser.h in Headers */,
@@ -414,6 +429,7 @@
 				3E9EE9A019D6727A00AEF047 /* Packageable.h in Headers */,
 				3EE9089919C9361400C75919 /* ProtoModel.h in Headers */,
 				3E37A5D419DF918200BED294 /* MessageFieldParser.h in Headers */,
+				3EFCB8A819F2074100771D5B /* CodeGeneratorManager.h in Headers */,
 				3E9EE99719D6636B00AEF047 /* MessageParser.h in Headers */,
 				3E9B75BC19E77E94004B59A7 /* OptionModel.h in Headers */,
 				3EE5ACC919E39604001AEC6C /* EnumValueModel.h in Headers */,
@@ -522,6 +538,7 @@
 				3EB0EBCE19E225F40097929D /* OneofParser.cpp in Sources */,
 				3EB0FA2419DA4B66003633C8 /* ParserManager.cpp in Sources */,
 				3EB0EBCA19E225CD0097929D /* OneofModel.cpp in Sources */,
+				3EFCB8AB19F20B1400771D5B /* CodeGeneratorCPP.cpp in Sources */,
 				3E03213519EB20FB00E21D52 /* ImportParser.cpp in Sources */,
 				3E9B75BF19E7809A004B59A7 /* OptionValueParser.cpp in Sources */,
 				3ECE38A119DBAAEF00A042B4 /* EnumModel.cpp in Sources */,
@@ -529,6 +546,7 @@
 				3EF78A6619C53DAF00976ADA /* TokenReader.cpp in Sources */,
 				3E8422B919E8C91800FA1222 /* OptionGroupParser.cpp in Sources */,
 				3E9EE99219D6634F00AEF047 /* PackageParser.cpp in Sources */,
+				3EFCB8A719F2074100771D5B /* CodeGeneratorManager.cpp in Sources */,
 				3E9B75BB19E77E94004B59A7 /* OptionModel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
