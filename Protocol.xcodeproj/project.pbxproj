@@ -16,6 +16,8 @@
 		3E37A5D419DF918200BED294 /* MessageFieldParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E37A5D219DF918200BED294 /* MessageFieldParser.h */; };
 		3E37A5D919DFA3DE00BED294 /* MessageFieldParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E37A5D819DFA3DE00BED294 /* MessageFieldParserScenarios.cpp */; };
 		3E50659F19EB4B40006C86B6 /* ImportParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E50659E19EB4B40006C86B6 /* ImportParserScenarios.cpp */; };
+		3E817D7019F34D7C002A331E /* CodeGeneratorManagerScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E817D6F19F34D7C002A331E /* CodeGeneratorManagerScenarios.cpp */; };
+		3E817D7219F34DD3002A331E /* CodeGeneratorCPPScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E817D7119F34DD3002A331E /* CodeGeneratorCPPScenarios.cpp */; };
 		3E8422B919E8C91800FA1222 /* OptionGroupParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E8422B719E8C91800FA1222 /* OptionGroupParser.cpp */; };
 		3E8422BA19E8C91800FA1222 /* OptionGroupParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E8422B819E8C91800FA1222 /* OptionGroupParser.h */; };
 		3E9888D219D2945B00505B28 /* ProtoModelScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E9888D119D2945B00505B28 /* ProtoModelScenarios.cpp */; };
@@ -127,6 +129,8 @@
 		3E5B5C4619D8D0B6006EEE50 /* MessageMultiple.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageMultiple.proto; sourceTree = "<group>"; };
 		3E5B5C4A19D8F0F3006EEE50 /* MessageMultiplePackage.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageMultiplePackage.proto; sourceTree = "<group>"; };
 		3E5B5C4C19D8F79B006EEE50 /* MessageNested.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageNested.proto; sourceTree = "<group>"; };
+		3E817D6F19F34D7C002A331E /* CodeGeneratorManagerScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CodeGeneratorManagerScenarios.cpp; sourceTree = "<group>"; };
+		3E817D7119F34DD3002A331E /* CodeGeneratorCPPScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CodeGeneratorCPPScenarios.cpp; sourceTree = "<group>"; };
 		3E8422B719E8C91800FA1222 /* OptionGroupParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionGroupParser.cpp; sourceTree = "<group>"; };
 		3E8422B819E8C91800FA1222 /* OptionGroupParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionGroupParser.h; sourceTree = "<group>"; };
 		3E9888D119D2945B00505B28 /* ProtoModelScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtoModelScenarios.cpp; sourceTree = "<group>"; };
@@ -339,6 +343,8 @@
 				3E9888D319D2971F00505B28 /* ProtoParserScenarios.cpp */,
 				3EF78A5219C5396300976ADA /* TokenReaderScenarios.cpp */,
 				3EE9C53819EA135B008EF427 /* OptionParserScenarios.cpp */,
+				3E817D6F19F34D7C002A331E /* CodeGeneratorManagerScenarios.cpp */,
+				3E817D7119F34DD3002A331E /* CodeGeneratorCPPScenarios.cpp */,
 			);
 			path = ProtocolDesign;
 			sourceTree = "<group>";
@@ -506,12 +512,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E817D7219F34DD3002A331E /* CodeGeneratorCPPScenarios.cpp in Sources */,
 				3E3051DC19DCED6A008245F5 /* EnumParserScenarios.cpp in Sources */,
 				3E50659F19EB4B40006C86B6 /* ImportParserScenarios.cpp in Sources */,
 				3E9888D219D2945B00505B28 /* ProtoModelScenarios.cpp in Sources */,
 				3EDF794B19D7663F00AD2103 /* PackageParserScenarios.cpp in Sources */,
 				3EDF794D19D7666800AD2103 /* MessageParserScenarios.cpp in Sources */,
 				3E9888D419D2971F00505B28 /* ProtoParserScenarios.cpp in Sources */,
+				3E817D7019F34D7C002A331E /* CodeGeneratorManagerScenarios.cpp in Sources */,
 				3EC1F8DA19E4E24D0035376F /* EnumValueParserScenarios.cpp in Sources */,
 				3E37A5D919DFA3DE00BED294 /* MessageFieldParserScenarios.cpp in Sources */,
 				3EF78A5419C5396300976ADA /* TokenReaderScenarios.cpp in Sources */,
