@@ -18,8 +18,8 @@ Protocol::ProtoModel::ProtoModel (const std::string & fileName)
 }
 
 Protocol::ProtoModel::ProtoModel (const ProtoModel & src)
-: Packageable(src), mFileName(src.mFileName), mCurrentNestedType(src.mCurrentNestedType), mEnums(src.mEnums), mMessages(src.mMessages),
-  mOptions(src.mOptions), mMessageQueue(src.mMessageQueue), mCurrentField(src.mCurrentField), mCurrentOneof(src.mCurrentOneof),
+: Packageable(src), OptionModelContainer(src), mFileName(src.mFileName), mCurrentNestedType(src.mCurrentNestedType), mEnums(src.mEnums), mMessages(src.mMessages),
+  mMessageQueue(src.mMessageQueue), mCurrentField(src.mCurrentField), mCurrentOneof(src.mCurrentOneof),
   mCurrentEnum(src.mCurrentEnum), mCurrentEnumValue(src.mCurrentEnumValue), mPrivateEnumTypes(src.mPrivateEnumTypes),
   mPublicEnumTypes(src.mPublicEnumTypes), mPrivateMessageTypes(src.mPrivateMessageTypes), mPublicMessageTypes(src.mPublicMessageTypes)
 {
@@ -166,7 +166,7 @@ void Protocol::ProtoModel::completeOneof ()
     mCurrentOneof = nullptr;
 }
 
-void Protocol::ProtoModel::addOption (TokenReader::iterator current, OptionModelCollection::value_type & option)
+void Protocol::ProtoModel::addOption (TokenReader::iterator current, const OptionModelCollection::value_type & option)
 {
     if (mCurrentField != nullptr)
     {
@@ -186,7 +186,7 @@ void Protocol::ProtoModel::addOption (TokenReader::iterator current, OptionModel
     }
     else if (mMessageQueue.empty())
     {
-        mOptions.push_back(option);
+        OptionModelContainer::addOption(option);
     }
     else
     {
@@ -265,11 +265,6 @@ const Protocol::ProtoModel::MessageModelCollection * Protocol::ProtoModel::messa
     return &mMessages;
 }
 
-const Protocol::ProtoModel::OptionModelCollection * Protocol::ProtoModel::options () const
-{
-    return &mOptions;
-}
-
 const Protocol::ProtoModel::NamedTypeCollection * Protocol::ProtoModel::privateEnumTypes () const
 {
     return &mPrivateEnumTypes;
@@ -298,12 +293,12 @@ Protocol::ProtoModel & Protocol::ProtoModel::operator = (const ProtoModel & rhs)
     }
 
     Packageable::operator=(rhs);
+    OptionModelContainer::operator=(rhs);
 
     mFileName = rhs.mFileName;
     mCurrentNestedType = rhs.mCurrentNestedType;
     mEnums = rhs.mEnums;
     mMessages = rhs.mMessages;
-    mOptions = rhs.mOptions;
     mMessageQueue = rhs.mMessageQueue;
     mCurrentField = rhs.mCurrentField;
     mCurrentOneof = rhs.mCurrentOneof;

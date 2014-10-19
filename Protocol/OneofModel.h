@@ -14,33 +14,32 @@
 
 #include "MessageFieldModel.h"
 #include "OptionModel.h"
+#include "OptionModelContainer.h"
 
 namespace MuddledManaged
 {
     namespace Protocol
     {
-        class OneofModel
+        class OneofModel : public OptionModelContainer
         {
         public:
             typedef std::vector<std::shared_ptr<MessageFieldModel>> MessageFieldModelCollection;
-            typedef std::vector<std::shared_ptr<OptionModel>> OptionModelCollection;
 
             explicit OneofModel (const std::string & name);
+
+            OneofModel (const OneofModel & src);
 
             std::string name () const;
 
             void addField (MessageFieldModelCollection::value_type & field);
 
-            void addOption (OptionModelCollection::value_type & option);
-
             const MessageFieldModelCollection * fields () const;
 
-            const OptionModelCollection * options () const;
+            OneofModel & operator = (const OneofModel & rhs);
 
         private:
             std::string mName;
             MessageFieldModelCollection mFields;
-            OptionModelCollection mOptions;
         };
         
     } // namespace Protocol

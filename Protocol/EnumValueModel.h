@@ -13,30 +13,28 @@
 #include <vector>
 
 #include "OptionModel.h"
+#include "OptionModelContainer.h"
 
 namespace MuddledManaged
 {
     namespace Protocol
     {
-        class EnumValueModel
+        class EnumValueModel : public OptionModelContainer
         {
         public:
-            typedef std::vector<std::shared_ptr<OptionModel>> OptionModelCollection;
-
             EnumValueModel (const std::string & name, unsigned int value);
+
+            EnumValueModel (const EnumValueModel & src);
 
             std::string name () const;
 
             unsigned int value () const;
 
-            void addOption (OptionModelCollection::value_type & option);
-
-            const OptionModelCollection * options () const;
+            EnumValueModel & operator = (const EnumValueModel & rhs);
 
         private:
             std::string mName;
             unsigned int mValue;
-            OptionModelCollection mOptions;
         };
 
     } // namespace Protocol

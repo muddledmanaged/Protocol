@@ -20,12 +20,13 @@
 #include "MessageModel.h"
 #include "MessageFieldModel.h"
 #include "OptionModel.h"
+#include "OptionModelContainer.h"
 
 namespace MuddledManaged
 {
     namespace Protocol
     {
-        class ProtoModel : private Packageable
+        class ProtoModel : private Packageable, public OptionModelContainer
         {
         public:
             typedef MessageModel::MessageFieldModelCollection MessageFieldModelCollection;
@@ -33,7 +34,6 @@ namespace MuddledManaged
             typedef MessageModel::OneofModelCollection OneofModelCollection;
             typedef std::vector<std::shared_ptr<EnumModel>> EnumModelCollection;
             typedef std::vector<std::shared_ptr<MessageModel>> MessageModelCollection;
-            typedef std::vector<std::shared_ptr<OptionModel>> OptionModelCollection;
             typedef std::unordered_set<std::string> NamedTypeCollection;
 
             explicit ProtoModel (const std::string & fileName);
@@ -62,7 +62,7 @@ namespace MuddledManaged
             void addOneof (TokenReader::iterator current, OneofModelCollection::value_type & oneof);
             void completeOneof ();
 
-            void addOption (TokenReader::iterator current, OptionModelCollection::value_type & option);
+            virtual void addOption (TokenReader::iterator current, const OptionModelCollection::value_type & option);
 
             void addPrivateEnumType (TokenReader::iterator current, const std::string & namedType);
 
@@ -75,8 +75,6 @@ namespace MuddledManaged
             const EnumModelCollection * enums () const;
 
             const MessageModelCollection * messages () const;
-
-            const OptionModelCollection * options () const;
 
             const NamedTypeCollection * privateEnumTypes () const;
 
@@ -96,7 +94,6 @@ namespace MuddledManaged
             std::string mCurrentNestedType;
             EnumModelCollection mEnums;
             MessageModelCollection mMessages;
-            OptionModelCollection mOptions;
             MessageModelCollection mMessageQueue;
             MessageFieldModelCollection::value_type mCurrentField;
             OneofModelCollection::value_type mCurrentOneof;

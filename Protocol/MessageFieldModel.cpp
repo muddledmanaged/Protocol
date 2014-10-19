@@ -15,6 +15,11 @@ Protocol::MessageFieldModel::MessageFieldModel (Requiredness requiredness, const
 {
 }
 
+Protocol::MessageFieldModel::MessageFieldModel (const MessageFieldModel & src)
+: OptionModelContainer(src), mRequiredness(src.mRequiredness), mFieldType(src.mFieldType), mName(src.mName), mIndex(src.mIndex)
+{
+}
+
 Protocol::MessageFieldModel::Requiredness Protocol::MessageFieldModel::requiredness () const
 {
     return mRequiredness;
@@ -35,12 +40,19 @@ unsigned int Protocol::MessageFieldModel::index () const
     return mIndex;
 }
 
-void Protocol::MessageFieldModel::addOption (OptionModelCollection::value_type & option)
+Protocol::MessageFieldModel & Protocol::MessageFieldModel::operator = (const MessageFieldModel & rhs)
 {
-    mOptions.push_back(option);
-}
+    if (this == &rhs)
+    {
+        return *this;
+    }
 
-const Protocol::MessageFieldModel::OptionModelCollection * Protocol::MessageFieldModel::options () const
-{
-    return &mOptions;
+    OptionModelContainer::operator=(rhs);
+
+    mRequiredness = rhs.mRequiredness;
+    mName = rhs.mName;
+    mFieldType = rhs.mFieldType;
+    mIndex = rhs.mIndex;
+
+    return *this;
 }

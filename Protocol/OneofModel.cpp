@@ -15,6 +15,11 @@ Protocol::OneofModel::OneofModel (const string & name)
 {
 }
 
+Protocol::OneofModel::OneofModel (const OneofModel & src)
+: OptionModelContainer(src), mName(src.mName), mFields(src.mFields)
+{
+}
+
 string Protocol::OneofModel::name () const
 {
     return mName;
@@ -30,12 +35,17 @@ const Protocol::OneofModel::MessageFieldModelCollection * Protocol::OneofModel::
     return &mFields;
 }
 
-void Protocol::OneofModel::addOption (OptionModelCollection::value_type & option)
+Protocol::OneofModel & Protocol::OneofModel::operator = (const OneofModel & rhs)
 {
-    mOptions.push_back(option);
-}
+    if (this == &rhs)
+    {
+        return *this;
+    }
 
-const Protocol::OneofModel::OptionModelCollection * Protocol::OneofModel::options () const
-{
-    return &mOptions;
+    OptionModelContainer::operator=(rhs);
+
+    mName = rhs.mName;
+    mFields = rhs.mFields;
+
+    return *this;
 }

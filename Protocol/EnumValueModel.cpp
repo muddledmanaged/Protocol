@@ -15,6 +15,11 @@ Protocol::EnumValueModel::EnumValueModel (const std::string & name, unsigned int
 {
 }
 
+Protocol::EnumValueModel::EnumValueModel (const EnumValueModel & src)
+: OptionModelContainer(src), mName(src.mName), mValue(src.mValue)
+{
+}
+
 string Protocol::EnumValueModel::name () const
 {
     return mName;
@@ -25,12 +30,17 @@ unsigned int Protocol::EnumValueModel::value () const
     return mValue;
 }
 
-void Protocol::EnumValueModel::addOption (OptionModelCollection::value_type & option)
+Protocol::EnumValueModel & Protocol::EnumValueModel::operator = (const EnumValueModel & rhs)
 {
-    mOptions.push_back(option);
-}
+    if (this == &rhs)
+    {
+        return *this;
+    }
 
-const Protocol::EnumValueModel::OptionModelCollection * Protocol::EnumValueModel::options () const
-{
-    return &mOptions;
+    OptionModelContainer::operator=(rhs);
+
+    mName = rhs.mName;
+    mValue = rhs.mValue;
+
+    return *this;
 }

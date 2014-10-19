@@ -16,16 +16,16 @@
 #include "Nestable.h"
 #include "EnumValueModel.h"
 #include "OptionModel.h"
+#include "OptionModelContainer.h"
 
 namespace MuddledManaged
 {
     namespace Protocol
     {
-        class EnumModel : public Packageable, public Nestable
+        class EnumModel : public Packageable, public Nestable, public OptionModelContainer
         {
         public:
             typedef std::vector<std::shared_ptr<EnumValueModel>> EnumValueModelCollection;
-            typedef std::vector<std::shared_ptr<OptionModel>> OptionModelCollection;
 
             explicit EnumModel (const std::string & name, const std::string & package = "", const std::string & parentTypes = "");
 
@@ -37,18 +37,13 @@ namespace MuddledManaged
 
             void addEnumValue (EnumValueModelCollection::value_type & value);
 
-            void addOption (OptionModelCollection::value_type & option);
-
-            const EnumValueModelCollection * values () const;
-
-            const OptionModelCollection * options () const;
+            EnumValueModelCollection values () const;
 
             EnumModel & operator = (const EnumModel & rhs);
 
         private:
             std::string mName;
             EnumValueModelCollection mValues;
-            OptionModelCollection mOptions;
         };
 
     } // namespace Protocol

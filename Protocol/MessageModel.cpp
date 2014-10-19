@@ -16,8 +16,8 @@ Protocol::MessageModel::MessageModel (const string & name, const string & packag
 }
 
 Protocol::MessageModel::MessageModel (const MessageModel & src)
-: Packageable(src), Nestable(src), mName(src.mName), mFields(src.mFields), mEnums(src.mEnums), mMessages(src.mMessages),
-  mOneofs(src.mOneofs), mOptions(src.mOptions)
+: Packageable(src), Nestable(src), OptionModelContainer(src), mName(src.mName), mFields(src.mFields), mEnums(src.mEnums),
+  mMessages(src.mMessages), mOneofs(src.mOneofs)
 {
 }
 
@@ -64,11 +64,6 @@ void Protocol::MessageModel::addOneof (OneofModelCollection::value_type & oneof)
     mOneofs.push_back(oneof);
 }
 
-void Protocol::MessageModel::addOption (OptionModelCollection::value_type & option)
-{
-    mOptions.push_back(option);
-}
-
 const Protocol::MessageModel::MessageFieldModelCollection * Protocol::MessageModel::fields () const
 {
     return &mFields;
@@ -89,11 +84,6 @@ const Protocol::MessageModel::OneofModelCollection * Protocol::MessageModel::one
     return &mOneofs;
 }
 
-const Protocol::MessageModel::OptionModelCollection * Protocol::MessageModel::options () const
-{
-    return &mOptions;
-}
-
 Protocol::MessageModel & Protocol::MessageModel::operator = (const MessageModel & rhs)
 {
     if (this == &rhs)
@@ -103,13 +93,13 @@ Protocol::MessageModel & Protocol::MessageModel::operator = (const MessageModel 
 
     Packageable::operator=(rhs);
     Nestable::operator=(rhs);
+    OptionModelContainer::operator=(rhs);
 
     mName = rhs.mName;
     mFields = rhs.mFields;
     mEnums = rhs.mEnums;
     mMessages = rhs.mMessages;
     mOneofs = rhs.mOneofs;
-    mOptions = rhs.mOptions;
 
     return *this;
 }

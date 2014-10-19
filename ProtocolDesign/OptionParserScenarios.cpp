@@ -40,8 +40,8 @@ DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse enum 
         verifyEqual("enumOne", enumeration->name());
 
         int optionCount = 0;
-        auto optionBegin = enumeration->options()->cbegin();
-        auto optionEnd = enumeration->options()->cend();
+        auto optionBegin = enumeration->options().begin();
+        auto optionEnd = enumeration->options().end();
         while (optionBegin != optionEnd)
         {
             optionCount++;
@@ -72,8 +72,8 @@ DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse enum 
         verifyEqual("enumOne", enumeration->name());
 
         int valueCount = 0;
-        auto valueBegin = enumeration->values()->cbegin();
-        auto valueEnd = enumeration->values()->cend();
+        auto valueBegin = enumeration->values().begin();
+        auto valueEnd = enumeration->values().end();
         while (valueBegin != valueEnd)
         {
             valueCount++;
@@ -86,8 +86,8 @@ DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse enum 
                 verifyEqual(expectedIndex, value->value());
 
                 int optionCount = 0;
-                auto optionBegin = value->options()->cbegin();
-                auto optionEnd = value->options()->cend();
+                auto optionBegin = value->options().begin();
+                auto optionEnd = value->options().end();
                 while (optionBegin != optionEnd)
                 {
                     optionCount++;
@@ -128,8 +128,8 @@ DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse messa
         verifyEqual("messageOne", message->name());
 
         int optionCount = 0;
-        auto optionBegin = message->options()->cbegin();
-        auto optionEnd = message->options()->cend();
+        auto optionBegin = message->options().begin();
+        auto optionEnd = message->options().end();
         while (optionBegin != optionEnd)
         {
             optionCount++;
@@ -174,8 +174,8 @@ DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse messa
                 verifyEqual(expectedIndex, field->index());
 
                 int optionCount = 0;
-                auto optionBegin = field->options()->cbegin();
-                auto optionEnd = field->options()->cend();
+                auto optionBegin = field->options().begin();
+                auto optionEnd = field->options().end();
                 while (optionBegin != optionEnd)
                 {
                     optionCount++;
@@ -225,8 +225,8 @@ DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse oneof
             verifyEqual("choicesOne", oneof->name());
 
             int optionCount = 0;
-            auto optionBegin = oneof->options()->cbegin();
-            auto optionEnd = oneof->options()->cend();
+            auto optionBegin = oneof->options().begin();
+            auto optionEnd = oneof->options().end();
             while (optionBegin != optionEnd)
             {
                 optionCount++;
@@ -281,8 +281,8 @@ DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse oneof
                 verifyEqual(expectedIndex, field->index());
 
                 int optionCount = 0;
-                auto optionBegin = field->options()->cbegin();
-                auto optionEnd = field->options()->cend();
+                auto optionBegin = field->options().begin();
+                auto optionEnd = field->options().end();
                 while (optionBegin != optionEnd)
                 {
                     optionCount++;
@@ -310,8 +310,8 @@ DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse proto
     model = parser.parse();
 
     int optionCount = 0;
-    auto optionBegin = model->options()->cbegin();
-    auto optionEnd = model->options()->cend();
+    auto optionBegin = model->options().begin();
+    auto optionEnd = model->options().end();
     while (optionBegin != optionEnd)
     {
         optionCount++;
@@ -330,8 +330,8 @@ DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse float
     model = parser.parse();
 
     int optionCount = 0;
-    auto optionBegin = model->options()->cbegin();
-    auto optionEnd = model->options()->cend();
+    auto optionBegin = model->options().begin();
+    auto optionEnd = model->options().end();
     while (optionBegin != optionEnd)
     {
         optionCount++;
@@ -350,8 +350,8 @@ DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse strin
     model = parser.parse();
 
     int optionCount = 0;
-    auto optionBegin = model->options()->cbegin();
-    auto optionEnd = model->options()->cend();
+    auto optionBegin = model->options().begin();
+    auto optionEnd = model->options().end();
     while (optionBegin != optionEnd)
     {
         optionCount++;
