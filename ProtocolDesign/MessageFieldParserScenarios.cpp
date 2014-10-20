@@ -37,8 +37,8 @@ DESIGNER_SCENARIO( MessageFieldParser, "Parsing/Normal", "MessageFieldParser can
         verifyEqual("messageOne", message->name());
 
         int fieldCount = 0;
-        auto fieldBegin = message->fields()->cbegin();
-        auto fieldEnd = message->fields()->cend();
+        auto fieldBegin = message->fields().begin();
+        auto fieldEnd = message->fields().end();
         while (fieldBegin != fieldEnd)
         {
             fieldCount++;
@@ -92,8 +92,8 @@ DESIGNER_SCENARIO( MessageFieldParser, "Parsing/Normal", "MessageFieldParser can
         verifyEqual("messageOne", message->name());
 
         int fieldCount = 0;
-        auto fieldBegin = message->fields()->cbegin();
-        auto fieldEnd = message->fields()->cend();
+        auto fieldBegin = message->fields().begin();
+        auto fieldEnd = message->fields().end();
         while (fieldBegin != fieldEnd)
         {
             fieldCount++;
@@ -128,8 +128,8 @@ DESIGNER_SCENARIO( MessageFieldParser, "Parsing/Normal", "MessageFieldParser can
         verifyEqual("messageOne", messageOne->name());
 
         int messageOneFieldCount = 0;
-        auto messageOneFieldBegin = messageOne->fields()->cbegin();
-        auto messageOneFieldEnd = messageOne->fields()->cend();
+        auto messageOneFieldBegin = messageOne->fields().begin();
+        auto messageOneFieldEnd = messageOne->fields().end();
         while (messageOneFieldBegin != messageOneFieldEnd)
         {
             messageOneFieldCount++;
@@ -155,8 +155,8 @@ DESIGNER_SCENARIO( MessageFieldParser, "Parsing/Normal", "MessageFieldParser can
             verifyEqual("messageTwo", messageTwo->name());
 
             int messageTwoFieldCount = 0;
-            auto messageTwoFieldBegin = messageTwo->fields()->cbegin();
-            auto messageTwoFieldEnd = messageTwo->fields()->cend();
+            auto messageTwoFieldBegin = messageTwo->fields().begin();
+            auto messageTwoFieldEnd = messageTwo->fields().end();
             while (messageTwoFieldBegin != messageTwoFieldEnd)
             {
                 messageTwoFieldCount++;

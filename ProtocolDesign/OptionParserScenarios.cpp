@@ -160,8 +160,8 @@ DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse messa
         verifyEqual("messageOne", message->name());
 
         int fieldCount = 0;
-        auto fieldBegin = message->fields()->cbegin();
-        auto fieldEnd = message->fields()->cend();
+        auto fieldBegin = message->fields().begin();
+        auto fieldEnd = message->fields().end();
         while (fieldBegin != fieldEnd)
         {
             fieldCount++;
@@ -269,8 +269,8 @@ DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse oneof
             verifyEqual("choicesOne", oneof->name());
 
             int fieldCount = 0;
-            auto fieldBegin = oneof->fields()->cbegin();
-            auto fieldEnd = oneof->fields()->cend();
+            auto fieldBegin = oneof->fields().begin();
+            auto fieldEnd = oneof->fields().end();
             while (fieldBegin != fieldEnd)
             {
                 fieldCount++;

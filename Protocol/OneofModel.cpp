@@ -16,23 +16,13 @@ Protocol::OneofModel::OneofModel (const string & name)
 }
 
 Protocol::OneofModel::OneofModel (const OneofModel & src)
-: OptionModelContainer(src), mName(src.mName), mFields(src.mFields)
+: OptionModelContainer(src), MessageFieldModelContainer(src), mName(src.mName)
 {
 }
 
 string Protocol::OneofModel::name () const
 {
     return mName;
-}
-
-void Protocol::OneofModel::addField (MessageFieldModelCollection::value_type & field)
-{
-    mFields.push_back(field);
-}
-
-const Protocol::OneofModel::MessageFieldModelCollection * Protocol::OneofModel::fields () const
-{
-    return &mFields;
 }
 
 Protocol::OneofModel & Protocol::OneofModel::operator = (const OneofModel & rhs)
@@ -43,9 +33,9 @@ Protocol::OneofModel & Protocol::OneofModel::operator = (const OneofModel & rhs)
     }
 
     OptionModelContainer::operator=(rhs);
+    MessageFieldModelContainer::operator=(rhs);
 
     mName = rhs.mName;
-    mFields = rhs.mFields;
 
     return *this;
 }
