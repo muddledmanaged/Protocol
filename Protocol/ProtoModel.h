@@ -19,7 +19,6 @@
 #include "EnumValueModel.h"
 #include "MessageModel.h"
 #include "MessageFieldModel.h"
-#include "OptionModel.h"
 #include "OptionModelContainer.h"
 
 namespace MuddledManaged

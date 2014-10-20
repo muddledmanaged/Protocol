@@ -8,7 +8,10 @@
 #ifndef Protocol_OptionModelContainer_h
 #define Protocol_OptionModelContainer_h
 
-#include <string>
+#include <memory>
+#include <vector>
+
+#include "OptionModel.h"
 
 namespace MuddledManaged
 {

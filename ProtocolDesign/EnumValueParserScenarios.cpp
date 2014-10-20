@@ -37,8 +37,8 @@ DESIGNER_SCENARIO( EnumValueParser, "Parsing/Normal", "EnumParser can parse simp
         verifyEqual("enumOne", enumeration->name());
 
         int valueCount = 0;
-        auto begin1 = enumeration->values().begin();
-        auto end1 = enumeration->values().end();
+        auto begin1 = enumeration->enumValues().begin();
+        auto end1 = enumeration->enumValues().end();
         while (begin1 != end1)
         {
             valueCount++;
@@ -83,8 +83,8 @@ DESIGNER_SCENARIO( EnumValueParser, "Parsing/Normal", "EnumValueParser can parse
             verifyEqual("enumZero1", enumeration->name());
 
             int valueCount = 0;
-            auto begin5 = enumeration->values().begin();
-            auto end5 = enumeration->values().end();
+            auto begin5 = enumeration->enumValues().begin();
+            auto end5 = enumeration->enumValues().end();
             while (begin5 != end5)
             {
                 valueCount++;
@@ -111,8 +111,8 @@ DESIGNER_SCENARIO( EnumValueParser, "Parsing/Normal", "EnumValueParser can parse
             verifyEqual("enumZero2", enumeration->name());
 
             int valueCount = 0;
-            auto begin5 = enumeration->values().begin();
-            auto end5 = enumeration->values().end();
+            auto begin5 = enumeration->enumValues().begin();
+            auto end5 = enumeration->enumValues().end();
             while (begin5 != end5)
             {
                 valueCount++;
@@ -157,8 +157,8 @@ DESIGNER_SCENARIO( EnumValueParser, "Parsing/Normal", "EnumValueParser can parse
                 verifyEqual("", enumeration->package());
 
                 int valueCount = 0;
-                auto begin5 = enumeration->values().begin();
-                auto end5 = enumeration->values().end();
+                auto begin5 = enumeration->enumValues().begin();
+                auto end5 = enumeration->enumValues().end();
                 while (begin5 != end5)
                 {
                     valueCount++;
@@ -196,8 +196,8 @@ DESIGNER_SCENARIO( EnumValueParser, "Parsing/Normal", "EnumValueParser can parse
             verifyEqual("", enumeration->package());
 
             int valueCount = 0;
-            auto begin5 = enumeration->values().begin();
-            auto end5 = enumeration->values().end();
+            auto begin5 = enumeration->enumValues().begin();
+            auto end5 = enumeration->enumValues().end();
             while (begin5 != end5)
             {
                 valueCount++;

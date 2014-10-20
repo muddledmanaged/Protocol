@@ -8,11 +8,8 @@
 #ifndef Protocol_MessageFieldModel_h
 #define Protocol_MessageFieldModel_h
 
-#include <memory>
 #include <string>
-#include <vector>
 
-#include "OptionModel.h"
 #include "OptionModelContainer.h"
 
 namespace MuddledManaged

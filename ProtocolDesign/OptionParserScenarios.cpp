@@ -72,8 +72,8 @@ DESIGNER_SCENARIO( OptionParser, "Parsing/Normal", "OptionParser can parse enum 
         verifyEqual("enumOne", enumeration->name());
 
         int valueCount = 0;
-        auto valueBegin = enumeration->values().begin();
-        auto valueEnd = enumeration->values().end();
+        auto valueBegin = enumeration->enumValues().begin();
+        auto valueEnd = enumeration->enumValues().end();
         while (valueBegin != valueEnd)
         {
             valueCount++;

@@ -16,7 +16,7 @@ Protocol::EnumModel::EnumModel (const string & name, const string & package, con
 }
 
 Protocol::EnumModel::EnumModel (const EnumModel & src)
-: Packageable(src), Nestable(src), OptionModelContainer(src), mName(src.mName), mValues(src.mValues)
+: Packageable(src), Nestable(src), OptionModelContainer(src), EnumValueModelContainer(src), mName(src.mName)
 {
 }
 
@@ -43,16 +43,6 @@ string Protocol::EnumModel::fullName () const
     return fullName;
 }
 
-void Protocol::EnumModel::addEnumValue (EnumValueModelCollection::value_type & value)
-{
-    mValues.push_back(value);
-}
-
-Protocol::EnumModel::EnumValueModelCollection Protocol::EnumModel::values () const
-{
-    return mValues;
-}
-
 Protocol::EnumModel & Protocol::EnumModel::operator = (const EnumModel & rhs)
 {
     if (this == &rhs)
@@ -63,9 +53,9 @@ Protocol::EnumModel & Protocol::EnumModel::operator = (const EnumModel & rhs)
     Packageable::operator=(rhs);
     Nestable::operator=(rhs);
     OptionModelContainer::operator=(rhs);
+    EnumValueModelContainer::operator=(rhs);
 
     mName = rhs.mName;
-    mValues = rhs.mValues;
 
     return *this;
 }

@@ -13,7 +13,6 @@
 #include <vector>
 
 #include "MessageFieldModel.h"
-#include "OptionModel.h"
 #include "OptionModelContainer.h"
 
 namespace MuddledManaged
