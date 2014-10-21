@@ -16,8 +16,8 @@ Protocol::MessageModel::MessageModel (const string & name, const string & packag
 }
 
 Protocol::MessageModel::MessageModel (const MessageModel & src)
-: Packageable(src), Nestable(src), OptionModelContainer(src), MessageFieldModelContainer(src), mName(src.mName), mEnums(src.mEnums),
-  mMessages(src.mMessages), mOneofs(src.mOneofs)
+: Packageable(src), Nestable(src), OptionModelContainer(src), MessageFieldModelContainer(src), EnumModelContainer(src),
+  mName(src.mName), mMessages(src.mMessages), mOneofs(src.mOneofs)
 {
 }
 
@@ -44,11 +44,6 @@ string Protocol::MessageModel::fullName () const
     return fullName;
 }
 
-void Protocol::MessageModel::addEnum (EnumModelCollection::value_type & enumeration)
-{
-    mEnums.push_back(enumeration);
-}
-
 void Protocol::MessageModel::addMessage (MessageModelCollection::value_type & message)
 {
     mMessages.push_back(message);
@@ -57,11 +52,6 @@ void Protocol::MessageModel::addMessage (MessageModelCollection::value_type & me
 void Protocol::MessageModel::addOneof (OneofModelCollection::value_type & oneof)
 {
     mOneofs.push_back(oneof);
-}
-
-const Protocol::MessageModel::EnumModelCollection * Protocol::MessageModel::enums () const
-{
-    return &mEnums;
 }
 
 const Protocol::MessageModel::MessageModelCollection * Protocol::MessageModel::messages () const
@@ -85,9 +75,9 @@ Protocol::MessageModel & Protocol::MessageModel::operator = (const MessageModel 
     Nestable::operator=(rhs);
     OptionModelContainer::operator=(rhs);
     MessageFieldModelContainer::operator=(rhs);
+    EnumModelContainer::operator=(rhs);
 
     mName = rhs.mName;
-    mEnums = rhs.mEnums;
     mMessages = rhs.mMessages;
     mOneofs = rhs.mOneofs;
 

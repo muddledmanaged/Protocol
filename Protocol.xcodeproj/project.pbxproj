@@ -88,6 +88,7 @@
 		3E03213319EB20FB00E21D52 /* ImportParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImportParser.cpp; sourceTree = "<group>"; };
 		3E03213419EB20FB00E21D52 /* ImportParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportParser.h; sourceTree = "<group>"; };
 		3E05239919F00C68000493EB /* CodeGeneratorInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeGeneratorInterface.h; sourceTree = "<group>"; };
+		3E0D56BF19F602C8003AE7E7 /* EnumModelContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnumModelContainer.h; sourceTree = "<group>"; };
 		3E1B9A2519C1569F00AAAA0D /* TokenReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TokenReader.cpp; sourceTree = "<group>"; };
 		3E1B9A2619C1569F00AAAA0D /* TokenReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TokenReader.h; sourceTree = "<group>"; };
 		3E28C49719C5FF0B00D5F4FD /* EmptyCommentSingleLine.proto */ = {isa = PBXFileReference; lastKnownFileType = text; path = EmptyCommentSingleLine.proto; sourceTree = "<group>"; };
@@ -253,6 +254,7 @@
 			children = (
 				3ECE389F19DBAAEF00A042B4 /* EnumModel.cpp */,
 				3ECE38A019DBAAEF00A042B4 /* EnumModel.h */,
+				3E0D56BF19F602C8003AE7E7 /* EnumModelContainer.h */,
 				3ECE389B19DBAA3100A042B4 /* EnumParser.cpp */,
 				3ECE389C19DBAA3100A042B4 /* EnumParser.h */,
 				3EE5ACC619E39604001AEC6C /* EnumValueModel.cpp */,

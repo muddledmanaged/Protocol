@@ -18,7 +18,7 @@ Protocol::ProtoModel::ProtoModel (const std::string & fileName)
 }
 
 Protocol::ProtoModel::ProtoModel (const ProtoModel & src)
-: Packageable(src), OptionModelContainer(src), mFileName(src.mFileName), mCurrentNestedType(src.mCurrentNestedType), mEnums(src.mEnums), mMessages(src.mMessages),
+: Packageable(src), OptionModelContainer(src), EnumModelContainer(src), mFileName(src.mFileName), mCurrentNestedType(src.mCurrentNestedType), mMessages(src.mMessages),
   mMessageQueue(src.mMessageQueue), mCurrentField(src.mCurrentField), mCurrentOneof(src.mCurrentOneof),
   mCurrentEnum(src.mCurrentEnum), mCurrentEnumValue(src.mCurrentEnumValue), mPrivateEnumTypes(src.mPrivateEnumTypes),
   mPublicEnumTypes(src.mPublicEnumTypes), mPrivateMessageTypes(src.mPrivateMessageTypes), mPublicMessageTypes(src.mPublicMessageTypes)
@@ -94,7 +94,7 @@ void Protocol::ProtoModel::addEnum (TokenReader::iterator current, EnumModelColl
 
     if (mMessageQueue.empty())
     {
-        mEnums.push_back(enumeration);
+        EnumModelContainer::addEnum(enumeration);
     }
     else
     {
@@ -255,11 +255,6 @@ void Protocol::ProtoModel::addPublicMessageType (TokenReader::iterator current, 
     mPublicMessageTypes.emplace(namedType);
 }
 
-const Protocol::ProtoModel::EnumModelCollection * Protocol::ProtoModel::enums () const
-{
-    return &mEnums;
-}
-
 const Protocol::ProtoModel::MessageModelCollection * Protocol::ProtoModel::messages () const
 {
     return &mMessages;
@@ -294,10 +289,10 @@ Protocol::ProtoModel & Protocol::ProtoModel::operator = (const ProtoModel & rhs)
 
     Packageable::operator=(rhs);
     OptionModelContainer::operator=(rhs);
+    EnumModelContainer::operator=(rhs);
 
     mFileName = rhs.mFileName;
     mCurrentNestedType = rhs.mCurrentNestedType;
-    mEnums = rhs.mEnums;
     mMessages = rhs.mMessages;
     mMessageQueue = rhs.mMessageQueue;
     mCurrentField = rhs.mCurrentField;
