@@ -21,22 +21,24 @@ namespace MuddledManaged
         {
         public:
             typedef std::vector<std::shared_ptr<EnumValueModel>> EnumValueModelCollection;
+            typedef std::shared_ptr<EnumValueModelCollection> SPEnumValueModelCollection;
 
             virtual ~EnumValueModelContainer ()
             { }
 
             virtual void addEnumValue (const EnumValueModelCollection::value_type & enumValue)
             {
-                mValues.push_back(enumValue);
+                mValues->push_back(enumValue);
             }
 
-            virtual EnumValueModelCollection enumValues () const
+            virtual const SPEnumValueModelCollection enumValues () const
             {
                 return mValues;
             }
 
         protected:
             EnumValueModelContainer ()
+            : mValues(new EnumValueModelCollection())
             { }
 
             EnumValueModelContainer (const EnumValueModelContainer & src)
@@ -56,7 +58,7 @@ namespace MuddledManaged
             }
 
         private:
-            EnumValueModelCollection mValues;
+            SPEnumValueModelCollection mValues;
         };
         
     } // namespace Protocol

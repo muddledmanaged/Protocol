@@ -35,7 +35,7 @@ DESIGNER_SCENARIO( OneofParser, "Parsing/Normal", "OneofParser can parse simple 
         messageCount++;
         auto message = *begin1;
         verifyEqual("messageOne", message->name());
-        verifyTrue(message->fields().empty());
+        verifyTrue(message->fields()->empty());
 
         int oneofCount = 0;
         auto begin2 = message->oneofs()->cbegin();
@@ -46,8 +46,8 @@ DESIGNER_SCENARIO( OneofParser, "Parsing/Normal", "OneofParser can parse simple 
             auto oneof = *begin2;
 
             int fieldCount = 0;
-            auto begin3 = oneof->fields().begin();
-            auto end3 = oneof->fields().end();
+            auto begin3 = oneof->fields()->cbegin();
+            auto end3 = oneof->fields()->cend();
             while (begin3 != end3)
             {
                 fieldCount++;
@@ -113,8 +113,8 @@ DESIGNER_SCENARIO( OneofParser, "Parsing/Normal", "OneofParser can parse oneof f
             verifyEqual("choicesOne", oneof->name());
 
             int fieldCount = 0;
-            auto fieldBegin = oneof->fields().begin();
-            auto fieldEnd = oneof->fields().end();
+            auto fieldBegin = oneof->fields()->cbegin();
+            auto fieldEnd = oneof->fields()->cend();
             while (fieldBegin != fieldEnd)
             {
                 fieldCount++;
@@ -151,7 +151,7 @@ DESIGNER_SCENARIO( OneofParser, "Parsing/Normal", "OneofParser can parse multipl
         auto message1 = *begin1;
         unsigned long expectedSize = 1;
         verifyEqual("messageOne", message1->name());
-        verifyEqual(expectedSize, message1->fields().size());
+        verifyEqual(expectedSize, message1->fields()->size());
 
         int oneof1Count = 0;
         auto begin2 = message1->oneofs()->cbegin();
@@ -162,8 +162,8 @@ DESIGNER_SCENARIO( OneofParser, "Parsing/Normal", "OneofParser can parse multipl
             auto oneof = *begin2;
 
             int fieldCount = 0;
-            auto begin3 = oneof->fields().begin();
-            auto end3 = oneof->fields().end();
+            auto begin3 = oneof->fields()->cbegin();
+            auto end3 = oneof->fields()->cend();
             while (begin3 != end3)
             {
                 fieldCount++;
@@ -220,7 +220,7 @@ DESIGNER_SCENARIO( OneofParser, "Parsing/Normal", "OneofParser can parse multipl
             message2Count++;
             auto message2 = *begin4;
             verifyEqual("messageTwo", message2->name());
-            verifyEqual(expectedSize, message2->fields().size());
+            verifyEqual(expectedSize, message2->fields()->size());
 
             int oneof2Count = 0;
             auto begin5 = message2->oneofs()->cbegin();
@@ -231,8 +231,8 @@ DESIGNER_SCENARIO( OneofParser, "Parsing/Normal", "OneofParser can parse multipl
                 auto oneof = *begin5;
 
                 int fieldCount = 0;
-                auto begin6 = oneof->fields().begin();
-                auto end6 = oneof->fields().end();
+                auto begin6 = oneof->fields()->cbegin();
+                auto end6 = oneof->fields()->cend();
                 while (begin6 != end6)
                 {
                     fieldCount++;

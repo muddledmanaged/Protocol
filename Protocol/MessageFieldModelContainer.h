@@ -21,22 +21,24 @@ namespace MuddledManaged
         {
         public:
             typedef std::vector<std::shared_ptr<MessageFieldModel>> MessageFieldModelCollection;
+            typedef std::shared_ptr<MessageFieldModelCollection> SPMessageFieldModelCollection;
 
             virtual ~MessageFieldModelContainer ()
             { }
 
             virtual void addField (const MessageFieldModelCollection::value_type & field)
             {
-                mFields.push_back(field);
+                mFields->push_back(field);
             }
 
-            virtual MessageFieldModelCollection fields () const
+            virtual const SPMessageFieldModelCollection fields () const
             {
                 return mFields;
             }
 
         protected:
             MessageFieldModelContainer ()
+            : mFields(new MessageFieldModelCollection())
             { }
 
             MessageFieldModelContainer (const MessageFieldModelContainer & src)
@@ -56,7 +58,7 @@ namespace MuddledManaged
             }
 
         private:
-            MessageFieldModelCollection mFields;
+            SPMessageFieldModelCollection mFields;
         };
         
     } // namespace Protocol

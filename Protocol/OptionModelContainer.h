@@ -21,22 +21,24 @@ namespace MuddledManaged
         {
         public:
             typedef std::vector<std::shared_ptr<OptionModel>> OptionModelCollection;
+            typedef std::shared_ptr<OptionModelCollection> SPOptionModelCollection;
 
             virtual ~OptionModelContainer ()
             { }
 
             virtual void addOption (const OptionModelCollection::value_type & option)
             {
-                mOptions.push_back(option);
+                mOptions->push_back(option);
             }
 
-            virtual OptionModelCollection options () const
+            virtual const SPOptionModelCollection options () const
             {
                 return mOptions;
             }
 
         protected:
             OptionModelContainer ()
+            : mOptions(new OptionModelCollection())
             { }
 
             OptionModelContainer (const OptionModelContainer & src)
@@ -56,7 +58,7 @@ namespace MuddledManaged
             }
 
         private:
-            OptionModelCollection mOptions;
+            SPOptionModelCollection mOptions;
         };
 
     } // namespace Protocol
