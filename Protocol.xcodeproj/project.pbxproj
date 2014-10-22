@@ -119,6 +119,7 @@
 		3E37A5D519DFA26E00BED294 /* MessageField.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageField.proto; sourceTree = "<group>"; };
 		3E37A5D719DFA29700BED294 /* MessageFieldMultiple.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageFieldMultiple.proto; sourceTree = "<group>"; };
 		3E37A5D819DFA3DE00BED294 /* MessageFieldParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFieldParserScenarios.cpp; sourceTree = "<group>"; };
+		3E4B302319F7655500D89346 /* MessageModelContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageModelContainer.h; sourceTree = "<group>"; };
 		3E4D63F919F403ED0091CBBE /* OptionModelContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OptionModelContainer.h; sourceTree = "<group>"; };
 		3E4D63FA19F4A4C20091CBBE /* EnumValueModelContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnumValueModelContainer.h; sourceTree = "<group>"; };
 		3E4D63FB19F4BEB50091CBBE /* MessageFieldModelContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageFieldModelContainer.h; sourceTree = "<group>"; };
@@ -267,6 +268,7 @@
 				3EDF794E19D79E7200AD2103 /* InvalidProtoException.h */,
 				3E9EE99819D663D000AEF047 /* MessageModel.cpp */,
 				3E9EE99919D663D000AEF047 /* MessageModel.h */,
+				3E4B302319F7655500D89346 /* MessageModelContainer.h */,
 				3E9EE99419D6636B00AEF047 /* MessageParser.cpp */,
 				3E9EE99519D6636B00AEF047 /* MessageParser.h */,
 				3E37A5CD19DF916600BED294 /* MessageFieldModel.cpp */,

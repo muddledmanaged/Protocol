@@ -17,7 +17,7 @@ Protocol::MessageModel::MessageModel (const string & name, const string & packag
 
 Protocol::MessageModel::MessageModel (const MessageModel & src)
 : Packageable(src), Nestable(src), OptionModelContainer(src), MessageFieldModelContainer(src), EnumModelContainer(src),
-  mName(src.mName), mMessages(src.mMessages), mOneofs(src.mOneofs)
+  MessageModelContainer(src), mName(src.mName), mOneofs(src.mOneofs)
 {
 }
 
@@ -44,19 +44,9 @@ string Protocol::MessageModel::fullName () const
     return fullName;
 }
 
-void Protocol::MessageModel::addMessage (MessageModelCollection::value_type & message)
-{
-    mMessages.push_back(message);
-}
-
 void Protocol::MessageModel::addOneof (OneofModelCollection::value_type & oneof)
 {
     mOneofs.push_back(oneof);
-}
-
-const Protocol::MessageModel::MessageModelCollection * Protocol::MessageModel::messages () const
-{
-    return &mMessages;
 }
 
 const Protocol::MessageModel::OneofModelCollection * Protocol::MessageModel::oneofs () const
@@ -76,9 +66,9 @@ Protocol::MessageModel & Protocol::MessageModel::operator = (const MessageModel 
     OptionModelContainer::operator=(rhs);
     MessageFieldModelContainer::operator=(rhs);
     EnumModelContainer::operator=(rhs);
+    MessageModelContainer::operator=(rhs);
 
     mName = rhs.mName;
-    mMessages = rhs.mMessages;
     mOneofs = rhs.mOneofs;
 
     return *this;

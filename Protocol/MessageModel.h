@@ -15,6 +15,7 @@
 #include "Packageable.h"
 #include "Nestable.h"
 #include "EnumModelContainer.h"
+#include "MessageModelContainer.h"
 #include "MessageFieldModelContainer.h"
 #include "OneofModel.h"
 #include "OptionModelContainer.h"
@@ -24,10 +25,9 @@ namespace MuddledManaged
     namespace Protocol
     {
         class MessageModel : public Packageable, public Nestable, public OptionModelContainer, public MessageFieldModelContainer,
-                             public EnumModelContainer
+                             public EnumModelContainer, public MessageModelContainer
         {
         public:
-            typedef std::vector<std::shared_ptr<MessageModel>> MessageModelCollection;
             typedef std::vector<std::shared_ptr<OneofModel>> OneofModelCollection;
 
             explicit MessageModel (const std::string & name, const std::string & package = "", const std::string & parentTypes = "");
@@ -38,11 +38,7 @@ namespace MuddledManaged
 
             std::string fullName () const;
 
-            void addMessage (MessageModelCollection::value_type & message);
-
             void addOneof (OneofModelCollection::value_type & oneof);
-
-            const MessageModelCollection * messages () const;
 
             const OneofModelCollection * oneofs () const;
 
@@ -50,7 +46,6 @@ namespace MuddledManaged
 
         private:
             std::string mName;
-            MessageModelCollection mMessages;
             OneofModelCollection mOneofs;
         };
 
