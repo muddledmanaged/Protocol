@@ -10,7 +10,10 @@
 
 #include <string>
 
-#include "OptionModelContainer.h"
+#include "OptionModel.h"
+
+// Every model header includes its container header.
+#include "EnumValueModelContainer.h"
 
 namespace MuddledManaged
 {

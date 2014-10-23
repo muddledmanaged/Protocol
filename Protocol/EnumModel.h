@@ -12,8 +12,11 @@
 
 #include "Packageable.h"
 #include "Nestable.h"
-#include "EnumValueModelContainer.h"
-#include "OptionModelContainer.h"
+#include "EnumValueModel.h"
+#include "OptionModel.h"
+
+// Every model header includes its container header.
+#include "EnumModelContainer.h"
 
 namespace MuddledManaged
 {

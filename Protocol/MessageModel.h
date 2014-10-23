@@ -14,16 +14,20 @@
 
 #include "Packageable.h"
 #include "Nestable.h"
-#include "EnumModelContainer.h"
-#include "MessageModelContainer.h"
-#include "MessageFieldModelContainer.h"
+#include "EnumModel.h"
+#include "MessageFieldModel.h"
 #include "OneofModel.h"
-#include "OptionModelContainer.h"
+#include "OptionModel.h"
+
+// Every model header includes its container header.
+#include "MessageModelContainer.h"
 
 namespace MuddledManaged
 {
     namespace Protocol
     {
+        class MessageModelContainer;
+
         class MessageModel : public Packageable, public Nestable, public OptionModelContainer, public MessageFieldModelContainer,
                              public EnumModelContainer, public MessageModelContainer
         {

@@ -10,6 +10,9 @@
 
 #include <string>
 
+// Every model header includes its container header.
+#include "OptionModelContainer.h"
+
 namespace MuddledManaged
 {
     namespace Protocol

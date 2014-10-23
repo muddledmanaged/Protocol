@@ -15,23 +15,22 @@
 
 #include "TokenReader.h"
 #include "Packageable.h"
-#include "EnumModelContainer.h"
+#include "EnumModel.h"
 #include "EnumValueModel.h"
 #include "MessageModel.h"
 #include "MessageFieldModel.h"
-#include "OptionModelContainer.h"
+#include "OptionModel.h"
 
 namespace MuddledManaged
 {
     namespace Protocol
     {
-        class ProtoModel : private Packageable, public OptionModelContainer, public EnumModelContainer
+        class ProtoModel : private Packageable, public OptionModelContainer, public EnumModelContainer, public MessageModelContainer
         {
         public:
             typedef MessageModel::MessageFieldModelCollection MessageFieldModelCollection;
             typedef EnumModel::EnumValueModelCollection EnumValueModelCollection;
             typedef MessageModel::OneofModelCollection OneofModelCollection;
-            typedef std::vector<std::shared_ptr<MessageModel>> MessageModelCollection;
             typedef std::unordered_set<std::string> NamedTypeCollection;
 
             explicit ProtoModel (const std::string & fileName);
@@ -70,8 +69,6 @@ namespace MuddledManaged
 
             void addPublicMessageType (TokenReader::iterator current, const std::string & namedType);
 
-            const MessageModelCollection * messages () const;
-
             const NamedTypeCollection * privateEnumTypes () const;
 
             const NamedTypeCollection * publicEnumTypes () const;
@@ -88,7 +85,6 @@ namespace MuddledManaged
 
             std::string mFileName;
             std::string mCurrentNestedType;
-            MessageModelCollection mMessages;
             MessageModelCollection mMessageQueue;
             MessageFieldModelCollection::value_type mCurrentField;
             OneofModelCollection::value_type mCurrentOneof;

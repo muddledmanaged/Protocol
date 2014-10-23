@@ -11,12 +11,13 @@
 #include <memory>
 #include <vector>
 
-#include "EnumValueModel.h"
-
 namespace MuddledManaged
 {
     namespace Protocol
     {
+        // The container classes really only need to know that the contained class exists.
+        class EnumValueModel;
+
         class EnumValueModelContainer
         {
         public:

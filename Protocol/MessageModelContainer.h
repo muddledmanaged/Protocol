@@ -11,13 +11,11 @@
 #include <memory>
 #include <vector>
 
-#include "MessageModel.h"
-
 namespace MuddledManaged
 {
     namespace Protocol
     {
-        // Since messages can contain messages, the message model class needs to be declared.
+        // The container classes really only need to know that the contained class exists.
         class MessageModel;
 
         class MessageModelContainer
