@@ -146,6 +146,7 @@
 		3E9B75BE19E7809A004B59A7 /* OptionValueParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionValueParser.h; sourceTree = "<group>"; };
 		3E9B75C119E780D1004B59A7 /* OptionSingleParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionSingleParser.cpp; sourceTree = "<group>"; };
 		3E9B75C219E780D1004B59A7 /* OptionSingleParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionSingleParser.h; sourceTree = "<group>"; };
+		3E9E516B19FB435300E95207 /* OneofModelContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OneofModelContainer.h; sourceTree = "<group>"; };
 		3E9EE99019D6634F00AEF047 /* PackageParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PackageParser.cpp; sourceTree = "<group>"; };
 		3E9EE99119D6634F00AEF047 /* PackageParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageParser.h; sourceTree = "<group>"; };
 		3E9EE99419D6636B00AEF047 /* MessageParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageParser.cpp; sourceTree = "<group>"; };
@@ -279,6 +280,7 @@
 				3E5065A019EB73F8006C86B6 /* Nestable.h */,
 				3EB0EBC819E225CD0097929D /* OneofModel.cpp */,
 				3EB0EBC919E225CD0097929D /* OneofModel.h */,
+				3E9E516B19FB435300E95207 /* OneofModelContainer.h */,
 				3EB0EBCC19E225F40097929D /* OneofParser.cpp */,
 				3EB0EBCD19E225F40097929D /* OneofParser.h */,
 				3EB0EBD019E235810097929D /* OneofFieldParser.cpp */,

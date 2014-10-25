@@ -10,8 +10,11 @@
 
 #include <string>
 
-#include "MessageFieldModelContainer.h"
-#include "OptionModelContainer.h"
+#include "MessageFieldModel.h"
+#include "OptionModel.h"
+
+// Every model header includes its container header.
+#include "OneofModelContainer.h"
 
 namespace MuddledManaged
 {
