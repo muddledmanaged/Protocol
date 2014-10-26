@@ -20,6 +20,12 @@ namespace MuddledManaged
             CodeGeneratorCPP ();
 
             virtual void generateCode (const std::string & outputFolder, const ProtoModel & model);
+
+        private:
+            static const std::string mHeaderFileExtension;
+            static const std::string mSourceFileExtension;
+            static const std::string mHeaderFileProlog;
+            static const std::string mSourceFileProlog;
         };
 
     } // namespace Protocol
