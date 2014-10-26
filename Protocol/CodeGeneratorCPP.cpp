@@ -16,12 +16,12 @@ using namespace std;
 using namespace boost;
 using namespace MuddledManaged;
 
-const std::string Protocol::CodeGeneratorCPP::mHeaderFileExtension = ".protocol.h";
-const std::string Protocol::CodeGeneratorCPP::mSourceFileExtension = ".protocol.cpp";
-const std::string Protocol::CodeGeneratorCPP::mHeaderFileProlog =
+const string Protocol::CodeGeneratorCPP::mHeaderFileExtension = ".protocol.h";
+const string Protocol::CodeGeneratorCPP::mSourceFileExtension = ".protocol.cpp";
+const string Protocol::CodeGeneratorCPP::mHeaderFileProlog =
 "// This file was generated from the Protocol compiler.\n"
 "// You should not edit this file directly.\n";
-const std::string Protocol::CodeGeneratorCPP::mSourceFileProlog =
+const string Protocol::CodeGeneratorCPP::mSourceFileProlog =
 "// This file was generated from the Protocol compiler.\n"
 "// You should not edit this file directly.\n";
 

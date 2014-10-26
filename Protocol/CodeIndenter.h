@@ -28,7 +28,7 @@ namespace MuddledManaged
 
             void indent ()
             {
-                mCurrentLevel++
+                mCurrentLevel++;
                 mPrefix += mIndentBy;
             }
 
@@ -44,6 +44,38 @@ namespace MuddledManaged
             std::string prefix () const
             {
                 return mPrefix;
+            }
+
+            CodeIndenter & operator ++ ()
+            {
+                indent();
+
+                return *this;
+            }
+
+            CodeIndenter operator ++ (int)
+            {
+                CodeIndenter previousValue(*this);
+
+                indent();
+
+                return previousValue;
+            }
+
+            CodeIndenter & operator -- ()
+            {
+                unindent();
+
+                return *this;
+            }
+
+            CodeIndenter operator -- (int)
+            {
+                CodeIndenter previousValue(*this);
+
+                unindent();
+
+                return previousValue;
             }
 
         private:
