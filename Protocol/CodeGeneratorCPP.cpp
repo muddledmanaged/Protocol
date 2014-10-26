@@ -7,6 +7,8 @@
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/convenience.hpp>
+#include <boost/filesystem/fstream.hpp>
 
 #include "CodeGeneratorCPP.h"
 
@@ -17,19 +19,29 @@ using namespace MuddledManaged;
 const std::string Protocol::CodeGeneratorCPP::mHeaderFileExtension = ".protocol.h";
 const std::string Protocol::CodeGeneratorCPP::mSourceFileExtension = ".protocol.cpp";
 const std::string Protocol::CodeGeneratorCPP::mHeaderFileProlog =
-"// This file was generated from the Protocol compiler./n"
-"// You should not edit this file directly./n";
+"// This file was generated from the Protocol compiler.\n"
+"// You should not edit this file directly.\n";
 const std::string Protocol::CodeGeneratorCPP::mSourceFileProlog =
-"// This file was generated from the Protocol compiler./n"
-"// You should not edit this file directly./n";
+"// This file was generated from the Protocol compiler.\n"
+"// You should not edit this file directly.\n";
 
 Protocol::CodeGeneratorCPP::CodeGeneratorCPP ()
 { }
 
 void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, const ProtoModel & model)
 {
-    if (!filesystem::exists(outputFolder))
-    {
-        filesystem::create_directory(outputFolder);
-    }
+    filesystem::path outputPath(outputFolder);
+    filesystem::path modelPath(model.fileName());
+    filesystem::path headerPath(outputPath / filesystem::change_extension(modelPath, mHeaderFileExtension));
+    filesystem::path sourcePath(outputPath / filesystem::change_extension(modelPath, mSourceFileExtension));
+
+    filesystem::create_directory(outputFolder);
+    filesystem::ofstream headerFile(headerPath);
+    filesystem::ofstream sourceFile(sourcePath);
+
+    headerFile << mHeaderFileProlog << endl;
+    sourceFile << mSourceFileProlog << endl;
+
+    sourceFile.close();
+    headerFile.close();
 }

@@ -44,3 +44,6 @@ profile
 *.DS_Store
 *.swp
 *.out
+
+# Generated files
+Generated/
