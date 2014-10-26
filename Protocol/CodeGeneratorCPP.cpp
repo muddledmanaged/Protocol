@@ -36,12 +36,9 @@ void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, cons
     filesystem::path sourcePath(outputPath / filesystem::change_extension(modelPath, mSourceFileExtension));
 
     filesystem::create_directory(outputFolder);
-    filesystem::ofstream headerFile(headerPath);
-    filesystem::ofstream sourceFile(sourcePath);
+    filesystem::ofstream headerFile(headerPath, ios::out | ios::trunc);
+    filesystem::ofstream sourceFile(sourcePath, ios::out | ios::trunc);
 
     headerFile << mHeaderFileProlog << endl;
     sourceFile << mSourceFileProlog << endl;
-
-    sourceFile.close();
-    headerFile.close();
 }
