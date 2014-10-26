@@ -138,6 +138,7 @@
 		3E5B5C4C19D8F79B006EEE50 /* MessageNested.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageNested.proto; sourceTree = "<group>"; };
 		3E72E7EB19FC8751007EC254 /* libboost_filesystem-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_filesystem-mt.a"; path = "../../../../../opt/local/lib/libboost_filesystem-mt.a"; sourceTree = "<group>"; };
 		3E72E7ED19FC8829007EC254 /* libboost_system-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_system-mt.a"; path = "../../../../../opt/local/lib/libboost_system-mt.a"; sourceTree = "<group>"; };
+		3E72E7EF19FCA364007EC254 /* CodeIndenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeIndenter.h; sourceTree = "<group>"; };
 		3E817D6F19F34D7C002A331E /* CodeGeneratorManagerScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CodeGeneratorManagerScenarios.cpp; sourceTree = "<group>"; };
 		3E817D7119F34DD3002A331E /* CodeGeneratorCPPScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CodeGeneratorCPPScenarios.cpp; sourceTree = "<group>"; };
 		3E8422B719E8C91800FA1222 /* OptionGroupParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionGroupParser.cpp; sourceTree = "<group>"; };
@@ -319,6 +320,7 @@
 				3EFCB8A619F2074100771D5B /* CodeGeneratorManager.h */,
 				3EFCB8A919F20B1400771D5B /* CodeGeneratorCPP.cpp */,
 				3EFCB8AA19F20B1400771D5B /* CodeGeneratorCPP.h */,
+				3E72E7EF19FCA364007EC254 /* CodeIndenter.h */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
