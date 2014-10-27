@@ -22,316 +22,351 @@ namespace MuddledManaged
         class CodeWriter
         {
         public:
-            CodeWriter ()
+            CodeWriter (std::ofstream & stream)
+            : mStream(stream)
             { }
 
-            void writeCurlyBraceOpening (std::ofstream & stream)
+            void writeCurlyBraceOpening ()
             {
-                stream << mIndenter.prefix() << "{" << std::endl;
+                mStream << mIndenter.prefix() << "{" << std::endl;
                 ++mIndenter;
             }
 
-            void writeCurlyBraceClosing (std::ofstream & stream)
+            void writeCurlyBraceClosing ()
             {
                 --mIndenter;
-                stream << mIndenter.prefix() << "}" << std::endl;
+                mStream << mIndenter.prefix() << "}" << std::endl;
             }
 
-            void writeLine (std::ofstream & stream, const std::string & text)
+            void writeLine (const std::string & text)
             {
-                stream << mIndenter.prefix() << text << std::endl;
+                mStream << text << std::endl;
             }
 
-            void writeLineComment (std::ofstream & stream, const std::string & comment)
+            void writeLineIndented (const std::string & text)
             {
-                stream << mIndenter.prefix() << "// " << comment << std::endl;
+                mStream << mIndenter.prefix() << text << std::endl;
             }
 
-            void writeIfDef (std::ofstream & stream, const std::string & text)
+            void writeLineComment (const std::string & comment)
             {
-                stream << "#ifdef " << text << std::endl;
+                mStream << "// " << comment << std::endl;
             }
 
-            void writeIfNotDef (std::ofstream & stream, const std::string & text)
+            void writeLineCommentIndented (const std::string & comment)
             {
-                stream << "#ifndef " << text << std::endl;
+                mStream << mIndenter.prefix() << "// " << comment << std::endl;
             }
 
-            void writeDefine (std::ofstream & stream, const std::string & text)
+            void writeIfDef (const std::string & text)
             {
-                stream << "#define " << text << std::endl;
+                mStream << "#ifdef " << text << std::endl;
             }
 
-            void writeEndIf (std::ofstream & stream)
+            void writeIfNotDef (const std::string & text)
             {
-                stream << "#endif" << std::endl;
+                mStream << "#ifndef " << text << std::endl;
             }
 
-            void writeIncludeLibrary (std::ofstream & stream, const std::string & fileName)
+            void writeDefine (const std::string & text)
             {
-                stream << "#include <" << fileName << ">" << std::endl;
+                mStream << "#define " << text << std::endl;
             }
 
-            void writeIncludeProject (std::ofstream & stream, const std::string & fileName)
+            void writeEndIf ()
             {
-                stream << "#include \"" << fileName << "\"" << std::endl;
+                mStream << "#endif" << std::endl;
             }
 
-            void writeNamespaceOpening (std::ofstream & stream, const std::string & namespaceName)
+            void writeIncludeLibrary (const std::string & fileName)
             {
-                stream << mIndenter.prefix() << "namespace " << namespaceName << std::endl;
+                mStream << "#include <" << fileName << ">" << std::endl;
+            }
+
+            void writeIncludeProject (const std::string & fileName)
+            {
+                mStream << "#include \"" << fileName << "\"" << std::endl;
+            }
+
+            void writeNamespaceOpening (const std::string & namespaceName)
+            {
+                mStream << mIndenter.prefix() << "namespace " << namespaceName << std::endl;
                 writeCurlyBraceOpening();
             }
 
-            void writeNamespaceClosing (std::ofstream & stream)
+            void writeNamespaceClosing ()
             {
                 --mIndenter;
-                stream << mIndenter.prefix() << "} // namespace" << std::endl << std::endl;
+                mStream << mIndenter.prefix() << "} // namespace" << std::endl << std::endl;
             }
 
-            void writeUsingNamespace (std::ofstream & stream, const std::string & namespaceName)
+            void writeUsingNamespace (const std::string & namespaceName)
             {
-                stream << "using namespace " << namespaceName << ";" << std::endl;
+                mStream << "using namespace " << namespaceName << ";" << std::endl;
             }
 
-            void writeClassOpening (std::ofstream & stream, const std::string & className)
+            void writeEnumOpening (const std::string & enumName)
             {
-                stream << mIndenter.prefix() << "class " << className << std::endl;
+                mStream << mIndenter.prefix() << "enum class " << enumName << std::endl;
                 writeCurlyBraceOpening();
             }
 
-            void writeClassClosing (std::ofstream & stream)
+            void writeEnumClosing ()
             {
                 --mIndenter;
-                stream << mIndenter.prefix() << "};" << std::endl << std::endl;
+                mStream << mIndenter.prefix() << "};" << std::endl << std::endl;
             }
 
-            void writeClassPublic (std::ofstream & stream)
+            void writeClassOpening (const std::string & className)
+            {
+                mStream << mIndenter.prefix() << "class " << className << std::endl;
+                writeCurlyBraceOpening();
+            }
+
+            void writeClassClosing ()
             {
                 --mIndenter;
-                stream << mIndenter.prefix() << "public:" << std::endl;
+                mStream << mIndenter.prefix() << "};" << std::endl << std::endl;
+            }
+
+            void writeClassPublic ()
+            {
+                --mIndenter;
+                mStream << mIndenter.prefix() << "public:" << std::endl;
                 ++mIndenter;
             }
 
-            void writeClassProtected (std::ofstream & stream)
+            void writeClassProtected ()
             {
                 --mIndenter;
-                stream << mIndenter.prefix() << "protected:" << std::endl;
+                mStream << mIndenter.prefix() << "protected:" << std::endl;
                 ++mIndenter;
             }
 
-            void writeClassPrivate (std::ofstream & stream)
+            void writeClassPrivate ()
             {
                 --mIndenter;
-                stream << mIndenter.prefix() << "private:" << std::endl;
+                mStream << mIndenter.prefix() << "private:" << std::endl;
                 ++mIndenter;
             }
 
-            void writeClassFieldDeclaration (std::ofstream & stream, const std::string & fieldName,
-                                             const std::string & fieldType, bool isStatic = false)
+            void writeClassFieldDeclaration (const std::string & fieldName,
+                                             const std::string & fieldType,
+                                             bool isStatic = false)
             {
-                stream << mIndenter.prefix();
+                mStream << mIndenter.prefix();
 
                 if (isStatic)
                 {
-                    stream << "static ";
+                    mStream << "static ";
                 }
 
-                stream << fieldType << " " << fieldName << std::endl;
+                mStream << fieldType << " " << fieldName << std::endl;
             }
 
-            void writeStaticFieldInitialization (std::ofstream & stream, const std::string & fieldName,
-                                                      const std::string & fieldType, const std::string & fieldValue)
+            void writeStaticFieldInitialization (const std::string & fieldName,
+                                                 const std::string & fieldType,
+                                                 const std::string & fieldValue)
             {
-                stream << fieldType << " " << fieldName << " = " << fieldValue << std::endl;
+                mStream << fieldType << " " << fieldName << " = " << fieldValue << std::endl;
             }
 
-            void writeClassMethodDeclaration (std::ofstream & stream, const std::string & methodName,
-                                              const std::string & methodReturn, const std::vector<std::string> & methodParameters,
-                                              bool isConst = false, bool isVirtual = false, bool isStatic = false,
-                                              bool isPureVirtual = false, bool isDelete = false)
+            void writeClassMethodDeclaration (const std::string & methodName,
+                                              const std::string & methodReturn,
+                                              const std::vector<std::string> & methodParameters,
+                                              bool isConst = false,
+                                              bool isVirtual = false,
+                                              bool isStatic = false,
+                                              bool isPureVirtual = false,
+                                              bool isDelete = false)
             {
-                stream << mIndenter.prefix();
+                mStream << mIndenter.prefix();
 
                 if (isVirtual)
                 {
-                    stream << "virtual ";
+                    mStream << "virtual ";
                 }
                 else if (isStatic)
                 {
-                    stream << "static ";
+                    mStream << "static ";
                 }
 
-                writeMethodSignature(stream, methodName, methodReturn, methodParameters);
+                writeMethodSignature(methodName, methodReturn, methodParameters);
 
                 if (isConst)
                 {
-                    stream << " const";
+                    mStream << " const";
                 }
                 else if (isPureVirtual)
                 {
-                    stream << " = 0";
+                    mStream << " = 0";
                 }
                 else if (isDelete)
                 {
-                    stream << " = delete";
+                    mStream << " = delete";
                 }
 
-                stream << ";" << std::endl << std::endl;
+                mStream << ";" << std::endl << std::endl;
             }
 
-            void writeClassMethodInlineOpening (std::ofstream & stream, const std::string & methodName,
-                                                const std::string & methodReturn, const std::vector<std::string> & methodParameters,
-                                                bool isConst = false, bool isVirtual = false)
+            void writeClassMethodInlineOpening (const std::string & methodName,
+                                                const std::string & methodReturn,
+                                                const std::vector<std::string> & methodParameters,
+                                                bool isConst = false,
+                                                bool isVirtual = false)
             {
-                stream << mIndenter.prefix();
+                mStream << mIndenter.prefix();
 
                 if (isVirtual)
                 {
-                    stream << "virtual ";
+                    mStream << "virtual ";
                 }
 
-                writeMethodSignature(stream, methodName, methodReturn, methodParameters);
+                writeMethodSignature(methodName, methodReturn, methodParameters);
 
                 if (isConst)
                 {
-                    stream << " const";
+                    mStream << " const";
                 }
 
                 writeCurlyBraceOpening();
             }
 
-            void writeClassMethodInlineClosing (std::ofstream & stream)
+            void writeClassMethodInlineClosing ()
             {
                 --mIndenter;
-                stream << mIndenter.prefix() << "}" << std::endl << std::endl;
+                mStream << mIndenter.prefix() << "}" << std::endl << std::endl;
             }
 
-            void writeMethodImplementationOpening (std::ofstream & stream, const std::string & methodName,
-                                                   const std::string & methodReturn, const std::vector<std::string> & methodParameters,
+            void writeMethodImplementationOpening (const std::string & methodName,
+                                                   const std::string & methodReturn,
+                                                   const std::vector<std::string> & methodParameters,
                                                    bool isConst = false)
             {
-                stream << mIndenter.prefix();
+                mStream << mIndenter.prefix();
 
-                writeMethodSignature(stream, methodName, methodReturn, methodParameters);
+                writeMethodSignature(methodName, methodReturn, methodParameters);
 
                 if (isConst)
                 {
-                    stream << " const";
+                    mStream << " const";
                 }
 
                 writeCurlyBraceOpening();
             }
 
-            void writeMethodImplementationClosing (std::ofstream & stream)
+            void writeMethodImplementationClosing ()
             {
                 --mIndenter;
-                stream << mIndenter.prefix() << "}" << std::endl << std::endl;
+                mStream << mIndenter.prefix() << "}" << std::endl << std::endl;
             }
 
-            void writeForLoopOpening (std::ofstream & stream, const std::string & forInitialization,
-                                      const std::string & forEvaluation, const std::string & forPostOperation)
+            void writeForLoopOpening (const std::string & forInitialization,
+                                      const std::string & forEvaluation,
+                                      const std::string & forPostOperation)
             {
-                stream << mIndenter.prefix() << "for (" << forInitialization << "; " << forEvaluation <<
+                mStream << mIndenter.prefix() << "for (" << forInitialization << "; " << forEvaluation <<
                     "; " << forPostOperation << ")" << std::endl;
                 writeCurlyBraceOpening();
             }
 
-            void writeForLoopClosing (std::ofstream & stream)
+            void writeForLoopClosing ()
             {
                 writeCurlyBraceClosing();
             }
 
-            void writeForEachLoopOpening (std::ofstream & stream, const std::string & forValue,
+            void writeForEachLoopOpening (const std::string & forValue,
                                           const std::string & forCollection)
             {
-                stream << mIndenter.prefix() << "for (" << forValue << ": " << forCollection << ")" << std::endl;
+                mStream << mIndenter.prefix() << "for (" << forValue << ": " << forCollection << ")" << std::endl;
                 writeCurlyBraceOpening();
             }
 
-            void writeForEachLoopClosing (std::ofstream & stream)
+            void writeForEachLoopClosing ()
             {
                 writeCurlyBraceClosing();
             }
 
-            void writeWhileLoopOpening (std::ofstream & stream, const std::string & whileEvaluation)
+            void writeWhileLoopOpening (const std::string & whileEvaluation)
             {
-                stream << mIndenter.prefix() << "while (" << whileEvaluation ")" << std::endl;
+                mStream << mIndenter.prefix() << "while (" << whileEvaluation << ")" << std::endl;
                 writeCurlyBraceOpening();
             }
 
-            void writeWhileLoopClosing (std::ofstream & stream)
+            void writeWhileLoopClosing ()
             {
                 writeCurlyBraceClosing();
             }
 
-            void writeSwitchOpening (std::ofstream & stream, const std::string & switchValue)
+            void writeSwitchOpening (const std::string & switchValue)
             {
-                stream << mIndenter.prefix() << "switch (" << switchValue ")" << std::endl;
+                mStream << mIndenter.prefix() << "switch (" << switchValue << ")" << std::endl;
                 writeCurlyBraceOpening();
             }
 
-            void writeSwitchClosing (std::ofstream & stream)
+            void writeSwitchClosing ()
             {
                 writeCurlyBraceClosing();
             }
 
-            void writeSwitchCase (std::ofstream & stream, const std::string & switchCaseValue)
+            void writeSwitchCase (const std::string & switchCaseValue)
             {
                 --mIndenter;
-                stream << mIndenter.prefix() << "case " << switchCaseValue ":" << std::endl;
+                mStream << mIndenter.prefix() << "case " << switchCaseValue << ":" << std::endl;
                 ++mIndenter;
             }
 
-            void writeSwitchDefaultCase (std::ofstream & stream)
+            void writeSwitchDefaultCase ()
             {
                 --mIndenter;
-                stream << mIndenter.prefix() << "default:" << std::endl;
+                mStream << mIndenter.prefix() << "default:" << std::endl;
                 ++mIndenter;
             }
 
-            void writeIfOpening (std::ofstream & stream, const std::string & ifValue)
+            void writeIfOpening (const std::string & ifValue)
             {
-                stream << mIndenter.prefix() << "if (" << ifValue ")" << std::endl;
+                mStream << mIndenter.prefix() << "if (" << ifValue << ")" << std::endl;
                 writeCurlyBraceOpening();
             }
 
-            void writeElseIfOpening (std::ofstream & stream, const std::string & ifValue)
+            void writeElseIfOpening (const std::string & ifValue)
             {
-                stream << mIndenter.prefix() << "else if (" << ifValue ")" << std::endl;
+                mStream << mIndenter.prefix() << "else if (" << ifValue << ")" << std::endl;
                 writeCurlyBraceOpening();
             }
 
-            void writeIfClosing (std::ofstream & stream)
+            void writeIfClosing ()
             {
                 writeCurlyBraceClosing();
             }
 
         private:
-            void writeMethodSignature (std::ofstream & stream, const std::string & methodName,
-                                       const std::string & methodReturn, const std::vector<std::string> & methodParameters)
+            void writeMethodSignature (const std::string & methodName,
+                                       const std::string & methodReturn,
+                                       const std::vector<std::string> & methodParameters)
             {
                 if (!methodReturn.empty())
                 {
-                    stream << methodReturn << " ";
+                    mStream << methodReturn << " ";
                 }
 
-                stream << methodName << " (";
+                mStream << methodName << " (";
 
                 bool firstParameter = true;
                 for (auto & param: methodParameters)
                 {
                     if (!firstParameter)
                     {
-                        stream << ", ";
+                        mStream << ", ";
                     }
                     firstParameter = false;
-                    stream << param;
+                    mStream << param;
                 }
 
-                stream << ")";
+                mStream << ")";
             }
             
+            std::ofstream & mStream;
             CodeIndenter mIndenter;
         };
 

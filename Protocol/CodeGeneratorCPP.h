@@ -9,6 +9,7 @@
 #define Protocol_CodeGeneratorCPP_h
 
 #include "CodeGeneratorInterface.h"
+#include "CodeWriterCPP.h"
 
 namespace MuddledManaged
 {
@@ -22,6 +23,8 @@ namespace MuddledManaged
             virtual void generateCode (const std::string & outputFolder, const ProtoModel & model);
 
         private:
+            void writeProtoEnumsToHeader (CodeWriter & headerFileWriter, const ProtoModel & model);
+
             static const std::string mHeaderFileExtension;
             static const std::string mSourceFileExtension;
             static const std::string mHeaderFileProlog;
