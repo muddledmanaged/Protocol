@@ -18,12 +18,15 @@ namespace MuddledManaged
         class CodeGeneratorCPP : public CodeGeneratorInterface
         {
         public:
-            CodeGeneratorCPP ();
-
-            virtual void generateCode (const std::string & outputFolder, const ProtoModel & model);
+            virtual void generateCode (const std::string & outputFolder, const ProtoModel & model, const std::string & projectName) const;
 
         private:
-            void writeProtoEnumsToHeader (CodeWriter & headerFileWriter, const ProtoModel & model);
+            friend class CodeGeneratorManager;
+            
+            CodeGeneratorCPP ();
+
+            std::string headerIncludeBlockText (const ProtoModel & model, const std::string & projectName) const;
+            void writeProtoEnumsToHeader (CodeWriter & headerFileWriter, const ProtoModel & model) const;
 
             static const std::string mHeaderFileExtension;
             static const std::string mSourceFileExtension;

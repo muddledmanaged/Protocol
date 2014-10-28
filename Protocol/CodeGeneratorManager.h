@@ -21,7 +21,7 @@ namespace MuddledManaged
         class CodeGeneratorManager
         {
         public:
-            typedef std::shared_ptr<CodeGeneratorInterface> SPCodeGeneratorInterface;
+            typedef std::shared_ptr<const CodeGeneratorInterface> SPCodeGeneratorInterface;
             typedef std::unordered_map<std::string, SPCodeGeneratorInterface> CodeGeneratorMap;
 
             ~CodeGeneratorManager ();

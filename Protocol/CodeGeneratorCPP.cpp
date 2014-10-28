@@ -20,15 +20,15 @@ const string Protocol::CodeGeneratorCPP::mHeaderFileExtension = ".protocol.h";
 const string Protocol::CodeGeneratorCPP::mSourceFileExtension = ".protocol.cpp";
 const string Protocol::CodeGeneratorCPP::mHeaderFileProlog =
 "// This file was generated from the Protocol compiler.\n"
-"// You should not edit this file directly.\n\n";
+"// You should not edit this file directly.\n";
 const string Protocol::CodeGeneratorCPP::mSourceFileProlog =
 "// This file was generated from the Protocol compiler.\n"
-"// You should not edit this file directly.\n\n";
+"// You should not edit this file directly.\n";
 
 Protocol::CodeGeneratorCPP::CodeGeneratorCPP ()
 { }
 
-void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, const ProtoModel & model)
+void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, const ProtoModel & model, const std::string & projectName) const
 {
     filesystem::path outputPath(outputFolder);
     filesystem::path modelPath(model.fileName());
@@ -42,12 +42,31 @@ void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, cons
     CodeWriter sourceFileWriter(sourceFile);
 
     headerFileWriter.writeLine(mHeaderFileProlog);
-    sourceFileWriter.writeLine(mSourceFileProlog);
+    headerFileWriter.writeHeaderIncludeBlockOpening(headerIncludeBlockText(model, projectName));
 
     writeProtoEnumsToHeader(headerFileWriter, model);
+
+    headerFileWriter.writeHeaderIncludeBlockClosing();
+
+    sourceFileWriter.writeLine(mSourceFileProlog);
 }
 
-void Protocol::CodeGeneratorCPP::writeProtoEnumsToHeader (CodeWriter & headerFileWriter, const ProtoModel & model)
+string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const ProtoModel & model, const std::string & projectName) const
+{
+    string text = projectName;
+    if (!text.empty())
+    {
+        text += "_";
+    }
+
+    filesystem::path modelPath(model.fileName());
+    text += filesystem::basename(modelPath.filename());
+    text += "_h";
+
+    return text;
+}
+
+void Protocol::CodeGeneratorCPP::writeProtoEnumsToHeader (CodeWriter & headerFileWriter, const ProtoModel & model) const
 {
     auto protoEnumBegin = model.enums()->cbegin();
     auto protoEnumEnd = model.enums()->cend();

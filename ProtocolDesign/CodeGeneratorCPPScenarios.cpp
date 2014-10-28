@@ -48,5 +48,5 @@ DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can crea
     Protocol::ProtoParser parser("EnumValue.proto");
     auto model = parser.parse();
 
-    generator->generateCode("Generated", *model);
+    generator->generateCode("Generated", *model, "ProtocolDesign");
 }

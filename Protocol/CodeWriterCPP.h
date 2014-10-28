@@ -78,6 +78,19 @@ namespace MuddledManaged
                 mStream << "#endif" << std::endl;
             }
 
+            void writeHeaderIncludeBlockOpening (const std::string & text)
+            {
+                writeIfNotDef(text);
+                writeDefine(text);
+                
+                mStream << std::endl;
+            }
+
+            void writeHeaderIncludeBlockClosing ()
+            {
+                writeEndIf();
+            }
+
             void writeIncludeLibrary (const std::string & fileName)
             {
                 mStream << "#include <" << fileName << ">" << std::endl;

@@ -13,7 +13,7 @@ using namespace MuddledManaged;
 
 Protocol::CodeGeneratorManager::CodeGeneratorManager ()
 {
-    mGeneratorMap.emplace("CPlusPlus", shared_ptr<CodeGeneratorInterface>(new CodeGeneratorCPP()));
+    mGeneratorMap.emplace("CPlusPlus", shared_ptr<const CodeGeneratorInterface>(new CodeGeneratorCPP()));
 }
 
 Protocol::CodeGeneratorManager::~CodeGeneratorManager ()
