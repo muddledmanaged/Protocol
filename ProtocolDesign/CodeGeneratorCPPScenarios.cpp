@@ -38,3 +38,15 @@ DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can crea
 
     generator->generateCode("Generated", *model);
 }
+
+DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can create file with enum and values." )
+{
+    Protocol::CodeGeneratorManager * pManager = Protocol::CodeGeneratorManager::instance();
+
+    auto generator = pManager->generator("CPlusPlus");
+
+    Protocol::ProtoParser parser("EnumValue.proto");
+    auto model = parser.parse();
+
+    generator->generateCode("Generated", *model);
+}

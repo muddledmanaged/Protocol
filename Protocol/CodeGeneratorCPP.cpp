@@ -55,6 +55,25 @@ void Protocol::CodeGeneratorCPP::writeProtoEnumsToHeader (CodeWriter & headerFil
     {
         auto enumModel = *protoEnumBegin;
         headerFileWriter.writeEnumOpening(enumModel->name());
+
+        auto enumValueBegin = enumModel->enumValues()->cbegin();
+        auto enumValueEnd = enumModel->enumValues()->cend();
+        bool firstEnumValue = true;
+        while (enumValueBegin != enumValueEnd)
+        {
+            auto enumValueModel = *enumValueBegin;
+            if (firstEnumValue)
+            {
+                headerFileWriter.writeEnumValueFirst(enumValueModel->name(), enumValueModel->value());
+                firstEnumValue = false;
+            }
+            else
+            {
+                headerFileWriter.writeEnumValueSubsequent(enumValueModel->name(), enumValueModel->value());
+            }
+            ++enumValueBegin;
+        }
+        
         headerFileWriter.writeEnumClosing();
         ++protoEnumBegin;
     }

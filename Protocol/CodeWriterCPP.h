@@ -114,7 +114,17 @@ namespace MuddledManaged
             void writeEnumClosing ()
             {
                 --mIndenter;
-                mStream << mIndenter.prefix() << "};" << std::endl << std::endl;
+                mStream << std::endl << mIndenter.prefix() << "};" << std::endl << std::endl;
+            }
+
+            void writeEnumValueFirst (const std::string & valueName, unsigned int valueValue)
+            {
+                mStream << mIndenter.prefix() << valueName << " = " << valueValue;
+            }
+
+            void writeEnumValueSubsequent (const std::string & valueName, unsigned int valueValue)
+            {
+                mStream << "," << std::endl << mIndenter.prefix() << valueName << " = " << valueValue;
             }
 
             void writeClassOpening (const std::string & className)
