@@ -44,6 +44,8 @@ void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, cons
     headerFileWriter.writeLine(mHeaderFileProlog);
     headerFileWriter.writeHeaderIncludeBlockOpening(headerIncludeBlockText(model, projectName));
 
+    writeIncludedProtoFileNamesToHeader(headerFileWriter, model);
+
     writeProtoEnumsToHeader(headerFileWriter, model);
 
     headerFileWriter.writeHeaderIncludeBlockClosing();
@@ -64,6 +66,25 @@ string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const ProtoModel & mo
     text += "_h";
 
     return text;
+}
+
+void Protocol::CodeGeneratorCPP::writeIncludedProtoFileNamesToHeader (CodeWriter & headerFileWriter, const ProtoModel & model) const
+{
+    auto importedProtoBegin = model.importedProtoNames()->cbegin();
+    auto importedProtoEnd = model.importedProtoNames()->cend();
+    bool importsFound = false;
+    while (importedProtoBegin != importedProtoEnd)
+    {
+        importsFound = true;
+        filesystem::path protoPath(*importedProtoBegin);
+        filesystem::path headerPath(filesystem::change_extension(protoPath, mHeaderFileExtension));
+        headerFileWriter.writeIncludeProject(headerPath.string());
+        ++importedProtoBegin;
+    }
+    if (importsFound)
+    {
+        headerFileWriter.writeBlankLine();
+    }
 }
 
 void Protocol::CodeGeneratorCPP::writeProtoEnumsToHeader (CodeWriter & headerFileWriter, const ProtoModel & model) const
@@ -92,7 +113,7 @@ void Protocol::CodeGeneratorCPP::writeProtoEnumsToHeader (CodeWriter & headerFil
             }
             ++enumValueBegin;
         }
-        
+
         headerFileWriter.writeEnumClosing();
         ++protoEnumBegin;
     }

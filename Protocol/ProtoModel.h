@@ -32,6 +32,7 @@ namespace MuddledManaged
             typedef EnumModel::EnumValueModelCollection EnumValueModelCollection;
             typedef MessageModel::OneofModelCollection OneofModelCollection;
             typedef std::unordered_set<std::string> NamedTypeCollection;
+            typedef std::vector<std::string> ImportedProtoNameCollection;
 
             explicit ProtoModel (const std::string & fileName);
 
@@ -61,6 +62,8 @@ namespace MuddledManaged
 
             virtual void addOption (TokenReader::iterator current, const OptionModelCollection::value_type & option);
 
+            virtual void addImportedProtoName (TokenReader::iterator current, const std::string & protoName);
+
             void addPrivateEnumType (TokenReader::iterator current, const std::string & namedType);
 
             void addPublicEnumType (TokenReader::iterator current, const std::string & namedType);
@@ -68,6 +71,8 @@ namespace MuddledManaged
             void addPrivateMessageType (TokenReader::iterator current, const std::string & namedType);
 
             void addPublicMessageType (TokenReader::iterator current, const std::string & namedType);
+
+            const ImportedProtoNameCollection * importedProtoNames () const;
 
             const NamedTypeCollection * privateEnumTypes () const;
 
@@ -90,6 +95,7 @@ namespace MuddledManaged
             OneofModelCollection::value_type mCurrentOneof;
             EnumModelCollection::value_type mCurrentEnum;
             EnumValueModelCollection::value_type mCurrentEnumValue;
+            ImportedProtoNameCollection mImportedProtoNames;
             NamedTypeCollection mPrivateEnumTypes;
             NamedTypeCollection mPublicEnumTypes;
             NamedTypeCollection mPrivateMessageTypes;

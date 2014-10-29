@@ -26,6 +26,9 @@ namespace MuddledManaged
             CodeGeneratorCPP ();
 
             std::string headerIncludeBlockText (const ProtoModel & model, const std::string & projectName) const;
+
+            void writeIncludedProtoFileNamesToHeader (CodeWriter & headerFileWriter, const ProtoModel & model) const;
+
             void writeProtoEnumsToHeader (CodeWriter & headerFileWriter, const ProtoModel & model) const;
 
             static const std::string mHeaderFileExtension;

@@ -43,6 +43,11 @@ namespace MuddledManaged
                 mStream << text << std::endl;
             }
 
+            void writeBlankLine ()
+            {
+                mStream << std::endl;
+            }
+
             void writeLineIndented (const std::string & text)
             {
                 mStream << mIndenter.prefix() << text << std::endl;

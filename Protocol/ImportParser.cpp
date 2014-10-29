@@ -57,6 +57,8 @@ bool Protocol::ImportParser::parse (TokenReader::iterator current, TokenReader::
             throw InvalidProtoException(current.line(), current.column(), "Expected ; character.");
         }
 
+        model->addImportedProtoName(current, protoName);
+
         shared_ptr<Protocol::ProtoModel> importedModel;
         Protocol::ProtoParser parser(protoName);
         importedModel = parser.parse();

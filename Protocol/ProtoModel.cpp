@@ -220,6 +220,11 @@ bool Protocol::ProtoModel::typeExists (string namedType) const
     return false;
 }
 
+void Protocol::ProtoModel::addImportedProtoName (TokenReader::iterator current, const string & protoName)
+{
+    mImportedProtoNames.push_back(protoName);
+}
+
 void Protocol::ProtoModel::addPrivateEnumType (TokenReader::iterator current, const string & namedType)
 {
     if (typeExists(namedType))
@@ -254,6 +259,11 @@ void Protocol::ProtoModel::addPublicMessageType (TokenReader::iterator current, 
         throw InvalidProtoException(current.line(), current.column(), "Duplicate type names are not allowed.");
     }
     mPublicMessageTypes.emplace(namedType);
+}
+
+const Protocol::ProtoModel::ImportedProtoNameCollection * Protocol::ProtoModel::importedProtoNames () const
+{
+    return &mImportedProtoNames;
 }
 
 const Protocol::ProtoModel::NamedTypeCollection * Protocol::ProtoModel::privateEnumTypes () const
