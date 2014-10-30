@@ -48,6 +48,8 @@ void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, cons
 
     writeProtoEnumsToHeader(headerFileWriter, model);
 
+    writeProtoMessagesToHeader(headerFileWriter, model);
+
     headerFileWriter.writeHeaderIncludeBlockClosing();
 
     sourceFileWriter.writeLine(mSourceFileProlog);
@@ -116,5 +118,31 @@ void Protocol::CodeGeneratorCPP::writeProtoEnumsToHeader (CodeWriter & headerFil
 
         headerFileWriter.writeEnumClosing();
         ++protoEnumBegin;
+    }
+}
+
+void Protocol::CodeGeneratorCPP::writeProtoMessagesToHeader (CodeWriter & headerFileWriter, const ProtoModel & model) const
+{
+    auto protoMessageBegin = model.messages()->cbegin();
+    auto protoMessageEnd = model.messages()->cend();
+    while (protoMessageBegin != protoMessageEnd)
+    {
+        auto messageModel = *protoMessageBegin;
+        headerFileWriter.writeClassOpening(messageModel->name());
+
+        headerFileWriter.writeClassPublic();
+        headerFileWriter.writeClassMethodDeclaration(messageModel->name(), "", vector<std::string>());
+
+        auto messageFieldBegin = messageModel->fields()->cbegin();
+        auto messageFieldEnd = messageModel->fields()->cend();
+        while (messageFieldBegin != messageFieldEnd)
+        {
+            auto messageFieldModel = *messageFieldBegin;
+            headerFileWriter.writeClassMethodDeclaration(messageFieldModel->name(), messageFieldModel->fieldType(), vector<std::string>());
+            ++messageFieldBegin;
+        }
+
+        headerFileWriter.writeClassClosing();
+        ++protoMessageBegin;
     }
 }

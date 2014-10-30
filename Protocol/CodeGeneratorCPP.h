@@ -31,6 +31,8 @@ namespace MuddledManaged
 
             void writeProtoEnumsToHeader (CodeWriter & headerFileWriter, const ProtoModel & model) const;
 
+            void writeProtoMessagesToHeader (CodeWriter & headerFileWriter, const ProtoModel & model) const;
+
             static const std::string mHeaderFileExtension;
             static const std::string mSourceFileExtension;
             static const std::string mHeaderFileProlog;
