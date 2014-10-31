@@ -44,6 +44,7 @@ void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, cons
     headerFileWriter.writeLine(mHeaderFileProlog);
     headerFileWriter.writeHeaderIncludeBlockOpening(headerIncludeBlockText(model, projectName));
 
+    writeStandardIncludFileNamesToHeader(headerFileWriter);
     writeIncludedProtoFileNamesToHeader(headerFileWriter, model);
 
     writeProtoEnumsToHeader(headerFileWriter, model);
@@ -68,6 +69,13 @@ string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const ProtoModel & mo
     text += "_h";
 
     return text;
+}
+
+void Protocol::CodeGeneratorCPP::writeStandardIncludFileNamesToHeader (CodeWriter & headerFileWriter) const
+{
+    headerFileWriter.writeIncludeLibrary("cstdint");
+    headerFileWriter.writeIncludeLibrary("string");
+    headerFileWriter.writeBlankLine();
 }
 
 void Protocol::CodeGeneratorCPP::writeIncludedProtoFileNamesToHeader (CodeWriter & headerFileWriter, const ProtoModel & model) const
@@ -138,11 +146,77 @@ void Protocol::CodeGeneratorCPP::writeProtoMessagesToHeader (CodeWriter & header
         while (messageFieldBegin != messageFieldEnd)
         {
             auto messageFieldModel = *messageFieldBegin;
-            headerFileWriter.writeClassMethodDeclaration(messageFieldModel->name(), messageFieldModel->fieldType());
+            string fieldType = fullTypeName(model, messageFieldModel->fieldType());
+            headerFileWriter.writeClassMethodDeclaration(messageFieldModel->name(), fieldType);
             ++messageFieldBegin;
         }
 
         headerFileWriter.writeClassClosing();
         ++protoMessageBegin;
     }
+}
+
+string Protocol::CodeGeneratorCPP::fullTypeName (const ProtoModel & model, const std::string & protoTypeName) const
+{
+    if (protoTypeName == "bool")
+    {
+        return "bool";
+    }
+    if (protoTypeName == "string")
+    {
+        return "std::string";
+    }
+    if (protoTypeName == "double")
+    {
+        return "double";
+    }
+    if (protoTypeName == "float")
+    {
+        return "float";
+    }
+    if (protoTypeName == "int32")
+    {
+        return "int32_t";
+    }
+    if (protoTypeName == "int64")
+    {
+        return "int64_t";
+    }
+    if (protoTypeName == "uint32")
+    {
+        return "uint32_t";
+    }
+    if (protoTypeName == "uint64")
+    {
+        return "uint64_t";
+    }
+    if (protoTypeName == "sint32")
+    {
+        return "int32_t";
+    }
+    if (protoTypeName == "sint64")
+    {
+        return "int64_t";
+    }
+    if (protoTypeName == "fixed32")
+    {
+        return "int32_t";
+    }
+    if (protoTypeName == "fixed64")
+    {
+        return "int64_t";
+    }
+    if (protoTypeName == "sfixed32")
+    {
+        return "int32_t";
+    }
+    if (protoTypeName == "sfixed64")
+    {
+        return "int64_t";
+    }
+    if (protoTypeName == "bytes")
+    {
+        return "bytes";
+    }
+    return "";
 }
