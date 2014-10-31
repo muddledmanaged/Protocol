@@ -131,14 +131,14 @@ void Protocol::CodeGeneratorCPP::writeProtoMessagesToHeader (CodeWriter & header
         headerFileWriter.writeClassOpening(messageModel->name());
 
         headerFileWriter.writeClassPublic();
-        headerFileWriter.writeClassMethodDeclaration(messageModel->name(), "", vector<std::string>());
+        headerFileWriter.writeClassMethodDeclaration(messageModel->name());
 
         auto messageFieldBegin = messageModel->fields()->cbegin();
         auto messageFieldEnd = messageModel->fields()->cend();
         while (messageFieldBegin != messageFieldEnd)
         {
             auto messageFieldModel = *messageFieldBegin;
-            headerFileWriter.writeClassMethodDeclaration(messageFieldModel->name(), messageFieldModel->fieldType(), vector<std::string>());
+            headerFileWriter.writeClassMethodDeclaration(messageFieldModel->name(), messageFieldModel->fieldType());
             ++messageFieldBegin;
         }
 

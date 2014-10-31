@@ -199,9 +199,46 @@ namespace MuddledManaged
                 mStream << fieldType << " " << fieldName << " = " << fieldValue << std::endl;
             }
 
+            std::string getMethodParameterString (const std::vector<std::string> & methodParameters)
+            {
+                std::string parameterString;
+                bool firstParameter = true;
+                for (auto & param: methodParameters)
+                {
+                    if (!firstParameter)
+                    {
+                        parameterString += ", ";
+                    }
+                    firstParameter = false;
+                    parameterString += param;
+                }
+                return parameterString;
+            }
+
+            void writeClassMethodDeclaration (const std::string & methodName,
+                                              bool isConst = false,
+                                              bool isVirtual = false,
+                                              bool isStatic = false,
+                                              bool isPureVirtual = false,
+                                              bool isDelete = false)
+            {
+                writeClassMethodDeclaration(methodName, "", "", isConst, isVirtual, isStatic, isPureVirtual, isDelete);
+            }
+
             void writeClassMethodDeclaration (const std::string & methodName,
                                               const std::string & methodReturn,
-                                              const std::vector<std::string> & methodParameters,
+                                              bool isConst = false,
+                                              bool isVirtual = false,
+                                              bool isStatic = false,
+                                              bool isPureVirtual = false,
+                                              bool isDelete = false)
+            {
+                writeClassMethodDeclaration(methodName, methodReturn, "", isConst, isVirtual, isStatic, isPureVirtual, isDelete);
+            }
+
+            void writeClassMethodDeclaration (const std::string & methodName,
+                                              const std::string & methodReturn,
+                                              const std::string & methodParameters,
                                               bool isConst = false,
                                               bool isVirtual = false,
                                               bool isStatic = false,
@@ -225,7 +262,8 @@ namespace MuddledManaged
                 {
                     mStream << " const";
                 }
-                else if (isPureVirtual)
+
+                if (isPureVirtual)
                 {
                     mStream << " = 0";
                 }
@@ -238,8 +276,23 @@ namespace MuddledManaged
             }
 
             void writeClassMethodInlineOpening (const std::string & methodName,
+                                                bool isConst = false,
+                                                bool isVirtual = false)
+            {
+                writeClassMethodInlineOpening(methodName, "", "", isConst, isVirtual);
+            }
+
+            void writeClassMethodInlineOpening (const std::string & methodName,
                                                 const std::string & methodReturn,
-                                                const std::vector<std::string> & methodParameters,
+                                                bool isConst = false,
+                                                bool isVirtual = false)
+            {
+                writeClassMethodInlineOpening(methodName, methodReturn, "", isConst, isVirtual);
+            }
+
+            void writeClassMethodInlineOpening (const std::string & methodName,
+                                                const std::string & methodReturn,
+                                                const std::string & methodParameters,
                                                 bool isConst = false,
                                                 bool isVirtual = false)
             {
@@ -267,8 +320,21 @@ namespace MuddledManaged
             }
 
             void writeMethodImplementationOpening (const std::string & methodName,
+                                                   bool isConst = false)
+            {
+                writeMethodImplementationOpening(methodName, "", "", isConst);
+            }
+
+            void writeMethodImplementationOpening (const std::string & methodName,
                                                    const std::string & methodReturn,
-                                                   const std::vector<std::string> & methodParameters,
+                                                   bool isConst = false)
+            {
+                writeMethodImplementationOpening(methodName, methodReturn, "", isConst);
+            }
+
+            void writeMethodImplementationOpening (const std::string & methodName,
+                                                   const std::string & methodReturn,
+                                                   const std::string & methodParameters,
                                                    bool isConst = false)
             {
                 mStream << mIndenter.prefix();
@@ -371,27 +437,14 @@ namespace MuddledManaged
         private:
             void writeMethodSignature (const std::string & methodName,
                                        const std::string & methodReturn,
-                                       const std::vector<std::string> & methodParameters)
+                                       const std::string & methodParameters)
             {
                 if (!methodReturn.empty())
                 {
                     mStream << methodReturn << " ";
                 }
 
-                mStream << methodName << " (";
-
-                bool firstParameter = true;
-                for (auto & param: methodParameters)
-                {
-                    if (!firstParameter)
-                    {
-                        mStream << ", ";
-                    }
-                    firstParameter = false;
-                    mStream << param;
-                }
-
-                mStream << ")";
+                mStream << methodName << " (" << methodParameters << ")";
             }
             
             std::ofstream & mStream;
