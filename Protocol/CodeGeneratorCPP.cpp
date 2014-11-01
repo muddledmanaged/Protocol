@@ -139,15 +139,47 @@ void Protocol::CodeGeneratorCPP::writeProtoMessagesToHeader (CodeWriter & header
         headerFileWriter.writeClassOpening(messageModel->name());
 
         headerFileWriter.writeClassPublic();
-        headerFileWriter.writeClassMethodDeclaration(messageModel->name());
+
+        string methodName = messageModel->name();
+        headerFileWriter.writeClassMethodDeclaration(methodName);
+
+        string methodReturn = "";
+        string methodParameters = "const ";
+        methodParameters += messageModel->name() + " & src";
+        headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+
+        methodName = "~";
+        methodName += messageModel->name();
+        headerFileWriter.writeClassMethodDeclaration(methodName);
+
+        methodName = "operator =";
+        methodReturn = messageModel->name() + " &";
+        methodParameters = "const ";
+        methodParameters += messageModel->name() + " & rhs";
+        headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+
+        methodName = "swap";
+        methodReturn = "void";
+        methodParameters = messageModel->name() + " * other";
+        headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
 
         auto messageFieldBegin = messageModel->fields()->cbegin();
         auto messageFieldEnd = messageModel->fields()->cend();
         while (messageFieldBegin != messageFieldEnd)
         {
             auto messageFieldModel = *messageFieldBegin;
+
+            methodName = messageFieldModel->name();
             string fieldType = fullTypeName(model, messageFieldModel->fieldType());
-            headerFileWriter.writeClassMethodDeclaration(messageFieldModel->name(), fieldType);
+            methodReturn = fieldType;
+            headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn);
+
+            methodName = "set_";
+            methodName += messageFieldModel->name();
+            methodReturn = "void";
+            methodParameters = fieldType + " value";
+            headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+
             ++messageFieldBegin;
         }
 
