@@ -187,6 +187,14 @@ namespace MuddledManaged
                                              const std::string & fieldType,
                                              bool isStatic = false)
             {
+                writeClassFieldDeclaration(fieldName, fieldType, "", isStatic);
+            }
+
+            void writeClassFieldDeclaration (const std::string & fieldName,
+                                             const std::string & fieldType,
+                                             const std::string & fieldValue,
+                                             bool isStatic = false)
+            {
                 mStream << mIndenter.prefix();
 
                 if (isStatic)
@@ -194,7 +202,14 @@ namespace MuddledManaged
                     mStream << "static ";
                 }
 
-                mStream << fieldType << " " << fieldName << std::endl;
+                mStream << fieldType << " " << fieldName;
+
+                if (!fieldValue.empty())
+                {
+                    mStream << " = " << fieldValue;
+                }
+
+                mStream << ";" << std::endl;
             }
 
             void writeStaticFieldInitialization (const std::string & fieldName,

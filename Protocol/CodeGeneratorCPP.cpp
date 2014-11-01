@@ -226,6 +226,21 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
         ++messageFieldBegin;
     }
 
+    headerFileWriter.writeClassPrivate();
+
+    messageFieldBegin = messageModel.fields()->cbegin();
+    messageFieldEnd = messageModel.fields()->cend();
+    while (messageFieldBegin != messageFieldEnd)
+    {
+        auto messageFieldModel = *messageFieldBegin;
+
+        string constantName = messageFieldModel->name() + "Index";
+        string fieldType = "const unsigned int";
+        headerFileWriter.writeClassFieldDeclaration(constantName, fieldType, to_string(messageFieldModel->index()), true);
+
+        ++messageFieldBegin;
+    }
+
     headerFileWriter.writeClassClosing();
 }
 
