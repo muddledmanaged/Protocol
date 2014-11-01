@@ -215,12 +215,25 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
         methodName = messageFieldModel->name();
         string fieldType = fullTypeName(protoModel, messageFieldModel->fieldType());
         methodReturn = fieldType;
-        headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn);
+        methodParameters = "";
+        headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
 
         methodName = "set_";
         methodName += messageFieldModel->name();
         methodReturn = "void";
         methodParameters = fieldType + " value";
+        headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+
+        methodName = "has_";
+        methodName += messageFieldModel->name();
+        methodReturn = "bool";
+        methodParameters = "";
+        headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
+
+        methodName = "clear_";
+        methodName += messageFieldModel->name();
+        methodReturn = "void";
+        methodParameters = "";
         headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
 
         ++messageFieldBegin;
