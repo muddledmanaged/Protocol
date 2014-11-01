@@ -123,6 +123,11 @@ namespace MuddledManaged
                 mStream << "using namespace " << namespaceName << ";" << std::endl;
             }
 
+            void writeTypedef (const std::string & typeString, const std::string & definitionString)
+            {
+                mStream << mIndenter.prefix() << "typedef " << typeString << " " << definitionString << ";" << std::endl;
+            }
+
             void writeEnumOpening (const std::string & enumName)
             {
                 mStream << mIndenter.prefix() << "enum class " << enumName << std::endl;

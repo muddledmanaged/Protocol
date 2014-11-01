@@ -10,6 +10,7 @@
 
 #include "CodeGeneratorInterface.h"
 #include "CodeWriterCPP.h"
+#include "MessageModel.h"
 
 namespace MuddledManaged
 {
@@ -18,24 +19,27 @@ namespace MuddledManaged
         class CodeGeneratorCPP : public CodeGeneratorInterface
         {
         public:
-            virtual void generateCode (const std::string & outputFolder, const ProtoModel & model, const std::string & projectName) const;
+            virtual void generateCode (const std::string & outputFolder, const ProtoModel & protoModel, const std::string & projectName) const;
 
         private:
             friend class CodeGeneratorManager;
             
             CodeGeneratorCPP ();
 
-            std::string headerIncludeBlockText (const ProtoModel & model, const std::string & projectName) const;
+            std::string headerIncludeBlockText (const ProtoModel & protoModel, const std::string & projectName) const;
 
-            std::string fullTypeName (const ProtoModel & model, const std::string & protoTypeName) const;
+            std::string fullTypeName (const ProtoModel & protoModel, const std::string & protoTypeName) const;
 
             void writeStandardIncludFileNamesToHeader (CodeWriter & headerFileWriter) const;
 
-            void writeIncludedProtoFileNamesToHeader (CodeWriter & headerFileWriter, const ProtoModel & model) const;
+            void writeIncludedProtoFileNamesToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel) const;
 
-            void writeProtoEnumsToHeader (CodeWriter & headerFileWriter, const ProtoModel & model) const;
+            void writeProtoEnumsToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel) const;
 
-            void writeProtoMessagesToHeader (CodeWriter & headerFileWriter, const ProtoModel & model) const;
+            void writeProtoMessagesToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel) const;
+
+            void writeMessageToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                       const MessageModel & messageModel, const std::string & className) const;
 
             static const std::string mHeaderFileExtension;
             static const std::string mSourceFileExtension;

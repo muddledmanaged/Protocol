@@ -28,10 +28,10 @@ const string Protocol::CodeGeneratorCPP::mSourceFileProlog =
 Protocol::CodeGeneratorCPP::CodeGeneratorCPP ()
 { }
 
-void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, const ProtoModel & model, const std::string & projectName) const
+void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, const ProtoModel & protoModel, const std::string & projectName) const
 {
     filesystem::path outputPath(outputFolder);
-    filesystem::path modelPath(model.fileName());
+    filesystem::path modelPath(protoModel.fileName());
     filesystem::path headerPath(outputPath / filesystem::change_extension(modelPath, mHeaderFileExtension));
     filesystem::path sourcePath(outputPath / filesystem::change_extension(modelPath, mSourceFileExtension));
 
@@ -42,21 +42,21 @@ void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, cons
     CodeWriter sourceFileWriter(sourceFile);
 
     headerFileWriter.writeLine(mHeaderFileProlog);
-    headerFileWriter.writeHeaderIncludeBlockOpening(headerIncludeBlockText(model, projectName));
+    headerFileWriter.writeHeaderIncludeBlockOpening(headerIncludeBlockText(protoModel, projectName));
 
     writeStandardIncludFileNamesToHeader(headerFileWriter);
-    writeIncludedProtoFileNamesToHeader(headerFileWriter, model);
+    writeIncludedProtoFileNamesToHeader(headerFileWriter, protoModel);
 
-    writeProtoEnumsToHeader(headerFileWriter, model);
+    writeProtoEnumsToHeader(headerFileWriter, protoModel);
 
-    writeProtoMessagesToHeader(headerFileWriter, model);
+    writeProtoMessagesToHeader(headerFileWriter, protoModel);
 
     headerFileWriter.writeHeaderIncludeBlockClosing();
 
     sourceFileWriter.writeLine(mSourceFileProlog);
 }
 
-string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const ProtoModel & model, const std::string & projectName) const
+string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const ProtoModel & protoModel, const std::string & projectName) const
 {
     string text = projectName;
     if (!text.empty())
@@ -64,7 +64,7 @@ string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const ProtoModel & mo
         text += "_";
     }
 
-    filesystem::path modelPath(model.fileName());
+    filesystem::path modelPath(protoModel.fileName());
     text += filesystem::basename(modelPath.filename());
     text += "_h";
 
@@ -78,10 +78,10 @@ void Protocol::CodeGeneratorCPP::writeStandardIncludFileNamesToHeader (CodeWrite
     headerFileWriter.writeBlankLine();
 }
 
-void Protocol::CodeGeneratorCPP::writeIncludedProtoFileNamesToHeader (CodeWriter & headerFileWriter, const ProtoModel & model) const
+void Protocol::CodeGeneratorCPP::writeIncludedProtoFileNamesToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel) const
 {
-    auto importedProtoBegin = model.importedProtoNames()->cbegin();
-    auto importedProtoEnd = model.importedProtoNames()->cend();
+    auto importedProtoBegin = protoModel.importedProtoNames()->cbegin();
+    auto importedProtoEnd = protoModel.importedProtoNames()->cend();
     bool importsFound = false;
     while (importedProtoBegin != importedProtoEnd)
     {
@@ -97,10 +97,10 @@ void Protocol::CodeGeneratorCPP::writeIncludedProtoFileNamesToHeader (CodeWriter
     }
 }
 
-void Protocol::CodeGeneratorCPP::writeProtoEnumsToHeader (CodeWriter & headerFileWriter, const ProtoModel & model) const
+void Protocol::CodeGeneratorCPP::writeProtoEnumsToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel) const
 {
-    auto protoEnumBegin = model.enums()->cbegin();
-    auto protoEnumEnd = model.enums()->cend();
+    auto protoEnumBegin = protoModel.enums()->cbegin();
+    auto protoEnumEnd = protoModel.enums()->cend();
     while (protoEnumBegin != protoEnumEnd)
     {
         auto enumModel = *protoEnumBegin;
@@ -129,66 +129,107 @@ void Protocol::CodeGeneratorCPP::writeProtoEnumsToHeader (CodeWriter & headerFil
     }
 }
 
-void Protocol::CodeGeneratorCPP::writeProtoMessagesToHeader (CodeWriter & headerFileWriter, const ProtoModel & model) const
+void Protocol::CodeGeneratorCPP::writeProtoMessagesToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel) const
 {
-    auto protoMessageBegin = model.messages()->cbegin();
-    auto protoMessageEnd = model.messages()->cend();
+    auto protoMessageBegin = protoModel.messages()->cbegin();
+    auto protoMessageEnd = protoModel.messages()->cend();
     while (protoMessageBegin != protoMessageEnd)
     {
         auto messageModel = *protoMessageBegin;
-        headerFileWriter.writeClassOpening(messageModel->name());
 
-        headerFileWriter.writeClassPublic();
+        writeMessageToHeader(headerFileWriter, protoModel, *messageModel, messageModel->name());
 
-        string methodName = messageModel->name();
-        headerFileWriter.writeClassMethodDeclaration(methodName);
-
-        string methodReturn = "";
-        string methodParameters = "const ";
-        methodParameters += messageModel->name() + " & src";
-        headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
-
-        methodName = "~";
-        methodName += messageModel->name();
-        headerFileWriter.writeClassMethodDeclaration(methodName);
-
-        methodName = "operator =";
-        methodReturn = messageModel->name() + " &";
-        methodParameters = "const ";
-        methodParameters += messageModel->name() + " & rhs";
-        headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
-
-        methodName = "swap";
-        methodReturn = "void";
-        methodParameters = messageModel->name() + " * other";
-        headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
-
-        auto messageFieldBegin = messageModel->fields()->cbegin();
-        auto messageFieldEnd = messageModel->fields()->cend();
-        while (messageFieldBegin != messageFieldEnd)
-        {
-            auto messageFieldModel = *messageFieldBegin;
-
-            methodName = messageFieldModel->name();
-            string fieldType = fullTypeName(model, messageFieldModel->fieldType());
-            methodReturn = fieldType;
-            headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn);
-
-            methodName = "set_";
-            methodName += messageFieldModel->name();
-            methodReturn = "void";
-            methodParameters = fieldType + " value";
-            headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
-
-            ++messageFieldBegin;
-        }
-
-        headerFileWriter.writeClassClosing();
         ++protoMessageBegin;
     }
 }
 
-string Protocol::CodeGeneratorCPP::fullTypeName (const ProtoModel & model, const std::string & protoTypeName) const
+
+void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWriter,
+                                                       const ProtoModel & protoModel,
+                                                       const MessageModel & messageModel,
+                                                       const std::string & className) const
+{
+    headerFileWriter.writeClassOpening(className);
+
+    headerFileWriter.writeClassPublic();
+
+    // Generate all the typedefs for nested classes first, then generate each class.
+    bool subMessageFound = false;
+    auto messageMessageBegin = messageModel.messages()->cbegin();
+    auto messageMessageEnd = messageModel.messages()->cend();
+    while (messageMessageBegin != messageMessageEnd)
+    {
+        subMessageFound = true;
+        auto messageSubModel = *messageMessageBegin;
+
+        string subClassName = className + "_" + messageSubModel->name();
+        headerFileWriter.writeTypedef(subClassName, messageSubModel->name());
+
+        ++messageMessageBegin;
+    }
+    if (subMessageFound)
+    {
+        headerFileWriter.writeBlankLine();
+    }
+    messageMessageBegin = messageModel.messages()->cbegin();
+    messageMessageEnd = messageModel.messages()->cend();
+    while (messageMessageBegin != messageMessageEnd)
+    {
+        auto messageSubModel = *messageMessageBegin;
+
+        string subClassName = className + "_" + messageSubModel->name();
+        writeMessageToHeader(headerFileWriter, protoModel, *messageSubModel, subClassName);
+
+        ++messageMessageBegin;
+    }
+
+    string methodName = className;
+    headerFileWriter.writeClassMethodDeclaration(methodName);
+
+    string methodReturn = "";
+    string methodParameters = "const ";
+    methodParameters += className + " & src";
+    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+
+    methodName = "~";
+    methodName += className;
+    headerFileWriter.writeClassMethodDeclaration(methodName);
+
+    methodName = "operator =";
+    methodReturn = className + " &";
+    methodParameters = "const ";
+    methodParameters += className + " & rhs";
+    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+
+    methodName = "swap";
+    methodReturn = "void";
+    methodParameters = className + " * other";
+    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+
+    auto messageFieldBegin = messageModel.fields()->cbegin();
+    auto messageFieldEnd = messageModel.fields()->cend();
+    while (messageFieldBegin != messageFieldEnd)
+    {
+        auto messageFieldModel = *messageFieldBegin;
+
+        methodName = messageFieldModel->name();
+        string fieldType = fullTypeName(protoModel, messageFieldModel->fieldType());
+        methodReturn = fieldType;
+        headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn);
+
+        methodName = "set_";
+        methodName += messageFieldModel->name();
+        methodReturn = "void";
+        methodParameters = fieldType + " value";
+        headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+
+        ++messageFieldBegin;
+    }
+
+    headerFileWriter.writeClassClosing();
+}
+
+string Protocol::CodeGeneratorCPP::fullTypeName (const ProtoModel & protoModel, const std::string & protoTypeName) const
 {
     if (protoTypeName == "bool")
     {
