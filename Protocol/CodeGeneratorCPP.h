@@ -11,6 +11,8 @@
 #include "CodeGeneratorInterface.h"
 #include "CodeWriterCPP.h"
 #include "MessageModel.h"
+#include "MessageFieldModel.h"
+#include "OneofModel.h"
 
 namespace MuddledManaged
 {
@@ -40,6 +42,18 @@ namespace MuddledManaged
 
             void writeMessageToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
                                        const MessageModel & messageModel, const std::string & className) const;
+
+            void writeMessageFieldToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                            const MessageFieldModel & messageModel) const;
+
+            void writeMessageFieldIndexToHeader (CodeWriter & headerFileWriter,
+                                                 const MessageFieldModel & messageModel) const;
+
+            void writeOneofToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                            const OneofModel & oneofModel) const;
+
+            void writeMessageFieldIndexesToHeader (CodeWriter & headerFileWriter,
+                                                 const OneofModel & oneofModel) const;
 
             static const std::string mHeaderFileExtension;
             static const std::string mSourceFileExtension;
