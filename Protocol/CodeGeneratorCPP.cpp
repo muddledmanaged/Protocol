@@ -318,7 +318,7 @@ string Protocol::CodeGeneratorCPP::fullTypeName (const ProtoModel & protoModel, 
     }
     if (protoTypeName == "bytes")
     {
-        return "bytes";
+        return "std::string";
     }
     return "";
 }
