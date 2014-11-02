@@ -12,7 +12,6 @@
 #include <string>
 #include <vector>
 
-#include "Packageable.h"
 #include "Nestable.h"
 #include "EnumModel.h"
 #include "MessageFieldModel.h"
@@ -28,22 +27,16 @@ namespace MuddledManaged
     {
         class MessageModelContainer;
 
-        class MessageModel : public Packageable, public Nestable, public OptionModelContainer, public MessageFieldModelContainer,
-                             public EnumModelContainer, public MessageModelContainer, public OneofModelContainer
+        class MessageModel : public Nestable, public OptionModelContainer,
+                             public MessageFieldModelContainer, public EnumModelContainer,
+                             public MessageModelContainer, public OneofModelContainer
         {
         public:
             explicit MessageModel (const std::string & name, const std::string & package = "", const std::string & parentTypes = "");
 
             MessageModel (const MessageModel & src);
 
-            std::string name () const;
-
-            std::string fullName () const;
-
             MessageModel & operator = (const MessageModel & rhs);
-
-        private:
-            std::string mName;
         };
 
     } // namespace Protocol

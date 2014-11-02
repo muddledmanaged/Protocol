@@ -11,36 +11,13 @@ using namespace std;
 using namespace MuddledManaged;
 
 Protocol::EnumModel::EnumModel (const string & name, const string & package, const string & parentTypes)
-: Packageable(package), Nestable(parentTypes), mName(name)
+: Nestable(name, package, parentTypes)
 {
 }
 
 Protocol::EnumModel::EnumModel (const EnumModel & src)
-: Packageable(src), Nestable(src), OptionModelContainer(src), EnumValueModelContainer(src), mName(src.mName)
+: Nestable(src), OptionModelContainer(src), EnumValueModelContainer(src)
 {
-}
-
-string Protocol::EnumModel::name () const
-{
-    return mName;
-}
-
-string Protocol::EnumModel::fullName () const
-{
-    string fullName = package();
-    if (!fullName.empty())
-    {
-        fullName += ".";
-    }
-
-    fullName += parentTypes();
-    if (!parentTypes().empty())
-    {
-        fullName += ".";
-    }
-    fullName += name();
-
-    return fullName;
 }
 
 Protocol::EnumModel & Protocol::EnumModel::operator = (const EnumModel & rhs)
@@ -50,12 +27,9 @@ Protocol::EnumModel & Protocol::EnumModel::operator = (const EnumModel & rhs)
         return *this;
     }
 
-    Packageable::operator=(rhs);
     Nestable::operator=(rhs);
     OptionModelContainer::operator=(rhs);
     EnumValueModelContainer::operator=(rhs);
-
-    mName = rhs.mName;
 
     return *this;
 }

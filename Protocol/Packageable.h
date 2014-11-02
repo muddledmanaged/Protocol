@@ -45,7 +45,7 @@ namespace MuddledManaged
                 {
                     return *this;
                 }
-                
+
                 mPackage = rhs.mPackage;
                 
                 return *this;

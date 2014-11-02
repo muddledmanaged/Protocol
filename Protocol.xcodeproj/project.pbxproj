@@ -137,6 +137,7 @@
 		3E5B5C4619D8D0B6006EEE50 /* MessageMultiple.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageMultiple.proto; sourceTree = "<group>"; };
 		3E5B5C4A19D8F0F3006EEE50 /* MessageMultiplePackage.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageMultiplePackage.proto; sourceTree = "<group>"; };
 		3E5B5C4C19D8F79B006EEE50 /* MessageNested.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageNested.proto; sourceTree = "<group>"; };
+		3E6A2B1A1A05AF5D009C8DB3 /* Nameable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Nameable.h; sourceTree = "<group>"; };
 		3E72E7EB19FC8751007EC254 /* libboost_filesystem-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_filesystem-mt.a"; path = "../../../../../opt/local/lib/libboost_filesystem-mt.a"; sourceTree = "<group>"; };
 		3E72E7ED19FC8829007EC254 /* libboost_system-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_system-mt.a"; path = "../../../../../opt/local/lib/libboost_system-mt.a"; sourceTree = "<group>"; };
 		3E72E7EF19FCA364007EC254 /* CodeIndenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeIndenter.h; sourceTree = "<group>"; };
@@ -287,6 +288,7 @@
 				3E4D63FB19F4BEB50091CBBE /* MessageFieldModelContainer.h */,
 				3E37A5D119DF918200BED294 /* MessageFieldParser.cpp */,
 				3E37A5D219DF918200BED294 /* MessageFieldParser.h */,
+				3E6A2B1A1A05AF5D009C8DB3 /* Nameable.h */,
 				3E5065A019EB73F8006C86B6 /* Nestable.h */,
 				3EB0EBC819E225CD0097929D /* OneofModel.cpp */,
 				3EB0EBC919E225CD0097929D /* OneofModel.h */,

@@ -11,18 +11,13 @@ using namespace std;
 using namespace MuddledManaged;
 
 Protocol::OneofModel::OneofModel (const string & name)
-: mName(name)
+: Nameable(name)
 {
 }
 
 Protocol::OneofModel::OneofModel (const OneofModel & src)
-: OptionModelContainer(src), MessageFieldModelContainer(src), mName(src.mName)
+: Nameable(src), OptionModelContainer(src), MessageFieldModelContainer(src)
 {
-}
-
-string Protocol::OneofModel::name () const
-{
-    return mName;
 }
 
 Protocol::OneofModel & Protocol::OneofModel::operator = (const OneofModel & rhs)
@@ -32,10 +27,9 @@ Protocol::OneofModel & Protocol::OneofModel::operator = (const OneofModel & rhs)
         return *this;
     }
 
+    Nameable::operator=(rhs);
     OptionModelContainer::operator=(rhs);
     MessageFieldModelContainer::operator=(rhs);
-
-    mName = rhs.mName;
 
     return *this;
 }

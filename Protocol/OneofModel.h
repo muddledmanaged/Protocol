@@ -11,6 +11,7 @@
 #include <string>
 
 #include "MessageFieldModel.h"
+#include "Nameable.h"
 #include "OptionModel.h"
 
 // Every model header includes its container header.
@@ -20,19 +21,14 @@ namespace MuddledManaged
 {
     namespace Protocol
     {
-        class OneofModel : public OptionModelContainer, public MessageFieldModelContainer
+        class OneofModel : public Nameable, public OptionModelContainer, public MessageFieldModelContainer
         {
         public:
             explicit OneofModel (const std::string & name);
 
             OneofModel (const OneofModel & src);
 
-            std::string name () const;
-
             OneofModel & operator = (const OneofModel & rhs);
-
-        private:
-            std::string mName;
         };
         
     } // namespace Protocol

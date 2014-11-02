@@ -11,18 +11,13 @@ using namespace std;
 using namespace MuddledManaged;
 
 Protocol::EnumValueModel::EnumValueModel (const std::string & name, unsigned int value)
-: mName(name), mValue(value)
+: Nameable(name), mValue(value)
 {
 }
 
 Protocol::EnumValueModel::EnumValueModel (const EnumValueModel & src)
-: OptionModelContainer(src), mName(src.mName), mValue(src.mValue)
+: Nameable(src), OptionModelContainer(src), mValue(src.mValue)
 {
-}
-
-string Protocol::EnumValueModel::name () const
-{
-    return mName;
 }
 
 unsigned int Protocol::EnumValueModel::value () const
@@ -37,9 +32,9 @@ Protocol::EnumValueModel & Protocol::EnumValueModel::operator = (const EnumValue
         return *this;
     }
 
+    Nameable::operator=(rhs);
     OptionModelContainer::operator=(rhs);
 
-    mName = rhs.mName;
     mValue = rhs.mValue;
 
     return *this;

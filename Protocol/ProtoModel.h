@@ -14,6 +14,7 @@
 #include <unordered_set>
 
 #include "TokenReader.h"
+#include "Nameable.h"
 #include "Packageable.h"
 #include "EnumModel.h"
 #include "EnumValueModel.h"
@@ -25,7 +26,8 @@ namespace MuddledManaged
 {
     namespace Protocol
     {
-        class ProtoModel : private Packageable, public OptionModelContainer, public EnumModelContainer, public MessageModelContainer
+        class ProtoModel : private Packageable, public Nameable, public OptionModelContainer, public EnumModelContainer,
+                           public MessageModelContainer
         {
         public:
             typedef MessageModel::MessageFieldModelCollection MessageFieldModelCollection;
@@ -37,8 +39,6 @@ namespace MuddledManaged
             explicit ProtoModel (const std::string & fileName);
 
             ProtoModel (const ProtoModel & src);
-
-            std::string fileName () const;
 
             std::string currentNestedType () const;
 
@@ -88,7 +88,6 @@ namespace MuddledManaged
             bool typeExists (std::string namedType) const;
             void updateCurrentNestedType ();
 
-            std::string mFileName;
             std::string mCurrentNestedType;
             MessageModelCollection mMessageQueue;
             MessageFieldModelCollection::value_type mCurrentField;

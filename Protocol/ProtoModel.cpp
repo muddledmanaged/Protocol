@@ -12,23 +12,18 @@ using namespace std;
 using namespace MuddledManaged;
 
 Protocol::ProtoModel::ProtoModel (const std::string & fileName)
-: mFileName(fileName), mCurrentNestedType(""), mCurrentField(nullptr), mCurrentOneof(nullptr), mCurrentEnum(nullptr),
+: Nameable(fileName), mCurrentNestedType(""), mCurrentField(nullptr), mCurrentOneof(nullptr), mCurrentEnum(nullptr),
   mCurrentEnumValue(nullptr)
 {
 }
 
 Protocol::ProtoModel::ProtoModel (const ProtoModel & src)
-: Packageable(src), OptionModelContainer(src), EnumModelContainer(src), MessageModelContainer(src),
-  mFileName(src.mFileName), mCurrentNestedType(src.mCurrentNestedType),
+: Packageable(src), Nameable(src), OptionModelContainer(src), EnumModelContainer(src), MessageModelContainer(src),
+  mCurrentNestedType(src.mCurrentNestedType),
   mMessageQueue(src.mMessageQueue), mCurrentField(src.mCurrentField), mCurrentOneof(src.mCurrentOneof),
   mCurrentEnum(src.mCurrentEnum), mCurrentEnumValue(src.mCurrentEnumValue), mPrivateEnumTypes(src.mPrivateEnumTypes),
   mPublicEnumTypes(src.mPublicEnumTypes), mPrivateMessageTypes(src.mPrivateMessageTypes), mPublicMessageTypes(src.mPublicMessageTypes)
 {
-}
-
-string Protocol::ProtoModel::fileName () const
-{
-    return mFileName;
 }
 
 string Protocol::ProtoModel::currentNestedType () const
@@ -294,11 +289,11 @@ Protocol::ProtoModel & Protocol::ProtoModel::operator = (const ProtoModel & rhs)
     }
 
     Packageable::operator=(rhs);
+    Nameable::operator=(rhs);
     OptionModelContainer::operator=(rhs);
     EnumModelContainer::operator=(rhs);
     MessageModelContainer::operator=(rhs);
 
-    mFileName = rhs.mFileName;
     mCurrentNestedType = rhs.mCurrentNestedType;
     mMessageQueue = rhs.mMessageQueue;
     mCurrentField = rhs.mCurrentField;

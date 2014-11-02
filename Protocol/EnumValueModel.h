@@ -10,6 +10,7 @@
 
 #include <string>
 
+#include "Nameable.h"
 #include "OptionModel.h"
 
 // Every model header includes its container header.
@@ -19,21 +20,18 @@ namespace MuddledManaged
 {
     namespace Protocol
     {
-        class EnumValueModel : public OptionModelContainer
+        class EnumValueModel : public Nameable, public OptionModelContainer
         {
         public:
             EnumValueModel (const std::string & name, unsigned int value);
 
             EnumValueModel (const EnumValueModel & src);
 
-            std::string name () const;
-
             unsigned int value () const;
 
             EnumValueModel & operator = (const EnumValueModel & rhs);
 
         private:
-            std::string mName;
             unsigned int mValue;
         };
 

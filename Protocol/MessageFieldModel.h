@@ -10,6 +10,7 @@
 
 #include <string>
 
+#include "Nameable.h"
 #include "OptionModel.h"
 
 // Every model header includes its container header.
@@ -19,7 +20,7 @@ namespace MuddledManaged
 {
     namespace Protocol
     {
-        class MessageFieldModel : public OptionModelContainer
+        class MessageFieldModel : public Nameable, public OptionModelContainer
         {
         public:
             enum class Requiredness
@@ -37,8 +38,6 @@ namespace MuddledManaged
 
             std::string fieldType () const;
 
-            std::string name () const;
-
             unsigned int index () const;
 
             MessageFieldModel & operator = (const MessageFieldModel & rhs);
@@ -46,7 +45,6 @@ namespace MuddledManaged
         private:
             Requiredness mRequiredness;
             std::string mFieldType;
-            std::string mName;
             unsigned int mIndex;
         };
 

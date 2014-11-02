@@ -31,7 +31,7 @@ Protocol::CodeGeneratorCPP::CodeGeneratorCPP ()
 void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, const ProtoModel & protoModel, const std::string & projectName) const
 {
     filesystem::path outputPath(outputFolder);
-    filesystem::path modelPath(protoModel.fileName());
+    filesystem::path modelPath(protoModel.name());
     filesystem::path headerPath(outputPath / filesystem::change_extension(modelPath, mHeaderFileExtension));
     filesystem::path sourcePath(outputPath / filesystem::change_extension(modelPath, mSourceFileExtension));
 
@@ -64,7 +64,7 @@ string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const ProtoModel & pr
         text += "_";
     }
 
-    filesystem::path modelPath(protoModel.fileName());
+    filesystem::path modelPath(protoModel.namePascal());
     text += filesystem::basename(modelPath.filename());
     text += "_h";
 
@@ -104,7 +104,7 @@ void Protocol::CodeGeneratorCPP::writeProtoEnumsToHeader (CodeWriter & headerFil
     while (protoEnumBegin != protoEnumEnd)
     {
         auto enumModel = *protoEnumBegin;
-        headerFileWriter.writeEnumOpening(enumModel->name());
+        headerFileWriter.writeEnumOpening(enumModel->namePascal());
 
         auto enumValueBegin = enumModel->enumValues()->cbegin();
         auto enumValueEnd = enumModel->enumValues()->cend();
@@ -137,7 +137,7 @@ void Protocol::CodeGeneratorCPP::writeProtoMessagesToHeader (CodeWriter & header
     {
         auto messageModel = *protoMessageBegin;
 
-        writeMessageToHeader(headerFileWriter, protoModel, *messageModel, messageModel->name());
+        writeMessageToHeader(headerFileWriter, protoModel, *messageModel, messageModel->namePascal());
 
         ++protoMessageBegin;
     }
@@ -162,8 +162,8 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
         subMessageFound = true;
         auto messageSubModel = *messageMessageBegin;
 
-        string subClassName = className + "_" + messageSubModel->name();
-        headerFileWriter.writeTypedef(subClassName, messageSubModel->name());
+        string subClassName = className + messageSubModel->namePascal();
+        headerFileWriter.writeTypedef(subClassName, messageSubModel->namePascal());
 
         ++messageMessageBegin;
     }
@@ -177,7 +177,7 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
     {
         auto messageSubModel = *messageMessageBegin;
 
-        string subClassName = className + "_" + messageSubModel->name();
+        string subClassName = className + messageSubModel->namePascal();
         writeMessageToHeader(headerFileWriter, protoModel, *messageSubModel, subClassName);
 
         ++messageMessageBegin;
@@ -218,20 +218,20 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
         methodParameters = "";
         headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
 
-        methodName = "set_";
-        methodName += messageFieldModel->name();
+        methodName = "set";
+        methodName += messageFieldModel->namePascal();
         methodReturn = "void";
         methodParameters = fieldType + " value";
         headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
 
-        methodName = "has_";
-        methodName += messageFieldModel->name();
+        methodName = "has";
+        methodName += messageFieldModel->namePascal();
         methodReturn = "bool";
         methodParameters = "";
         headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
 
-        methodName = "clear_";
-        methodName += messageFieldModel->name();
+        methodName = "clear";
+        methodName += messageFieldModel->namePascal();
         methodReturn = "void";
         methodParameters = "";
         headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
@@ -247,7 +247,8 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
     {
         auto messageFieldModel = *messageFieldBegin;
 
-        string constantName = messageFieldModel->name() + "Index";
+        string constantName = "m";
+        constantName += messageFieldModel->namePascal() + "Index";
         string fieldType = "const unsigned int";
         headerFileWriter.writeClassFieldDeclaration(constantName, fieldType, to_string(messageFieldModel->index()), true);
 

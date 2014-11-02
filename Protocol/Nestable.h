@@ -10,11 +10,14 @@
 
 #include <string>
 
+#include "Nameable.h"
+#include "Packageable.h"
+
 namespace MuddledManaged
 {
     namespace Protocol
     {
-        class Nestable
+        class Nestable : public Nameable, public Packageable
         {
         public:
             virtual ~Nestable ()
@@ -25,13 +28,31 @@ namespace MuddledManaged
                 return mParentTypes;
             }
 
+            std::string fullName () const
+            {
+                std::string fullName = package();
+                if (!fullName.empty())
+                {
+                    fullName += ".";
+                }
+
+                fullName += parentTypes();
+                if (!parentTypes().empty())
+                {
+                    fullName += ".";
+                }
+                fullName += name();
+
+                return fullName;
+            }
+
         protected:
-            Nestable (const std::string & namedTypes = "")
-            : mParentTypes(namedTypes)
+            Nestable (const std::string & name, const std::string & package = "", const std::string & namedTypes = "")
+            : Nameable(name), Packageable(package), mParentTypes(namedTypes)
             { }
 
             Nestable (const Nestable & src)
-            : mParentTypes(src.mParentTypes)
+            : Nameable(src), Packageable(src), mParentTypes(src.mParentTypes)
             { }
 
             void setParentTypes (const std::string & namedTypes)
@@ -45,6 +66,9 @@ namespace MuddledManaged
                 {
                     return *this;
                 }
+
+                Nameable::operator=(rhs);
+                Packageable::operator=(rhs);
 
                 mParentTypes = rhs.mParentTypes;
 

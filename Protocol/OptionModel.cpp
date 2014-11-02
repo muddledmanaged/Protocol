@@ -11,16 +11,30 @@ using namespace std;
 using namespace MuddledManaged;
 
 Protocol::OptionModel::OptionModel (const std::string & name, const std::string & value)
-: mName(name), mValue(value)
+: Nameable(name), mValue(value)
 {
 }
 
-string Protocol::OptionModel::name () const
+Protocol::OptionModel::OptionModel (const OptionModel & src)
+: Nameable(src), mValue(src.mValue)
 {
-    return mName;
 }
 
 string Protocol::OptionModel::value () const
 {
     return mValue;
+}
+
+Protocol::OptionModel & Protocol::OptionModel::operator = (const OptionModel & rhs)
+{
+    if (this == &rhs)
+    {
+        return *this;
+    }
+
+    Nameable::operator=(rhs);
+
+    mValue = rhs.mValue;
+    
+    return *this;
 }
