@@ -578,6 +578,12 @@ void Protocol::CodeGeneratorCPP::writeOneofToHeader (CodeWriter & headerFileWrit
     string methodParameters = "";
     headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
 
+    methodName = "clear";
+    methodName += oneofModel.namePascal();
+    methodReturn = "void";
+    methodParameters = "";
+    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+
     messageFieldBegin = oneofModel.fields()->cbegin();
     messageFieldEnd = oneofModel.fields()->cend();
     while (messageFieldBegin != messageFieldEnd)
