@@ -341,7 +341,7 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldToHeader (CodeWriter & headerF
                 headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
 
                 methodName = "size";
-                methodName = messageFieldModel.namePascal();
+                methodName += messageFieldModel.namePascal();
                 methodReturn = "size_t";
                 methodParameters = "";
                 headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
@@ -377,7 +377,7 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldToHeader (CodeWriter & headerF
                 methodName += messageFieldModel.namePascal();
                 methodReturn = "void";
                 methodParameters = "size_t index, ";
-                methodParameters = fieldType + " * value";
+                methodParameters += fieldType + " * value";
                 headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
 
                 methodName = "release";
