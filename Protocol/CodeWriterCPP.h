@@ -430,6 +430,13 @@ namespace MuddledManaged
                 writeCurlyBraceOpening();
             }
 
+            void writeSwitchCaseOpeningFallthrough (const std::string & switchCaseValue)
+            {
+                --mIndenter;
+                mStream << mIndenter.prefix() << "case " << switchCaseValue << ":" << std::endl;
+                ++mIndenter;
+            }
+
             void writeSwitchDefaultCaseOpening ()
             {
                 --mIndenter;
