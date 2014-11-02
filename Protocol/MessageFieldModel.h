@@ -20,6 +20,8 @@ namespace MuddledManaged
 {
     namespace Protocol
     {
+        class ProtoModel;
+        
         class MessageFieldModel : public Nameable, public OptionModelContainer
         {
         public:
@@ -30,7 +32,17 @@ namespace MuddledManaged
                 repeated = 2
             };
 
-            MessageFieldModel (Requiredness requiredness, const std::string & fieldType, const std::string & name, unsigned int index);
+            enum class FieldCategory
+            {
+                numericType = 0,
+                stringType = 1,
+                bytesType = 2,
+                enumType = 3,
+                messageType = 4
+            };
+
+            MessageFieldModel (Requiredness requiredness, const std::string & fieldType, FieldCategory fieldCategory,
+                               const std::string & name, unsigned int index);
 
             MessageFieldModel (const MessageFieldModel & src);
 
@@ -38,13 +50,18 @@ namespace MuddledManaged
 
             std::string fieldType () const;
 
+            FieldCategory fieldCategory () const;
+
             unsigned int index () const;
 
             MessageFieldModel & operator = (const MessageFieldModel & rhs);
 
+            static FieldCategory fieldCategoryFromType (const std::string & fieldType, const ProtoModel * protoModel);
+
         private:
             Requiredness mRequiredness;
             std::string mFieldType;
+            FieldCategory mFieldCategory;
             unsigned int mIndex;
         };
 
