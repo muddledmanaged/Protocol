@@ -211,30 +211,90 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
     while (messageFieldBegin != messageFieldEnd)
     {
         auto messageFieldModel = *messageFieldBegin;
+        switch (messageFieldModel->fieldCategory())
+        {
+            case MessageFieldModel::FieldCategory::numericType:
+            case MessageFieldModel::FieldCategory::enumType:
+            {
+                methodName = messageFieldModel->name();
+                string fieldType = fullTypeName(protoModel, messageFieldModel->fieldType());
+                methodReturn = fieldType;
+                methodParameters = "";
+                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
 
-        methodName = messageFieldModel->name();
-        string fieldType = fullTypeName(protoModel, messageFieldModel->fieldType());
-        methodReturn = fieldType;
-        methodParameters = "";
-        headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
+                methodName = "set";
+                methodName += messageFieldModel->namePascal();
+                methodReturn = "void";
+                methodParameters = fieldType + " value";
+                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
 
-        methodName = "set";
-        methodName += messageFieldModel->namePascal();
-        methodReturn = "void";
-        methodParameters = fieldType + " value";
-        headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+                methodName = "has";
+                methodName += messageFieldModel->namePascal();
+                methodReturn = "bool";
+                methodParameters = "";
+                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
 
-        methodName = "has";
-        methodName += messageFieldModel->namePascal();
-        methodReturn = "bool";
-        methodParameters = "";
-        headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
+                methodName = "clear";
+                methodName += messageFieldModel->namePascal();
+                methodReturn = "void";
+                methodParameters = "";
+                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+                break;
+            }
+                
+            case MessageFieldModel::FieldCategory::stringType:
+            case MessageFieldModel::FieldCategory::bytesType:
+            case MessageFieldModel::FieldCategory::messageType:
+            {
+                methodName = messageFieldModel->name();
+                string fieldType = fullTypeName(protoModel, messageFieldModel->fieldType());
+                methodReturn = "const ";
+                methodReturn += fieldType + " &";
+                methodParameters = "";
+                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
 
-        methodName = "clear";
-        methodName += messageFieldModel->namePascal();
-        methodReturn = "void";
-        methodParameters = "";
-        headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+                methodName = "mutable";
+                methodName += messageFieldModel->namePascal();
+                methodReturn = fieldType + " *";
+                methodParameters = "";
+                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+
+                methodName = "set";
+                methodName += messageFieldModel->namePascal();
+                methodReturn = "void";
+                methodParameters = "const ";
+                methodParameters += fieldType + " & value";
+                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+
+                methodName = "has";
+                methodName += messageFieldModel->namePascal();
+                methodReturn = "bool";
+                methodParameters = "";
+                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
+
+                methodName = "clear";
+                methodName += messageFieldModel->namePascal();
+                methodReturn = "void";
+                methodParameters = "";
+                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+
+                methodName = "reset";
+                methodName += messageFieldModel->namePascal();
+                methodReturn = "void";
+                methodParameters = fieldType + " * value";
+                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+
+                methodName = "release";
+                methodName += messageFieldModel->namePascal();
+                methodReturn = fieldType + " *";
+                methodParameters = "";
+                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+                break;
+            }
+
+            default:
+                break;
+        }
 
         ++messageFieldBegin;
     }
