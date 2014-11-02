@@ -208,6 +208,31 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
     methodParameters = className + " * other";
     headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
 
+    methodName = "clear";
+    methodReturn = "void";
+    methodParameters = "";
+    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+
+    methodName = "parse";
+    methodReturn = "void";
+    methodParameters = "const std::string & data";
+    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+
+    methodName = "serialize";
+    methodReturn = "std::string";
+    methodParameters = "";
+    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+
+    methodName = "size";
+    methodReturn = "size_t";
+    methodParameters = "";
+    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+
+    methodName = "requirementsMet";
+    methodReturn = "bool";
+    methodParameters = "";
+    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+
     auto messageFieldBegin = messageModel.fields()->cbegin();
     auto messageFieldEnd = messageModel.fields()->cend();
     while (messageFieldBegin != messageFieldEnd)
