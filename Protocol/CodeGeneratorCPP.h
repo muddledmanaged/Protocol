@@ -44,13 +44,19 @@ namespace MuddledManaged
                                        const MessageModel & messageModel, const std::string & className) const;
 
             void writeMessageFieldToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
-                                            const MessageFieldModel & messageModel) const;
+                                            const MessageFieldModel & messageFieldModel) const;
+
+            void writeMessageFieldBackingFieldsToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                         const MessageFieldModel & messageFieldModel, bool writeSetFlag) const;
 
             void writeMessageFieldIndexToHeader (CodeWriter & headerFileWriter,
-                                                 const MessageFieldModel & messageModel) const;
+                                                 const MessageFieldModel & messageFieldModel) const;
 
             void writeOneofToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
                                             const OneofModel & oneofModel) const;
+
+            void writeOneofBackingFieldsToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                  const OneofModel & oneofModel) const;
 
             void writeMessageFieldIndexesToHeader (CodeWriter & headerFileWriter,
                                                  const OneofModel & oneofModel) const;

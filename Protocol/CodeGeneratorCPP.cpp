@@ -74,7 +74,9 @@ string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const ProtoModel & pr
 void Protocol::CodeGeneratorCPP::writeStandardIncludFileNamesToHeader (CodeWriter & headerFileWriter) const
 {
     headerFileWriter.writeIncludeLibrary("cstdint");
+    headerFileWriter.writeIncludeLibrary("memory");
     headerFileWriter.writeIncludeLibrary("string");
+    headerFileWriter.writeIncludeLibrary("vector");
     headerFileWriter.writeBlankLine();
 }
 
@@ -249,6 +251,30 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
 
         writeMessageFieldIndexesToHeader(headerFileWriter, *oneofModel);
 
+        ++oneofBegin;
+    }
+
+    headerFileWriter.writeBlankLine();
+
+    messageFieldBegin = messageModel.fields()->cbegin();
+    messageFieldEnd = messageModel.fields()->cend();
+    while (messageFieldBegin != messageFieldEnd)
+    {
+        auto messageFieldModel = *messageFieldBegin;
+
+        writeMessageFieldBackingFieldsToHeader(headerFileWriter, protoModel, *messageFieldModel, true);
+
+        ++messageFieldBegin;
+    }
+
+    oneofBegin = messageModel.oneofs()->cbegin();
+    oneofEnd = messageModel.oneofs()->cend();
+    while (oneofBegin != oneofEnd)
+    {
+        auto oneofModel = *oneofBegin;
+
+        writeOneofBackingFieldsToHeader(headerFileWriter, protoModel, *oneofModel);
+        
         ++oneofBegin;
     }
 
@@ -439,6 +465,80 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldToHeader (CodeWriter & headerF
     }
 }
 
+void Protocol::CodeGeneratorCPP::writeMessageFieldBackingFieldsToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                                         const MessageFieldModel & messageFieldModel, bool writeSetFlag) const
+{
+    string backingFieldName;
+    string backingFieldType;
+    string fieldType = fullTypeName(protoModel, messageFieldModel.fieldType());
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::numericType:
+        case MessageFieldModel::FieldCategory::enumType:
+        {
+            if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+            {
+                backingFieldName = "m";
+                backingFieldName += messageFieldModel.namePascal() + "Collection";
+                backingFieldType = "std::vector<";
+                backingFieldType += fieldType + ">";
+                headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
+            }
+            else
+            {
+                if (writeSetFlag)
+                {
+                    backingFieldName = "m";
+                    backingFieldName += messageFieldModel.namePascal() + "Set";
+                    backingFieldType = "bool";
+                    headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
+                }
+
+                backingFieldName = "m";
+                backingFieldName += messageFieldModel.namePascal() + "Value";
+                backingFieldType = fieldType;
+                headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
+            }
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::stringType:
+        case MessageFieldModel::FieldCategory::bytesType:
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+            {
+                backingFieldName = "m";
+                backingFieldName += messageFieldModel.namePascal() + "Collection";
+                backingFieldType = "std::vector<std::unique_ptr<";
+                backingFieldType += fieldType + ">>";
+                headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
+            }
+            else
+            {
+                if (writeSetFlag)
+                {
+                    backingFieldName = "m";
+                    backingFieldName += messageFieldModel.namePascal() + "Set";
+                    backingFieldType = "bool";
+                    headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
+                }
+
+                backingFieldName = "m";
+                backingFieldName += messageFieldModel.namePascal() + "Value";
+                backingFieldType = "std::unique_ptr<";
+                backingFieldType += fieldType + ">";
+                headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
+            }
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
 void Protocol::CodeGeneratorCPP::writeMessageFieldIndexToHeader (CodeWriter & headerFileWriter,
                                                                  const MessageFieldModel & messageFieldModel) const
 {
@@ -485,6 +585,29 @@ void Protocol::CodeGeneratorCPP::writeOneofToHeader (CodeWriter & headerFileWrit
         auto messageFieldModel = *messageFieldBegin;
 
         writeMessageFieldToHeader(headerFileWriter, protoModel, *messageFieldModel);
+
+        ++messageFieldBegin;
+    }
+}
+
+void Protocol::CodeGeneratorCPP::writeOneofBackingFieldsToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                                  const OneofModel & oneofModel) const
+{
+    string backingFieldName;
+    string backingFieldType;
+
+    backingFieldName = "mCurrent";
+    backingFieldName += oneofModel.namePascal() + "Choice";
+    backingFieldType = oneofModel.namePascal() + "Choices";
+    headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
+
+    auto messageFieldBegin = oneofModel.fields()->cbegin();
+    auto messageFieldEnd = oneofModel.fields()->cend();
+    while (messageFieldBegin != messageFieldEnd)
+    {
+        auto messageFieldModel = *messageFieldBegin;
+
+        writeMessageFieldBackingFieldsToHeader(headerFileWriter, protoModel, *messageFieldModel, false);
 
         ++messageFieldBegin;
     }
