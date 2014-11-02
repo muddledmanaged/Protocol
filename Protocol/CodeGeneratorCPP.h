@@ -32,7 +32,7 @@ namespace MuddledManaged
 
             std::string fullTypeName (const ProtoModel & protoModel, const std::string & protoTypeName) const;
 
-            void writeStandardIncludFileNamesToHeader (CodeWriter & headerFileWriter) const;
+            void writeStandardIncludeFileNamesToHeader (CodeWriter & headerFileWriter) const;
 
             void writeIncludedProtoFileNamesToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel) const;
 

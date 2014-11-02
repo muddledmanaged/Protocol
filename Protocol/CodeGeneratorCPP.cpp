@@ -44,7 +44,7 @@ void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, cons
     headerFileWriter.writeLine(mHeaderFileProlog);
     headerFileWriter.writeHeaderIncludeBlockOpening(headerIncludeBlockText(protoModel, projectName));
 
-    writeStandardIncludFileNamesToHeader(headerFileWriter);
+    writeStandardIncludeFileNamesToHeader(headerFileWriter);
     writeIncludedProtoFileNamesToHeader(headerFileWriter, protoModel);
 
     writeProtoEnumsToHeader(headerFileWriter, protoModel);
@@ -71,7 +71,7 @@ string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const ProtoModel & pr
     return text;
 }
 
-void Protocol::CodeGeneratorCPP::writeStandardIncludFileNamesToHeader (CodeWriter & headerFileWriter) const
+void Protocol::CodeGeneratorCPP::writeStandardIncludeFileNamesToHeader (CodeWriter & headerFileWriter) const
 {
     headerFileWriter.writeIncludeLibrary("cstdint");
     headerFileWriter.writeIncludeLibrary("memory");
@@ -228,7 +228,7 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
     methodParameters = "";
     headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
 
-    methodName = "requirementsMet";
+    methodName = "isValid";
     methodReturn = "bool";
     methodParameters = "";
     headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
