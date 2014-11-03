@@ -28,6 +28,10 @@ namespace MuddledManaged
             
             CodeGeneratorCPP ();
 
+            void generateHeaderFile (const std::string & outputFolder, const ProtoModel & protoModel, const std::string & projectName) const;
+
+            void generateSourceFile (const std::string & outputFolder, const ProtoModel & protoModel, const std::string & projectName) const;
+
             std::string headerIncludeBlockText (const ProtoModel & protoModel, const std::string & projectName) const;
 
             std::string fullTypeName (const ProtoModel & protoModel, const std::string & protoTypeName) const;

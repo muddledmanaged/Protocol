@@ -28,18 +28,23 @@ const string Protocol::CodeGeneratorCPP::mSourceFileProlog =
 Protocol::CodeGeneratorCPP::CodeGeneratorCPP ()
 { }
 
-void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, const ProtoModel & protoModel, const std::string & projectName) const
+void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, const ProtoModel & protoModel,
+                                               const std::string & projectName) const
+{
+    generateHeaderFile(outputFolder, protoModel, projectName);
+    generateSourceFile(outputFolder, protoModel, projectName);
+}
+
+void Protocol::CodeGeneratorCPP::generateHeaderFile (const std::string & outputFolder, const ProtoModel & protoModel,
+                                                     const std::string & projectName) const
 {
     filesystem::path outputPath(outputFolder);
     filesystem::path modelPath(protoModel.name());
     filesystem::path headerPath(outputPath / filesystem::change_extension(modelPath, mHeaderFileExtension));
-    filesystem::path sourcePath(outputPath / filesystem::change_extension(modelPath, mSourceFileExtension));
 
     filesystem::create_directory(outputFolder);
     filesystem::ofstream headerFile(headerPath, ios::out | ios::trunc);
     CodeWriter headerFileWriter(headerFile);
-    filesystem::ofstream sourceFile(sourcePath, ios::out | ios::trunc);
-    CodeWriter sourceFileWriter(sourceFile);
 
     headerFileWriter.writeLine(mHeaderFileProlog);
     headerFileWriter.writeHeaderIncludeBlockOpening(headerIncludeBlockText(protoModel, projectName));
@@ -52,8 +57,23 @@ void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, cons
     writeProtoMessagesToHeader(headerFileWriter, protoModel);
 
     headerFileWriter.writeHeaderIncludeBlockClosing();
+}
+
+void Protocol::CodeGeneratorCPP::generateSourceFile (const std::string & outputFolder, const ProtoModel & protoModel,
+                                                     const std::string & projectName) const
+{
+    filesystem::path outputPath(outputFolder);
+    filesystem::path modelPath(protoModel.name());
+    filesystem::path sourcePath(outputPath / filesystem::change_extension(modelPath, mSourceFileExtension));
+
+    filesystem::create_directory(outputFolder);
+    filesystem::ofstream sourceFile(sourcePath, ios::out | ios::trunc);
+    CodeWriter sourceFileWriter(sourceFile);
 
     sourceFileWriter.writeLine(mSourceFileProlog);
+
+    sourceFileWriter.writeIncludeProject(filesystem::change_extension(modelPath, mHeaderFileExtension).string());
+    sourceFileWriter.writeBlankLine();
 }
 
 string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const ProtoModel & protoModel, const std::string & projectName) const
