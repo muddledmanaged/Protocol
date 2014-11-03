@@ -41,7 +41,7 @@ namespace MuddledManaged
                 {
                     fullName += ".";
                 }
-                fullName += name();
+                fullName += namePascal();
 
                 return fullName;
             }

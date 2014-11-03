@@ -39,7 +39,7 @@ void Protocol::CodeGeneratorCPP::generateHeaderFile (const std::string & outputF
                                                      const std::string & projectName) const
 {
     filesystem::path outputPath(outputFolder);
-    filesystem::path modelPath(protoModel.name());
+    filesystem::path modelPath(protoModel.namePascal());
     filesystem::path headerPath(outputPath / filesystem::change_extension(modelPath, mHeaderFileExtension));
 
     filesystem::create_directory(outputFolder);
@@ -63,7 +63,7 @@ void Protocol::CodeGeneratorCPP::generateSourceFile (const std::string & outputF
                                                      const std::string & projectName) const
 {
     filesystem::path outputPath(outputFolder);
-    filesystem::path modelPath(protoModel.name());
+    filesystem::path modelPath(protoModel.namePascal());
     filesystem::path sourcePath(outputPath / filesystem::change_extension(modelPath, mSourceFileExtension));
 
     filesystem::create_directory(outputFolder);
@@ -74,6 +74,8 @@ void Protocol::CodeGeneratorCPP::generateSourceFile (const std::string & outputF
 
     sourceFileWriter.writeIncludeProject(filesystem::change_extension(modelPath, mHeaderFileExtension).string());
     sourceFileWriter.writeBlankLine();
+
+    writeProtoMessagesToSource(sourceFileWriter, protoModel);
 }
 
 string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const ProtoModel & protoModel, const std::string & projectName) const
@@ -175,7 +177,7 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
 
     headerFileWriter.writeClassPublic();
 
-    // Generate all the typedefs for nested classes first, then generate each class.
+    // Generate all the nested classes first, then generate a typedef for the simpler name.
     bool subMessageFound = false;
     auto messageMessageBegin = messageModel.messages()->cbegin();
     auto messageMessageEnd = messageModel.messages()->cend();
@@ -184,14 +186,10 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
         subMessageFound = true;
         auto messageSubModel = *messageMessageBegin;
 
-        string subClassName = className + messageSubModel->namePascal();
-        headerFileWriter.writeTypedef(subClassName, messageSubModel->namePascal());
+        string subClassName = className + "_" + messageSubModel->namePascal();
+        writeMessageToHeader(headerFileWriter, protoModel, *messageSubModel, subClassName);
 
         ++messageMessageBegin;
-    }
-    if (subMessageFound)
-    {
-        headerFileWriter.writeBlankLine();
     }
     messageMessageBegin = messageModel.messages()->cbegin();
     messageMessageEnd = messageModel.messages()->cend();
@@ -199,10 +197,15 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
     {
         auto messageSubModel = *messageMessageBegin;
 
-        string subClassName = className + messageSubModel->namePascal();
-        writeMessageToHeader(headerFileWriter, protoModel, *messageSubModel, subClassName);
+        string subClassName = className + "_" + messageSubModel->namePascal();
+        headerFileWriter.writeTypedef(subClassName, messageSubModel->namePascal());
 
         ++messageMessageBegin;
+    }
+    if (subMessageFound)
+    {
+        headerFileWriter.writeBlankLine();
+        headerFileWriter.writeClassPublic();
     }
 
     string methodName = className;
@@ -230,8 +233,7 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
 
     methodName = "clear";
     methodReturn = "void";
-    methodParameters = "";
-    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn);
 
     methodName = "parse";
     methodReturn = "void";
@@ -240,18 +242,15 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
 
     methodName = "serialize";
     methodReturn = "std::string";
-    methodParameters = "";
-    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, true);
 
     methodName = "size";
     methodReturn = "size_t";
-    methodParameters = "";
-    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, true);
 
     methodName = "isValid";
     methodReturn = "bool";
-    methodParameters = "";
-    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, true);
 
     auto messageFieldBegin = messageModel.fields()->cbegin();
     auto messageFieldEnd = messageModel.fields()->cend();
@@ -677,6 +676,97 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldIndexesToHeader (CodeWriter & 
 
         ++messageFieldBegin;
     }
+}
+
+void Protocol::CodeGeneratorCPP::writeProtoMessagesToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel) const
+{
+    auto protoMessageBegin = protoModel.messages()->cbegin();
+    auto protoMessageEnd = protoModel.messages()->cend();
+    while (protoMessageBegin != protoMessageEnd)
+    {
+        auto messageModel = *protoMessageBegin;
+
+        writeMessageToSource(sourceFileWriter, protoModel, *messageModel, messageModel->namePascal(), messageModel->package());
+
+        ++protoMessageBegin;
+    }
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                       const MessageModel & messageModel, const std::string & className,
+                                                       const std::string & classScope) const
+{
+    string fullScope = classScope;
+    if (!fullScope.empty())
+    {
+        fullScope += "::";
+    }
+    fullScope += className;
+
+    auto messageMessageBegin = messageModel.messages()->cbegin();
+    auto messageMessageEnd = messageModel.messages()->cend();
+    while (messageMessageBegin != messageMessageEnd)
+    {
+        auto messageSubModel = *messageMessageBegin;
+
+        string subClassName = className + "_" + messageSubModel->namePascal();
+        writeMessageToSource(sourceFileWriter, protoModel, *messageSubModel, subClassName, fullScope);
+
+        ++messageMessageBegin;
+    }
+
+    string methodName = fullScope + "::" + className;
+    sourceFileWriter.writeMethodImplementationOpening(methodName);
+    sourceFileWriter.writeMethodImplementationClosing();
+
+    string methodReturn = "";
+    string methodParameters = "const ";
+    methodParameters += className + " & src";
+    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+    sourceFileWriter.writeMethodImplementationClosing();
+
+    methodName = fullScope + "::~" + className;
+    sourceFileWriter.writeMethodImplementationOpening(methodName);
+    sourceFileWriter.writeMethodImplementationClosing();
+
+    methodName = fullScope + "::operator =";
+    methodReturn = fullScope + "::" + className + " &";
+    methodParameters = "const ";
+    methodParameters += className + " & rhs";
+    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+    sourceFileWriter.writeMethodImplementationClosing();
+
+    methodName = fullScope + "::swap";
+    methodReturn = "void";
+    methodParameters = className + " * other";
+    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+    sourceFileWriter.writeMethodImplementationClosing();
+
+    methodName = fullScope + "::clear";
+    methodReturn = "void";
+    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn);
+    sourceFileWriter.writeMethodImplementationClosing();
+
+    methodName = fullScope + "::parse";
+    methodReturn = "void";
+    methodParameters = "const std::string & data";
+    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+    sourceFileWriter.writeMethodImplementationClosing();
+
+    methodName = fullScope + "::serialize";
+    methodReturn = "std::string";
+    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, true);
+    sourceFileWriter.writeMethodImplementationClosing();
+
+    methodName = fullScope + "::size";
+    methodReturn = "size_t";
+    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, true);
+    sourceFileWriter.writeMethodImplementationClosing();
+
+    methodName = fullScope + "::isValid";
+    methodReturn = "bool";
+    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, true);
+    sourceFileWriter.writeMethodImplementationClosing();
 }
 
 string Protocol::CodeGeneratorCPP::fullTypeName (const ProtoModel & protoModel, const std::string & protoTypeName) const

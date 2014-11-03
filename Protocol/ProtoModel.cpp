@@ -45,7 +45,7 @@ void Protocol::ProtoModel::updateCurrentNestedType ()
         {
             mCurrentNestedType += ".";
         }
-        mCurrentNestedType += message->name();
+        mCurrentNestedType += message->namePascal();
     }
 }
 

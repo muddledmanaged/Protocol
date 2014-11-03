@@ -65,6 +65,12 @@ namespace MuddledManaged
             void writeMessageFieldIndexesToHeader (CodeWriter & headerFileWriter,
                                                  const OneofModel & oneofModel) const;
 
+            void writeProtoMessagesToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel) const;
+
+            void writeMessageToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                       const MessageModel & messageModel, const std::string & className,
+                                       const std::string & classScope) const;
+
             static const std::string mHeaderFileExtension;
             static const std::string mSourceFileExtension;
             static const std::string mHeaderFileProlog;
