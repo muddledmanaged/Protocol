@@ -5,6 +5,11 @@
 //  Created by Wahid Tanner on 10/17/14.
 //
 
+#include <string>
+#include <vector>
+
+#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/convenience.hpp>
@@ -155,15 +160,35 @@ void Protocol::CodeGeneratorCPP::writeProtoEnumsToHeader (CodeWriter & headerFil
 
 void Protocol::CodeGeneratorCPP::writeProtoMessagesToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel) const
 {
+    string currentPackage;
+    vector<string> messageNamespaces;
     auto protoMessageBegin = protoModel.messages()->cbegin();
     auto protoMessageEnd = protoModel.messages()->cend();
     while (protoMessageBegin != protoMessageEnd)
     {
         auto messageModel = *protoMessageBegin;
 
+        string messagePackage = messageModel->package();
+        if (messagePackage != currentPackage)
+        {
+            for (int i = 0; i < messageNamespaces.size(); i++)
+            {
+                headerFileWriter.writeNamespaceClosing();
+            }
+            currentPackage = messagePackage;
+            boost::split(messageNamespaces, messagePackage, boost::is_any_of("."));
+            for (auto & str: messageNamespaces)
+            {
+                headerFileWriter.writeNamespaceOpening(str);
+            }
+        }
         writeMessageToHeader(headerFileWriter, protoModel, *messageModel, messageModel->namePascal());
 
         ++protoMessageBegin;
+    }
+    for (int i = 0; i < messageNamespaces.size(); i++)
+    {
+        headerFileWriter.writeNamespaceClosing();
     }
 }
 
@@ -686,7 +711,9 @@ void Protocol::CodeGeneratorCPP::writeProtoMessagesToSource (CodeWriter & source
     {
         auto messageModel = *protoMessageBegin;
 
-        writeMessageToSource(sourceFileWriter, protoModel, *messageModel, messageModel->namePascal(), messageModel->package());
+        string messageNamespace = messageModel->package();
+        boost::replace_all(messageNamespace, ".", "::");
+        writeMessageToSource(sourceFileWriter, protoModel, *messageModel, messageModel->namePascal(), messageNamespace);
 
         ++protoMessageBegin;
     }

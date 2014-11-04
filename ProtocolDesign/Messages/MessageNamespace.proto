@@ -1,4 +1,4 @@
-namespace Abc.Def;
+package Abc.Def;
 
 message Simple
 {
