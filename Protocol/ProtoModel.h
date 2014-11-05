@@ -15,18 +15,18 @@
 
 #include "TokenReader.h"
 #include "Nameable.h"
-#include "Packageable.h"
 #include "EnumModel.h"
 #include "EnumValueModel.h"
 #include "MessageModel.h"
 #include "MessageFieldModel.h"
 #include "OptionModel.h"
+#include "Packageable.h"
 
 namespace MuddledManaged
 {
     namespace Protocol
     {
-        class ProtoModel : private Packageable, public Nameable, public OptionModelContainer, public EnumModelContainer,
+        class ProtoModel : public Nameable, public Packageable, public OptionModelContainer, public EnumModelContainer,
                            public MessageModelContainer
         {
         public:
@@ -39,9 +39,6 @@ namespace MuddledManaged
             explicit ProtoModel (const std::string & fileName);
 
             ProtoModel (const ProtoModel & src);
-
-            std::string currentPackage () const;
-            void setCurrentPackage (const std::string & package);
 
             void addField (TokenReader::iterator current, MessageFieldModelCollection::value_type & field);
             void completeField ();
@@ -86,8 +83,6 @@ namespace MuddledManaged
             bool typeExists (const std::string & fullName) const;
 
             void updateMessagePath ();
-
-            std::string currentMessagePath () const;
 
             std::string fullPathWithCurrentPackageAndMessagePath (const std::string & name) const;
 

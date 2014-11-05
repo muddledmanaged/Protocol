@@ -36,7 +36,6 @@
 		3E9EE99719D6636B00AEF047 /* MessageParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E9EE99519D6636B00AEF047 /* MessageParser.h */; };
 		3E9EE99A19D663D000AEF047 /* MessageModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E9EE99819D663D000AEF047 /* MessageModel.cpp */; };
 		3E9EE99B19D663D000AEF047 /* MessageModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E9EE99919D663D000AEF047 /* MessageModel.h */; };
-		3E9EE9A019D6727A00AEF047 /* Packageable.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E9EE99E19D6727A00AEF047 /* Packageable.h */; };
 		3EB0EBCA19E225CD0097929D /* OneofModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB0EBC819E225CD0097929D /* OneofModel.cpp */; };
 		3EB0EBCB19E225CD0097929D /* OneofModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EB0EBC919E225CD0097929D /* OneofModel.h */; };
 		3EB0EBCE19E225F40097929D /* OneofParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB0EBCC19E225F40097929D /* OneofParser.cpp */; };
@@ -47,6 +46,7 @@
 		3EB0FA2419DA4B66003633C8 /* ParserManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB0FA2219DA4B65003633C8 /* ParserManager.cpp */; };
 		3EB0FA2519DA4B66003633C8 /* ParserManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EB0FA2319DA4B65003633C8 /* ParserManager.h */; };
 		3EC1F8DA19E4E24D0035376F /* EnumValueParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EC1F8D919E4E24D0035376F /* EnumValueParserScenarios.cpp */; };
+		3EC7155A1A09EE6900C19A3F /* Packageable.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EC715591A09EE6900C19A3F /* Packageable.h */; };
 		3ECE389D19DBAA3100A042B4 /* EnumParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ECE389B19DBAA3100A042B4 /* EnumParser.cpp */; };
 		3ECE389E19DBAA3100A042B4 /* EnumParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3ECE389C19DBAA3100A042B4 /* EnumParser.h */; };
 		3ECE38A119DBAAEF00A042B4 /* EnumModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ECE389F19DBAAEF00A042B4 /* EnumModel.cpp */; };
@@ -160,7 +160,6 @@
 		3E9EE99819D663D000AEF047 /* MessageModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageModel.cpp; sourceTree = "<group>"; };
 		3E9EE99919D663D000AEF047 /* MessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageModel.h; sourceTree = "<group>"; };
 		3E9EE99C19D6680E00AEF047 /* ParserInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParserInterface.h; sourceTree = "<group>"; };
-		3E9EE99E19D6727A00AEF047 /* Packageable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Packageable.h; sourceTree = "<group>"; };
 		3EA6589919D25D970057E591 /* TextCommentNoSpace.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextCommentNoSpace.proto; sourceTree = "<group>"; };
 		3EA6589B19D25FB60057E591 /* TextStringEmpty.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextStringEmpty.proto; sourceTree = "<group>"; };
 		3EA6589C19D261960057E591 /* TextStringEndingEscape.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextStringEndingEscape.proto; sourceTree = "<group>"; };
@@ -180,6 +179,7 @@
 		3EC1F8D619E4DFE80035376F /* EnumValue.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EnumValue.proto; sourceTree = "<group>"; };
 		3EC1F8D819E4E02B0035376F /* EnumValueMultipleMessage.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EnumValueMultipleMessage.proto; sourceTree = "<group>"; };
 		3EC1F8D919E4E24D0035376F /* EnumValueParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnumValueParserScenarios.cpp; sourceTree = "<group>"; };
+		3EC715591A09EE6900C19A3F /* Packageable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Packageable.h; sourceTree = "<group>"; };
 		3ECE389B19DBAA3100A042B4 /* EnumParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnumParser.cpp; sourceTree = "<group>"; };
 		3ECE389C19DBAA3100A042B4 /* EnumParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnumParser.h; sourceTree = "<group>"; };
 		3ECE389F19DBAAEF00A042B4 /* EnumModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnumModel.cpp; sourceTree = "<group>"; };
@@ -304,7 +304,7 @@
 				3E9B75C219E780D1004B59A7 /* OptionSingleParser.h */,
 				3E9B75BD19E7809A004B59A7 /* OptionValueParser.cpp */,
 				3E9B75BE19E7809A004B59A7 /* OptionValueParser.h */,
-				3E9EE99E19D6727A00AEF047 /* Packageable.h */,
+				3EC715591A09EE6900C19A3F /* Packageable.h */,
 				3E9EE99019D6634F00AEF047 /* PackageParser.cpp */,
 				3E9EE99119D6634F00AEF047 /* PackageParser.h */,
 				3E9EE99C19D6680E00AEF047 /* ParserInterface.h */,
@@ -456,11 +456,11 @@
 				3EB0EBCF19E225F40097929D /* OneofParser.h in Headers */,
 				3E03213619EB20FB00E21D52 /* ImportParser.h in Headers */,
 				3ECE389E19DBAA3100A042B4 /* EnumParser.h in Headers */,
-				3E9EE9A019D6727A00AEF047 /* Packageable.h in Headers */,
 				3EE9089919C9361400C75919 /* ProtoModel.h in Headers */,
 				3E37A5D419DF918200BED294 /* MessageFieldParser.h in Headers */,
 				3EFCB8A819F2074100771D5B /* CodeGeneratorManager.h in Headers */,
 				3E9EE99719D6636B00AEF047 /* MessageParser.h in Headers */,
+				3EC7155A1A09EE6900C19A3F /* Packageable.h in Headers */,
 				3E9B75BC19E77E94004B59A7 /* OptionModel.h in Headers */,
 				3EE5ACC919E39604001AEC6C /* EnumValueModel.h in Headers */,
 				3E9B75C019E7809A004B59A7 /* OptionValueParser.h in Headers */,

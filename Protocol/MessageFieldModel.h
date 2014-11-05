@@ -34,14 +34,15 @@ namespace MuddledManaged
 
             enum class FieldCategory
             {
-                numericType = 0,
-                stringType = 1,
-                bytesType = 2,
-                enumType = 3,
-                messageType = 4
+                unknown = 0,
+                numericType = 1,
+                stringType = 2,
+                bytesType = 3,
+                enumType = 4,
+                messageType = 5
             };
 
-            MessageFieldModel (Requiredness requiredness, const std::string & fieldType, FieldCategory fieldCategory,
+            MessageFieldModel (Requiredness requiredness, const std::string & fieldType,
                                const std::string & name, unsigned int index);
 
             MessageFieldModel (const MessageFieldModel & src);
@@ -50,17 +51,23 @@ namespace MuddledManaged
 
             std::string fieldType () const;
 
+            std::string fieldTypeFull () const;
+
             FieldCategory fieldCategory () const;
+
+            void updateFieldCategoryToEnum (const std::string & fullFieldType);
+            void updateFieldCategoryToMessage (const std::string & fullFieldType);
 
             unsigned int index () const;
 
             MessageFieldModel & operator = (const MessageFieldModel & rhs);
 
-            static FieldCategory fieldCategoryFromType (const std::string & fieldType, const ProtoModel * protoModel);
-
         private:
+            void setFieldCategoryAndFullType ();
+
             Requiredness mRequiredness;
             std::string mFieldType;
+            std::string mFieldTypeFull;
             FieldCategory mFieldCategory;
             unsigned int mIndex;
         };

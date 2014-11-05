@@ -10,8 +10,8 @@
 using namespace std;
 using namespace MuddledManaged;
 
-Protocol::MessageModel::MessageModel (const string & name, const string & package)
-: Nameable(name), Packageable(package)
+Protocol::MessageModel::MessageModel (const string & name)
+: Nameable(name)
 {
 }
 

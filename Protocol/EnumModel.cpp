@@ -10,8 +10,8 @@
 using namespace std;
 using namespace MuddledManaged;
 
-Protocol::EnumModel::EnumModel (const string & name, const string & package)
-: Nameable(name), Packageable(package)
+Protocol::EnumModel::EnumModel (const string & name)
+: Nameable(name)
 {
 }
 

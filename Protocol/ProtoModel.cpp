@@ -12,28 +12,18 @@ using namespace std;
 using namespace MuddledManaged;
 
 Protocol::ProtoModel::ProtoModel (const std::string & fileName)
-: Nameable(fileName), mMessagePath(""), mCurrentField(nullptr), mCurrentOneof(nullptr), mCurrentEnum(nullptr),
+: Nameable(fileName), mCurrentField(nullptr), mCurrentOneof(nullptr), mCurrentEnum(nullptr),
   mCurrentEnumValue(nullptr)
 {
 }
 
 Protocol::ProtoModel::ProtoModel (const ProtoModel & src)
-: Packageable(src), Nameable(src), OptionModelContainer(src), EnumModelContainer(src), MessageModelContainer(src),
+: Nameable(src), Packageable(src), OptionModelContainer(src), EnumModelContainer(src), MessageModelContainer(src),
   mMessagePath(src.mMessagePath),
   mMessageQueue(src.mMessageQueue), mCurrentField(src.mCurrentField), mCurrentOneof(src.mCurrentOneof),
   mCurrentEnum(src.mCurrentEnum), mCurrentEnumValue(src.mCurrentEnumValue), mPrivateEnumTypes(src.mPrivateEnumTypes),
   mPublicEnumTypes(src.mPublicEnumTypes), mPrivateMessageTypes(src.mPrivateMessageTypes), mPublicMessageTypes(src.mPublicMessageTypes)
 {
-}
-
-string Protocol::ProtoModel::currentPackage () const
-{
-    return package();
-}
-
-void Protocol::ProtoModel::setCurrentPackage (const string & package)
-{
-    setPackage(package);
 }
 
 void Protocol::ProtoModel::addField (TokenReader::iterator current, MessageFieldModelCollection::value_type & field)
@@ -64,6 +54,7 @@ void Protocol::ProtoModel::completeField ()
 void Protocol::ProtoModel::addEnum (TokenReader::iterator current, EnumModelCollection::value_type & enumeration)
 {
     addPublicEnumType(current, fullPathWithCurrentPackageAndMessagePath(enumeration->namePascal()));
+    enumeration->setPackage(package());
 
     if (mMessageQueue.empty())
     {
@@ -102,6 +93,7 @@ void Protocol::ProtoModel::completeEnumValue ()
 void Protocol::ProtoModel::addMessage (TokenReader::iterator current, MessageModelCollection::value_type & message)
 {
     addPublicMessageType(current, fullPathWithCurrentPackageAndMessagePath(message->namePascal()));
+    message->setPackage(package());
 
     if (mMessageQueue.empty())
     {
@@ -192,11 +184,6 @@ bool Protocol::ProtoModel::typeExists (const string & fullName) const
     return false;
 }
 
-string Protocol::ProtoModel::currentMessagePath () const
-{
-    return mMessagePath;
-}
-
 void Protocol::ProtoModel::updateMessagePath ()
 {
     mMessagePath = "";
@@ -217,12 +204,12 @@ void Protocol::ProtoModel::updateMessagePath ()
 
 string Protocol::ProtoModel::fullPathWithCurrentPackageAndMessagePath (const std::string & name) const
 {
-    string path = currentPackage();
+    string path = package();
     if (!path.empty())
     {
         path += ".";
     }
-    path += currentMessagePath();
+    path += mMessagePath;
     if (!path.empty())
     {
         path += ".";
@@ -305,8 +292,8 @@ Protocol::ProtoModel & Protocol::ProtoModel::operator = (const ProtoModel & rhs)
         return *this;
     }
 
-    Packageable::operator=(rhs);
     Nameable::operator=(rhs);
+    Packageable::operator=(rhs);
     OptionModelContainer::operator=(rhs);
     EnumModelContainer::operator=(rhs);
     MessageModelContainer::operator=(rhs);

@@ -27,7 +27,7 @@ bool Protocol::MessageParser::parse (TokenReader::iterator current, TokenReader:
         {
             throw InvalidProtoException(current.line(), current.column(), "Expected message name.");
         }
-        shared_ptr<MessageModel> message(new MessageModel(*current, model->currentPackage()));
+        shared_ptr<MessageModel> message(new MessageModel(*current));
         model->addMessage(current, message);
 
         // Move to the opening brace.

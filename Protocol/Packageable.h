@@ -20,9 +20,14 @@ namespace MuddledManaged
             virtual ~Packageable ()
             { }
 
-            std::string package () const
+            virtual std::string package () const
             {
                 return mPackage;
+            }
+
+            virtual void setPackage (const std::string & package)
+            {
+                mPackage = package;
             }
 
         protected:
@@ -33,11 +38,6 @@ namespace MuddledManaged
             Packageable (const Packageable & src)
             : mPackage(src.mPackage)
             { }
-
-            void setPackage (const std::string & package)
-            {
-                mPackage = package;
-            }
 
             Packageable & operator = (const Packageable & rhs)
             {

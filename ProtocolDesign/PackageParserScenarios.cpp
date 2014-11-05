@@ -28,7 +28,7 @@ DESIGNER_SCENARIO( PackageParser, "Parsing/Normal", "PackageParser can parse pac
     Protocol::ProtoParser parser("Package.proto");
     model = parser.parse();
 
-    verifyEqual(package, model->currentPackage());
+    verifyEqual(package, model->package());
 }
 
 DESIGNER_SCENARIO( PackageParser, "Parsing/Normal", "PackageParser can parse multiple packages." )
@@ -39,5 +39,5 @@ DESIGNER_SCENARIO( PackageParser, "Parsing/Normal", "PackageParser can parse mul
     Protocol::ProtoParser parser("PackageRedefined.proto");
     model = parser.parse();
 
-    verifyEqual(package, model->currentPackage());
+    verifyEqual(package, model->package());
 }

@@ -150,7 +150,7 @@ void Protocol::CodeGeneratorCPP::writeProtoEnumsToHeader (CodeWriter & headerFil
                 headerFileWriter.writeNamespaceOpening(str);
             }
         }
-        
+
         headerFileWriter.writeEnumOpening(enumModel->namePascal());
 
         auto enumValueBegin = enumModel->enumValues()->cbegin();
@@ -378,7 +378,7 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldToHeader (CodeWriter & headerF
     string methodName;
     string methodReturn;
     string methodParameters;
-    string fieldType = fullTypeName(protoModel, messageFieldModel.fieldType());
+    string fieldType = fullTypeName(messageFieldModel.fieldTypeFull());
 
     switch (messageFieldModel.fieldCategory())
     {
@@ -561,7 +561,7 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldBackingFieldsToHeader (CodeWri
 {
     string backingFieldName;
     string backingFieldType;
-    string fieldType = fullTypeName(protoModel, messageFieldModel.fieldType());
+    string fieldType = fullTypeName(messageFieldModel.fieldTypeFull());
 
     switch (messageFieldModel.fieldCategory())
     {
@@ -818,7 +818,7 @@ void Protocol::CodeGeneratorCPP::writeMessageToSource (CodeWriter & sourceFileWr
     sourceFileWriter.writeMethodImplementationClosing();
 }
 
-string Protocol::CodeGeneratorCPP::fullTypeName (const ProtoModel & protoModel, const std::string & protoTypeName) const
+string Protocol::CodeGeneratorCPP::fullTypeName (const std::string & protoTypeName) const
 {
     if (protoTypeName == "bool")
     {
@@ -880,5 +880,5 @@ string Protocol::CodeGeneratorCPP::fullTypeName (const ProtoModel & protoModel, 
     {
         return "std::string";
     }
-    return "";
+    return protoTypeName;
 }

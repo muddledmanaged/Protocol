@@ -84,9 +84,7 @@ bool Protocol::MessageFieldParser::parse (TokenReader::iterator current, TokenRe
         }
         unsigned int index = stoi(*current);
 
-        shared_ptr<MessageFieldModel> field(new MessageFieldModel(requiredness, fieldType,
-                                                                  MessageFieldModel::fieldCategoryFromType(fieldType, model.get()),
-                                                                  name, index));
+        shared_ptr<MessageFieldModel> field(new MessageFieldModel(requiredness, fieldType, name, index));
         model->addField(current, field);
 
         // Move to the semicolon or inline options.

@@ -53,7 +53,7 @@ bool Protocol::PackageParser::parse (TokenReader::iterator current, TokenReader:
             // Move to the semicolon or further package names.
             ++current;
         }
-        model->setCurrentPackage(packageName);
+        model->setPackage(packageName);
 
         return true;
     }

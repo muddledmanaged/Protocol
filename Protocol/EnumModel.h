@@ -11,9 +11,9 @@
 #include <string>
 
 #include "Nameable.h"
-#include "Packageable.h"
 #include "EnumValueModel.h"
 #include "OptionModel.h"
+#include "Packageable.h"
 
 // Every model header includes its container header.
 #include "EnumModelContainer.h"
@@ -25,7 +25,7 @@ namespace MuddledManaged
         class EnumModel : public Nameable, public Packageable, public OptionModelContainer, public EnumValueModelContainer
         {
         public:
-            explicit EnumModel (const std::string & name, const std::string & package = "");
+            explicit EnumModel (const std::string & name);
 
             EnumModel (const EnumModel & src);
 

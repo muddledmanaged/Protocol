@@ -21,12 +21,12 @@ namespace MuddledManaged
             virtual ~Nameable ()
             { }
 
-            std::string name () const
+            virtual std::string name () const
             {
                 return mNameCamel;
             }
 
-            std::string namePascal () const
+            virtual std::string namePascal () const
             {
                 return mNamePascal;
             }

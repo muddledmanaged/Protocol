@@ -18,7 +18,7 @@ DESIGNER_SCENARIO( ProtoModel, "Construction/Normal", "ProtoModel can be constru
 {
     Protocol::ProtoModel model("test.proto");
 
-    verifyEqual("", model.currentPackage());
+    verifyEqual("", model.package());
 }
 
 DESIGNER_SCENARIO( ProtoModel, "Operation/Properties", "ProtoModel knows current package." )
@@ -26,6 +26,6 @@ DESIGNER_SCENARIO( ProtoModel, "Operation/Properties", "ProtoModel knows current
     Protocol::ProtoModel model("test.proto");
     string package = "MuddledManaged.Protocol";
 
-    model.setCurrentPackage(package);
-    verifyEqual(package, model.currentPackage());
+    model.setPackage(package);
+    verifyEqual(package, model.package());
 }

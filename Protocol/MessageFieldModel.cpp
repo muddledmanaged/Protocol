@@ -11,15 +11,16 @@
 using namespace std;
 using namespace MuddledManaged;
 
-Protocol::MessageFieldModel::MessageFieldModel (Requiredness requiredness, const std::string & fieldType, FieldCategory fieldCategory,
+Protocol::MessageFieldModel::MessageFieldModel (Requiredness requiredness, const std::string & fieldType,
                                                 const std::string & name, unsigned int index)
-: Nameable(name), mRequiredness(requiredness), mFieldType(fieldType), mFieldCategory(fieldCategory), mIndex(index)
+: Nameable(name), mRequiredness(requiredness), mFieldType(fieldType), mIndex(index)
 {
+    setFieldCategoryAndFullType();
 }
 
 Protocol::MessageFieldModel::MessageFieldModel (const MessageFieldModel & src)
 : Nameable(src), OptionModelContainer(src), mRequiredness(src.mRequiredness), mFieldType(src.mFieldType),
-  mFieldCategory(src.mFieldCategory), mIndex(src.mIndex)
+  mFieldTypeFull(src.mFieldTypeFull), mFieldCategory(src.mFieldCategory), mIndex(src.mIndex)
 {
 }
 
@@ -33,9 +34,32 @@ string Protocol::MessageFieldModel::fieldType () const
     return mFieldType;
 }
 
+string Protocol::MessageFieldModel::fieldTypeFull () const
+{
+    return mFieldTypeFull;
+}
+
 Protocol::MessageFieldModel::FieldCategory Protocol::MessageFieldModel::fieldCategory () const
 {
     return mFieldCategory;
+}
+
+void Protocol::MessageFieldModel::updateFieldCategoryToEnum (const std::string & fullFieldType)
+{
+    if (mFieldCategory == FieldCategory::unknown)
+    {
+        mFieldCategory = FieldCategory::enumType;
+        mFieldTypeFull = fullFieldType;
+    }
+}
+
+void Protocol::MessageFieldModel::updateFieldCategoryToMessage (const std::string & fullFieldType)
+{
+    if (mFieldCategory == FieldCategory::unknown)
+    {
+        mFieldCategory = FieldCategory::messageType;
+        mFieldTypeFull = fullFieldType;
+    }
 }
 
 unsigned int Protocol::MessageFieldModel::index () const
@@ -55,74 +79,80 @@ Protocol::MessageFieldModel & Protocol::MessageFieldModel::operator = (const Mes
 
     mRequiredness = rhs.mRequiredness;
     mFieldType = rhs.mFieldType;
+    mFieldTypeFull = rhs.mFieldTypeFull;
     mFieldCategory = rhs.mFieldCategory;
     mIndex = rhs.mIndex;
 
     return *this;
 }
 
-Protocol::MessageFieldModel::FieldCategory Protocol::MessageFieldModel::fieldCategoryFromType (const std::string & fieldType,
-                                                                                           const Protocol::ProtoModel * protoModel)
+void Protocol::MessageFieldModel::setFieldCategoryAndFullType ()
 {
-    if (fieldType == "bool")
+    mFieldTypeFull = mFieldType;
+    
+    if (mFieldType == "bool")
     {
-        return MessageFieldModel::FieldCategory::numericType;
+        mFieldCategory = FieldCategory::numericType;
     }
-    if (fieldType == "string")
+    else if (mFieldType == "string")
     {
-        return MessageFieldModel::FieldCategory::stringType;
+        mFieldCategory = FieldCategory::stringType;
     }
-    if (fieldType == "double")
+    else if (mFieldType == "double")
     {
-        return MessageFieldModel::FieldCategory::numericType;
+        mFieldCategory = FieldCategory::numericType;
     }
-    if (fieldType == "float")
+    else if (mFieldType == "float")
     {
-        return MessageFieldModel::FieldCategory::numericType;
+        mFieldCategory = FieldCategory::numericType;
     }
-    if (fieldType == "int32")
+    else if (mFieldType == "int32")
     {
-        return MessageFieldModel::FieldCategory::numericType;
+        mFieldCategory = FieldCategory::numericType;
     }
-    if (fieldType == "int64")
+    else if (mFieldType == "int64")
     {
-        return MessageFieldModel::FieldCategory::numericType;
+        mFieldCategory = FieldCategory::numericType;
     }
-    if (fieldType == "uint32")
+    else if (mFieldType == "uint32")
     {
-        return MessageFieldModel::FieldCategory::numericType;
+        mFieldCategory = FieldCategory::numericType;
     }
-    if (fieldType == "uint64")
+    else if (mFieldType == "uint64")
     {
-        return MessageFieldModel::FieldCategory::numericType;
+        mFieldCategory = FieldCategory::numericType;
     }
-    if (fieldType == "sint32")
+    else if (mFieldType == "sint32")
     {
-        return MessageFieldModel::FieldCategory::numericType;
+        mFieldCategory = FieldCategory::numericType;
     }
-    if (fieldType == "sint64")
+    else if (mFieldType == "sint64")
     {
-        return MessageFieldModel::FieldCategory::numericType;
+        mFieldCategory = FieldCategory::numericType;
     }
-    if (fieldType == "fixed32")
+    else if (mFieldType == "fixed32")
     {
-        return MessageFieldModel::FieldCategory::numericType;
+        mFieldCategory = FieldCategory::numericType;
     }
-    if (fieldType == "fixed64")
+    else if (mFieldType == "fixed64")
     {
-        return MessageFieldModel::FieldCategory::numericType;
+        mFieldCategory = FieldCategory::numericType;
     }
-    if (fieldType == "sfixed32")
+    else if (mFieldType == "sfixed32")
     {
-        return MessageFieldModel::FieldCategory::numericType;
+        mFieldCategory = FieldCategory::numericType;
     }
-    if (fieldType == "sfixed64")
+    else if (mFieldType == "sfixed64")
     {
-        return MessageFieldModel::FieldCategory::numericType;
+        mFieldCategory = FieldCategory::numericType;
     }
-    if (fieldType == "bytes")
+    else if (mFieldType == "bytes")
     {
-        return MessageFieldModel::FieldCategory::stringType;
+        mFieldCategory = FieldCategory::stringType;
     }
-    return MessageFieldModel::FieldCategory::numericType;
+    else
+    {
+        mFieldCategory = FieldCategory::unknown;
+        mFieldTypeFull = "";
+    }
 }
