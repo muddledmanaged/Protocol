@@ -10,14 +10,14 @@
 using namespace std;
 using namespace MuddledManaged;
 
-Protocol::MessageModel::MessageModel (const string & name, const string & package, const string & parentTypes)
-: Nestable(name, package, parentTypes)
+Protocol::MessageModel::MessageModel (const string & name, const string & package)
+: Nameable(name), Packageable(package)
 {
 }
 
 Protocol::MessageModel::MessageModel (const MessageModel & src)
-: Nestable(src), OptionModelContainer(src), MessageFieldModelContainer(src), EnumModelContainer(src),
-  MessageModelContainer(src), OneofModelContainer(src)
+: Nameable(src), Packageable(src), OptionModelContainer(src), MessageFieldModelContainer(src),
+  EnumModelContainer(src), MessageModelContainer(src), OneofModelContainer(src)
 {
 }
 
@@ -28,7 +28,8 @@ Protocol::MessageModel & Protocol::MessageModel::operator = (const MessageModel 
         return *this;
     }
 
-    Nestable::operator=(rhs);
+    Nameable::operator=(rhs);
+    Packageable::operator=(rhs);
     OptionModelContainer::operator=(rhs);
     MessageFieldModelContainer::operator=(rhs);
     EnumModelContainer::operator=(rhs);

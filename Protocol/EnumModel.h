@@ -10,7 +10,8 @@
 
 #include <string>
 
-#include "Nestable.h"
+#include "Nameable.h"
+#include "Packageable.h"
 #include "EnumValueModel.h"
 #include "OptionModel.h"
 
@@ -21,10 +22,10 @@ namespace MuddledManaged
 {
     namespace Protocol
     {
-        class EnumModel : public Nestable, public OptionModelContainer, public EnumValueModelContainer
+        class EnumModel : public Nameable, public Packageable, public OptionModelContainer, public EnumValueModelContainer
         {
         public:
-            explicit EnumModel (const std::string & name, const std::string & package = "", const std::string & parentTypes = "");
+            explicit EnumModel (const std::string & name, const std::string & package = "");
 
             EnumModel (const EnumModel & src);
 

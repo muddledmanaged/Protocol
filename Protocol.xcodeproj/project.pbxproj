@@ -132,7 +132,6 @@
 		3E50659C19EB4A10006C86B6 /* ImportPrivate.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ImportPrivate.proto; sourceTree = "<group>"; };
 		3E50659D19EB4A25006C86B6 /* ImportPublic.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ImportPublic.proto; sourceTree = "<group>"; };
 		3E50659E19EB4B40006C86B6 /* ImportParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImportParserScenarios.cpp; sourceTree = "<group>"; };
-		3E5065A019EB73F8006C86B6 /* Nestable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Nestable.h; sourceTree = "<group>"; };
 		3E5B5C4419D8CEB6006EEE50 /* PackageRedefined.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PackageRedefined.proto; sourceTree = "<group>"; };
 		3E5B5C4619D8D0B6006EEE50 /* MessageMultiple.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageMultiple.proto; sourceTree = "<group>"; };
 		3E5B5C4A19D8F0F3006EEE50 /* MessageMultiplePackage.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageMultiplePackage.proto; sourceTree = "<group>"; };
@@ -289,7 +288,6 @@
 				3E37A5D119DF918200BED294 /* MessageFieldParser.cpp */,
 				3E37A5D219DF918200BED294 /* MessageFieldParser.h */,
 				3E6A2B1A1A05AF5D009C8DB3 /* Nameable.h */,
-				3E5065A019EB73F8006C86B6 /* Nestable.h */,
 				3EB0EBC819E225CD0097929D /* OneofModel.cpp */,
 				3EB0EBC919E225CD0097929D /* OneofModel.h */,
 				3E9E516B19FB435300E95207 /* OneofModelContainer.h */,

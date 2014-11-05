@@ -12,41 +12,18 @@ using namespace std;
 using namespace MuddledManaged;
 
 Protocol::ProtoModel::ProtoModel (const std::string & fileName)
-: Nameable(fileName), mCurrentNestedType(""), mCurrentField(nullptr), mCurrentOneof(nullptr), mCurrentEnum(nullptr),
+: Nameable(fileName), mMessagePath(""), mCurrentField(nullptr), mCurrentOneof(nullptr), mCurrentEnum(nullptr),
   mCurrentEnumValue(nullptr)
 {
 }
 
 Protocol::ProtoModel::ProtoModel (const ProtoModel & src)
 : Packageable(src), Nameable(src), OptionModelContainer(src), EnumModelContainer(src), MessageModelContainer(src),
-  mCurrentNestedType(src.mCurrentNestedType),
+  mMessagePath(src.mMessagePath),
   mMessageQueue(src.mMessageQueue), mCurrentField(src.mCurrentField), mCurrentOneof(src.mCurrentOneof),
   mCurrentEnum(src.mCurrentEnum), mCurrentEnumValue(src.mCurrentEnumValue), mPrivateEnumTypes(src.mPrivateEnumTypes),
   mPublicEnumTypes(src.mPublicEnumTypes), mPrivateMessageTypes(src.mPrivateMessageTypes), mPublicMessageTypes(src.mPublicMessageTypes)
 {
-}
-
-string Protocol::ProtoModel::currentNestedType () const
-{
-    return mCurrentNestedType;
-}
-
-void Protocol::ProtoModel::updateCurrentNestedType ()
-{
-    mCurrentNestedType = "";
-    bool firstMessage = true;
-    for (auto & message: mMessageQueue)
-    {
-        if (firstMessage)
-        {
-            firstMessage = false;
-        }
-        else
-        {
-            mCurrentNestedType += ".";
-        }
-        mCurrentNestedType += message->namePascal();
-    }
 }
 
 string Protocol::ProtoModel::currentPackage () const
@@ -86,7 +63,7 @@ void Protocol::ProtoModel::completeField ()
 
 void Protocol::ProtoModel::addEnum (TokenReader::iterator current, EnumModelCollection::value_type & enumeration)
 {
-    addPublicEnumType(current, enumeration->fullName());
+    addPublicEnumType(current, fullPathWithCurrentPackageAndMessagePath(enumeration->namePascal()));
 
     if (mMessageQueue.empty())
     {
@@ -124,7 +101,7 @@ void Protocol::ProtoModel::completeEnumValue ()
 
 void Protocol::ProtoModel::addMessage (TokenReader::iterator current, MessageModelCollection::value_type & message)
 {
-    addPublicMessageType(current, message->fullName());
+    addPublicMessageType(current, fullPathWithCurrentPackageAndMessagePath(message->namePascal()));
 
     if (mMessageQueue.empty())
     {
@@ -135,13 +112,13 @@ void Protocol::ProtoModel::addMessage (TokenReader::iterator current, MessageMod
         mMessageQueue.back()->addMessage(message);
     }
     mMessageQueue.push_back(message);
-    updateCurrentNestedType();
+    updateMessagePath();
 }
 
 void Protocol::ProtoModel::completeMessage ()
 {
     mMessageQueue.pop_back();
-    updateCurrentNestedType();
+    updateMessagePath();
 }
 
 void Protocol::ProtoModel::addOneof (TokenReader::iterator current, OneofModelCollection::value_type & oneof)
@@ -190,29 +167,69 @@ void Protocol::ProtoModel::addOption (TokenReader::iterator current, const Optio
     }
 }
 
-bool Protocol::ProtoModel::typeExists (string namedType) const
+bool Protocol::ProtoModel::typeExists (const string & fullName) const
 {
-    auto typeIter = mPrivateEnumTypes.find(namedType);
+    auto typeIter = mPrivateEnumTypes.find(fullName);
     if (typeIter != mPrivateEnumTypes.end())
     {
         return true;
     }
-    typeIter = mPublicEnumTypes.find(namedType);
+    typeIter = mPublicEnumTypes.find(fullName);
     if (typeIter != mPublicEnumTypes.end())
     {
         return true;
     }
-    typeIter = mPrivateMessageTypes.find(namedType);
+    typeIter = mPrivateMessageTypes.find(fullName);
     if (typeIter != mPrivateMessageTypes.end())
     {
         return true;
     }
-    typeIter = mPublicMessageTypes.find(namedType);
+    typeIter = mPublicMessageTypes.find(fullName);
     if (typeIter != mPublicMessageTypes.end())
     {
         return true;
     }
     return false;
+}
+
+string Protocol::ProtoModel::currentMessagePath () const
+{
+    return mMessagePath;
+}
+
+void Protocol::ProtoModel::updateMessagePath ()
+{
+    mMessagePath = "";
+    bool firstMessage = true;
+    for (auto & message: mMessageQueue)
+    {
+        if (firstMessage)
+        {
+            firstMessage = false;
+        }
+        else
+        {
+            mMessagePath += ".";
+        }
+        mMessagePath += message->namePascal();
+    }
+}
+
+string Protocol::ProtoModel::fullPathWithCurrentPackageAndMessagePath (const std::string & name) const
+{
+    string path = currentPackage();
+    if (!path.empty())
+    {
+        path += ".";
+    }
+    path += currentMessagePath();
+    if (!path.empty())
+    {
+        path += ".";
+    }
+    path += name;
+
+    return path;
 }
 
 void Protocol::ProtoModel::addImportedProtoName (TokenReader::iterator current, const string & protoName)
@@ -294,7 +311,7 @@ Protocol::ProtoModel & Protocol::ProtoModel::operator = (const ProtoModel & rhs)
     EnumModelContainer::operator=(rhs);
     MessageModelContainer::operator=(rhs);
 
-    mCurrentNestedType = rhs.mCurrentNestedType;
+    mMessagePath = rhs.mMessagePath;
     mMessageQueue = rhs.mMessageQueue;
     mCurrentField = rhs.mCurrentField;
     mCurrentOneof = rhs.mCurrentOneof;

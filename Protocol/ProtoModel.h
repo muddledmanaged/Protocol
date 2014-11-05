@@ -40,8 +40,6 @@ namespace MuddledManaged
 
             ProtoModel (const ProtoModel & src);
 
-            std::string currentNestedType () const;
-
             std::string currentPackage () const;
             void setCurrentPackage (const std::string & package);
 
@@ -85,10 +83,15 @@ namespace MuddledManaged
             ProtoModel & operator = (const ProtoModel & rhs);
 
         private:
-            bool typeExists (std::string namedType) const;
-            void updateCurrentNestedType ();
+            bool typeExists (const std::string & fullName) const;
 
-            std::string mCurrentNestedType;
+            void updateMessagePath ();
+
+            std::string currentMessagePath () const;
+
+            std::string fullPathWithCurrentPackageAndMessagePath (const std::string & name) const;
+
+            std::string mMessagePath;
             MessageModelCollection mMessageQueue;
             MessageFieldModelCollection::value_type mCurrentField;
             OneofModelCollection::value_type mCurrentOneof;

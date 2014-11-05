@@ -10,13 +10,13 @@
 using namespace std;
 using namespace MuddledManaged;
 
-Protocol::EnumModel::EnumModel (const string & name, const string & package, const string & parentTypes)
-: Nestable(name, package, parentTypes)
+Protocol::EnumModel::EnumModel (const string & name, const string & package)
+: Nameable(name), Packageable(package)
 {
 }
 
 Protocol::EnumModel::EnumModel (const EnumModel & src)
-: Nestable(src), OptionModelContainer(src), EnumValueModelContainer(src)
+: Nameable(src), Packageable(src), OptionModelContainer(src), EnumValueModelContainer(src)
 {
 }
 
@@ -27,7 +27,8 @@ Protocol::EnumModel & Protocol::EnumModel::operator = (const EnumModel & rhs)
         return *this;
     }
 
-    Nestable::operator=(rhs);
+    Nameable::operator=(rhs);
+    Packageable::operator=(rhs);
     OptionModelContainer::operator=(rhs);
     EnumValueModelContainer::operator=(rhs);
 
