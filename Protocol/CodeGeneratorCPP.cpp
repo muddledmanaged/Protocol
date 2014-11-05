@@ -128,11 +128,29 @@ void Protocol::CodeGeneratorCPP::writeIncludedProtoFileNamesToHeader (CodeWriter
 
 void Protocol::CodeGeneratorCPP::writeProtoEnumsToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel) const
 {
+    string currentPackage;
+    vector<string> enumNamespaces;
     auto protoEnumBegin = protoModel.enums()->cbegin();
     auto protoEnumEnd = protoModel.enums()->cend();
     while (protoEnumBegin != protoEnumEnd)
     {
         auto enumModel = *protoEnumBegin;
+
+        string enumPackage = enumModel->package();
+        if (enumPackage != currentPackage)
+        {
+            for (int i = 0; i < enumNamespaces.size(); i++)
+            {
+                headerFileWriter.writeNamespaceClosing();
+            }
+            currentPackage = enumPackage;
+            boost::split(enumNamespaces, enumPackage, boost::is_any_of("."));
+            for (auto & str: enumNamespaces)
+            {
+                headerFileWriter.writeNamespaceOpening(str);
+            }
+        }
+        
         headerFileWriter.writeEnumOpening(enumModel->namePascal());
 
         auto enumValueBegin = enumModel->enumValues()->cbegin();
@@ -155,6 +173,10 @@ void Protocol::CodeGeneratorCPP::writeProtoEnumsToHeader (CodeWriter & headerFil
 
         headerFileWriter.writeEnumClosing();
         ++protoEnumBegin;
+    }
+    for (int i = 0; i < enumNamespaces.size(); i++)
+    {
+        headerFileWriter.writeNamespaceClosing();
     }
 }
 
