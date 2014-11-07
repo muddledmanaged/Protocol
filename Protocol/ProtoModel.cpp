@@ -26,8 +26,101 @@ Protocol::ProtoModel::ProtoModel (const ProtoModel & src)
 {
 }
 
+void Protocol::ProtoModel::completeModel ()
+{
+    auto messageCurrent = messages()->begin();
+    auto messageEnd = messages()->end();
+    while (messageCurrent != messageEnd)
+    {
+        auto messageModel = *messageCurrent;
+
+        updateMessageFields(messageModel.get());
+
+        ++messageCurrent;
+    }
+}
+
+void Protocol::ProtoModel::updateMessageFields (MessageModel * pMessageModel, const std::string & parentMessages)
+{
+    auto subMessageCurrent = pMessageModel->messages()->begin();
+    auto subMessageEnd = pMessageModel->messages()->end();
+    while (subMessageCurrent != subMessageEnd)
+    {
+        auto messageModel = *subMessageCurrent;
+
+        string parentScope = parentMessages;
+        if (!parentScope.empty())
+        {
+            parentScope += ".";
+        }
+        parentScope += pMessageModel->namePascal();
+        updateMessageFields(messageModel.get(), parentScope);
+
+        ++subMessageCurrent;
+    }
+
+    auto messageFieldCurrent = pMessageModel->fields()->begin();
+    auto messageFieldEnd = pMessageModel->fields()->end();
+    while (messageFieldCurrent != messageFieldEnd)
+    {
+        auto messageFieldModel = *messageFieldCurrent;
+
+        if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::unknown)
+        {
+            string currentScope = messageFieldModel->package();
+            if (!currentScope.empty() && !parentMessages.empty())
+            {
+                currentScope += ".";
+            }
+            currentScope += parentMessages;
+            bool typeFound = false;
+            while (true)
+            {
+                string currentPath = currentScope;
+                if (!currentPath.empty())
+                {
+                    currentPath += ".";
+                }
+                currentPath += messageFieldModel->fieldType();
+                if (typeExistsAsEnum(currentPath))
+                {
+                    messageFieldModel->updateFieldCategoryToEnum(currentPath);
+                    typeFound = true;
+                    break;
+                }
+                if (typeExistsAsMessage(currentPath))
+                {
+                    messageFieldModel->updateFieldCategoryToMessage(currentPath);
+                    typeFound = true;
+                    break;
+                }
+
+                // The current referenced type was not found. Keep backing up until a match is found.
+                if (currentScope.empty())
+                {
+                    break;
+                }
+
+                auto index = currentScope.find_last_of('.');
+                if (index == string::npos)
+                {
+                    currentScope = "";
+                }
+                else
+                {
+                    currentScope = currentScope.substr(0, index);
+                }
+            }
+        }
+
+        ++messageFieldCurrent;
+    }
+}
+
 void Protocol::ProtoModel::addField (TokenReader::iterator current, MessageFieldModelCollection::value_type & field)
 {
+    field->setPackage(package());
+
     if (mMessageQueue.empty())
     {
         throw InvalidProtoException(current.line(), current.column(), "Required message not found.");
@@ -161,6 +254,15 @@ void Protocol::ProtoModel::addOption (TokenReader::iterator current, const Optio
 
 bool Protocol::ProtoModel::typeExists (const string & fullName) const
 {
+    if (typeExistsAsEnum(fullName) || typeExistsAsMessage(fullName))
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Protocol::ProtoModel::typeExistsAsEnum (const string & fullName) const
+{
     auto typeIter = mPrivateEnumTypes.find(fullName);
     if (typeIter != mPrivateEnumTypes.end())
     {
@@ -171,7 +273,12 @@ bool Protocol::ProtoModel::typeExists (const string & fullName) const
     {
         return true;
     }
-    typeIter = mPrivateMessageTypes.find(fullName);
+    return false;
+}
+
+bool Protocol::ProtoModel::typeExistsAsMessage (const string & fullName) const
+{
+    auto typeIter = mPrivateMessageTypes.find(fullName);
     if (typeIter != mPrivateMessageTypes.end())
     {
         return true;

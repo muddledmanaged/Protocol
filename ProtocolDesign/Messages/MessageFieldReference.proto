@@ -1,0 +1,36 @@
+package Abc.Def;
+
+enum EarlyMeals
+{
+    breakfast = 0;
+    brunch = 1;
+}
+
+package Abc;
+
+message MessageOne
+{
+    required Def.EarlyMeals early = 0;
+    optional MidMeals middle = 1;
+    optional W.Xyz.LateMeals late = 2;
+    optional MessageTwo two = 3;
+}
+
+enum MidMeals
+{
+    lunch = 0;
+}
+
+message MessageTwo
+{
+    required Abc.Def.EarlyMeals earlyTwo = 0;
+    repeated MidMeals middleTwo = 0;
+}
+
+package W.Xyz;
+
+enum LateMeals
+{
+    dinner = 0;
+    supper = 1;
+}

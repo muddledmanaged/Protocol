@@ -56,6 +56,7 @@ shared_ptr<Protocol::ProtoModel> Protocol::ProtoParser::parse ()
         }
         ++current;
     }
+    mModel->completeModel();
 
     return mModel;
 }

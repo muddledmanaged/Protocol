@@ -146,3 +146,15 @@ DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can crea
 
     generator->generateCode("Generated", *model, "ProtocolDesign");
 }
+
+DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can create file with enum and message field types." )
+{
+    Protocol::CodeGeneratorManager * pManager = Protocol::CodeGeneratorManager::instance();
+
+    auto generator = pManager->generator("CPlusPlus");
+
+    Protocol::ProtoParser parser("MessageFieldReference.proto");
+    auto model = parser.parse();
+
+    generator->generateCode("Generated", *model, "ProtocolDesign");
+}

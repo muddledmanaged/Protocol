@@ -12,6 +12,7 @@
 
 #include "Nameable.h"
 #include "OptionModel.h"
+#include "Packageable.h"
 
 // Every model header includes its container header.
 #include "MessageFieldModelContainer.h"
@@ -22,7 +23,7 @@ namespace MuddledManaged
     {
         class ProtoModel;
         
-        class MessageFieldModel : public Nameable, public OptionModelContainer
+        class MessageFieldModel : public Nameable, public Packageable, public OptionModelContainer
         {
         public:
             enum class Requiredness

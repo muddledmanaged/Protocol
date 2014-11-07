@@ -40,6 +40,8 @@ namespace MuddledManaged
 
             ProtoModel (const ProtoModel & src);
 
+            void completeModel ();
+
             void addField (TokenReader::iterator current, MessageFieldModelCollection::value_type & field);
             void completeField ();
 
@@ -81,8 +83,12 @@ namespace MuddledManaged
 
         private:
             bool typeExists (const std::string & fullName) const;
+            bool typeExistsAsEnum (const std::string & fullName) const;
+            bool typeExistsAsMessage (const std::string & fullName) const;
 
             void updateMessagePath ();
+
+            void updateMessageFields (MessageModel * pMessageModel, const std::string & parentMessages = "");
 
             std::string fullPathWithCurrentPackageAndMessagePath (const std::string & name) const;
 
