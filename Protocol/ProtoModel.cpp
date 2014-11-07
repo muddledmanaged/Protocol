@@ -67,12 +67,18 @@ void Protocol::ProtoModel::updateMessageFields (MessageModel * pMessageModel, co
 
         if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::unknown)
         {
+            string messageScope = parentMessages;
+            if (!messageScope.empty())
+            {
+                messageScope += ".";
+            }
+            messageScope += pMessageModel->namePascal();
             string currentScope = messageFieldModel->package();
-            if (!currentScope.empty() && !parentMessages.empty())
+            if (!currentScope.empty())
             {
                 currentScope += ".";
             }
-            currentScope += parentMessages;
+            currentScope += messageScope;
             bool typeFound = false;
             while (true)
             {
@@ -312,7 +318,7 @@ void Protocol::ProtoModel::updateMessagePath ()
 string Protocol::ProtoModel::fullPathWithCurrentPackageAndMessagePath (const std::string & name) const
 {
     string path = package();
-    if (!path.empty())
+    if (!path.empty() && !mMessagePath.empty())
     {
         path += ".";
     }
