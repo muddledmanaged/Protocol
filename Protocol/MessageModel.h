@@ -12,12 +12,11 @@
 #include <string>
 #include <vector>
 
-#include "Nameable.h"
 #include "EnumModel.h"
 #include "MessageFieldModel.h"
+#include "Nestable.h"
 #include "OneofModel.h"
 #include "OptionModel.h"
-#include "Packageable.h"
 
 // Every model header includes its container header.
 #include "MessageModelContainer.h"
@@ -28,7 +27,7 @@ namespace MuddledManaged
     {
         class MessageModelContainer;
 
-        class MessageModel : public Nameable, public Packageable, public OptionModelContainer,
+        class MessageModel : public Nestable, public OptionModelContainer,
                              public MessageFieldModelContainer, public EnumModelContainer,
                              public MessageModelContainer, public OneofModelContainer
         {

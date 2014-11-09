@@ -10,10 +10,9 @@
 
 #include <string>
 
-#include "Nameable.h"
 #include "EnumValueModel.h"
+#include "Nestable.h"
 #include "OptionModel.h"
-#include "Packageable.h"
 
 // Every model header includes its container header.
 #include "EnumModelContainer.h"
@@ -22,7 +21,7 @@ namespace MuddledManaged
 {
     namespace Protocol
     {
-        class EnumModel : public Nameable, public Packageable, public OptionModelContainer, public EnumValueModelContainer
+        class EnumModel : public Nestable, public OptionModelContainer, public EnumValueModelContainer
         {
         public:
             explicit EnumModel (const std::string & name);

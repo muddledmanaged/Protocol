@@ -11,7 +11,7 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include <unordered_set>
+#include <unordered_map>
 
 #include "TokenReader.h"
 #include "Nameable.h"
@@ -33,7 +33,10 @@ namespace MuddledManaged
             typedef MessageModel::MessageFieldModelCollection MessageFieldModelCollection;
             typedef EnumModel::EnumValueModelCollection EnumValueModelCollection;
             typedef MessageModel::OneofModelCollection OneofModelCollection;
-            typedef std::unordered_set<std::string> NamedTypeCollection;
+            typedef std::shared_ptr<EnumModel> SPEnumModel;
+            typedef std::unordered_map<std::string, SPEnumModel> NamedEnumCollection;
+            typedef std::shared_ptr<MessageModel> SPMessageModel;
+            typedef std::unordered_map<std::string, SPMessageModel> NamedMessageCollection;
             typedef std::vector<std::string> ImportedProtoNameCollection;
 
             explicit ProtoModel (const std::string & fileName);
@@ -61,23 +64,23 @@ namespace MuddledManaged
 
             virtual void addImportedProtoName (TokenReader::iterator current, const std::string & protoName);
 
-            void addPrivateEnumType (TokenReader::iterator current, const std::string & namedType);
+            void addPrivateEnumType (TokenReader::iterator current, const SPEnumModel & enumerationModel);
 
-            void addPublicEnumType (TokenReader::iterator current, const std::string & namedType);
+            void addPublicEnumType (TokenReader::iterator current, const SPEnumModel & enumerationModel);
 
-            void addPrivateMessageType (TokenReader::iterator current, const std::string & namedType);
+            void addPrivateMessageType (TokenReader::iterator current, const SPMessageModel & messageModel);
 
-            void addPublicMessageType (TokenReader::iterator current, const std::string & namedType);
+            void addPublicMessageType (TokenReader::iterator current, const SPMessageModel & messageModel);
 
             const ImportedProtoNameCollection * importedProtoNames () const;
 
-            const NamedTypeCollection * privateEnumTypes () const;
+            const NamedEnumCollection * privateEnumTypes () const;
 
-            const NamedTypeCollection * publicEnumTypes () const;
+            const NamedEnumCollection * publicEnumTypes () const;
 
-            const NamedTypeCollection * privateMessageTypes () const;
+            const NamedMessageCollection * privateMessageTypes () const;
 
-            const NamedTypeCollection * publicMessageTypes () const;
+            const NamedMessageCollection * publicMessageTypes () const;
 
             ProtoModel & operator = (const ProtoModel & rhs);
 
@@ -86,23 +89,18 @@ namespace MuddledManaged
             bool typeExistsAsEnum (const std::string & fullName) const;
             bool typeExistsAsMessage (const std::string & fullName) const;
 
-            void updateMessagePath ();
-
             void updateMessageFields (MessageModel * pMessageModel, const std::string & parentMessages = "");
 
-            std::string fullPathWithCurrentPackageAndMessagePath (const std::string & name) const;
-
-            std::string mMessagePath;
             MessageModelCollection mMessageQueue;
             MessageFieldModelCollection::value_type mCurrentField;
             OneofModelCollection::value_type mCurrentOneof;
             EnumModelCollection::value_type mCurrentEnum;
             EnumValueModelCollection::value_type mCurrentEnumValue;
             ImportedProtoNameCollection mImportedProtoNames;
-            NamedTypeCollection mPrivateEnumTypes;
-            NamedTypeCollection mPublicEnumTypes;
-            NamedTypeCollection mPrivateMessageTypes;
-            NamedTypeCollection mPublicMessageTypes;
+            NamedEnumCollection mPrivateEnumTypes;
+            NamedEnumCollection mPublicEnumTypes;
+            NamedMessageCollection mPrivateMessageTypes;
+            NamedMessageCollection mPublicMessageTypes;
         };
 
     } // namespace Protocol

@@ -141,6 +141,7 @@
 		3E72E7EB19FC8751007EC254 /* libboost_filesystem-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_filesystem-mt.a"; path = "../../../../../opt/local/lib/libboost_filesystem-mt.a"; sourceTree = "<group>"; };
 		3E72E7ED19FC8829007EC254 /* libboost_system-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_system-mt.a"; path = "../../../../../opt/local/lib/libboost_system-mt.a"; sourceTree = "<group>"; };
 		3E72E7EF19FCA364007EC254 /* CodeIndenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeIndenter.h; sourceTree = "<group>"; };
+		3E7B429B1A0EA264005D2FD6 /* Nestable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Nestable.h; sourceTree = "<group>"; };
 		3E817D6F19F34D7C002A331E /* CodeGeneratorManagerScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CodeGeneratorManagerScenarios.cpp; sourceTree = "<group>"; };
 		3E817D7119F34DD3002A331E /* CodeGeneratorCPPScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CodeGeneratorCPPScenarios.cpp; sourceTree = "<group>"; };
 		3E8422B719E8C91800FA1222 /* OptionGroupParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionGroupParser.cpp; sourceTree = "<group>"; };
@@ -289,6 +290,8 @@
 				3E37A5D119DF918200BED294 /* MessageFieldParser.cpp */,
 				3E37A5D219DF918200BED294 /* MessageFieldParser.h */,
 				3E6A2B1A1A05AF5D009C8DB3 /* Nameable.h */,
+				3E7B429B1A0EA264005D2FD6 /* Nestable.h */,
+				3EC715591A09EE6900C19A3F /* Packageable.h */,
 				3EB0EBC819E225CD0097929D /* OneofModel.cpp */,
 				3EB0EBC919E225CD0097929D /* OneofModel.h */,
 				3E9E516B19FB435300E95207 /* OneofModelContainer.h */,
@@ -305,7 +308,6 @@
 				3E9B75C219E780D1004B59A7 /* OptionSingleParser.h */,
 				3E9B75BD19E7809A004B59A7 /* OptionValueParser.cpp */,
 				3E9B75BE19E7809A004B59A7 /* OptionValueParser.h */,
-				3EC715591A09EE6900C19A3F /* Packageable.h */,
 				3E9EE99019D6634F00AEF047 /* PackageParser.cpp */,
 				3E9EE99119D6634F00AEF047 /* PackageParser.h */,
 				3E9EE99C19D6680E00AEF047 /* ParserInterface.h */,

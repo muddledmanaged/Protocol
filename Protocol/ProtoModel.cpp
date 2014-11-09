@@ -19,7 +19,6 @@ Protocol::ProtoModel::ProtoModel (const std::string & fileName)
 
 Protocol::ProtoModel::ProtoModel (const ProtoModel & src)
 : Nameable(src), Packageable(src), OptionModelContainer(src), EnumModelContainer(src), MessageModelContainer(src),
-  mMessagePath(src.mMessagePath),
   mMessageQueue(src.mMessageQueue), mCurrentField(src.mCurrentField), mCurrentOneof(src.mCurrentOneof),
   mCurrentEnum(src.mCurrentEnum), mCurrentEnumValue(src.mCurrentEnumValue), mPrivateEnumTypes(src.mPrivateEnumTypes),
   mPublicEnumTypes(src.mPublicEnumTypes), mPrivateMessageTypes(src.mPrivateMessageTypes), mPublicMessageTypes(src.mPublicMessageTypes)
@@ -152,7 +151,6 @@ void Protocol::ProtoModel::completeField ()
 
 void Protocol::ProtoModel::addEnum (TokenReader::iterator current, EnumModelCollection::value_type & enumeration)
 {
-    addPublicEnumType(current, fullPathWithCurrentPackageAndMessagePath(enumeration->namePascal()));
     enumeration->setPackage(package());
 
     if (mMessageQueue.empty())
@@ -162,8 +160,11 @@ void Protocol::ProtoModel::addEnum (TokenReader::iterator current, EnumModelColl
     else
     {
         mMessageQueue.back()->addEnum(enumeration);
+        enumeration->setParent(mMessageQueue.back().get());
     }
     mCurrentEnum = enumeration;
+
+    addPublicEnumType(current, enumeration);
 }
 
 void Protocol::ProtoModel::completeEnum ()
@@ -191,7 +192,6 @@ void Protocol::ProtoModel::completeEnumValue ()
 
 void Protocol::ProtoModel::addMessage (TokenReader::iterator current, MessageModelCollection::value_type & message)
 {
-    addPublicMessageType(current, fullPathWithCurrentPackageAndMessagePath(message->namePascal()));
     message->setPackage(package());
 
     if (mMessageQueue.empty())
@@ -201,15 +201,16 @@ void Protocol::ProtoModel::addMessage (TokenReader::iterator current, MessageMod
     else
     {
         mMessageQueue.back()->addMessage(message);
+        message->setParent(mMessageQueue.back().get());
     }
     mMessageQueue.push_back(message);
-    updateMessagePath();
+    
+    addPublicMessageType(current, message);
 }
 
 void Protocol::ProtoModel::completeMessage ()
 {
     mMessageQueue.pop_back();
-    updateMessagePath();
 }
 
 void Protocol::ProtoModel::addOneof (TokenReader::iterator current, OneofModelCollection::value_type & oneof)
@@ -297,80 +298,49 @@ bool Protocol::ProtoModel::typeExistsAsMessage (const string & fullName) const
     return false;
 }
 
-void Protocol::ProtoModel::updateMessagePath ()
-{
-    mMessagePath = "";
-    bool firstMessage = true;
-    for (auto & message: mMessageQueue)
-    {
-        if (firstMessage)
-        {
-            firstMessage = false;
-        }
-        else
-        {
-            mMessagePath += ".";
-        }
-        mMessagePath += message->namePascal();
-    }
-}
-
-string Protocol::ProtoModel::fullPathWithCurrentPackageAndMessagePath (const std::string & name) const
-{
-    string path = package();
-    if (!path.empty() && !mMessagePath.empty())
-    {
-        path += ".";
-    }
-    path += mMessagePath;
-    if (!path.empty())
-    {
-        path += ".";
-    }
-    path += name;
-
-    return path;
-}
-
 void Protocol::ProtoModel::addImportedProtoName (TokenReader::iterator current, const string & protoName)
 {
     mImportedProtoNames.push_back(protoName);
 }
 
-void Protocol::ProtoModel::addPrivateEnumType (TokenReader::iterator current, const string & namedType)
+void Protocol::ProtoModel::addPrivateEnumType (TokenReader::iterator current, const SPEnumModel & enumerationModel)
 {
-    if (typeExists(namedType))
+    string fullName = enumerationModel->nameFull();
+    if (typeExists(fullName))
     {
         throw InvalidProtoException(current.line(), current.column(), "Duplicate type names are not allowed.");
     }
-    mPrivateEnumTypes.emplace(namedType);
+    mPrivateEnumTypes.emplace(fullName, enumerationModel);
 }
 
-void Protocol::ProtoModel::addPublicEnumType (TokenReader::iterator current, const string & namedType)
+void Protocol::ProtoModel::addPublicEnumType (TokenReader::iterator current, const SPEnumModel & enumerationModel)
 {
-    if (typeExists(namedType))
+    string fullName = enumerationModel->nameFull();
+    if (typeExists(fullName))
     {
         throw InvalidProtoException(current.line(), current.column(), "Duplicate type names are not allowed.");
     }
-    mPublicEnumTypes.emplace(namedType);
+    mPublicEnumTypes.emplace(fullName, enumerationModel);
 }
 
-void Protocol::ProtoModel::addPrivateMessageType (TokenReader::iterator current, const string & namedType)
+void Protocol::ProtoModel::addPrivateMessageType (TokenReader::iterator current, const SPMessageModel & messageModel)
 {
-    if (typeExists(namedType))
+    string fullName = messageModel->nameFull();
+    if (typeExists(fullName))
     {
         throw InvalidProtoException(current.line(), current.column(), "Duplicate type names are not allowed.");
     }
-    mPrivateMessageTypes.emplace(namedType);
+    mPrivateMessageTypes.emplace(fullName, messageModel);
 }
 
-void Protocol::ProtoModel::addPublicMessageType (TokenReader::iterator current, const string & namedType)
+void Protocol::ProtoModel::addPublicMessageType (TokenReader::iterator current, const SPMessageModel & messageModel)
 {
-    if (typeExists(namedType))
+    string fullName = messageModel->nameFull();
+    if (typeExists(fullName))
     {
         throw InvalidProtoException(current.line(), current.column(), "Duplicate type names are not allowed.");
     }
-    mPublicMessageTypes.emplace(namedType);
+    mPublicMessageTypes.emplace(fullName, messageModel);
 }
 
 const Protocol::ProtoModel::ImportedProtoNameCollection * Protocol::ProtoModel::importedProtoNames () const
@@ -378,22 +348,22 @@ const Protocol::ProtoModel::ImportedProtoNameCollection * Protocol::ProtoModel::
     return &mImportedProtoNames;
 }
 
-const Protocol::ProtoModel::NamedTypeCollection * Protocol::ProtoModel::privateEnumTypes () const
+const Protocol::ProtoModel::NamedEnumCollection * Protocol::ProtoModel::privateEnumTypes () const
 {
     return &mPrivateEnumTypes;
 }
 
-const Protocol::ProtoModel::NamedTypeCollection * Protocol::ProtoModel::publicEnumTypes () const
+const Protocol::ProtoModel::NamedEnumCollection * Protocol::ProtoModel::publicEnumTypes () const
 {
     return &mPublicEnumTypes;
 }
 
-const Protocol::ProtoModel::NamedTypeCollection * Protocol::ProtoModel::privateMessageTypes () const
+const Protocol::ProtoModel::NamedMessageCollection * Protocol::ProtoModel::privateMessageTypes () const
 {
     return &mPrivateMessageTypes;
 }
 
-const Protocol::ProtoModel::NamedTypeCollection * Protocol::ProtoModel::publicMessageTypes () const
+const Protocol::ProtoModel::NamedMessageCollection * Protocol::ProtoModel::publicMessageTypes () const
 {
     return &mPublicMessageTypes;
 }
@@ -411,7 +381,6 @@ Protocol::ProtoModel & Protocol::ProtoModel::operator = (const ProtoModel & rhs)
     EnumModelContainer::operator=(rhs);
     MessageModelContainer::operator=(rhs);
 
-    mMessagePath = rhs.mMessagePath;
     mMessageQueue = rhs.mMessageQueue;
     mCurrentField = rhs.mCurrentField;
     mCurrentOneof = rhs.mCurrentOneof;

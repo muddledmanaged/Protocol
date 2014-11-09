@@ -67,22 +67,22 @@ bool Protocol::ImportParser::parse (TokenReader::iterator current, TokenReader::
         {
             for (auto & publicEnumType: *importedModel->publicEnumTypes())
             {
-                model->addPublicEnumType(current, publicEnumType);
+                model->addPublicEnumType(current, publicEnumType.second);
             }
             for (auto & publicMessageType: *importedModel->publicMessageTypes())
             {
-                model->addPublicMessageType(current, publicMessageType);
+                model->addPublicMessageType(current, publicMessageType.second);
             }
         }
         else
         {
             for (auto & publicEnumType: *importedModel->publicEnumTypes())
             {
-                model->addPrivateEnumType(current, publicEnumType);
+                model->addPrivateEnumType(current, publicEnumType.second);
             }
             for (auto & publicMessageType: *importedModel->publicMessageTypes())
             {
-                model->addPrivateMessageType(current, publicMessageType);
+                model->addPrivateMessageType(current, publicMessageType.second);
             }
         }
 
