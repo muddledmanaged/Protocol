@@ -87,15 +87,17 @@ void Protocol::ProtoModel::updateMessageFields (MessageModel * pMessageModel, co
                     currentPath += ".";
                 }
                 currentPath += messageFieldModel->fieldType();
-                if (typeExistsAsEnum(currentPath))
+                EnumModel * pReferencedEnumModel = typeAsEnum(currentPath);
+                if (pReferencedEnumModel != nullptr)
                 {
-                    messageFieldModel->updateFieldCategoryToEnum(currentPath);
+                    messageFieldModel->updateFieldCategoryToEnum(pReferencedEnumModel);
                     typeFound = true;
                     break;
                 }
-                if (typeExistsAsMessage(currentPath))
+                MessageModel * pReferencedMessageModel = typeAsMessage(currentPath);
+                if (pReferencedMessageModel != nullptr)
                 {
-                    messageFieldModel->updateFieldCategoryToMessage(currentPath);
+                    messageFieldModel->updateFieldCategoryToMessage(pReferencedMessageModel);
                     typeFound = true;
                     break;
                 }
@@ -261,41 +263,41 @@ void Protocol::ProtoModel::addOption (TokenReader::iterator current, const Optio
 
 bool Protocol::ProtoModel::typeExists (const string & fullName) const
 {
-    if (typeExistsAsEnum(fullName) || typeExistsAsMessage(fullName))
+    if (typeAsEnum(fullName) != nullptr || typeAsMessage(fullName) != nullptr)
     {
         return true;
     }
     return false;
 }
 
-bool Protocol::ProtoModel::typeExistsAsEnum (const string & fullName) const
+Protocol::EnumModel * Protocol::ProtoModel::typeAsEnum (const string & fullName) const
 {
     auto typeIter = mPrivateEnumTypes.find(fullName);
     if (typeIter != mPrivateEnumTypes.end())
     {
-        return true;
+        return typeIter->second.get();
     }
     typeIter = mPublicEnumTypes.find(fullName);
     if (typeIter != mPublicEnumTypes.end())
     {
-        return true;
+        return typeIter->second.get();
     }
-    return false;
+    return nullptr;
 }
 
-bool Protocol::ProtoModel::typeExistsAsMessage (const string & fullName) const
+Protocol::MessageModel * Protocol::ProtoModel::typeAsMessage (const string & fullName) const
 {
     auto typeIter = mPrivateMessageTypes.find(fullName);
     if (typeIter != mPrivateMessageTypes.end())
     {
-        return true;
+        return typeIter->second.get();
     }
     typeIter = mPublicMessageTypes.find(fullName);
     if (typeIter != mPublicMessageTypes.end())
     {
-        return true;
+        return typeIter->second.get();
     }
-    return false;
+    return nullptr;
 }
 
 void Protocol::ProtoModel::addImportedProtoName (TokenReader::iterator current, const string & protoName)

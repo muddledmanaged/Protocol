@@ -5,6 +5,8 @@
 //  Created by Wahid Tanner on 10/3/14.
 //
 
+#include "EnumModel.h"
+#include "MessageModel.h"
 #include "MessageFieldModel.h"
 #include "ProtoModel.h"
 
@@ -20,7 +22,7 @@ Protocol::MessageFieldModel::MessageFieldModel (Requiredness requiredness, const
 
 Protocol::MessageFieldModel::MessageFieldModel (const MessageFieldModel & src)
 : Nameable(src), Packageable(src), OptionModelContainer(src), mRequiredness(src.mRequiredness), mFieldType(src.mFieldType),
-  mFieldTypeFull(src.mFieldTypeFull), mFieldCategory(src.mFieldCategory), mIndex(src.mIndex)
+  mFieldTypeFull(src.mFieldTypeFull), mFieldTypePackage(src.mFieldTypePackage), mFieldCategory(src.mFieldCategory), mIndex(src.mIndex)
 {
 }
 
@@ -39,26 +41,33 @@ string Protocol::MessageFieldModel::fieldTypeFull () const
     return mFieldTypeFull;
 }
 
+string Protocol::MessageFieldModel::fieldTypePackage () const
+{
+    return mFieldTypePackage;
+}
+
 Protocol::MessageFieldModel::FieldCategory Protocol::MessageFieldModel::fieldCategory () const
 {
     return mFieldCategory;
 }
 
-void Protocol::MessageFieldModel::updateFieldCategoryToEnum (const std::string & fullFieldType)
+void Protocol::MessageFieldModel::updateFieldCategoryToEnum (const EnumModel * pReferencedType)
 {
     if (mFieldCategory == FieldCategory::unknown)
     {
         mFieldCategory = FieldCategory::enumType;
-        mFieldTypeFull = fullFieldType;
+        mFieldTypeFull = pReferencedType->nameFull();
+        mFieldTypePackage = pReferencedType->package();
     }
 }
 
-void Protocol::MessageFieldModel::updateFieldCategoryToMessage (const std::string & fullFieldType)
+void Protocol::MessageFieldModel::updateFieldCategoryToMessage (const MessageModel * pReferencedType)
 {
     if (mFieldCategory == FieldCategory::unknown)
     {
         mFieldCategory = FieldCategory::messageType;
-        mFieldTypeFull = fullFieldType;
+        mFieldTypeFull = pReferencedType->nameFull();
+        mFieldTypePackage = pReferencedType->package();
     }
 }
 
@@ -81,6 +90,7 @@ Protocol::MessageFieldModel & Protocol::MessageFieldModel::operator = (const Mes
     mRequiredness = rhs.mRequiredness;
     mFieldType = rhs.mFieldType;
     mFieldTypeFull = rhs.mFieldTypeFull;
+    mFieldTypePackage = rhs.mFieldTypePackage;
     mFieldCategory = rhs.mFieldCategory;
     mIndex = rhs.mIndex;
 

@@ -378,7 +378,7 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldToHeader (CodeWriter & headerF
     string methodName;
     string methodReturn;
     string methodParameters;
-    string fieldType = fullTypeName(messageFieldModel.fieldTypeFull());
+    string fieldType = fullTypeName(messageFieldModel);
 
     switch (messageFieldModel.fieldCategory())
     {
@@ -561,7 +561,7 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldBackingFieldsToHeader (CodeWri
 {
     string backingFieldName;
     string backingFieldType;
-    string fieldType = fullTypeName(messageFieldModel.fieldTypeFull());
+    string fieldType = fullTypeName(messageFieldModel);
 
     switch (messageFieldModel.fieldCategory())
     {
@@ -818,67 +818,69 @@ void Protocol::CodeGeneratorCPP::writeMessageToSource (CodeWriter & sourceFileWr
     sourceFileWriter.writeMethodImplementationClosing();
 }
 
-string Protocol::CodeGeneratorCPP::fullTypeName (const std::string & protoTypeName) const
+string Protocol::CodeGeneratorCPP::fullTypeName (const MessageFieldModel & messageFieldModel) const
 {
-    if (protoTypeName == "bool")
+    string fieldType = messageFieldModel.fieldTypeFull();
+    if (fieldType == "bool")
     {
         return "bool";
     }
-    if (protoTypeName == "string")
+    if (fieldType == "string")
     {
         return "std::string";
     }
-    if (protoTypeName == "double")
+    if (fieldType == "double")
     {
         return "double";
     }
-    if (protoTypeName == "float")
+    if (fieldType == "float")
     {
         return "float";
     }
-    if (protoTypeName == "int32")
+    if (fieldType == "int32")
     {
         return "int32_t";
     }
-    if (protoTypeName == "int64")
+    if (fieldType == "int64")
     {
         return "int64_t";
     }
-    if (protoTypeName == "uint32")
+    if (fieldType == "uint32")
     {
         return "uint32_t";
     }
-    if (protoTypeName == "uint64")
+    if (fieldType == "uint64")
     {
         return "uint64_t";
     }
-    if (protoTypeName == "sint32")
+    if (fieldType == "sint32")
     {
         return "int32_t";
     }
-    if (protoTypeName == "sint64")
+    if (fieldType == "sint64")
     {
         return "int64_t";
     }
-    if (protoTypeName == "fixed32")
+    if (fieldType == "fixed32")
     {
         return "int32_t";
     }
-    if (protoTypeName == "fixed64")
+    if (fieldType == "fixed64")
     {
         return "int64_t";
     }
-    if (protoTypeName == "sfixed32")
+    if (fieldType == "sfixed32")
     {
         return "int32_t";
     }
-    if (protoTypeName == "sfixed64")
+    if (fieldType == "sfixed64")
     {
         return "int64_t";
     }
-    if (protoTypeName == "bytes")
+    if (fieldType == "bytes")
     {
         return "std::string";
     }
-    return protoTypeName;
+
+    return fieldType;
 }

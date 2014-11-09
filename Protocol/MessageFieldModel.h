@@ -8,6 +8,7 @@
 #ifndef Protocol_MessageFieldModel_h
 #define Protocol_MessageFieldModel_h
 
+#include <memory>
 #include <string>
 
 #include "Nameable.h"
@@ -21,8 +22,10 @@ namespace MuddledManaged
 {
     namespace Protocol
     {
+        class EnumModel;
+        class MessageModel;
         class ProtoModel;
-        
+
         class MessageFieldModel : public Nameable, public Packageable, public OptionModelContainer
         {
         public:
@@ -54,10 +57,12 @@ namespace MuddledManaged
 
             std::string fieldTypeFull () const;
 
+            std::string fieldTypePackage () const;
+
             FieldCategory fieldCategory () const;
 
-            void updateFieldCategoryToEnum (const std::string & fullFieldType);
-            void updateFieldCategoryToMessage (const std::string & fullFieldType);
+            void updateFieldCategoryToEnum (const EnumModel * pReferencedType);
+            void updateFieldCategoryToMessage (const MessageModel * pReferencedType);
 
             unsigned int index () const;
 
@@ -69,6 +74,7 @@ namespace MuddledManaged
             Requiredness mRequiredness;
             std::string mFieldType;
             std::string mFieldTypeFull;
+            std::string mFieldTypePackage;
             FieldCategory mFieldCategory;
             unsigned int mIndex;
         };

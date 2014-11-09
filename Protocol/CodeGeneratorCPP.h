@@ -34,7 +34,7 @@ namespace MuddledManaged
 
             std::string headerIncludeBlockText (const ProtoModel & protoModel, const std::string & projectName) const;
 
-            std::string fullTypeName (const std::string & protoTypeName) const;
+            std::string fullTypeName (const MessageFieldModel & messageFieldModel) const;
 
             void writeStandardIncludeFileNamesToHeader (CodeWriter & headerFileWriter) const;
 

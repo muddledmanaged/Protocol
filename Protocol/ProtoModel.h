@@ -86,8 +86,8 @@ namespace MuddledManaged
 
         private:
             bool typeExists (const std::string & fullName) const;
-            bool typeExistsAsEnum (const std::string & fullName) const;
-            bool typeExistsAsMessage (const std::string & fullName) const;
+            EnumModel * typeAsEnum (const std::string & fullName) const;
+            MessageModel * typeAsMessage (const std::string & fullName) const;
 
             void updateMessageFields (MessageModel * pMessageModel, const std::string & parentMessages = "");
 
