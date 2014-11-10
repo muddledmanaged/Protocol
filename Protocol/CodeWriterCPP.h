@@ -128,6 +128,11 @@ namespace MuddledManaged
                 mStream << mIndenter.prefix() << "typedef " << typeString << " " << definitionString << ";" << std::endl;
             }
 
+            void writeEnumForwardDeclaration (const std::string & enumName)
+            {
+                mStream << mIndenter.prefix() << "enum class " << enumName << ";" << std::endl;
+            }
+
             void writeEnumOpening (const std::string & enumName)
             {
                 mStream << mIndenter.prefix() << "enum class " << enumName << std::endl;
@@ -148,6 +153,11 @@ namespace MuddledManaged
             void writeEnumValueSubsequent (const std::string & valueName, unsigned int valueValue)
             {
                 mStream << "," << std::endl << mIndenter.prefix() << valueName << " = " << valueValue;
+            }
+
+            void writeClassForwardDeclaration (const std::string & className)
+            {
+                mStream << mIndenter.prefix() << "class " << className << ";" << std::endl;
             }
 
             void writeClassOpening (const std::string & className)

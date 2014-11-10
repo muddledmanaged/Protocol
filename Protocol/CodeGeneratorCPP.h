@@ -42,6 +42,9 @@ namespace MuddledManaged
 
             void writeProtoEnumsToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel) const;
 
+            void writeEnumToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                       const EnumModel & enumModel, const std::string & enumName) const;
+
             void writeProtoMessagesToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel) const;
 
             void writeMessageToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
@@ -68,8 +71,7 @@ namespace MuddledManaged
             void writeProtoMessagesToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel) const;
 
             void writeMessageToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                       const MessageModel & messageModel, const std::string & className,
-                                       const std::string & classScope) const;
+                                       const MessageModel & messageModel, const std::string & className) const;
 
             static const std::string mHeaderFileExtension;
             static const std::string mSourceFileExtension;

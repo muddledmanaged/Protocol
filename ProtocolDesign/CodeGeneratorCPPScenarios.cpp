@@ -169,6 +169,12 @@ namespace A
         class M_O;
         class M;
 
+        // The nested enums don't need to be forward declared and come next.
+        enum class M_D // Not sure why but the name M_E gives an error.
+        {
+            test = 0
+        };
+
         class M_N_X;
         class M_N; // This forward declaration will get repeated but that is okay.
 
@@ -208,6 +214,7 @@ namespace A
         class M
         {
         public:
+            typedef M_D D;
             typedef M_N N;
             typedef M_O O;
         };

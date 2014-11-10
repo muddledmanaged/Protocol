@@ -151,33 +151,40 @@ void Protocol::CodeGeneratorCPP::writeProtoEnumsToHeader (CodeWriter & headerFil
             }
         }
 
-        headerFileWriter.writeEnumOpening(enumModel->namePascal());
+        writeEnumToHeader(headerFileWriter, protoModel, *enumModel, enumModel->namePascal());
 
-        auto enumValueBegin = enumModel->enumValues()->cbegin();
-        auto enumValueEnd = enumModel->enumValues()->cend();
-        bool firstEnumValue = true;
-        while (enumValueBegin != enumValueEnd)
-        {
-            auto enumValueModel = *enumValueBegin;
-            if (firstEnumValue)
-            {
-                headerFileWriter.writeEnumValueFirst(enumValueModel->name(), enumValueModel->value());
-                firstEnumValue = false;
-            }
-            else
-            {
-                headerFileWriter.writeEnumValueSubsequent(enumValueModel->name(), enumValueModel->value());
-            }
-            ++enumValueBegin;
-        }
-
-        headerFileWriter.writeEnumClosing();
         ++protoEnumBegin;
     }
     for (int i = 0; i < enumNamespaces.size(); i++)
     {
         headerFileWriter.writeNamespaceClosing();
     }
+}
+
+void Protocol::CodeGeneratorCPP::writeEnumToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                    const EnumModel & enumModel, const std::string & enumName) const
+{
+    headerFileWriter.writeEnumOpening(enumName);
+
+    auto enumValueBegin = enumModel.enumValues()->cbegin();
+    auto enumValueEnd = enumModel.enumValues()->cend();
+    bool firstEnumValue = true;
+    while (enumValueBegin != enumValueEnd)
+    {
+        auto enumValueModel = *enumValueBegin;
+        if (firstEnumValue)
+        {
+            headerFileWriter.writeEnumValueFirst(enumValueModel->name(), enumValueModel->value());
+            firstEnumValue = false;
+        }
+        else
+        {
+            headerFileWriter.writeEnumValueSubsequent(enumValueModel->name(), enumValueModel->value());
+        }
+        ++enumValueBegin;
+    }
+
+    headerFileWriter.writeEnumClosing();
 }
 
 void Protocol::CodeGeneratorCPP::writeProtoMessagesToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel) const
@@ -220,11 +227,9 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
                                                        const MessageModel & messageModel,
                                                        const std::string & className) const
 {
-    headerFileWriter.writeClassOpening(className);
-
-    headerFileWriter.writeClassPublic();
-
-    // Generate all the nested classes first, then generate a typedef for the simpler name.
+    // Generate forward declarations for all the nested classes first, then  the
+    // nested enums and classes with modified names outside of this class, then inside of
+    // this class, generate a typedef for the simpler name.
     bool subMessageFound = false;
     auto messageMessageBegin = messageModel.messages()->cbegin();
     auto messageMessageEnd = messageModel.messages()->cend();
@@ -234,10 +239,54 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
         auto messageSubModel = *messageMessageBegin;
 
         string subClassName = className + "_" + messageSubModel->namePascal();
+        headerFileWriter.writeClassForwardDeclaration(subClassName);
+
+        ++messageMessageBegin;
+    }
+    if (subMessageFound)
+    {
+        headerFileWriter.writeClassForwardDeclaration(className);
+        headerFileWriter.writeBlankLine();
+    }
+
+    bool subEnumFound = false;
+    auto messageEnumBegin = messageModel.enums()->cbegin();
+    auto messageEnumEnd = messageModel.enums()->cend();
+    while (messageEnumBegin != messageEnumEnd)
+    {
+        subEnumFound = true;
+        auto enumSubModel = *messageEnumBegin;
+
+        string subEnumName = className + "_" + enumSubModel->namePascal();
+        writeEnumToHeader(headerFileWriter, protoModel, *enumSubModel, subEnumName);
+
+        ++messageEnumBegin;
+    }
+    if (subEnumFound)
+    {
+        headerFileWriter.writeBlankLine();
+    }
+
+    messageMessageBegin = messageModel.messages()->cbegin();
+    messageMessageEnd = messageModel.messages()->cend();
+    while (messageMessageBegin != messageMessageEnd)
+    {
+        auto messageSubModel = *messageMessageBegin;
+
+        string subClassName = className + "_" + messageSubModel->namePascal();
         writeMessageToHeader(headerFileWriter, protoModel, *messageSubModel, subClassName);
 
         ++messageMessageBegin;
     }
+    if (subMessageFound)
+    {
+        headerFileWriter.writeBlankLine();
+    }
+
+    headerFileWriter.writeClassOpening(className);
+
+    headerFileWriter.writeClassPublic();
+
     messageMessageBegin = messageModel.messages()->cbegin();
     messageMessageEnd = messageModel.messages()->cend();
     while (messageMessageBegin != messageMessageEnd)
@@ -733,25 +782,15 @@ void Protocol::CodeGeneratorCPP::writeProtoMessagesToSource (CodeWriter & source
     {
         auto messageModel = *protoMessageBegin;
 
-        string messageNamespace = messageModel->package();
-        boost::replace_all(messageNamespace, ".", "::");
-        writeMessageToSource(sourceFileWriter, protoModel, *messageModel, messageModel->namePascal(), messageNamespace);
+        writeMessageToSource(sourceFileWriter, protoModel, *messageModel, messageModel->namePascal());
 
         ++protoMessageBegin;
     }
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                       const MessageModel & messageModel, const std::string & className,
-                                                       const std::string & classScope) const
+                                                       const MessageModel & messageModel, const std::string & className) const
 {
-    string fullScope = classScope;
-    if (!fullScope.empty())
-    {
-        fullScope += "::";
-    }
-    fullScope += className;
-
     auto messageMessageBegin = messageModel.messages()->cbegin();
     auto messageMessageEnd = messageModel.messages()->cend();
     while (messageMessageBegin != messageMessageEnd)
@@ -759,10 +798,18 @@ void Protocol::CodeGeneratorCPP::writeMessageToSource (CodeWriter & sourceFileWr
         auto messageSubModel = *messageMessageBegin;
 
         string subClassName = className + "_" + messageSubModel->namePascal();
-        writeMessageToSource(sourceFileWriter, protoModel, *messageSubModel, subClassName, fullScope);
+        writeMessageToSource(sourceFileWriter, protoModel, *messageSubModel, subClassName);
 
         ++messageMessageBegin;
     }
+
+    string fullScope = messageModel.package();
+    boost::replace_all(fullScope, ".", "::");
+    if (!fullScope.empty())
+    {
+        fullScope += "::";
+    }
+    fullScope += className;
 
     string methodName = fullScope + "::" + className;
     sourceFileWriter.writeMethodImplementationOpening(methodName);
@@ -779,7 +826,7 @@ void Protocol::CodeGeneratorCPP::writeMessageToSource (CodeWriter & sourceFileWr
     sourceFileWriter.writeMethodImplementationClosing();
 
     methodName = fullScope + "::operator =";
-    methodReturn = fullScope + "::" + className + " &";
+    methodReturn = fullScope + " &";
     methodParameters = "const ";
     methodParameters += className + " & rhs";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
