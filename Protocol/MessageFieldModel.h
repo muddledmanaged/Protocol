@@ -55,8 +55,6 @@ namespace MuddledManaged
 
             std::string fieldType () const;
 
-            std::string fieldTypeFull () const;
-
             std::string fieldTypePackage () const;
 
             FieldCategory fieldCategory () const;
@@ -73,7 +71,6 @@ namespace MuddledManaged
 
             Requiredness mRequiredness;
             std::string mFieldType;
-            std::string mFieldTypeFull;
             std::string mFieldTypePackage;
             FieldCategory mFieldCategory;
             unsigned int mIndex;

@@ -33,35 +33,42 @@ namespace MuddledManaged
                 mParent = parent;
             }
 
-            virtual std::string nameFull () const
+            virtual std::string nameFullWithPackage () const
             {
-                std::string messagePath;
-                Nestable * pParentMessage = parent();
-                while (pParentMessage != nullptr)
-                {
-                    if (messagePath.empty())
-                    {
-                        messagePath = pParentMessage->namePascal();
-                    }
-                    else
-                    {
-                        messagePath = pParentMessage->namePascal() + "." + messagePath;
-                    }
-                    pParentMessage = pParentMessage->parent();
-                }
-
+                std::string messagePath = nameFullWithoutPackage();
                 std::string fullName = package();
-                if (!fullName.empty() && !messagePath.empty())
+                if (!fullName.empty())
                 {
                     fullName += ".";
                 }
                 fullName += messagePath;
+                
+                return fullName;
+            }
+
+            virtual std::string nameFullWithoutPackage () const
+            {
+                std::string fullName;
+                Nestable * pParentMessage = parent();
+                while (pParentMessage != nullptr)
+                {
+                    if (fullName.empty())
+                    {
+                        fullName = pParentMessage->namePascal();
+                    }
+                    else
+                    {
+                        fullName = pParentMessage->namePascal() + "." + fullName;
+                    }
+                    pParentMessage = pParentMessage->parent();
+                }
+
                 if (!fullName.empty())
                 {
                     fullName += ".";
                 }
                 fullName += namePascal();
-                
+
                 return fullName;
             }
 

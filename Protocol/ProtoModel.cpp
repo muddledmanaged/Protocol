@@ -307,7 +307,7 @@ void Protocol::ProtoModel::addImportedProtoName (TokenReader::iterator current, 
 
 void Protocol::ProtoModel::addPrivateEnumType (TokenReader::iterator current, const SPEnumModel & enumerationModel)
 {
-    string fullName = enumerationModel->nameFull();
+    string fullName = enumerationModel->nameFullWithPackage();
     if (typeExists(fullName))
     {
         throw InvalidProtoException(current.line(), current.column(), "Duplicate type names are not allowed.");
@@ -317,7 +317,7 @@ void Protocol::ProtoModel::addPrivateEnumType (TokenReader::iterator current, co
 
 void Protocol::ProtoModel::addPublicEnumType (TokenReader::iterator current, const SPEnumModel & enumerationModel)
 {
-    string fullName = enumerationModel->nameFull();
+    string fullName = enumerationModel->nameFullWithPackage();
     if (typeExists(fullName))
     {
         throw InvalidProtoException(current.line(), current.column(), "Duplicate type names are not allowed.");
@@ -327,7 +327,7 @@ void Protocol::ProtoModel::addPublicEnumType (TokenReader::iterator current, con
 
 void Protocol::ProtoModel::addPrivateMessageType (TokenReader::iterator current, const SPMessageModel & messageModel)
 {
-    string fullName = messageModel->nameFull();
+    string fullName = messageModel->nameFullWithPackage();
     if (typeExists(fullName))
     {
         throw InvalidProtoException(current.line(), current.column(), "Duplicate type names are not allowed.");
@@ -337,7 +337,7 @@ void Protocol::ProtoModel::addPrivateMessageType (TokenReader::iterator current,
 
 void Protocol::ProtoModel::addPublicMessageType (TokenReader::iterator current, const SPMessageModel & messageModel)
 {
-    string fullName = messageModel->nameFull();
+    string fullName = messageModel->nameFullWithPackage();
     if (typeExists(fullName))
     {
         throw InvalidProtoException(current.line(), current.column(), "Duplicate type names are not allowed.");

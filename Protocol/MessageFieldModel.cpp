@@ -22,7 +22,7 @@ Protocol::MessageFieldModel::MessageFieldModel (Requiredness requiredness, const
 
 Protocol::MessageFieldModel::MessageFieldModel (const MessageFieldModel & src)
 : Nameable(src), Packageable(src), OptionModelContainer(src), mRequiredness(src.mRequiredness), mFieldType(src.mFieldType),
-  mFieldTypeFull(src.mFieldTypeFull), mFieldTypePackage(src.mFieldTypePackage), mFieldCategory(src.mFieldCategory), mIndex(src.mIndex)
+  mFieldTypePackage(src.mFieldTypePackage), mFieldCategory(src.mFieldCategory), mIndex(src.mIndex)
 {
 }
 
@@ -34,11 +34,6 @@ Protocol::MessageFieldModel::Requiredness Protocol::MessageFieldModel::requiredn
 string Protocol::MessageFieldModel::fieldType () const
 {
     return mFieldType;
-}
-
-string Protocol::MessageFieldModel::fieldTypeFull () const
-{
-    return mFieldTypeFull;
 }
 
 string Protocol::MessageFieldModel::fieldTypePackage () const
@@ -56,7 +51,7 @@ void Protocol::MessageFieldModel::updateFieldCategoryToEnum (const EnumModel * p
     if (mFieldCategory == FieldCategory::unknown)
     {
         mFieldCategory = FieldCategory::enumType;
-        mFieldTypeFull = pReferencedType->nameFull();
+        mFieldType = pReferencedType->nameFullWithoutPackage();
         mFieldTypePackage = pReferencedType->package();
     }
 }
@@ -66,7 +61,7 @@ void Protocol::MessageFieldModel::updateFieldCategoryToMessage (const MessageMod
     if (mFieldCategory == FieldCategory::unknown)
     {
         mFieldCategory = FieldCategory::messageType;
-        mFieldTypeFull = pReferencedType->nameFull();
+        mFieldType = pReferencedType->nameFullWithoutPackage();
         mFieldTypePackage = pReferencedType->package();
     }
 }
@@ -89,7 +84,6 @@ Protocol::MessageFieldModel & Protocol::MessageFieldModel::operator = (const Mes
 
     mRequiredness = rhs.mRequiredness;
     mFieldType = rhs.mFieldType;
-    mFieldTypeFull = rhs.mFieldTypeFull;
     mFieldTypePackage = rhs.mFieldTypePackage;
     mFieldCategory = rhs.mFieldCategory;
     mIndex = rhs.mIndex;
@@ -99,8 +93,6 @@ Protocol::MessageFieldModel & Protocol::MessageFieldModel::operator = (const Mes
 
 void Protocol::MessageFieldModel::setFieldCategoryAndFullType ()
 {
-    mFieldTypeFull = mFieldType;
-    
     if (mFieldType == "bool")
     {
         mFieldCategory = FieldCategory::numericType;
@@ -164,6 +156,5 @@ void Protocol::MessageFieldModel::setFieldCategoryAndFullType ()
     else
     {
         mFieldCategory = FieldCategory::unknown;
-        mFieldTypeFull = "";
     }
 }

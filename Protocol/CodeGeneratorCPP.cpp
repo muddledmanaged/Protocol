@@ -211,6 +211,57 @@ void Protocol::CodeGeneratorCPP::writeProtoMessagesToHeader (CodeWriter & header
                 headerFileWriter.writeNamespaceOpening(str);
             }
         }
+        writeMessageDeclarationToHeader(headerFileWriter, protoModel, *messageModel, messageModel->namePascal());
+
+        ++protoMessageBegin;
+    }
+    headerFileWriter.writeBlankLine();
+
+    protoMessageBegin = protoModel.messages()->cbegin();
+    protoMessageEnd = protoModel.messages()->cend();
+    while (protoMessageBegin != protoMessageEnd)
+    {
+        auto messageModel = *protoMessageBegin;
+
+        string messagePackage = messageModel->package();
+        if (messagePackage != currentPackage)
+        {
+            for (int i = 0; i < messageNamespaces.size(); i++)
+            {
+                headerFileWriter.writeNamespaceClosing();
+            }
+            currentPackage = messagePackage;
+            boost::split(messageNamespaces, messagePackage, boost::is_any_of("."));
+            for (auto & str: messageNamespaces)
+            {
+                headerFileWriter.writeNamespaceOpening(str);
+            }
+        }
+        writeMessageEnumToHeader(headerFileWriter, protoModel, *messageModel, messageModel->namePascal());
+
+        ++protoMessageBegin;
+    }
+    
+    protoMessageBegin = protoModel.messages()->cbegin();
+    protoMessageEnd = protoModel.messages()->cend();
+    while (protoMessageBegin != protoMessageEnd)
+    {
+        auto messageModel = *protoMessageBegin;
+
+        string messagePackage = messageModel->package();
+        if (messagePackage != currentPackage)
+        {
+            for (int i = 0; i < messageNamespaces.size(); i++)
+            {
+                headerFileWriter.writeNamespaceClosing();
+            }
+            currentPackage = messagePackage;
+            boost::split(messageNamespaces, messagePackage, boost::is_any_of("."));
+            for (auto & str: messageNamespaces)
+            {
+                headerFileWriter.writeNamespaceOpening(str);
+            }
+        }
         writeMessageToHeader(headerFileWriter, protoModel, *messageModel, messageModel->namePascal());
 
         ++protoMessageBegin;
@@ -221,40 +272,49 @@ void Protocol::CodeGeneratorCPP::writeProtoMessagesToHeader (CodeWriter & header
     }
 }
 
-
-void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWriter,
-                                                       const ProtoModel & protoModel,
-                                                       const MessageModel & messageModel,
-                                                       const std::string & className) const
+void Protocol::CodeGeneratorCPP::writeMessageDeclarationToHeader (CodeWriter & headerFileWriter,
+                                                                  const ProtoModel & protoModel,
+                                                                  const MessageModel & messageModel,
+                                                                  const std::string & className) const
 {
-    // Generate forward declarations for all the nested classes first, then  the
-    // nested enums and classes with modified names outside of this class, then inside of
-    // this class, generate a typedef for the simpler name.
-    bool subMessageFound = false;
+    // Generate forward declarations for all the nested classes first.
     auto messageMessageBegin = messageModel.messages()->cbegin();
     auto messageMessageEnd = messageModel.messages()->cend();
     while (messageMessageBegin != messageMessageEnd)
     {
-        subMessageFound = true;
         auto messageSubModel = *messageMessageBegin;
 
         string subClassName = className + "_" + messageSubModel->namePascal();
-        headerFileWriter.writeClassForwardDeclaration(subClassName);
+        writeMessageDeclarationToHeader(headerFileWriter, protoModel, *messageSubModel, subClassName);
 
         ++messageMessageBegin;
     }
-    if (subMessageFound)
+    headerFileWriter.writeClassForwardDeclaration(className);
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageEnumToHeader (CodeWriter & headerFileWriter,
+                                                           const ProtoModel & protoModel,
+                                                           const MessageModel & messageModel,
+                                                           const std::string & className) const
+{
+    // Generate nested enums for all the nested messages first.
+    auto messageMessageBegin = messageModel.messages()->cbegin();
+    auto messageMessageEnd = messageModel.messages()->cend();
+    while (messageMessageBegin != messageMessageEnd)
     {
-        headerFileWriter.writeClassForwardDeclaration(className);
-        headerFileWriter.writeBlankLine();
+        auto messageSubModel = *messageMessageBegin;
+
+        string subClassName = className + "_" + messageSubModel->namePascal();
+        writeMessageEnumToHeader(headerFileWriter, protoModel, *messageSubModel, subClassName);
+
+        ++messageMessageBegin;
     }
 
-    bool subEnumFound = false;
+    // Then generate the nested enums with modified names for this message.
     auto messageEnumBegin = messageModel.enums()->cbegin();
     auto messageEnumEnd = messageModel.enums()->cend();
     while (messageEnumBegin != messageEnumEnd)
     {
-        subEnumFound = true;
         auto enumSubModel = *messageEnumBegin;
 
         string subEnumName = className + "_" + enumSubModel->namePascal();
@@ -262,15 +322,19 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
 
         ++messageEnumBegin;
     }
-    if (subEnumFound)
-    {
-        headerFileWriter.writeBlankLine();
-    }
+}
 
-    messageMessageBegin = messageModel.messages()->cbegin();
-    messageMessageEnd = messageModel.messages()->cend();
+void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWriter,
+                                                       const ProtoModel & protoModel,
+                                                       const MessageModel & messageModel,
+                                                       const std::string & className) const
+{
+    bool subMessageFound = false;
+    auto messageMessageBegin = messageModel.messages()->cbegin();
+    auto messageMessageEnd = messageModel.messages()->cend();
     while (messageMessageBegin != messageMessageEnd)
     {
+        subMessageFound = true;
         auto messageSubModel = *messageMessageBegin;
 
         string subClassName = className + "_" + messageSubModel->namePascal();
@@ -287,6 +351,20 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
 
     headerFileWriter.writeClassPublic();
 
+    bool subEnumFound = false;
+    auto messageEnumBegin = messageModel.enums()->cbegin();
+    auto messageEnumEnd = messageModel.enums()->cend();
+    while (messageEnumBegin != messageEnumEnd)
+    {
+        subEnumFound = true;
+        auto enumSubModel = *messageEnumBegin;
+
+        string subEnumName = className + "_" + enumSubModel->namePascal();
+        headerFileWriter.writeTypedef(subEnumName, enumSubModel->namePascal());
+
+        ++messageEnumBegin;
+    }
+
     messageMessageBegin = messageModel.messages()->cbegin();
     messageMessageEnd = messageModel.messages()->cend();
     while (messageMessageBegin != messageMessageEnd)
@@ -298,7 +376,8 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
 
         ++messageMessageBegin;
     }
-    if (subMessageFound)
+    
+    if (subEnumFound || subMessageFound)
     {
         headerFileWriter.writeBlankLine();
         headerFileWriter.writeClassPublic();
@@ -867,7 +946,7 @@ void Protocol::CodeGeneratorCPP::writeMessageToSource (CodeWriter & sourceFileWr
 
 string Protocol::CodeGeneratorCPP::fullTypeName (const MessageFieldModel & messageFieldModel) const
 {
-    string fieldType = messageFieldModel.fieldTypeFull();
+    string fieldType = messageFieldModel.fieldType();
     if (fieldType == "bool")
     {
         return "bool";
@@ -929,5 +1008,13 @@ string Protocol::CodeGeneratorCPP::fullTypeName (const MessageFieldModel & messa
         return "std::string";
     }
 
+    boost::replace_all(fieldType, ".", "_");
+    string fieldTypePackage = messageFieldModel.fieldTypePackage();
+    boost::replace_all(fieldTypePackage, ".", "::");
+    if (!fieldTypePackage.empty())
+    {
+        fieldTypePackage += "::";
+    }
+    fieldType = fieldTypePackage + fieldType;
     return fieldType;
 }

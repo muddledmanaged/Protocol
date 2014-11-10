@@ -47,6 +47,12 @@ namespace MuddledManaged
 
             void writeProtoMessagesToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel) const;
 
+            void writeMessageDeclarationToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                  const MessageModel & messageModel, const std::string & className) const;
+
+            void writeMessageEnumToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                           const MessageModel & messageModel, const std::string & className) const;
+
             void writeMessageToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
                                        const MessageModel & messageModel, const std::string & className) const;
 
