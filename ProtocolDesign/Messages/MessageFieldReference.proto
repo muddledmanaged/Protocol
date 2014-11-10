@@ -10,6 +10,16 @@ package Abc;
 
 message MessageOne
 {
+    message MessageQrs
+    {
+        optional MessageTuv embeddedTuv = 0;
+    }
+
+    message MessageTuv
+    {
+        optional MessageQrs embeddedQrs = 0;
+    }
+
     required Def.EarlyMeals early = 0;
     optional MidMeals middle = 1;
     optional W.Xyz.LateMeals late = 2;
