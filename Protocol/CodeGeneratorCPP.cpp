@@ -696,6 +696,11 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldBackingFieldsToHeader (CodeWri
         case MessageFieldModel::FieldCategory::numericType:
         case MessageFieldModel::FieldCategory::enumType:
         {
+            backingFieldName = "m";
+            backingFieldName += messageFieldModel.namePascal() + "Default";
+            backingFieldType = fieldType;
+            headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
+
             if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
             {
                 backingFieldName = "m";
@@ -723,6 +728,14 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldBackingFieldsToHeader (CodeWri
         }
 
         case MessageFieldModel::FieldCategory::stringType:
+        {
+            backingFieldName = "m";
+            backingFieldName += messageFieldModel.namePascal() + "Default";
+            backingFieldType = fieldType;
+            headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
+
+            // Fallthrough to the cases below.
+        }
         case MessageFieldModel::FieldCategory::bytesType:
         case MessageFieldModel::FieldCategory::messageType:
         {
