@@ -903,56 +903,127 @@ void Protocol::CodeGeneratorCPP::writeMessageToSource (CodeWriter & sourceFileWr
     }
     fullScope += className;
 
+    writeMessageConstructorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
+
+    writeMessageCopyConstructorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
+
+    writeMessageDestructorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
+
+    writeMessageAssignmentOperatorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
+
+    writeMessageSwapToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
+
+    writeMessageClearToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
+
+    writeMessageParseToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
+
+    writeMessageSerializeToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
+
+    writeMessageSizeToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
+
+    writeMessageIsValidToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageConstructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                  const MessageModel & messageModel, const std::string & className,
+                                                                  const std::string & fullScope) const
+{
     string methodName = fullScope + "::" + className;
     sourceFileWriter.writeMethodImplementationOpening(methodName);
     sourceFileWriter.writeMethodImplementationClosing();
+}
 
+void Protocol::CodeGeneratorCPP::writeMessageCopyConstructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                      const MessageModel & messageModel, const std::string & className,
+                                                                      const std::string & fullScope) const
+{
+    string methodName = fullScope + "::" + className;
     string methodReturn = "";
     string methodParameters = "const ";
     methodParameters += className + " & src";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
     sourceFileWriter.writeMethodImplementationClosing();
+}
 
-    methodName = fullScope + "::~" + className;
+void Protocol::CodeGeneratorCPP::writeMessageDestructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                 const MessageModel & messageModel, const std::string & className,
+                                                                 const std::string & fullScope) const
+{
+    string methodName = fullScope + "::~" + className;
     sourceFileWriter.writeMethodImplementationOpening(methodName);
     sourceFileWriter.writeMethodImplementationClosing();
+}
 
-    methodName = fullScope + "::operator =";
-    methodReturn = fullScope + " &";
-    methodParameters = "const ";
+void Protocol::CodeGeneratorCPP::writeMessageAssignmentOperatorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                         const MessageModel & messageModel, const std::string & className,
+                                                                         const std::string & fullScope) const
+{
+    string methodName = fullScope + "::operator =";
+    string methodReturn = fullScope + " &";
+    string methodParameters = "const ";
     methodParameters += className + " & rhs";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
     sourceFileWriter.writeMethodImplementationClosing();
+}
 
-    methodName = fullScope + "::swap";
-    methodReturn = "void";
-    methodParameters = className + " * other";
+void Protocol::CodeGeneratorCPP::writeMessageSwapToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                           const MessageModel & messageModel, const std::string & className,
+                                                           const std::string & fullScope) const
+{
+    string methodName = fullScope + "::swap";
+    string methodReturn = "void";
+    string methodParameters = className + " * other";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
     sourceFileWriter.writeMethodImplementationClosing();
+}
 
-    methodName = fullScope + "::clear";
-    methodReturn = "void";
+void Protocol::CodeGeneratorCPP::writeMessageClearToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                            const MessageModel & messageModel, const std::string & className,
+                                                            const std::string & fullScope) const
+{
+    string methodName = fullScope + "::clear";
+    string methodReturn = "void";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn);
     sourceFileWriter.writeMethodImplementationClosing();
+}
 
-    methodName = fullScope + "::parse";
-    methodReturn = "void";
-    methodParameters = "const std::string & data";
+void Protocol::CodeGeneratorCPP::writeMessageParseToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                            const MessageModel & messageModel, const std::string & className,
+                                                            const std::string & fullScope) const
+{
+    string methodName = fullScope + "::parse";
+    string methodReturn = "void";
+    string methodParameters = "const std::string & data";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
     sourceFileWriter.writeMethodImplementationClosing();
+}
 
-    methodName = fullScope + "::serialize";
-    methodReturn = "std::string";
+void Protocol::CodeGeneratorCPP::writeMessageSerializeToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                const MessageModel & messageModel, const std::string & className,
+                                                                const std::string & fullScope) const
+{
+    string methodName = fullScope + "::serialize";
+    string methodReturn = "std::string";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, true);
     sourceFileWriter.writeMethodImplementationClosing();
+}
 
-    methodName = fullScope + "::size";
-    methodReturn = "size_t";
+void Protocol::CodeGeneratorCPP::writeMessageSizeToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                           const MessageModel & messageModel, const std::string & className,
+                                                           const std::string & fullScope) const
+{
+    string methodName = fullScope + "::size";
+    string methodReturn = "size_t";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, true);
     sourceFileWriter.writeMethodImplementationClosing();
+}
 
-    methodName = fullScope + "::isValid";
-    methodReturn = "bool";
+void Protocol::CodeGeneratorCPP::writeMessageIsValidToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                              const MessageModel & messageModel, const std::string & className,
+                                                              const std::string & fullScope) const
+{
+    string methodName = fullScope + "::isValid";
+    string methodReturn = "bool";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, true);
     sourceFileWriter.writeMethodImplementationClosing();
 }

@@ -79,6 +79,46 @@ namespace MuddledManaged
             void writeMessageToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                        const MessageModel & messageModel, const std::string & className) const;
 
+            void writeMessageConstructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                  const MessageModel & messageModel, const std::string & className,
+                                                  const std::string & fullScope) const;
+
+            void writeMessageCopyConstructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                      const MessageModel & messageModel, const std::string & className,
+                                                      const std::string & fullScope) const;
+
+            void writeMessageDestructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                 const MessageModel & messageModel, const std::string & className,
+                                                 const std::string & fullScope) const;
+
+            void writeMessageAssignmentOperatorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                         const MessageModel & messageModel, const std::string & className,
+                                                         const std::string & fullScope) const;
+
+            void writeMessageSwapToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                           const MessageModel & messageModel, const std::string & className,
+                                           const std::string & fullScope) const;
+
+            void writeMessageClearToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                            const MessageModel & messageModel, const std::string & className,
+                                            const std::string & fullScope) const;
+
+            void writeMessageParseToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                            const MessageModel & messageModel, const std::string & className,
+                                            const std::string & fullScope) const;
+
+            void writeMessageSerializeToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                const MessageModel & messageModel, const std::string & className,
+                                                const std::string & fullScope) const;
+
+            void writeMessageSizeToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                           const MessageModel & messageModel, const std::string & className,
+                                           const std::string & fullScope) const;
+
+            void writeMessageIsValidToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                              const MessageModel & messageModel, const std::string & className,
+                                              const std::string & fullScope) const;
+
             static const std::string mHeaderFileExtension;
             static const std::string mSourceFileExtension;
             static const std::string mHeaderFileProlog;
