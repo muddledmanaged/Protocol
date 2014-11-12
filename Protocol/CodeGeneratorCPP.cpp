@@ -475,6 +475,16 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
 
     headerFileWriter.writeBlankLine();
 
+    string classDataName = className + "Data";
+    headerFileWriter.writeStructOpening(classDataName);
+
+    methodName = classDataName;
+    headerFileWriter.writeClassMethodDeclaration(methodName);
+
+    methodName = "~";
+    methodName += classDataName;
+    headerFileWriter.writeClassMethodDeclaration(methodName);
+
     messageFieldBegin = messageModel.fields()->cbegin();
     messageFieldEnd = messageModel.fields()->cend();
     while (messageFieldBegin != messageFieldEnd)
@@ -496,6 +506,29 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
         
         ++oneofBegin;
     }
+
+    headerFileWriter.writeBlankLine();
+
+    headerFileWriter.writeClassPrivate();
+
+    methodName = classDataName;
+    methodReturn = "";
+    methodParameters = "const ";
+    methodParameters += classDataName + " & src";
+    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, false, false, false, false, true);
+
+    methodName = "operator =";
+    methodReturn = classDataName + " &";
+    methodParameters = "const ";
+    methodParameters += classDataName + " & rhs";
+    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, false, false, false, false, true);
+
+    headerFileWriter.writeStructClosing();
+
+    string backingFieldName = "mData";
+    string backingFieldType = "std::shared_ptr<";
+    backingFieldType += className + "Data>";
+    headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
 
     headerFileWriter.writeClassClosing();
 }

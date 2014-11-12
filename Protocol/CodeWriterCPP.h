@@ -160,6 +160,18 @@ namespace MuddledManaged
                 mStream << mIndenter.prefix() << "class " << className << ";" << std::endl;
             }
 
+            void writeStructOpening (const std::string & structName)
+            {
+                mStream << mIndenter.prefix() << "struct " << structName << std::endl;
+                writeCurlyBraceOpening();
+            }
+
+            void writeStructClosing ()
+            {
+                --mIndenter;
+                mStream << mIndenter.prefix() << "};" << std::endl << std::endl;
+            }
+
             void writeClassOpening (const std::string & className)
             {
                 mStream << mIndenter.prefix() << "class " << className << std::endl;
