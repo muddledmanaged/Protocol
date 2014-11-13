@@ -95,7 +95,7 @@ void Protocol::MessageFieldModel::setFieldCategoryAndFullType ()
 {
     if (mFieldType == "bool")
     {
-        mFieldCategory = FieldCategory::numericType;
+        mFieldCategory = FieldCategory::boolType;
     }
     else if (mFieldType == "string")
     {
@@ -151,7 +151,7 @@ void Protocol::MessageFieldModel::setFieldCategoryAndFullType ()
     }
     else if (mFieldType == "bytes")
     {
-        mFieldCategory = FieldCategory::stringType;
+        mFieldCategory = FieldCategory::bytesType;
     }
     else
     {

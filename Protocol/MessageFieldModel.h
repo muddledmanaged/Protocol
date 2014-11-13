@@ -39,11 +39,12 @@ namespace MuddledManaged
             enum class FieldCategory
             {
                 unknown = 0,
-                numericType = 1,
-                stringType = 2,
-                bytesType = 3,
-                enumType = 4,
-                messageType = 5
+                boolType = 1,
+                numericType = 2,
+                stringType = 3,
+                bytesType = 4,
+                enumType = 5,
+                messageType = 6
             };
 
             MessageFieldModel (Requiredness requiredness, const std::string & fieldType,

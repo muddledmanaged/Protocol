@@ -87,6 +87,12 @@ namespace MuddledManaged
                                                  const MessageModel & messageModel, const std::string & className,
                                                  const std::string & fullScope) const;
 
+            void writeMessageFieldConstructionToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                        const MessageFieldModel & messageFieldModel, bool writeSetFlag) const;
+
+            void writeMessageFieldDestructionToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                       const MessageFieldModel & messageFieldModel) const;
+
             void writeMessageConstructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                   const MessageModel & messageModel, const std::string & className,
                                                   const std::string & fullScope) const;

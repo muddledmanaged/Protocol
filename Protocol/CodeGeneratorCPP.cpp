@@ -726,6 +726,7 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldBackingFieldsToHeader (CodeWri
 
     switch (messageFieldModel.fieldCategory())
     {
+        case MessageFieldModel::FieldCategory::boolType:
         case MessageFieldModel::FieldCategory::numericType:
         case MessageFieldModel::FieldCategory::enumType:
         {
@@ -971,6 +972,18 @@ void Protocol::CodeGeneratorCPP::writeMessageDataConstructorToSource (CodeWriter
 {
     string methodName = fullScope + "::" + className;
     sourceFileWriter.writeMethodImplementationOpening(methodName);
+
+    auto messageFieldBegin = messageModel.fields()->cbegin();
+    auto messageFieldEnd = messageModel.fields()->cend();
+    while (messageFieldBegin != messageFieldEnd)
+    {
+        auto messageFieldModel = *messageFieldBegin;
+
+        writeMessageFieldConstructionToSource(sourceFileWriter, protoModel, *messageFieldModel, true);
+
+        ++messageFieldBegin;
+    }
+
     sourceFileWriter.writeMethodImplementationClosing();
 }
 
@@ -980,7 +993,114 @@ void Protocol::CodeGeneratorCPP::writeMessageDataDestructorToSource (CodeWriter 
 {
     string methodName = fullScope + "::~" + className;
     sourceFileWriter.writeMethodImplementationOpening(methodName);
+
+    auto messageFieldBegin = messageModel.fields()->cbegin();
+    auto messageFieldEnd = messageModel.fields()->cend();
+    while (messageFieldBegin != messageFieldEnd)
+    {
+        auto messageFieldModel = *messageFieldBegin;
+
+        writeMessageFieldDestructionToSource(sourceFileWriter, protoModel, *messageFieldModel);
+
+        ++messageFieldBegin;
+    }
+    
     sourceFileWriter.writeMethodImplementationClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldConstructionToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                        const MessageFieldModel & messageFieldModel, bool writeSetFlag) const
+{
+    string backingFieldName;
+    string statement;
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::boolType:
+        {
+            backingFieldName = "m";
+            backingFieldName += messageFieldModel.namePascal() + "Default";
+            statement = backingFieldName + " = false;";
+            sourceFileWriter.writeLineIndented(statement);
+
+            if (messageFieldModel.requiredness() != MessageFieldModel::Requiredness::repeated)
+            {
+                if (writeSetFlag)
+                {
+                    backingFieldName = "m";
+                    backingFieldName += messageFieldModel.namePascal() + "Set";
+                    statement = backingFieldName + " = false;";
+                    sourceFileWriter.writeLineIndented(statement);
+                }
+
+                backingFieldName = "m";
+                backingFieldName += messageFieldModel.namePascal() + "Value";
+                statement = backingFieldName + " = false;";
+                sourceFileWriter.writeLineIndented(statement);
+            }
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::numericType:
+        case MessageFieldModel::FieldCategory::enumType:
+        {
+            backingFieldName = "m";
+            backingFieldName += messageFieldModel.namePascal() + "Default";
+            statement = backingFieldName + " = 0;";
+            sourceFileWriter.writeLineIndented(statement);
+
+            if (messageFieldModel.requiredness() != MessageFieldModel::Requiredness::repeated)
+            {
+                if (writeSetFlag)
+                {
+                    backingFieldName = "m";
+                    backingFieldName += messageFieldModel.namePascal() + "Set";
+                    statement = backingFieldName + " = false;";
+                    sourceFileWriter.writeLineIndented(statement);
+                }
+
+                backingFieldName = "m";
+                backingFieldName += messageFieldModel.namePascal() + "Value";
+                statement = backingFieldName + " = 0;";
+                sourceFileWriter.writeLineIndented(statement);
+            }
+            break;
+        }
+            
+        case MessageFieldModel::FieldCategory::stringType:
+        {
+            backingFieldName = "m";
+            backingFieldName += messageFieldModel.namePascal() + "Default";
+            statement = backingFieldName + " = \"\";";
+            sourceFileWriter.writeLineIndented(statement);
+
+            // Fallthrough to the cases below.
+        }
+        case MessageFieldModel::FieldCategory::bytesType:
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            if (messageFieldModel.requiredness() != MessageFieldModel::Requiredness::repeated)
+            {
+                if (writeSetFlag)
+                {
+                    backingFieldName = "m";
+                    backingFieldName += messageFieldModel.namePascal() + "Set";
+                    statement = backingFieldName + " = false;";
+                    sourceFileWriter.writeLineIndented(statement);
+                }
+            }
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldDestructionToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                        const MessageFieldModel & messageFieldModel) const
+{
+
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageConstructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
