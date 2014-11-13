@@ -936,6 +936,14 @@ void Protocol::CodeGeneratorCPP::writeMessageToSource (CodeWriter & sourceFileWr
     }
     fullScope += className;
 
+    string classDataName = className + "Data";
+    string fullDataScope = fullScope + "::";
+    fullDataScope += classDataName;
+
+    writeMessageDataConstructorToSource(sourceFileWriter, protoModel, messageModel, classDataName, fullDataScope);
+
+    writeMessageDataDestructorToSource(sourceFileWriter, protoModel, messageModel, classDataName, fullDataScope);
+
     writeMessageConstructorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
 
     writeMessageCopyConstructorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
@@ -955,6 +963,24 @@ void Protocol::CodeGeneratorCPP::writeMessageToSource (CodeWriter & sourceFileWr
     writeMessageSizeToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
 
     writeMessageIsValidToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageDataConstructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                  const MessageModel & messageModel, const std::string & className,
+                                                                  const std::string & fullScope) const
+{
+    string methodName = fullScope + "::" + className;
+    sourceFileWriter.writeMethodImplementationOpening(methodName);
+    sourceFileWriter.writeMethodImplementationClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageDataDestructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                 const MessageModel & messageModel, const std::string & className,
+                                                                 const std::string & fullScope) const
+{
+    string methodName = fullScope + "::~" + className;
+    sourceFileWriter.writeMethodImplementationOpening(methodName);
+    sourceFileWriter.writeMethodImplementationClosing();
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageConstructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
