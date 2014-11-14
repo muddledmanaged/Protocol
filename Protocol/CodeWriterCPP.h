@@ -392,6 +392,24 @@ namespace MuddledManaged
                 writeCurlyBraceOpening();
             }
 
+            void writeConstructorImplementationOpening (const std::string & className,
+                                                        const std::string & constructorParameters,
+                                                        const std::string & initializationParameters)
+            {
+                mStream << mIndenter.prefix();
+
+                writeMethodSignature(className, "", constructorParameters);
+
+                if (!initializationParameters.empty())
+                {
+                    mStream << std::endl;
+                    mStream << mIndenter.prefix() << ": " << initializationParameters;
+                }
+
+                mStream << std::endl;
+                writeCurlyBraceOpening();
+            }
+
             void writeMethodImplementationClosing ()
             {
                 --mIndenter;

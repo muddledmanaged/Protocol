@@ -79,6 +79,8 @@ void Protocol::CodeGeneratorCPP::generateSourceFile (const std::string & outputF
 
     sourceFileWriter.writeIncludeProject(filesystem::change_extension(modelPath, mHeaderFileExtension).string());
     sourceFileWriter.writeBlankLine();
+    sourceFileWriter.writeUsingNamespace("std");
+    sourceFileWriter.writeBlankLine();
 
     writeProtoMessagesToSource(sourceFileWriter, protoModel);
 }
@@ -1108,7 +1110,11 @@ void Protocol::CodeGeneratorCPP::writeMessageConstructorToSource (CodeWriter & s
                                                                   const std::string & fullScope) const
 {
     string methodName = fullScope + "::" + className;
-    sourceFileWriter.writeMethodImplementationOpening(methodName);
+    string methodParameters = "";
+    string initializationParameters = "mData(new ";
+    initializationParameters += className + "Data())";
+    sourceFileWriter.writeConstructorImplementationOpening(methodName, methodParameters, initializationParameters);
+    
     sourceFileWriter.writeMethodImplementationClosing();
 }
 
@@ -1120,7 +1126,8 @@ void Protocol::CodeGeneratorCPP::writeMessageCopyConstructorToSource (CodeWriter
     string methodReturn = "";
     string methodParameters = "const ";
     methodParameters += className + " & src";
-    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+    string initializationParameters = "mData(src.mData)";
+    sourceFileWriter.writeConstructorImplementationOpening(methodName, methodParameters, initializationParameters);
     sourceFileWriter.writeMethodImplementationClosing();
 }
 
@@ -1142,6 +1149,23 @@ void Protocol::CodeGeneratorCPP::writeMessageAssignmentOperatorToSource (CodeWri
     string methodParameters = "const ";
     methodParameters += className + " & rhs";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+    string statement = "this == &rhs";
+    sourceFileWriter.writeIfOpening(statement);
+    statement = "return *this;";
+    sourceFileWriter.writeLineIndented(statement);
+    sourceFileWriter.writeIfClosing();
+
+    sourceFileWriter.writeBlankLine();
+
+    statement = "mData = rhs.mData;";
+    sourceFileWriter.writeLineIndented(statement);
+
+    sourceFileWriter.writeBlankLine();
+
+    statement = "return *this;";
+    sourceFileWriter.writeLineIndented(statement);
+
     sourceFileWriter.writeMethodImplementationClosing();
 }
 
@@ -1153,6 +1177,21 @@ void Protocol::CodeGeneratorCPP::writeMessageSwapToSource (CodeWriter & sourceFi
     string methodReturn = "void";
     string methodParameters = className + " * other";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+    string dataType = "shared_ptr<";
+    dataType += className + "Data>";
+    string statement = dataType + " thisData(mData);";
+    sourceFileWriter.writeLineIndented(statement);
+    statement = dataType + " otherData(other.mData);";
+    sourceFileWriter.writeLineIndented(statement);
+
+    sourceFileWriter.writeBlankLine();
+
+    statement = "mData = otherData;";
+    sourceFileWriter.writeLineIndented(statement);
+    statement = "other.mData = thisData;";
+    sourceFileWriter.writeLineIndented(statement);
+
     sourceFileWriter.writeMethodImplementationClosing();
 }
 
@@ -1163,6 +1202,11 @@ void Protocol::CodeGeneratorCPP::writeMessageClearToSource (CodeWriter & sourceF
     string methodName = fullScope + "::clear";
     string methodReturn = "void";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn);
+
+    string statement = "mData = new ";
+    statement += className + "Data();";
+    sourceFileWriter.writeLineIndented(statement);
+
     sourceFileWriter.writeMethodImplementationClosing();
 }
 
