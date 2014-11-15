@@ -1248,6 +1248,44 @@ void Protocol::CodeGeneratorCPP::writeMessageIsValidToSource (CodeWriter & sourc
     string methodName = fullScope + "::isValid";
     string methodReturn = "bool";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, true);
+
+    string statement;
+    auto messageFieldBegin = messageModel.fields()->cbegin();
+    auto messageFieldEnd = messageModel.fields()->cend();
+    while (messageFieldBegin != messageFieldEnd)
+    {
+        auto messageFieldModel = *messageFieldBegin;
+
+        if (messageFieldModel->requiredness() == MessageFieldModel::Requiredness::required)
+        {
+            string fieldSetName = "mData->m";
+            fieldSetName += messageFieldModel->namePascal() + "Set";
+            statement = "!";
+            statement += fieldSetName;
+            sourceFileWriter.writeIfOpening(statement);
+            statement = "return false;";
+            sourceFileWriter.writeLineIndented(statement);
+            sourceFileWriter.writeIfClosing();
+
+            if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::messageType)
+            {
+                string fieldValueName = "mData->m";
+                fieldValueName += messageFieldModel->namePascal() + "Value";
+                statement = "!";
+                statement += fieldValueName + "->isValid()";
+                sourceFileWriter.writeIfOpening(statement);
+                statement = "return false;";
+                sourceFileWriter.writeLineIndented(statement);
+                sourceFileWriter.writeIfClosing();
+            }
+
+            sourceFileWriter.writeBlankLine();
+        }
+        ++messageFieldBegin;
+    }
+    statement = "return true;";
+    sourceFileWriter.writeLineIndented(statement);
+
     sourceFileWriter.writeMethodImplementationClosing();
 }
 

@@ -23,8 +23,8 @@ message MessageOne
     required Def.EarlyMeals early = 0;
     optional MidMeals middle = 1;
     optional W.Xyz.LateMeals late = 2;
-    optional MessageTwo two = 3;
-    optional MessageTwo.EnumMealTime time = 4;
+    required MessageTwo two = 3;
+    required MessageTwo.EnumMealTime time = 4;
 }
 
 enum MidMeals
