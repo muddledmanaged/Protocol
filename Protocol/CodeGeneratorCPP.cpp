@@ -16,6 +16,7 @@
 #include <boost/filesystem/fstream.hpp>
 
 #include "CodeGeneratorCPP.h"
+#include "CodeGeneratorUtility.h"
 
 using namespace std;
 using namespace boost;
@@ -1238,6 +1239,90 @@ void Protocol::CodeGeneratorCPP::writeMessageSizeToSource (CodeWriter & sourceFi
     string methodName = fullScope + "::size";
     string methodReturn = "size_t";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, true);
+
+    string statement = "size_t size = 0;";
+    sourceFileWriter.writeLineIndented(statement);
+    sourceFileWriter.writeBlankLine();
+
+    auto messageFieldBegin = messageModel.fields()->cbegin();
+    auto messageFieldEnd = messageModel.fields()->cend();
+    while (messageFieldBegin != messageFieldEnd)
+    {
+        auto messageFieldModel = *messageFieldBegin;
+
+        int indexSize = Protocol::CodeGeneratorUtility::sizeIndex(messageFieldModel->index());
+        if (messageFieldModel->requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            string fieldValueName = "mData->m";
+            fieldValueName += messageFieldModel->namePascal() + "Collection";
+
+            statement = "!";
+            statement += fieldValueName + ".empty()";
+            sourceFileWriter.writeIfOpening(statement);
+
+            statement = "size_t sizeCollection = 0;";
+            sourceFileWriter.writeLineIndented(statement);
+
+            string loopValueName = "item";
+            statement = "auto & ";
+            statement += loopValueName;
+            sourceFileWriter.writeForEachLoopOpening(statement, fieldValueName);
+
+            statement = "sizeCollection += ";
+            statement += loopValueName + ".size();";
+            sourceFileWriter.writeLineIndented(statement);
+
+            sourceFileWriter.writeForEachLoopClosing();
+
+            statement = "size += sizeCollection;";
+            sourceFileWriter.writeLineIndented(statement);
+
+            if (messageFieldModel->packed())
+            {
+                statement = "size += ";
+                statement += to_string(indexSize) + ";";
+                sourceFileWriter.writeLineIndented(statement);
+
+                statement = "size += MuddledManaged::Protocol::sizeVarInt(sizeCollection);";
+                statement += to_string(indexSize) + ";";
+                sourceFileWriter.writeLineIndented(statement);
+            }
+            else
+            {
+                statement = "size += ";
+                statement += to_string(indexSize) + " * " + fieldValueName + ".size();";
+                sourceFileWriter.writeLineIndented(statement);
+            }
+
+            sourceFileWriter.writeIfClosing();
+        }
+        else
+        {
+            string fieldValueName = "mData->m";
+            fieldValueName += messageFieldModel->namePascal() + "Value";
+
+            string fieldSetName = "mData->m";
+            fieldSetName += messageFieldModel->namePascal() + "Set";
+            sourceFileWriter.writeIfOpening(fieldSetName);
+
+            statement = "size += ";
+            statement += to_string(indexSize) + ";";
+            sourceFileWriter.writeLineIndented(statement);
+
+            statement = "size += ";
+            statement += fieldValueName + "->size();";
+            sourceFileWriter.writeLineIndented(statement);
+
+            sourceFileWriter.writeIfClosing();
+        }
+
+        sourceFileWriter.writeBlankLine();
+        
+        ++messageFieldBegin;
+    }
+    statement = "return size;";
+    sourceFileWriter.writeLineIndented(statement);
+    
     sourceFileWriter.writeMethodImplementationClosing();
 }
 

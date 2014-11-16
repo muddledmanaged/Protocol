@@ -16,6 +16,8 @@
 		3E37A5D419DF918200BED294 /* MessageFieldParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E37A5D219DF918200BED294 /* MessageFieldParser.h */; };
 		3E37A5D919DFA3DE00BED294 /* MessageFieldParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E37A5D819DFA3DE00BED294 /* MessageFieldParserScenarios.cpp */; };
 		3E50659F19EB4B40006C86B6 /* ImportParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E50659E19EB4B40006C86B6 /* ImportParserScenarios.cpp */; };
+		3E652BE01A18592D004DA5FF /* CodeGeneratorUtility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E652BDE1A18592D004DA5FF /* CodeGeneratorUtility.cpp */; };
+		3E652BE11A18592D004DA5FF /* CodeGeneratorUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E652BDF1A18592D004DA5FF /* CodeGeneratorUtility.h */; };
 		3E72E7EC19FC8751007EC254 /* libboost_filesystem-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E72E7EB19FC8751007EC254 /* libboost_filesystem-mt.a */; };
 		3E72E7EE19FC8829007EC254 /* libboost_system-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E72E7ED19FC8829007EC254 /* libboost_system-mt.a */; };
 		3E817D7019F34D7C002A331E /* CodeGeneratorManagerScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E817D6F19F34D7C002A331E /* CodeGeneratorManagerScenarios.cpp */; };
@@ -137,6 +139,8 @@
 		3E5B5C4A19D8F0F3006EEE50 /* MessageMultiplePackage.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageMultiplePackage.proto; sourceTree = "<group>"; };
 		3E5B5C4C19D8F79B006EEE50 /* MessageNested.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageNested.proto; sourceTree = "<group>"; };
 		3E5B9CBE1A0C7C0A00AD9D73 /* MessageFieldReference.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageFieldReference.proto; sourceTree = "<group>"; };
+		3E652BDE1A18592D004DA5FF /* CodeGeneratorUtility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CodeGeneratorUtility.cpp; sourceTree = "<group>"; };
+		3E652BDF1A18592D004DA5FF /* CodeGeneratorUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodeGeneratorUtility.h; sourceTree = "<group>"; };
 		3E6A2B1A1A05AF5D009C8DB3 /* Nameable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Nameable.h; sourceTree = "<group>"; };
 		3E72E7EB19FC8751007EC254 /* libboost_filesystem-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_filesystem-mt.a"; path = "../../../../../opt/local/lib/libboost_filesystem-mt.a"; sourceTree = "<group>"; };
 		3E72E7ED19FC8829007EC254 /* libboost_system-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_system-mt.a"; path = "../../../../../opt/local/lib/libboost_system-mt.a"; sourceTree = "<group>"; };
@@ -324,6 +328,8 @@
 				3EFCB8A619F2074100771D5B /* CodeGeneratorManager.h */,
 				3EFCB8A919F20B1400771D5B /* CodeGeneratorCPP.cpp */,
 				3EFCB8AA19F20B1400771D5B /* CodeGeneratorCPP.h */,
+				3E652BDE1A18592D004DA5FF /* CodeGeneratorUtility.cpp */,
+				3E652BDF1A18592D004DA5FF /* CodeGeneratorUtility.h */,
 				3E72E7EF19FCA364007EC254 /* CodeIndenter.h */,
 				3E0EAFB419FD6D96008E6F7C /* CodeWriterCPP.h */,
 			);
@@ -463,6 +469,7 @@
 				3EE9089919C9361400C75919 /* ProtoModel.h in Headers */,
 				3E37A5D419DF918200BED294 /* MessageFieldParser.h in Headers */,
 				3EFCB8A819F2074100771D5B /* CodeGeneratorManager.h in Headers */,
+				3E652BE11A18592D004DA5FF /* CodeGeneratorUtility.h in Headers */,
 				3E9EE99719D6636B00AEF047 /* MessageParser.h in Headers */,
 				3EC7155A1A09EE6900C19A3F /* Packageable.h in Headers */,
 				3E9B75BC19E77E94004B59A7 /* OptionModel.h in Headers */,
@@ -584,6 +591,7 @@
 				3E9EE99219D6634F00AEF047 /* PackageParser.cpp in Sources */,
 				3EFCB8A719F2074100771D5B /* CodeGeneratorManager.cpp in Sources */,
 				3E9B75BB19E77E94004B59A7 /* OptionModel.cpp in Sources */,
+				3E652BE01A18592D004DA5FF /* CodeGeneratorUtility.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

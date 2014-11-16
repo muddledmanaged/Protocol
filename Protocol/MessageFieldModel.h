@@ -60,6 +60,9 @@ namespace MuddledManaged
 
             FieldCategory fieldCategory () const;
 
+            bool packed () const;
+            void setPacked (bool packed);
+
             void updateFieldCategoryToEnum (const EnumModel * pReferencedType);
             void updateFieldCategoryToMessage (const MessageModel * pReferencedType);
 
@@ -68,12 +71,13 @@ namespace MuddledManaged
             MessageFieldModel & operator = (const MessageFieldModel & rhs);
 
         private:
-            void setFieldCategoryAndFullType ();
+            void setFieldCategory ();
 
             Requiredness mRequiredness;
+            FieldCategory mFieldCategory;
+            bool mPacked;
             std::string mFieldType;
             std::string mFieldTypePackage;
-            FieldCategory mFieldCategory;
             unsigned int mIndex;
         };
 

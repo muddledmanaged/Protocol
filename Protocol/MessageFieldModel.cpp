@@ -15,14 +15,14 @@ using namespace MuddledManaged;
 
 Protocol::MessageFieldModel::MessageFieldModel (Requiredness requiredness, const std::string & fieldType,
                                                 const std::string & name, unsigned int index)
-: Nameable(name), mRequiredness(requiredness), mFieldType(fieldType), mIndex(index)
+: Nameable(name), mRequiredness(requiredness), mFieldType(fieldType), mIndex(index), mPacked(false)
 {
-    setFieldCategoryAndFullType();
+    setFieldCategory();
 }
 
 Protocol::MessageFieldModel::MessageFieldModel (const MessageFieldModel & src)
 : Nameable(src), Packageable(src), OptionModelContainer(src), mRequiredness(src.mRequiredness), mFieldType(src.mFieldType),
-  mFieldTypePackage(src.mFieldTypePackage), mFieldCategory(src.mFieldCategory), mIndex(src.mIndex)
+  mFieldTypePackage(src.mFieldTypePackage), mFieldCategory(src.mFieldCategory), mIndex(src.mIndex), mPacked(src.mPacked)
 {
 }
 
@@ -44,6 +44,16 @@ string Protocol::MessageFieldModel::fieldTypePackage () const
 Protocol::MessageFieldModel::FieldCategory Protocol::MessageFieldModel::fieldCategory () const
 {
     return mFieldCategory;
+}
+
+bool Protocol::MessageFieldModel::packed () const
+{
+    return mPacked;
+}
+
+void Protocol::MessageFieldModel::setPacked (bool packed)
+{
+    mPacked = packed;
 }
 
 void Protocol::MessageFieldModel::updateFieldCategoryToEnum (const EnumModel * pReferencedType)
@@ -83,15 +93,16 @@ Protocol::MessageFieldModel & Protocol::MessageFieldModel::operator = (const Mes
     OptionModelContainer::operator=(rhs);
 
     mRequiredness = rhs.mRequiredness;
+    mFieldCategory = rhs.mFieldCategory;
+    mPacked = rhs.mPacked;
     mFieldType = rhs.mFieldType;
     mFieldTypePackage = rhs.mFieldTypePackage;
-    mFieldCategory = rhs.mFieldCategory;
     mIndex = rhs.mIndex;
 
     return *this;
 }
 
-void Protocol::MessageFieldModel::setFieldCategoryAndFullType ()
+void Protocol::MessageFieldModel::setFieldCategory ()
 {
     if (mFieldType == "bool")
     {
