@@ -16,7 +16,7 @@
 #include <boost/filesystem/fstream.hpp>
 
 #include "CodeGeneratorCPP.h"
-#include "CodeGeneratorUtility.h"
+#include "ProtoBaseCPP.h"
 
 using namespace std;
 using namespace boost;
@@ -30,6 +30,8 @@ const string Protocol::CodeGeneratorCPP::mHeaderFileProlog =
 const string Protocol::CodeGeneratorCPP::mSourceFileProlog =
 "// This file was generated from the Protocol compiler.\n"
 "// You should not edit this file directly.\n";
+const string Protocol::CodeGeneratorCPP::mBaseClassesSourceFileName = "ProtoBaseCPP";
+const string Protocol::CodeGeneratorCPP::mBaseClassesDestinationFileName = "ProtoBase";
 
 Protocol::CodeGeneratorCPP::CodeGeneratorCPP ()
 { }
@@ -107,6 +109,8 @@ void Protocol::CodeGeneratorCPP::writeStandardIncludeFileNamesToHeader (CodeWrit
     headerFileWriter.writeIncludeLibrary("memory");
     headerFileWriter.writeIncludeLibrary("string");
     headerFileWriter.writeIncludeLibrary("vector");
+    headerFileWriter.writeBlankLine();
+    headerFileWriter.writeIncludeProject("ProtoBase.protocol.h");
     headerFileWriter.writeBlankLine();
 }
 
@@ -1250,7 +1254,7 @@ void Protocol::CodeGeneratorCPP::writeMessageSizeToSource (CodeWriter & sourceFi
     {
         auto messageFieldModel = *messageFieldBegin;
 
-        int indexSize = Protocol::CodeGeneratorUtility::sizeIndex(messageFieldModel->index());
+        int indexSize = Protocol::sizeIndex(messageFieldModel->index());
         if (messageFieldModel->requiredness() == MessageFieldModel::Requiredness::repeated)
         {
             string fieldValueName = "mData->m";
