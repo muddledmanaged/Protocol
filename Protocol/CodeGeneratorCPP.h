@@ -135,8 +135,9 @@ namespace MuddledManaged
 
             static const std::string mHeaderFileExtension;
             static const std::string mSourceFileExtension;
-            static const std::string mHeaderFileProlog;
-            static const std::string mSourceFileProlog;
+            static const std::string mGeneratedFileProlog;
+            static const std::string mProtoBaseHeaderFileTemplate;
+            static const std::string mProtoBaseSourceFileTemplate;
             static const std::string mBaseClassesSourceFileName;
             static const std::string mBaseClassesDestinationFileName;
         };

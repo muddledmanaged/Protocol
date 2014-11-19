@@ -16,7 +16,7 @@
 #include <boost/filesystem/fstream.hpp>
 
 #include "CodeGeneratorCPP.h"
-#include "ProtoBaseCPP.h"
+#include "CodeGeneratorUtilityCPP.h"
 
 using namespace std;
 using namespace boost;
@@ -24,14 +24,11 @@ using namespace MuddledManaged;
 
 const string Protocol::CodeGeneratorCPP::mHeaderFileExtension = ".protocol.h";
 const string Protocol::CodeGeneratorCPP::mSourceFileExtension = ".protocol.cpp";
-const string Protocol::CodeGeneratorCPP::mHeaderFileProlog =
-"// This file was generated from the Protocol compiler.\n"
-"// You should not edit this file directly.\n";
-const string Protocol::CodeGeneratorCPP::mSourceFileProlog =
-"// This file was generated from the Protocol compiler.\n"
-"// You should not edit this file directly.\n";
 const string Protocol::CodeGeneratorCPP::mBaseClassesSourceFileName = "ProtoBaseCPP";
 const string Protocol::CodeGeneratorCPP::mBaseClassesDestinationFileName = "ProtoBase";
+#include "CodeGeneratorPrologCPP.cpp"
+#include "ProtoBaseTemplateCPP.h"
+#include "ProtoBaseTemplateCPP.cpp"
 
 Protocol::CodeGeneratorCPP::CodeGeneratorCPP ()
 { }
@@ -54,7 +51,7 @@ void Protocol::CodeGeneratorCPP::generateHeaderFile (const std::string & outputF
     filesystem::ofstream headerFile(headerPath, ios::out | ios::trunc);
     CodeWriter headerFileWriter(headerFile);
 
-    headerFileWriter.writeLine(mHeaderFileProlog);
+    headerFileWriter.writeLine(mGeneratedFileProlog);
     headerFileWriter.writeHeaderIncludeBlockOpening(headerIncludeBlockText(protoModel, projectName));
 
     writeStandardIncludeFileNamesToHeader(headerFileWriter);
@@ -78,7 +75,7 @@ void Protocol::CodeGeneratorCPP::generateSourceFile (const std::string & outputF
     filesystem::ofstream sourceFile(sourcePath, ios::out | ios::trunc);
     CodeWriter sourceFileWriter(sourceFile);
 
-    sourceFileWriter.writeLine(mSourceFileProlog);
+    sourceFileWriter.writeLine(mGeneratedFileProlog);
 
     sourceFileWriter.writeIncludeProject(filesystem::change_extension(modelPath, mHeaderFileExtension).string());
     sourceFileWriter.writeBlankLine();

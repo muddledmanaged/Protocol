@@ -16,8 +16,7 @@
 		3E37A5D419DF918200BED294 /* MessageFieldParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E37A5D219DF918200BED294 /* MessageFieldParser.h */; };
 		3E37A5D919DFA3DE00BED294 /* MessageFieldParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E37A5D819DFA3DE00BED294 /* MessageFieldParserScenarios.cpp */; };
 		3E50659F19EB4B40006C86B6 /* ImportParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E50659E19EB4B40006C86B6 /* ImportParserScenarios.cpp */; };
-		3E652BE41A19AECE004DA5FF /* ProtoBaseCPP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E652BE21A19AECE004DA5FF /* ProtoBaseCPP.cpp */; };
-		3E652BE51A19AECE004DA5FF /* ProtoBaseCPP.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E652BE31A19AECE004DA5FF /* ProtoBaseCPP.h */; };
+		3E652BE51A19AECE004DA5FF /* ProtoBaseTemplateCPP.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E652BE31A19AECE004DA5FF /* ProtoBaseTemplateCPP.h */; };
 		3E72E7EC19FC8751007EC254 /* libboost_filesystem-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E72E7EB19FC8751007EC254 /* libboost_filesystem-mt.a */; };
 		3E72E7EE19FC8829007EC254 /* libboost_system-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E72E7ED19FC8829007EC254 /* libboost_system-mt.a */; };
 		3E817D7019F34D7C002A331E /* CodeGeneratorManagerScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E817D6F19F34D7C002A331E /* CodeGeneratorManagerScenarios.cpp */; };
@@ -139,8 +138,10 @@
 		3E5B5C4A19D8F0F3006EEE50 /* MessageMultiplePackage.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageMultiplePackage.proto; sourceTree = "<group>"; };
 		3E5B5C4C19D8F79B006EEE50 /* MessageNested.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageNested.proto; sourceTree = "<group>"; };
 		3E5B9CBE1A0C7C0A00AD9D73 /* MessageFieldReference.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageFieldReference.proto; sourceTree = "<group>"; };
-		3E652BE21A19AECE004DA5FF /* ProtoBaseCPP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtoBaseCPP.cpp; sourceTree = "<group>"; };
-		3E652BE31A19AECE004DA5FF /* ProtoBaseCPP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtoBaseCPP.h; sourceTree = "<group>"; };
+		3E6268A81A1C53000059E8A8 /* CodeGeneratorUtilityCPP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeGeneratorUtilityCPP.h; sourceTree = "<group>"; };
+		3E652BE21A19AECE004DA5FF /* ProtoBaseTemplateCPP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtoBaseTemplateCPP.cpp; sourceTree = "<group>"; };
+		3E652BE31A19AECE004DA5FF /* ProtoBaseTemplateCPP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtoBaseTemplateCPP.h; sourceTree = "<group>"; };
+		3E652BE71A1C4A67004DA5FF /* CodeGeneratorPrologCPP.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CodeGeneratorPrologCPP.cpp; sourceTree = "<group>"; };
 		3E6A2B1A1A05AF5D009C8DB3 /* Nameable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Nameable.h; sourceTree = "<group>"; };
 		3E72E7EB19FC8751007EC254 /* libboost_filesystem-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_filesystem-mt.a"; path = "../../../../../opt/local/lib/libboost_filesystem-mt.a"; sourceTree = "<group>"; };
 		3E72E7ED19FC8829007EC254 /* libboost_system-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_system-mt.a"; path = "../../../../../opt/local/lib/libboost_system-mt.a"; sourceTree = "<group>"; };
@@ -328,10 +329,12 @@
 				3EFCB8A619F2074100771D5B /* CodeGeneratorManager.h */,
 				3EFCB8A919F20B1400771D5B /* CodeGeneratorCPP.cpp */,
 				3EFCB8AA19F20B1400771D5B /* CodeGeneratorCPP.h */,
+				3E6268A81A1C53000059E8A8 /* CodeGeneratorUtilityCPP.h */,
+				3E652BE71A1C4A67004DA5FF /* CodeGeneratorPrologCPP.cpp */,
 				3E72E7EF19FCA364007EC254 /* CodeIndenter.h */,
 				3E0EAFB419FD6D96008E6F7C /* CodeWriterCPP.h */,
-				3E652BE21A19AECE004DA5FF /* ProtoBaseCPP.cpp */,
-				3E652BE31A19AECE004DA5FF /* ProtoBaseCPP.h */,
+				3E652BE21A19AECE004DA5FF /* ProtoBaseTemplateCPP.cpp */,
+				3E652BE31A19AECE004DA5FF /* ProtoBaseTemplateCPP.h */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -461,7 +464,7 @@
 				3EE5ACCD19E39621001AEC6C /* EnumValueParser.h in Headers */,
 				3E37A5D019DF916600BED294 /* MessageFieldModel.h in Headers */,
 				3E8422BA19E8C91800FA1222 /* OptionGroupParser.h in Headers */,
-				3E652BE51A19AECE004DA5FF /* ProtoBaseCPP.h in Headers */,
+				3E652BE51A19AECE004DA5FF /* ProtoBaseTemplateCPP.h in Headers */,
 				3E9B75C419E780D1004B59A7 /* OptionSingleParser.h in Headers */,
 				3EB0EBCB19E225CD0097929D /* OneofModel.h in Headers */,
 				3EB0EBCF19E225F40097929D /* OneofParser.h in Headers */,
@@ -581,7 +584,6 @@
 				3EB0EBCE19E225F40097929D /* OneofParser.cpp in Sources */,
 				3EB0FA2419DA4B66003633C8 /* ParserManager.cpp in Sources */,
 				3EB0EBCA19E225CD0097929D /* OneofModel.cpp in Sources */,
-				3E652BE41A19AECE004DA5FF /* ProtoBaseCPP.cpp in Sources */,
 				3EFCB8AB19F20B1400771D5B /* CodeGeneratorCPP.cpp in Sources */,
 				3E03213519EB20FB00E21D52 /* ImportParser.cpp in Sources */,
 				3E9B75BF19E7809A004B59A7 /* OptionValueParser.cpp in Sources */,

@@ -1,6 +1,6 @@
-// This file was generated from the Protocol compiler.
-// You should not edit this file directly.
+const string Protocol::CodeGeneratorCPP::mProtoBaseHeaderFileTemplate =
 
+R"MuddledManaged(
 #ifndef MuddledManaged_ProtoBase_h
 #define MuddledManaged_ProtoBase_h
 
@@ -376,3 +376,4 @@ namespace MuddledManaged
 }
 
 #endif
+)MuddledManaged";
