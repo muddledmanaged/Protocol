@@ -21,7 +21,8 @@ namespace MuddledManaged
         class CodeGeneratorCPP : public CodeGeneratorInterface
         {
         public:
-            virtual void generateCode (const std::string & outputFolder, const ProtoModel & protoModel, const std::string & projectName) const;
+            virtual void generateCode (const std::string & outputFolder, const ProtoModel & protoModel,
+                                       const std::string & projectName, bool generateCommonCode) const;
 
         private:
             friend class CodeGeneratorManager;
@@ -30,9 +31,15 @@ namespace MuddledManaged
 
             void generateHeaderFile (const std::string & outputFolder, const ProtoModel & protoModel, const std::string & projectName) const;
 
+            void generateHeaderFileCommon (const std::string & outputFolder, const std::string & projectName) const;
+
             void generateSourceFile (const std::string & outputFolder, const ProtoModel & protoModel, const std::string & projectName) const;
 
+            void generateSourceFileCommon (const std::string & outputFolder, const std::string & projectName) const;
+
             std::string headerIncludeBlockText (const ProtoModel & protoModel, const std::string & projectName) const;
+
+            std::string headerIncludeBlockText (const std::string & headerPath, const std::string & projectName) const;
 
             std::string fullTypeName (const MessageFieldModel & messageFieldModel) const;
 

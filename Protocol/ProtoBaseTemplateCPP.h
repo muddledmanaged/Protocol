@@ -1,12 +1,6 @@
 const string Protocol::CodeGeneratorCPP::mProtoBaseHeaderFileTemplate =
 
 R"MuddledManaged(
-#ifndef MuddledManaged_ProtoBase_h
-#define MuddledManaged_ProtoBase_h
-
-#include <cstdint>
-#include <string>
-
 namespace MuddledManaged
 {
     namespace Protocol
@@ -375,5 +369,4 @@ namespace MuddledManaged
     }
 }
 
-#endif
 )MuddledManaged";

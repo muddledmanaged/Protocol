@@ -24,7 +24,7 @@ using namespace MuddledManaged;
 
 const string Protocol::CodeGeneratorCPP::mHeaderFileExtension = ".protocol.h";
 const string Protocol::CodeGeneratorCPP::mSourceFileExtension = ".protocol.cpp";
-const string Protocol::CodeGeneratorCPP::mBaseClassesSourceFileName = "ProtoBaseCPP";
+const string Protocol::CodeGeneratorCPP::mBaseClassesSourceFileName = "ProtoBaseTemplateCPP";
 const string Protocol::CodeGeneratorCPP::mBaseClassesDestinationFileName = "ProtoBase";
 #include "CodeGeneratorPrologCPP.cpp"
 #include "ProtoBaseTemplateCPP.h"
@@ -34,10 +34,15 @@ Protocol::CodeGeneratorCPP::CodeGeneratorCPP ()
 { }
 
 void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, const ProtoModel & protoModel,
-                                               const std::string & projectName) const
+                                               const std::string & projectName, bool generateCommonCode) const
 {
     generateHeaderFile(outputFolder, protoModel, projectName);
     generateSourceFile(outputFolder, protoModel, projectName);
+    if (generateCommonCode)
+    {
+        generateHeaderFileCommon(outputFolder, projectName);
+        generateSourceFileCommon(outputFolder, projectName);
+    }
 }
 
 void Protocol::CodeGeneratorCPP::generateHeaderFile (const std::string & outputFolder, const ProtoModel & protoModel,
@@ -64,6 +69,26 @@ void Protocol::CodeGeneratorCPP::generateHeaderFile (const std::string & outputF
     headerFileWriter.writeHeaderIncludeBlockClosing();
 }
 
+void Protocol::CodeGeneratorCPP::generateHeaderFileCommon (const std::string & outputFolder, const std::string & projectName) const
+{
+    filesystem::path outputPath(outputFolder);
+    filesystem::path modelPath(mBaseClassesDestinationFileName);
+    filesystem::path headerPath(outputPath / filesystem::change_extension(modelPath, mHeaderFileExtension));
+
+    filesystem::create_directory(outputFolder);
+    filesystem::ofstream headerFile(headerPath, ios::out | ios::trunc);
+    CodeWriter headerFileWriter(headerFile);
+
+    headerFileWriter.writeLine(mGeneratedFileProlog);
+    headerFileWriter.writeHeaderIncludeBlockOpening(headerIncludeBlockText(headerPath.string(), projectName));
+
+    writeStandardIncludeFileNamesToHeader(headerFileWriter);
+
+    headerFileWriter.writeLine(mProtoBaseHeaderFileTemplate);
+
+    headerFileWriter.writeHeaderIncludeBlockClosing();
+}
+
 void Protocol::CodeGeneratorCPP::generateSourceFile (const std::string & outputFolder, const ProtoModel & protoModel,
                                                      const std::string & projectName) const
 {
@@ -85,6 +110,26 @@ void Protocol::CodeGeneratorCPP::generateSourceFile (const std::string & outputF
     writeProtoMessagesToSource(sourceFileWriter, protoModel);
 }
 
+void Protocol::CodeGeneratorCPP::generateSourceFileCommon (const std::string & outputFolder, const std::string & projectName) const
+{
+    filesystem::path outputPath(outputFolder);
+    filesystem::path modelPath(mBaseClassesDestinationFileName);
+    filesystem::path sourcePath(outputPath / filesystem::change_extension(modelPath, mSourceFileExtension));
+
+    filesystem::create_directory(outputFolder);
+    filesystem::ofstream sourceFile(sourcePath, ios::out | ios::trunc);
+    CodeWriter sourceFileWriter(sourceFile);
+
+    sourceFileWriter.writeLine(mGeneratedFileProlog);
+
+    sourceFileWriter.writeIncludeProject(filesystem::change_extension(modelPath, mHeaderFileExtension).string());
+    sourceFileWriter.writeBlankLine();
+    sourceFileWriter.writeUsingNamespace("std");
+    sourceFileWriter.writeBlankLine();
+
+    sourceFileWriter.writeLine(mProtoBaseSourceFileTemplate);
+}
+
 string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const ProtoModel & protoModel, const std::string & projectName) const
 {
     string text = projectName;
@@ -94,6 +139,21 @@ string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const ProtoModel & pr
     }
 
     filesystem::path modelPath(protoModel.namePascal());
+    text += filesystem::basename(modelPath.filename());
+    text += "_h";
+
+    return text;
+}
+
+string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const std::string & headerPath, const std::string & projectName) const
+{
+    string text = projectName;
+    if (!text.empty())
+    {
+        text += "_";
+    }
+
+    filesystem::path modelPath(headerPath);
     text += filesystem::basename(modelPath.filename());
     text += "_h";
 

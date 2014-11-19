@@ -23,7 +23,8 @@ namespace MuddledManaged
             virtual ~CodeGeneratorInterface ()
             { }
 
-            virtual void generateCode (const std::string & outputFolder, const ProtoModel & protoModel, const std::string & projectName = "") const = 0;
+            virtual void generateCode (const std::string & outputFolder, const ProtoModel & protoModel,
+                                       const std::string & projectName = "", bool generateCommonCode = false) const = 0;
 
         protected:
             CodeGeneratorInterface ()
