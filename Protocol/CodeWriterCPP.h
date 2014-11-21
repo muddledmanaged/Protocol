@@ -160,9 +160,14 @@ namespace MuddledManaged
                 mStream << mIndenter.prefix() << "class " << className << ";" << std::endl;
             }
 
-            void writeStructOpening (const std::string & structName)
+            void writeStructOpening (const std::string & structName, const std::string & structInheritance = "")
             {
-                mStream << mIndenter.prefix() << "struct " << structName << std::endl;
+                mStream << mIndenter.prefix() << "struct " << structName;
+                if (!structInheritance.empty())
+                {
+                    mStream << " : " << structInheritance;
+                }
+                mStream << std::endl;
                 writeCurlyBraceOpening();
             }
 
@@ -172,9 +177,14 @@ namespace MuddledManaged
                 mStream << mIndenter.prefix() << "};" << std::endl << std::endl;
             }
 
-            void writeClassOpening (const std::string & className)
+            void writeClassOpening (const std::string & className, const std::string & classInheritance = "")
             {
-                mStream << mIndenter.prefix() << "class " << className << std::endl;
+                mStream << mIndenter.prefix() << "class " << className;
+                if (!classInheritance.empty())
+                {
+                    mStream << " : " << classInheritance;
+                }
+                mStream << std::endl;
                 writeCurlyBraceOpening();
             }
 

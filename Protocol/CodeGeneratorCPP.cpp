@@ -24,6 +24,7 @@ using namespace MuddledManaged;
 
 const string Protocol::CodeGeneratorCPP::mHeaderFileExtension = ".protocol.h";
 const string Protocol::CodeGeneratorCPP::mSourceFileExtension = ".protocol.cpp";
+const string Protocol::CodeGeneratorCPP::mBaseClassesNamespace = "MuddledManaged::Protocol";
 const string Protocol::CodeGeneratorCPP::mBaseClassesSourceFileName = "ProtoBaseTemplateCPP";
 const string Protocol::CodeGeneratorCPP::mBaseClassesDestinationFileName = "ProtoBase";
 #include "CodeGeneratorPrologCPP.cpp"
@@ -416,7 +417,8 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
         headerFileWriter.writeBlankLine();
     }
 
-    headerFileWriter.writeClassOpening(className);
+    string baseClass = "public " + mBaseClassesNamespace + "::ProtoMessage";
+    headerFileWriter.writeClassOpening(className, baseClass);
 
     headerFileWriter.writeClassPublic();
 
@@ -791,7 +793,7 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldBackingFieldsToHeader (CodeWri
 {
     string backingFieldName;
     string backingFieldType;
-    string fieldType = fullTypeName(messageFieldModel);
+    string fieldType = fullTypeNameInternal(messageFieldModel);
 
     switch (messageFieldModel.fieldCategory())
     {
@@ -1512,5 +1514,86 @@ string Protocol::CodeGeneratorCPP::fullTypeName (const MessageFieldModel & messa
         fieldTypePackage += "::";
     }
     fieldType = fieldTypePackage + fieldType;
+    return fieldType;
+}
+
+string Protocol::CodeGeneratorCPP::fullTypeNameInternal (const MessageFieldModel & messageFieldModel) const
+{
+    string fieldType = messageFieldModel.fieldType();
+    if (fieldType == "bool")
+    {
+        return mBaseClassesNamespace + "::ProtoBool";
+    }
+    if (fieldType == "string")
+    {
+        return mBaseClassesNamespace + "::ProtoString";
+    }
+    if (fieldType == "double")
+    {
+        return mBaseClassesNamespace + "::ProtoDouble";
+    }
+    if (fieldType == "float")
+    {
+        return mBaseClassesNamespace + "::ProtoFloat";
+    }
+    if (fieldType == "int32")
+    {
+        return mBaseClassesNamespace + "::ProtoInt32";
+    }
+    if (fieldType == "int64")
+    {
+        return mBaseClassesNamespace + "::ProtoInt64";
+    }
+    if (fieldType == "uint32")
+    {
+        return mBaseClassesNamespace + "::ProtoUnsignedInt32";
+    }
+    if (fieldType == "uint64")
+    {
+        return mBaseClassesNamespace + "::ProtoUnsignedInt64";
+    }
+    if (fieldType == "sint32")
+    {
+        return mBaseClassesNamespace + "::ProtoSignedInt32";
+    }
+    if (fieldType == "sint64")
+    {
+        return mBaseClassesNamespace + "::ProtoSignedInt64";
+    }
+    if (fieldType == "fixed32")
+    {
+        return mBaseClassesNamespace + "::ProtoFixed32";
+    }
+    if (fieldType == "fixed64")
+    {
+        return mBaseClassesNamespace + "::ProtoFixed64";
+    }
+    if (fieldType == "sfixed32")
+    {
+        return mBaseClassesNamespace + "::ProtoSignedFixed32";
+    }
+    if (fieldType == "sfixed64")
+    {
+        return mBaseClassesNamespace + "::ProtoSignedFixed64";
+    }
+    if (fieldType == "bytes")
+    {
+        return mBaseClassesNamespace + "::ProtoBytes";
+    }
+
+    boost::replace_all(fieldType, ".", "_");
+    string fieldTypePackage = messageFieldModel.fieldTypePackage();
+    boost::replace_all(fieldTypePackage, ".", "::");
+    if (!fieldTypePackage.empty())
+    {
+        fieldTypePackage += "::";
+    }
+    fieldType = fieldTypePackage + fieldType;
+
+    if (messageFieldModel.fieldCategory() == MessageFieldModel::FieldCategory::enumType)
+    {
+        fieldType = mBaseClassesNamespace + "::ProtoEnum<" + fieldType + ">";
+    }
+
     return fieldType;
 }

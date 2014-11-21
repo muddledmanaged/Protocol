@@ -43,6 +43,8 @@ namespace MuddledManaged
 
             std::string fullTypeName (const MessageFieldModel & messageFieldModel) const;
 
+            std::string fullTypeNameInternal (const MessageFieldModel & messageFieldModel) const;
+
             void writeStandardIncludeFileNamesToHeader (CodeWriter & headerFileWriter, bool includeBase) const;
 
             void writeIncludedProtoFileNamesToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel) const;
@@ -145,6 +147,7 @@ namespace MuddledManaged
             static const std::string mGeneratedFileProlog;
             static const std::string mProtoBaseHeaderFileTemplate;
             static const std::string mProtoBaseSourceFileTemplate;
+            static const std::string mBaseClassesNamespace;
             static const std::string mBaseClassesSourceFileName;
             static const std::string mBaseClassesDestinationFileName;
         };
