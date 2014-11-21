@@ -59,7 +59,7 @@ void Protocol::CodeGeneratorCPP::generateHeaderFile (const std::string & outputF
     headerFileWriter.writeLine(mGeneratedFileProlog);
     headerFileWriter.writeHeaderIncludeBlockOpening(headerIncludeBlockText(protoModel, projectName));
 
-    writeStandardIncludeFileNamesToHeader(headerFileWriter);
+    writeStandardIncludeFileNamesToHeader(headerFileWriter, true);
     writeIncludedProtoFileNamesToHeader(headerFileWriter, protoModel);
 
     writeProtoEnumsToHeader(headerFileWriter, protoModel);
@@ -72,17 +72,17 @@ void Protocol::CodeGeneratorCPP::generateHeaderFile (const std::string & outputF
 void Protocol::CodeGeneratorCPP::generateHeaderFileCommon (const std::string & outputFolder, const std::string & projectName) const
 {
     filesystem::path outputPath(outputFolder);
-    filesystem::path modelPath(mBaseClassesDestinationFileName);
-    filesystem::path headerPath(outputPath / filesystem::change_extension(modelPath, mHeaderFileExtension));
+    filesystem::path protoBasePath(mBaseClassesDestinationFileName);
+    filesystem::path headerPath(outputPath / filesystem::change_extension(protoBasePath, mHeaderFileExtension));
 
     filesystem::create_directory(outputFolder);
     filesystem::ofstream headerFile(headerPath, ios::out | ios::trunc);
     CodeWriter headerFileWriter(headerFile);
 
     headerFileWriter.writeLine(mGeneratedFileProlog);
-    headerFileWriter.writeHeaderIncludeBlockOpening(headerIncludeBlockText(headerPath.string(), projectName));
+    headerFileWriter.writeHeaderIncludeBlockOpening(headerIncludeBlockText(mBaseClassesDestinationFileName, projectName));
 
-    writeStandardIncludeFileNamesToHeader(headerFileWriter);
+    writeStandardIncludeFileNamesToHeader(headerFileWriter, false);
 
     headerFileWriter.writeLine(mProtoBaseHeaderFileTemplate);
 
@@ -113,8 +113,8 @@ void Protocol::CodeGeneratorCPP::generateSourceFile (const std::string & outputF
 void Protocol::CodeGeneratorCPP::generateSourceFileCommon (const std::string & outputFolder, const std::string & projectName) const
 {
     filesystem::path outputPath(outputFolder);
-    filesystem::path modelPath(mBaseClassesDestinationFileName);
-    filesystem::path sourcePath(outputPath / filesystem::change_extension(modelPath, mSourceFileExtension));
+    filesystem::path protoBasePath(mBaseClassesDestinationFileName);
+    filesystem::path sourcePath(outputPath / filesystem::change_extension(protoBasePath, mSourceFileExtension));
 
     filesystem::create_directory(outputFolder);
     filesystem::ofstream sourceFile(sourcePath, ios::out | ios::trunc);
@@ -122,7 +122,7 @@ void Protocol::CodeGeneratorCPP::generateSourceFileCommon (const std::string & o
 
     sourceFileWriter.writeLine(mGeneratedFileProlog);
 
-    sourceFileWriter.writeIncludeProject(filesystem::change_extension(modelPath, mHeaderFileExtension).string());
+    sourceFileWriter.writeIncludeProject(filesystem::change_extension(protoBasePath, mHeaderFileExtension).string());
     sourceFileWriter.writeBlankLine();
     sourceFileWriter.writeUsingNamespace("std");
     sourceFileWriter.writeBlankLine();
@@ -145,7 +145,7 @@ string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const ProtoModel & pr
     return text;
 }
 
-string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const std::string & headerPath, const std::string & projectName) const
+string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const std::string & headerBaseName, const std::string & projectName) const
 {
     string text = projectName;
     if (!text.empty())
@@ -153,22 +153,27 @@ string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const std::string & h
         text += "_";
     }
 
-    filesystem::path modelPath(headerPath);
-    text += filesystem::basename(modelPath.filename());
+    text += headerBaseName;
     text += "_h";
 
     return text;
 }
 
-void Protocol::CodeGeneratorCPP::writeStandardIncludeFileNamesToHeader (CodeWriter & headerFileWriter) const
+void Protocol::CodeGeneratorCPP::writeStandardIncludeFileNamesToHeader (CodeWriter & headerFileWriter, bool includeBase) const
 {
     headerFileWriter.writeIncludeLibrary("cstdint");
     headerFileWriter.writeIncludeLibrary("memory");
     headerFileWriter.writeIncludeLibrary("string");
     headerFileWriter.writeIncludeLibrary("vector");
     headerFileWriter.writeBlankLine();
-    headerFileWriter.writeIncludeProject("ProtoBase.protocol.h");
-    headerFileWriter.writeBlankLine();
+
+    if (includeBase)
+    {
+        filesystem::path protoBasePath(mBaseClassesDestinationFileName);
+        filesystem::path headerPath(filesystem::change_extension(protoBasePath, mHeaderFileExtension));
+        headerFileWriter.writeIncludeProject(headerPath.string());
+        headerFileWriter.writeBlankLine();
+    }
 }
 
 void Protocol::CodeGeneratorCPP::writeIncludedProtoFileNamesToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel) const
