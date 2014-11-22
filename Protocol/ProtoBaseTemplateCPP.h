@@ -153,7 +153,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoEnum : public ProtoNumericType<EnumType>
         {
         public:
-            explicit ProtoEnum (EnumType defaultValue)
+            explicit ProtoEnum (EnumType defaultValue = 0)
             : ProtoNumericType<EnumType>(defaultValue)
             {}
         };
@@ -161,7 +161,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoBool : public ProtoNumericType<bool>
         {
         public:
-            explicit ProtoBool (bool defaultValue)
+            explicit ProtoBool (bool defaultValue = false)
             : ProtoNumericType<bool>(defaultValue)
             {}
         };
@@ -169,7 +169,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoInt32 : public ProtoNumericType<std::int32_t>
         {
         public:
-            explicit ProtoInt32 (std::int32_t defaultValue)
+            explicit ProtoInt32 (std::int32_t defaultValue = 0)
             : ProtoNumericType<std::int32_t>(defaultValue)
             {}
         };
@@ -177,7 +177,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoInt64 : public ProtoNumericType<std::int64_t>
         {
         public:
-            explicit ProtoInt64 (std::int64_t defaultValue)
+            explicit ProtoInt64 (std::int64_t defaultValue = 0)
             : ProtoNumericType<std::int64_t>(defaultValue)
             {}
         };
@@ -185,7 +185,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoUnsignedInt32 : public ProtoNumericType<std::uint32_t>
         {
         public:
-            explicit ProtoUnsignedInt32 (std::uint32_t defaultValue)
+            explicit ProtoUnsignedInt32 (std::uint32_t defaultValue = 0)
             : ProtoNumericType<std::uint32_t>(defaultValue)
             {}
         };
@@ -193,7 +193,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoUnsignedInt64 : public ProtoNumericType<std::uint64_t>
         {
         public:
-            explicit ProtoUnsignedInt64 (std::uint64_t defaultValue)
+            explicit ProtoUnsignedInt64 (std::uint64_t defaultValue = 0)
             : ProtoNumericType<std::uint64_t>(defaultValue)
             {}
         };
@@ -201,7 +201,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoSignedInt32 : public ProtoNumericType<std::int32_t>
         {
         public:
-            explicit ProtoSignedInt32 (std::int32_t defaultValue)
+            explicit ProtoSignedInt32 (std::int32_t defaultValue = 0)
             : ProtoNumericType<std::int32_t>(defaultValue)
             {}
 
@@ -213,7 +213,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoSignedInt64 : public ProtoNumericType<std::int64_t>
         {
         public:
-            explicit ProtoSignedInt64 (std::int64_t defaultValue)
+            explicit ProtoSignedInt64 (std::int64_t defaultValue = 0)
             : ProtoNumericType<std::int64_t>(defaultValue)
             {}
 
@@ -225,7 +225,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoFixed32 : public ProtoNumericType<std::int32_t>
         {
         public:
-            explicit ProtoFixed32 (std::int32_t defaultValue)
+            explicit ProtoFixed32 (std::int32_t defaultValue = 0)
             : ProtoNumericType<std::int32_t>(defaultValue)
             {}
 
@@ -242,7 +242,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoFixed64 : public ProtoNumericType<std::int64_t>
         {
         public:
-            explicit ProtoFixed64 (std::int64_t defaultValue)
+            explicit ProtoFixed64 (std::int64_t defaultValue = 0)
             : ProtoNumericType<std::int64_t>(defaultValue)
             {}
 
@@ -259,7 +259,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoSignedFixed32 : public ProtoFixed32
         {
         public:
-            explicit ProtoSignedFixed32 (std::int32_t defaultValue)
+            explicit ProtoSignedFixed32 (std::int32_t defaultValue = 0)
             : ProtoFixed32(defaultValue)
             {}
         };
@@ -267,7 +267,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoSignedFixed64 : public ProtoFixed64
         {
         public:
-            explicit ProtoSignedFixed64 (std::int64_t defaultValue)
+            explicit ProtoSignedFixed64 (std::int64_t defaultValue = 0)
             : ProtoFixed64(defaultValue)
             {}
         };
@@ -275,7 +275,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoFloat : public ProtoNumericType<float>
         {
         public:
-            explicit ProtoFloat (float defaultValue)
+            explicit ProtoFloat (float defaultValue = 0)
             : ProtoNumericType<float>(defaultValue)
             {}
 
@@ -292,7 +292,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoDouble : public ProtoNumericType<double>
         {
         public:
-            explicit ProtoDouble (double defaultValue)
+            explicit ProtoDouble (double defaultValue = 0)
             : ProtoNumericType<double>(defaultValue)
             {}
 
@@ -353,7 +353,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoString : public ProtoStringType
         {
         public:
-            explicit ProtoString (const std::string & defaultValue)
+            explicit ProtoString (const std::string & defaultValue = "")
             : ProtoStringType(defaultValue)
             {}
         };

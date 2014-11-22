@@ -562,7 +562,7 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
     {
         auto messageFieldModel = *messageFieldBegin;
 
-        writeMessageFieldBackingFieldsToHeader(headerFileWriter, protoModel, *messageFieldModel, true);
+        writeMessageFieldBackingFieldsToHeader(headerFileWriter, protoModel, *messageFieldModel);
 
         ++messageFieldBegin;
     }
@@ -789,7 +789,7 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldToHeader (CodeWriter & headerF
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldBackingFieldsToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
-                                                                         const MessageFieldModel & messageFieldModel, bool writeSetFlag) const
+                                                                         const MessageFieldModel & messageFieldModel) const
 {
     string backingFieldName;
     string backingFieldType;
@@ -801,11 +801,6 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldBackingFieldsToHeader (CodeWri
         case MessageFieldModel::FieldCategory::numericType:
         case MessageFieldModel::FieldCategory::enumType:
         {
-            backingFieldName = "m";
-            backingFieldName += messageFieldModel.namePascal() + "Default";
-            backingFieldType = fieldType;
-            headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
-
             if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
             {
                 backingFieldName = "m";
@@ -816,14 +811,6 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldBackingFieldsToHeader (CodeWri
             }
             else
             {
-                if (writeSetFlag)
-                {
-                    backingFieldName = "m";
-                    backingFieldName += messageFieldModel.namePascal() + "Set";
-                    backingFieldType = "bool";
-                    headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
-                }
-
                 backingFieldName = "m";
                 backingFieldName += messageFieldModel.namePascal() + "Value";
                 backingFieldType = fieldType;
@@ -833,14 +820,6 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldBackingFieldsToHeader (CodeWri
         }
 
         case MessageFieldModel::FieldCategory::stringType:
-        {
-            backingFieldName = "m";
-            backingFieldName += messageFieldModel.namePascal() + "Default";
-            backingFieldType = fieldType;
-            headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
-
-            // Fallthrough to the cases below.
-        }
         case MessageFieldModel::FieldCategory::bytesType:
         case MessageFieldModel::FieldCategory::messageType:
         {
@@ -854,14 +833,6 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldBackingFieldsToHeader (CodeWri
             }
             else
             {
-                if (writeSetFlag)
-                {
-                    backingFieldName = "m";
-                    backingFieldName += messageFieldModel.namePascal() + "Set";
-                    backingFieldType = "bool";
-                    headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
-                }
-
                 backingFieldName = "m";
                 backingFieldName += messageFieldModel.namePascal() + "Value";
                 backingFieldType = "std::unique_ptr<";
@@ -950,7 +921,7 @@ void Protocol::CodeGeneratorCPP::writeOneofBackingFieldsToHeader (CodeWriter & h
     {
         auto messageFieldModel = *messageFieldBegin;
 
-        writeMessageFieldBackingFieldsToHeader(headerFileWriter, protoModel, *messageFieldModel, false);
+        writeMessageFieldBackingFieldsToHeader(headerFileWriter, protoModel, *messageFieldModel);
 
         ++messageFieldBegin;
     }

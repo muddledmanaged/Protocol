@@ -69,7 +69,7 @@ namespace MuddledManaged
                                             const MessageFieldModel & messageFieldModel) const;
 
             void writeMessageFieldBackingFieldsToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
-                                                         const MessageFieldModel & messageFieldModel, bool writeSetFlag) const;
+                                                         const MessageFieldModel & messageFieldModel) const;
 
             void writeMessageFieldIndexToHeader (CodeWriter & headerFileWriter,
                                                  const MessageFieldModel & messageFieldModel) const;
