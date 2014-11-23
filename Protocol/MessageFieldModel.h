@@ -63,6 +63,9 @@ namespace MuddledManaged
             bool packed () const;
             void setPacked (bool packed);
 
+            std::string defaultValue () const;
+            void setDefaultValue (const std::string & defaultValue);
+
             void updateFieldCategoryToEnum (const EnumModel * pReferencedType);
             void updateFieldCategoryToMessage (const MessageModel * pReferencedType);
 
@@ -76,6 +79,7 @@ namespace MuddledManaged
             Requiredness mRequiredness;
             FieldCategory mFieldCategory;
             bool mPacked;
+            std::string mDefaultValue;
             std::string mFieldType;
             std::string mFieldTypePackage;
             unsigned int mIndex;

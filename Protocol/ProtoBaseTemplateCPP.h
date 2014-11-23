@@ -98,6 +98,8 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 return (index << 3) | 0x02;
             }
+
+            virtual bool isValid () = 0;
         };
 
         template <typename NumericType>

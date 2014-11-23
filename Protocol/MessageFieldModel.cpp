@@ -22,7 +22,8 @@ Protocol::MessageFieldModel::MessageFieldModel (Requiredness requiredness, const
 
 Protocol::MessageFieldModel::MessageFieldModel (const MessageFieldModel & src)
 : Nameable(src), Packageable(src), OptionModelContainer(src), mRequiredness(src.mRequiredness), mFieldType(src.mFieldType),
-  mFieldTypePackage(src.mFieldTypePackage), mFieldCategory(src.mFieldCategory), mIndex(src.mIndex), mPacked(src.mPacked)
+  mFieldTypePackage(src.mFieldTypePackage), mFieldCategory(src.mFieldCategory), mIndex(src.mIndex), mPacked(src.mPacked),
+  mDefaultValue(src.mDefaultValue)
 {
 }
 
@@ -54,6 +55,16 @@ bool Protocol::MessageFieldModel::packed () const
 void Protocol::MessageFieldModel::setPacked (bool packed)
 {
     mPacked = packed;
+}
+
+std::string Protocol::MessageFieldModel::defaultValue () const
+{
+    return mDefaultValue;
+}
+
+void Protocol::MessageFieldModel::setDefaultValue (const std::string & defaultValue)
+{
+    mDefaultValue = defaultValue;
 }
 
 void Protocol::MessageFieldModel::updateFieldCategoryToEnum (const EnumModel * pReferencedType)
@@ -95,6 +106,7 @@ Protocol::MessageFieldModel & Protocol::MessageFieldModel::operator = (const Mes
     mRequiredness = rhs.mRequiredness;
     mFieldCategory = rhs.mFieldCategory;
     mPacked = rhs.mPacked;
+    mDefaultValue = rhs.mDefaultValue;
     mFieldType = rhs.mFieldType;
     mFieldTypePackage = rhs.mFieldTypePackage;
     mIndex = rhs.mIndex;

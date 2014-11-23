@@ -238,7 +238,11 @@ void Protocol::ProtoModel::addOption (TokenReader::iterator current, const Optio
     if (mCurrentField != nullptr)
     {
         mCurrentField->addOption(option);
-        if (option->name() == "packed")
+        if (option->name() == "default")
+        {
+            mCurrentField->setDefaultValue(option->value());
+        }
+        else if (option->name() == "packed")
         {
             if (option->value() == "true")
             {
