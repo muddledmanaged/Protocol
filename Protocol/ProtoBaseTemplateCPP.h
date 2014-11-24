@@ -50,6 +50,73 @@ R"MuddledManaged(namespace MuddledManaged
             return sizeVarInt(index << 3);
         }
 
+        int parseVarInt (const unsigned char * pData, unsigned long long *pResult)
+        {
+            if (pData == nullptr)
+            {
+                throw std::invalid_argument("pData cannot be null.");
+            }
+            if (pResult == nullptr)
+            {
+                throw std::invalid_argument("pResult cannot be null.");
+            }
+            unsigned long long value = 0;
+            int byteCount = 0;
+            while (true)
+            {
+                unsigned long long currentMaskedValue = pData & 0x7f;
+                currentMaskedValue << byteCount * 7;
+                value |= currentMaskedValue;
+
+                bool lastByte = pData & 0x80;
+                if (lastByte)
+                {
+                    break;
+                }
+                ++byteCount;
+                ++pData;
+            }
+
+            *pResult = value;
+
+            return byteCount;
+        }
+
+        virtual std::string serializeVarInt (unsigned long long value) const
+        {
+            std::string result;
+            int byteCount = 0;
+            while (true)
+            {
+                unsigned long long currentMask = 0x7f;
+                currentMask << byteCount * 7;
+                unsigned long long currentMaskedValue = value & currentMask;
+                currentMaskedValue >> byteCount * 7;
+                unsigned char currentByte = static_cast<unsigned char>(currentMaskedValue);
+
+                bool lastByte = false;
+                value &= ~currentMaskedValue;
+                if (value == 0)
+                {
+                    lastByte = true;
+                }
+                else
+                {
+                    currentByte |= 0x80;
+                }
+
+                result += currentByte;
+
+                if (lastByte)
+                {
+                    break;
+                }
+                ++byteCount;
+            }
+
+            return result;
+        }
+
         class ProtoBase
         {
         public:
@@ -137,9 +204,15 @@ R"MuddledManaged(namespace MuddledManaged
                 return index << 3;
             }
 
-            virtual void parse (const std::string & data);
+            virtual void parse (const std::string & data)
+            {
 
-            virtual std::string serialize () const;
+            }
+
+            virtual std::string serialize () const
+            {
+
+            }
 
             virtual size_t size () const
             {
