@@ -1403,55 +1403,88 @@ void Protocol::CodeGeneratorCPP::writeMessageIsValidToSource (CodeWriter & sourc
     {
         auto messageFieldModel = *messageFieldBegin;
 
-        string fieldValueName = "mData->m";
-        fieldValueName += messageFieldModel->namePascal() + "Value";
-
-        if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::messageType)
+        if (messageFieldModel->requiredness() == MessageFieldModel::Requiredness::repeated)
         {
-            bool nullChecked = false;
-            if (messageFieldModel->requiredness() == MessageFieldModel::Requiredness::required)
+            if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::messageType)
             {
-                statement = fieldValueName + " == nullptr";
+                string fieldValueName = "mData->m";
+                fieldValueName += messageFieldModel->namePascal() + "Collection";
+
+                statement = "!";
+                statement += fieldValueName + ".empty()";
+                sourceFileWriter.writeIfOpening(statement);
+
+                string loopValueName = "item";
+                statement = "auto & ";
+                statement += loopValueName;
+                sourceFileWriter.writeForEachLoopOpening(statement, fieldValueName);
+
+                statement = fieldValueName + " != nullptr && ";
+                statement += "!" + fieldValueName + "->isValid()";
                 sourceFileWriter.writeIfOpening(statement);
                 statement = "return false;";
                 sourceFileWriter.writeLineIndented(statement);
                 sourceFileWriter.writeIfClosing();
-                nullChecked = true;
-            }
-            if (nullChecked)
-            {
-                statement = "";
-            }
-            else
-            {
-                statement = fieldValueName + " != nullptr && ";
-            }
-            statement += "!" + fieldValueName + "->isValid()";
-            sourceFileWriter.writeIfOpening(statement);
-            statement = "return false;";
-            sourceFileWriter.writeLineIndented(statement);
-            sourceFileWriter.writeIfClosing();
 
-            sourceFileWriter.writeBlankLine();
+                sourceFileWriter.writeForEachLoopClosing();
+
+                sourceFileWriter.writeIfClosing();
+
+                sourceFileWriter.writeBlankLine();
+            }
         }
-        else if (messageFieldModel->requiredness() == MessageFieldModel::Requiredness::required)
+        else
         {
-            statement = "!";
-            if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::stringType ||
-                messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::bytesType)
-            {
-                statement += fieldValueName + "->isSet()";
-            }
-            else
-            {
-                statement += fieldValueName + ".isSet()";
-            }
-            sourceFileWriter.writeIfOpening(statement);
-            statement = "return false;";
-            sourceFileWriter.writeLineIndented(statement);
-            sourceFileWriter.writeIfClosing();
+            string fieldValueName = "mData->m";
+            fieldValueName += messageFieldModel->namePascal() + "Value";
 
-            sourceFileWriter.writeBlankLine();
+            if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::messageType)
+            {
+                bool nullChecked = false;
+                if (messageFieldModel->requiredness() == MessageFieldModel::Requiredness::required)
+                {
+                    statement = fieldValueName + " == nullptr";
+                    sourceFileWriter.writeIfOpening(statement);
+                    statement = "return false;";
+                    sourceFileWriter.writeLineIndented(statement);
+                    sourceFileWriter.writeIfClosing();
+                    nullChecked = true;
+                }
+                if (nullChecked)
+                {
+                    statement = "";
+                }
+                else
+                {
+                    statement = fieldValueName + " != nullptr && ";
+                }
+                statement += "!" + fieldValueName + "->isValid()";
+                sourceFileWriter.writeIfOpening(statement);
+                statement = "return false;";
+                sourceFileWriter.writeLineIndented(statement);
+                sourceFileWriter.writeIfClosing();
+
+                sourceFileWriter.writeBlankLine();
+            }
+            else if (messageFieldModel->requiredness() == MessageFieldModel::Requiredness::required)
+            {
+                statement = "!";
+                if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::stringType ||
+                    messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::bytesType)
+                {
+                    statement += fieldValueName + "->isSet()";
+                }
+                else
+                {
+                    statement += fieldValueName + ".isSet()";
+                }
+                sourceFileWriter.writeIfOpening(statement);
+                statement = "return false;";
+                sourceFileWriter.writeLineIndented(statement);
+                sourceFileWriter.writeIfClosing();
+
+                sourceFileWriter.writeBlankLine();
+            }
         }
         ++messageFieldBegin;
     }
