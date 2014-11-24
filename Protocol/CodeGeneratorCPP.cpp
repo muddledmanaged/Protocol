@@ -1302,7 +1302,16 @@ void Protocol::CodeGeneratorCPP::writeMessageSizeToSource (CodeWriter & sourceFi
             sourceFileWriter.writeForEachLoopOpening(statement, fieldValueName);
 
             statement = "sizeCollection += ";
-            statement += loopValueName + ".size();";
+            if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::messageType ||
+                messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::stringType ||
+                messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::bytesType)
+            {
+                statement += loopValueName + "->size()";
+            }
+            else
+            {
+                statement += loopValueName + ".size()";
+            }
             sourceFileWriter.writeLineIndented(statement);
 
             sourceFileWriter.writeForEachLoopClosing();
@@ -1334,16 +1343,36 @@ void Protocol::CodeGeneratorCPP::writeMessageSizeToSource (CodeWriter & sourceFi
             string fieldValueName = "mData->m";
             fieldValueName += messageFieldModel->namePascal() + "Value";
 
-            string fieldSetName = "mData->m";
-            fieldSetName += messageFieldModel->namePascal() + "Set";
-            sourceFileWriter.writeIfOpening(fieldSetName);
+            if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::messageType)
+            {
+                statement = fieldValueName + " != nullptr";
+            }
+            else if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::stringType ||
+                     messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::bytesType)
+            {
+                statement = fieldValueName + "->isSet()";
+            }
+            else
+            {
+                statement = fieldValueName + ".isSet()";
+            }
+            sourceFileWriter.writeIfOpening(statement);
 
             statement = "size += ";
             statement += to_string(indexSize) + ";";
             sourceFileWriter.writeLineIndented(statement);
 
             statement = "size += ";
-            statement += fieldValueName + "->size();";
+            if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::messageType ||
+                messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::stringType ||
+                messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::bytesType)
+            {
+                statement += fieldValueName + "->size()";
+            }
+            else
+            {
+                statement += fieldValueName + ".size()";
+            }
             sourceFileWriter.writeLineIndented(statement);
 
             sourceFileWriter.writeIfClosing();
@@ -1374,28 +1403,53 @@ void Protocol::CodeGeneratorCPP::writeMessageIsValidToSource (CodeWriter & sourc
     {
         auto messageFieldModel = *messageFieldBegin;
 
-        if (messageFieldModel->requiredness() == MessageFieldModel::Requiredness::required)
+        string fieldValueName = "mData->m";
+        fieldValueName += messageFieldModel->namePascal() + "Value";
+
+        if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::messageType)
         {
-            string fieldSetName = "mData->m";
-            fieldSetName += messageFieldModel->namePascal() + "Set";
-            statement = "!";
-            statement += fieldSetName;
+            bool nullChecked = false;
+            if (messageFieldModel->requiredness() == MessageFieldModel::Requiredness::required)
+            {
+                statement = fieldValueName + " == nullptr";
+                sourceFileWriter.writeIfOpening(statement);
+                statement = "return false;";
+                sourceFileWriter.writeLineIndented(statement);
+                sourceFileWriter.writeIfClosing();
+                nullChecked = true;
+            }
+            if (nullChecked)
+            {
+                statement = "";
+            }
+            else
+            {
+                statement = fieldValueName + " != nullptr && ";
+            }
+            statement += "!" + fieldValueName + "->isValid()";
             sourceFileWriter.writeIfOpening(statement);
             statement = "return false;";
             sourceFileWriter.writeLineIndented(statement);
             sourceFileWriter.writeIfClosing();
 
-            if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::messageType)
+            sourceFileWriter.writeBlankLine();
+        }
+        else if (messageFieldModel->requiredness() == MessageFieldModel::Requiredness::required)
+        {
+            statement = "!";
+            if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::stringType ||
+                messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::bytesType)
             {
-                string fieldValueName = "mData->m";
-                fieldValueName += messageFieldModel->namePascal() + "Value";
-                statement = "!";
-                statement += fieldValueName + "->isValid()";
-                sourceFileWriter.writeIfOpening(statement);
-                statement = "return false;";
-                sourceFileWriter.writeLineIndented(statement);
-                sourceFileWriter.writeIfClosing();
+                statement += fieldValueName + "->isSet()";
             }
+            else
+            {
+                statement += fieldValueName + ".isSet()";
+            }
+            sourceFileWriter.writeIfOpening(statement);
+            statement = "return false;";
+            sourceFileWriter.writeLineIndented(statement);
+            sourceFileWriter.writeIfClosing();
 
             sourceFileWriter.writeBlankLine();
         }
