@@ -1020,89 +1020,49 @@ void Protocol::CodeGeneratorCPP::writeMessageDataConstructorToSource (CodeWriter
     {
         auto messageFieldModel = *messageFieldBegin;
 
-        if (messageFieldModel->requiredness() == MessageFieldModel::Requiredness::repeated)
+        string fieldInitialization = messageFieldInitialization(*messageFieldModel);
+        if (!fieldInitialization.empty())
         {
-            ++messageFieldBegin;
-            continue;
-        }
-        switch (messageFieldModel->fieldCategory())
-        {
-            case MessageFieldModel::FieldCategory::numericType:
+            if (!firstParameter)
             {
-                if (!messageFieldModel->defaultValue().empty())
-                {
-                    if (!firstParameter)
-                    {
-                        initializationParameters += ", ";
-                    }
-                    firstParameter = false;
-
-                    initializationParameters += "m" + messageFieldModel->namePascal() + "Value";
-                    initializationParameters += "(" + messageFieldModel->defaultValue() + ")";
-                }
-                break;
+                initializationParameters += ", ";
             }
-                
-            case MessageFieldModel::FieldCategory::enumType:
-            {
-                if (!messageFieldModel->defaultValue().empty())
-                {
-                    if (!firstParameter)
-                    {
-                        initializationParameters += ", ";
-                    }
-                    firstParameter = false;
+            firstParameter = false;
 
-                    initializationParameters += "m" + messageFieldModel->namePascal() + "Value";
-                    initializationParameters += "(" + messageFieldModel->defaultValue() + ")";
-                }
-                break;
-            }
-
-            case MessageFieldModel::FieldCategory::stringType:
-            {
-                if (!firstParameter)
-                {
-                    initializationParameters += ", ";
-                }
-                firstParameter = false;
-
-                initializationParameters += "m" + messageFieldModel->namePascal() + "Value";
-                initializationParameters += "(new ProtoString(\"" + messageFieldModel->defaultValue() + "\"))";
-                break;
-            }
-
-            case MessageFieldModel::FieldCategory::bytesType:
-            {
-                if (!firstParameter)
-                {
-                    initializationParameters += ", ";
-                }
-                firstParameter = false;
-
-                initializationParameters += "m" + messageFieldModel->namePascal() + "Value";
-                initializationParameters += "(new ProtoBytes())";
-                break;
-            }
-                
-            case MessageFieldModel::FieldCategory::messageType:
-            {
-                if (!firstParameter)
-                {
-                    initializationParameters += ", ";
-                }
-                firstParameter = false;
-
-                initializationParameters += "m" + messageFieldModel->namePascal() + "Value";
-                initializationParameters += "(new " + messageFieldModel->fieldType() + "())";
-                break;
-            }
-                
-            default:
-                break;
+            initializationParameters += fieldInitialization;
         }
 
         ++messageFieldBegin;
+    }
+
+    auto oneofBegin = messageModel.oneofs()->cbegin();
+    auto oneofEnd = messageModel.oneofs()->cend();
+    while (oneofBegin != oneofEnd)
+    {
+        auto oneofModel = *oneofBegin;
+
+        messageFieldBegin = oneofModel->fields()->cbegin();
+        messageFieldEnd = oneofModel->fields()->cend();
+        while (messageFieldBegin != messageFieldEnd)
+        {
+            auto messageFieldModel = *messageFieldBegin;
+
+            string fieldInitialization = messageFieldInitialization(*messageFieldModel);
+            if (!fieldInitialization.empty())
+            {
+                if (!firstParameter)
+                {
+                    initializationParameters += ", ";
+                }
+                firstParameter = false;
+
+                initializationParameters += fieldInitialization;
+            }
+            
+            ++messageFieldBegin;
+        }
+
+        ++oneofBegin;
     }
 
     string methodName = fullScope + "::" + className;
@@ -1110,6 +1070,63 @@ void Protocol::CodeGeneratorCPP::writeMessageDataConstructorToSource (CodeWriter
     sourceFileWriter.writeConstructorImplementationOpening(methodName, methodParameters, initializationParameters);
 
     sourceFileWriter.writeMethodImplementationClosing();
+}
+
+std::string Protocol::CodeGeneratorCPP::messageFieldInitialization (const MessageFieldModel & messageFieldModel) const
+{
+    if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+    {
+        return "";
+    }
+
+    string fieldInitialization = "m" + messageFieldModel.namePascal() + "Value";
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::boolType:
+        case MessageFieldModel::FieldCategory::numericType:
+        {
+            if (messageFieldModel.defaultValue().empty())
+            {
+                return "";
+            }
+            fieldInitialization += "(" + messageFieldModel.defaultValue() + ")";
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::enumType:
+        {
+            if (messageFieldModel.defaultValue().empty())
+            {
+                return "";
+            }
+            string defaultValue = fullTypeName(messageFieldModel) + "::" + messageFieldModel.defaultValue();
+            fieldInitialization += "(" + defaultValue + ")";
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::stringType:
+        {
+            fieldInitialization += "(new ProtoString(\"" + messageFieldModel.defaultValue() + "\"))";
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::bytesType:
+        {
+            fieldInitialization += "(new ProtoBytes())";
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            return "";
+        }
+
+        default:
+            break;
+    }
+
+    return fieldInitialization;
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageDataDestructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
