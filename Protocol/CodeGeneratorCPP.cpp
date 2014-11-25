@@ -164,6 +164,7 @@ void Protocol::CodeGeneratorCPP::writeStandardIncludeFileNamesToHeader (CodeWrit
 {
     headerFileWriter.writeIncludeLibrary("cstdint");
     headerFileWriter.writeIncludeLibrary("memory");
+    headerFileWriter.writeIncludeLibrary("stdexcept");
     headerFileWriter.writeIncludeLibrary("string");
     headerFileWriter.writeIncludeLibrary("vector");
     headerFileWriter.writeBlankLine();

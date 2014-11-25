@@ -4,6 +4,38 @@ R"MuddledManaged(namespace MuddledManaged
 {
     namespace Protocol
     {
+        class ProtocolBufferException : public std::runtime_error
+        {
+        public:
+            ProtocolBufferException (const std::string & message = std::string(""))
+            : std::runtime_error("")
+            {
+                if (message.size() != 0)
+                {
+                    mMessage = message;
+                }
+                else
+                {
+                    mMessage = "Error in protocol buffer.";
+                }
+            }
+
+            virtual ~ProtocolBufferException ()
+            { }
+
+            virtual const char * what () const noexcept
+            {
+                return mMessage.c_str();
+            }
+
+        protected:
+            ProtocolBufferException ()
+            : std::logic_error("")
+            { }
+
+            std::string mMessage;
+        };
+        
         int sizeVarInt (unsigned long long value)
         {
             if (value < (1ull << 7))
@@ -50,7 +82,7 @@ R"MuddledManaged(namespace MuddledManaged
             return sizeVarInt(index << 3);
         }
 
-        int parseVarInt (const unsigned char * pData, unsigned long long *pResult)
+        int parseUnsignedVarInt32 (const unsigned char * pData, std::uint32_t * pResult)
         {
             if (pData == nullptr)
             {
@@ -60,21 +92,27 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 throw std::invalid_argument("pResult cannot be null.");
             }
-            unsigned long long value = 0;
+            std::uint32_t value = 0;
             int byteCount = 0;
             while (true)
             {
-                unsigned long long currentMaskedValue = pData & 0x7f;
+                std::uint32_t currentMaskedValue = pData & 0x7f;
                 currentMaskedValue << byteCount * 7;
                 value |= currentMaskedValue;
+                ++byteCount;
 
                 bool lastByte = pData & 0x80;
                 if (lastByte)
                 {
                     break;
                 }
-                ++byteCount;
+
                 ++pData;
+
+                if (byteCount > 4)
+                {
+                    throw ProtocolBufferException("VarInt length exceeded 5 bytes.");
+                }
             }
 
             *pResult = value;
@@ -82,20 +120,55 @@ R"MuddledManaged(namespace MuddledManaged
             return byteCount;
         }
 
-        virtual std::string serializeVarInt (unsigned long long value) const
+        int parseUnsignedVarInt64 (const unsigned char * pData, std::uint64_t * pResult)
+        {
+            if (pData == nullptr)
+            {
+                throw std::invalid_argument("pData cannot be null.");
+            }
+            if (pResult == nullptr)
+            {
+                throw std::invalid_argument("pResult cannot be null.");
+            }
+            std::uint64_t value = 0;
+            int byteCount = 0;
+            while (true)
+            {
+                std::uint64_t currentMaskedValue = pData & 0x7f;
+                currentMaskedValue << byteCount * 7;
+                value |= currentMaskedValue;
+                ++byteCount;
+
+                bool lastByte = pData & 0x80;
+                if (lastByte)
+                {
+                    break;
+                }
+
+                ++pData;
+
+                if (byteCount > 9)
+                {
+                    throw ProtocolBufferException("VarInt length exceeded 10 bytes.");
+                }
+            }
+
+            *pResult = value;
+            
+            return byteCount;
+        }
+
+        virtual std::string serializeUnsignedVarInt32 (std::uint32_t value) const
         {
             std::string result;
             int byteCount = 0;
             while (true)
             {
-                unsigned long long currentMask = 0x7f;
-                currentMask << byteCount * 7;
-                unsigned long long currentMaskedValue = value & currentMask;
-                currentMaskedValue >> byteCount * 7;
+                std::uint32_t currentMaskedValue = value & 0x7f;
                 unsigned char currentByte = static_cast<unsigned char>(currentMaskedValue);
 
                 bool lastByte = false;
-                value &= ~currentMaskedValue;
+                value >> 7;
                 if (value == 0)
                 {
                     lastByte = true;
@@ -114,6 +187,38 @@ R"MuddledManaged(namespace MuddledManaged
                 ++byteCount;
             }
 
+            return result;
+        }
+
+        virtual std::string serializeUnsignedVarInt64 (std::uint64_t value) const
+        {
+            std::string result;
+            int byteCount = 0;
+            while (true)
+            {
+                std::uint64_t currentMaskedValue = value & 0x7f;
+                unsigned char currentByte = static_cast<unsigned char>(currentMaskedValue);
+
+                bool lastByte = false;
+                value >> 7;
+                if (value == 0)
+                {
+                    lastByte = true;
+                }
+                else
+                {
+                    currentByte |= 0x80;
+                }
+
+                result += currentByte;
+
+                if (lastByte)
+                {
+                    break;
+                }
+                ++byteCount;
+            }
+            
             return result;
         }
 
