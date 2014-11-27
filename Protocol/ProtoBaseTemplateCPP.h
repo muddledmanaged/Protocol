@@ -238,7 +238,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual int key (unsigned int index, bool packed) = 0;
 
-            virtual void parse (const std::string & data) = 0;
+            virtual size_t parse (const unsigned char * pData) = 0;
 
             virtual std::string serialize () const = 0;
 
@@ -312,16 +312,6 @@ R"MuddledManaged(namespace MuddledManaged
                 return index << 3;
             }
 
-            virtual void parse (const std::string & data)
-            {
-
-            }
-
-            virtual std::string serialize () const
-            {
-
-            }
-
             virtual size_t size () const
             {
                 return sizeVarInt(mValue);
@@ -344,6 +334,23 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoEnum (EnumType defaultValue = 0)
             : ProtoNumericType<EnumType>(0, defaultValue)
             {}
+
+            virtual size_t parse (const unsigned char * pData)
+            {
+                size_t bytesParsed = 0;
+                int enumValue = VarInt::parse32(pData, &bytesParsed);
+
+                setValue(static_cast<EnumType>(enumValue));
+
+                return bytesParsed;
+            }
+
+            virtual std::string serialize () const
+            {
+                int32_t enumValue = value();
+
+                return serialize32(enumValue);
+            }
         };
 
         class ProtoBool : public ProtoNumericType<bool>
