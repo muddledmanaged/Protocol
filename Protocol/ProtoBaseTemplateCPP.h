@@ -359,6 +359,36 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoBool (bool defaultValue = false)
             : ProtoNumericType<bool>(false, defaultValue)
             {}
+
+            virtual size_t parse (const unsigned char * pData)
+            {
+                size_t bytesParsed = 0;
+                int boolValue = VarInt::parse32(pData, &bytesParsed);
+                if (bytesParsed != 1)
+                {
+                    throw ProtocolBufferException("Boolean VarInt length exceeded one byte.");
+                }
+
+                if (boolValue == 0)
+                {
+                    setValue(false);
+                }
+                else if (boolValue == 1)
+                {
+                    setValue(true);
+                }
+                else
+                {
+                    throw ProtocolBufferException("Boolean VarInt contained invalid value.");
+                }
+
+                return bytesParsed;
+            }
+
+            virtual std::string serialize () const
+            {
+                return serialize32(value() ? 1 : 0);
+            }
         };
 
         class ProtoInt32 : public ProtoNumericType<std::int32_t>
