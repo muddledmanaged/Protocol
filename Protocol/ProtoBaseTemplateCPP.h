@@ -36,191 +36,194 @@ R"MuddledManaged(namespace MuddledManaged
             std::string mMessage;
         };
         
-        int sizeVarInt (unsigned long long value)
+        class VarInt
         {
-            if (value < (1ull << 7))
+        public:
+            static int size (unsigned long long value)
             {
-                return 1;
-            }
-            else if (value < (1ull << 14))
-            {
-                return 2;
-            }
-            else if (value < (1ull << 21))
-            {
-                return 3;
-            }
-            else if (value < (1ull << 28))
-            {
-                return 4;
-            }
-            else if (value < (1ull << 35))
-            {
-                return 5;
-            }
-            else if (value < (1ull << 42))
-            {
-                return 6;
-            }
-            else if (value < (1ull << 49))
-            {
-                return 7;
-            }
-            else if (value < (1ull << 56))
-            {
-                return 8;
-            }
-            else if (value < (1ull << 63))
-            {
-                return 9;
-            }
-            return 10;
-        }
-
-        int sizeIndex (unsigned long long index)
-        {
-            return sizeVarInt(index << 3);
-        }
-
-        int parseUnsignedVarInt32 (const unsigned char * pData, std::uint32_t * pResult)
-        {
-            if (pData == nullptr)
-            {
-                throw std::invalid_argument("pData cannot be null.");
-            }
-            if (pResult == nullptr)
-            {
-                throw std::invalid_argument("pResult cannot be null.");
-            }
-            std::uint32_t value = 0;
-            int byteCount = 0;
-            while (true)
-            {
-                std::uint32_t currentMaskedValue = pData & 0x7f;
-                currentMaskedValue << byteCount * 7;
-                value |= currentMaskedValue;
-                ++byteCount;
-
-                bool lastByte = pData & 0x80;
-                if (lastByte)
+                if (value < (1ull << 7))
                 {
-                    break;
+                    return 1;
+                }
+                else if (value < (1ull << 14))
+                {
+                    return 2;
+                }
+                else if (value < (1ull << 21))
+                {
+                    return 3;
+                }
+                else if (value < (1ull << 28))
+                {
+                    return 4;
+                }
+                else if (value < (1ull << 35))
+                {
+                    return 5;
+                }
+                else if (value < (1ull << 42))
+                {
+                    return 6;
+                }
+                else if (value < (1ull << 49))
+                {
+                    return 7;
+                }
+                else if (value < (1ull << 56))
+                {
+                    return 8;
+                }
+                else if (value < (1ull << 63))
+                {
+                    return 9;
+                }
+                return 10;
+            }
+
+            static int sizeIndex (unsigned long long index)
+            {
+                return sizeVarInt(index << 3);
+            }
+
+            static std::int32_t parse32 (const unsigned char * pData, int * pBytesParsed)
+            {
+                return static_cast<std::int32_t>(parseUnsigned<std::uint64_t>(pData, pBytesParsed, 10));
+            }
+
+            static std::int64_t parse64 (const unsigned char * pData, int * pBytesParsed)
+            {
+                return static_cast<std::int64_t>(parseUnsigned<std::uint64_t>(pData, pBytesParsed, 10));
+            }
+
+            static std::int32_t parseSigned32 (const unsigned char * pData, int * pBytesParsed)
+            {
+                std::uint32_t rawValue = parseUnsigned<std::uint32_t>(pData, pBytesParsed, 5);
+                return static_cast<std::int32_t>(rawValue >> 1) ^ (static_cast<std::int32_t>(rawValue << 31) >> 31);
+            }
+
+            static std::int64_t parseSigned64 (const unsigned char * pData, int * pBytesParsed)
+            {
+                std::uint64_t rawValue = parseUnsigned<std::uint64_t>(pData, pBytesParsed, 10);
+                return static_cast<std::int64_t>(rawValue >> 1) ^ (static_cast<std::int64_t>(rawValue << 63) >> 63);
+            }
+
+            static std::uint32_t parseUnsigned32 (const unsigned char * pData, int * pBytesParsed)
+            {
+                return parseUnsigned<std::uint32_t>(pData, pBytesParsed, 5);
+            }
+
+            static std::uint64_t parseUnsigned64 (const unsigned char * pData, int * pBytesParsed)
+            {
+                return parseUnsigned<std::uint64_t>(pData, pBytesParsed, 10);
+            }
+
+            static std::string serialize32 (std::int32_t value) const
+            {
+                return serializeUnsigned(static_cast<std::uint64_t>(static_cast<std::int64_t>(value)));
+            }
+
+            static std::string serialize64 (std::int64_t value) const
+            {
+                return serializeUnsigned(static_cast<std::uint64_t>(value));
+            }
+
+            static std::string serializeSigned32 (std::int32_t value) const
+            {
+                std::uint32_t rawValue = (value << 1) ^ (value >> 31);
+                return serializeUnsigned(rawValue);
+            }
+
+            static std::string serializeSigned64 (std::int64_t value) const
+            {
+                std::uint64_t rawValue = (value << 1) ^ (value >> 63);
+                return serializeUnsigned(rawValue);
+            }
+
+            static std::string serializeUnsigned32 (std::uint32_t value) const
+            {
+                return serializeUnsigned(value);
+            }
+
+            static std::string serializeUnsigned64 (std::uint64_t value) const
+            {
+                return serializeUnsigned(value);
+            }
+
+        private:
+            VarInt ()
+            {}
+
+            template <typename ValueType>
+            static ValueType parseUnsigned (const unsigned char * pData, int * pBytesParsed, unsigned int maxByteCount)
+            {
+                if (pData == nullptr)
+                {
+                    throw std::invalid_argument("pData cannot be null.");
+                }
+                ValueType value = 0;
+                int byteCount = 0;
+                while (true)
+                {
+                    ValueType currentMaskedValue = pData & 0x7f;
+                    currentMaskedValue << byteCount * 7;
+                    value |= currentMaskedValue;
+                    ++byteCount;
+
+                    bool lastByte = pData & 0x80;
+                    if (lastByte)
+                    {
+                        break;
+                    }
+
+                    ++pData;
+
+                    if (byteCount == maxByteCount)
+                    {
+                        throw ProtocolBufferException("VarInt length exceeded maximum bytes.");
+                    }
                 }
 
-                ++pData;
-
-                if (byteCount > 4)
+                if (pBytesParsed != nullptr)
                 {
-                    throw ProtocolBufferException("VarInt length exceeded 5 bytes.");
+                    *pBytesParsed = byteCount;
                 }
+
+                return value;
             }
 
-            *pResult = value;
-
-            return byteCount;
-        }
-
-        int parseUnsignedVarInt64 (const unsigned char * pData, std::uint64_t * pResult)
-        {
-            if (pData == nullptr)
+            template <typename ValueType>
+            static std::string serializeUnsigned (ValueType value) const
             {
-                throw std::invalid_argument("pData cannot be null.");
+                std::string result;
+                int byteCount = 0;
+                while (true)
+                {
+                    ValueType currentMaskedValue = value & 0x7f;
+                    unsigned char currentByte = static_cast<unsigned char>(currentMaskedValue);
+
+                    bool lastByte = false;
+                    value >> 7;
+                    if (value == 0)
+                    {
+                        lastByte = true;
+                    }
+                    else
+                    {
+                        currentByte |= 0x80;
+                    }
+
+                    result += currentByte;
+
+                    if (lastByte)
+                    {
+                        break;
+                    }
+                    ++byteCount;
+                }
+                
+                return result;
             }
-            if (pResult == nullptr)
-            {
-                throw std::invalid_argument("pResult cannot be null.");
-            }
-            std::uint64_t value = 0;
-            int byteCount = 0;
-            while (true)
-            {
-                std::uint64_t currentMaskedValue = pData & 0x7f;
-                currentMaskedValue << byteCount * 7;
-                value |= currentMaskedValue;
-                ++byteCount;
-
-                bool lastByte = pData & 0x80;
-                if (lastByte)
-                {
-                    break;
-                }
-
-                ++pData;
-
-                if (byteCount > 9)
-                {
-                    throw ProtocolBufferException("VarInt length exceeded 10 bytes.");
-                }
-            }
-
-            *pResult = value;
-            
-            return byteCount;
-        }
-
-        virtual std::string serializeUnsignedVarInt32 (std::uint32_t value) const
-        {
-            std::string result;
-            int byteCount = 0;
-            while (true)
-            {
-                std::uint32_t currentMaskedValue = value & 0x7f;
-                unsigned char currentByte = static_cast<unsigned char>(currentMaskedValue);
-
-                bool lastByte = false;
-                value >> 7;
-                if (value == 0)
-                {
-                    lastByte = true;
-                }
-                else
-                {
-                    currentByte |= 0x80;
-                }
-
-                result += currentByte;
-
-                if (lastByte)
-                {
-                    break;
-                }
-                ++byteCount;
-            }
-
-            return result;
-        }
-
-        virtual std::string serializeUnsignedVarInt64 (std::uint64_t value) const
-        {
-            std::string result;
-            int byteCount = 0;
-            while (true)
-            {
-                std::uint64_t currentMaskedValue = value & 0x7f;
-                unsigned char currentByte = static_cast<unsigned char>(currentMaskedValue);
-
-                bool lastByte = false;
-                value >> 7;
-                if (value == 0)
-                {
-                    lastByte = true;
-                }
-                else
-                {
-                    currentByte |= 0x80;
-                }
-
-                result += currentByte;
-
-                if (lastByte)
-                {
-                    break;
-                }
-                ++byteCount;
-            }
-            
-            return result;
-        }
+        };
 
         class ProtoBase
         {
