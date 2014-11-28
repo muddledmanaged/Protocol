@@ -225,6 +225,106 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
+        class FixedSize
+        {
+        public:
+
+            static std::int32_t parse32 (const unsigned char * pData)
+            {
+                return parse<std::int32_t>(pData);
+            }
+
+            static std::int64_t parse64 (const unsigned char * pData)
+            {
+                return parse<std::int64_t>(pData);
+            }
+
+            static std::int32_t parseSigned32 (const unsigned char * pData)
+            {
+                return parse<std::int32_t>(pData);
+            }
+
+            static std::int64_t parseSigned64 (const unsigned char * pData)
+            {
+                return parse<std::int64_t>(pData);
+            }
+
+            static float parseFloat (const unsigned char * pData)
+            {
+                return parse<float>(pData);
+            }
+
+            static double parseDouble (const unsigned char * pData)
+            {
+                return parse<double>(pData);
+            }
+
+            static std::string serialize32 (std::int32_t value) const
+            {
+                return serialize(value);
+            }
+
+            static std::string serialize64 (std::int64_t value) const
+            {
+                return serialize(value);
+            }
+
+            static std::string serializeSigned32 (std::int32_t value) const
+            {
+                return serialize(value);
+            }
+
+            static std::string serializeSigned64 (std::int64_t value) const
+            {
+                return serialize(value);
+            }
+
+            static std::string serializeFloat (float value) const
+            {
+                return serialize(value);
+            }
+
+            static std::string serializeDouble (double value) const
+            {
+                return serialize(value);
+            }
+
+        private:
+            FixedSize ()
+            {}
+
+            template <typename ValueType>
+            static ValueType parse (const unsigned char * pData)
+            {
+                if (pData == nullptr)
+                {
+                    throw std::invalid_argument("pData cannot be null.");
+                }
+                ValueType value = 0;
+                unsigned char * pValueChars = reinterpret_cast<unsigned char *>(&value);
+                for (int i = sizeof(ValueType) - 1; i >= 0; --i)
+                {
+                    pValueChars[i] = *pData;
+                    ++pData;
+                }
+
+                return value;
+            }
+
+            template <typename ValueType>
+            static std::string serialize (ValueType value) const
+            {
+                std::string result;
+                unsigned char * pValueChars = reinterpret_cast<unsigned char *>(&value);
+                for (int i = sizeof(ValueType) - 1; i >= 0; --i)
+                {
+                    result += pValueChars[i];
+                }
+                
+                return result;
+            }
+        };
+
         class ProtoBase
         {
         public:
@@ -548,9 +648,21 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericType<std::int32_t>(0, defaultValue)
             {}
 
-            virtual void parse (const std::string & data);
+            virtual size_t parse (const unsigned char * pData)
+            {
+                std::int32_t intValue = FixedSize::parse32(pData);
 
-            virtual std::string serialize () const;
+                setValue(intValue);
+
+                return 4;
+            }
+
+            virtual std::string serialize () const
+            {
+                int32_t intValue = value();
+
+                return FixedSize::serialize32(intValue);
+            }
 
             virtual size_t size () const
             {
@@ -565,9 +677,21 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericType<std::int64_t>(0, defaultValue)
             {}
 
-            virtual void parse (const std::string & data);
+            virtual size_t parse (const unsigned char * pData)
+            {
+                std::int64_t intValue = FixedSize::parse64(pData);
 
-            virtual std::string serialize () const;
+                setValue(intValue);
+
+                return 8;
+            }
+
+            virtual std::string serialize () const
+            {
+                int64_t intValue = value();
+
+                return FixedSize::serialize64(intValue);
+            }
 
             virtual size_t size () const
             {
@@ -598,9 +722,21 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericType<float>(0, defaultValue)
             {}
 
-            virtual void parse (const std::string & data);
+            virtual size_t parse (const unsigned char * pData)
+            {
+                float floatValue = FixedSize::parseFloat(pData);
 
-            virtual std::string serialize () const;
+                setValue(floatValue);
+
+                return 4;
+            }
+
+            virtual std::string serialize () const
+            {
+                float floatValue = value();
+
+                return FixedSize::serializeFloat(floatValue);
+            }
 
             virtual size_t size () const
             {
@@ -615,9 +751,21 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericType<double>(0, defaultValue)
             {}
 
-            virtual void parse (const std::string & data);
+            virtual size_t parse (const unsigned char * pData)
+            {
+                double doubleValue = FixedSize::parseDouble(pData);
 
-            virtual std::string serialize () const;
+                setValue(doubleValue);
+
+                return 8;
+            }
+
+            virtual std::string serialize () const
+            {
+                double doubleValue = value();
+
+                return FixedSize::parseDouble(doubleValue);
+            }
 
             virtual size_t size () const
             {
