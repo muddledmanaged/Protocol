@@ -387,7 +387,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual std::string serialize () const
             {
-                return serialize32(value() ? 1 : 0);
+                return VarInt::serialize32(value() ? 1 : 0);
             }
         };
 
@@ -397,6 +397,23 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoInt32 (std::int32_t defaultValue = 0)
             : ProtoNumericType<std::int32_t>(0, defaultValue)
             {}
+
+            virtual size_t parse (const unsigned char * pData)
+            {
+                size_t bytesParsed = 0;
+                std::int32_t intValue = VarInt::parse32(pData, &bytesParsed);
+
+                setValue(intValue);
+
+                return bytesParsed;
+            }
+
+            virtual std::string serialize () const
+            {
+                int32_t intValue = value();
+
+                return VarInt::serialize32(intValue);
+            }
         };
 
         class ProtoInt64 : public ProtoNumericType<std::int64_t>
@@ -405,6 +422,23 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoInt64 (std::int64_t defaultValue = 0)
             : ProtoNumericType<std::int64_t>(0, defaultValue)
             {}
+
+            virtual size_t parse (const unsigned char * pData)
+            {
+                size_t bytesParsed = 0;
+                std::int64_t intValue = VarInt::parse64(pData, &bytesParsed);
+
+                setValue(intValue);
+
+                return bytesParsed;
+            }
+
+            virtual std::string serialize () const
+            {
+                int64_t intValue = value();
+
+                return VarInt::serialize64(intValue);
+            }
         };
 
         class ProtoUnsignedInt32 : public ProtoNumericType<std::uint32_t>
@@ -413,6 +447,23 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoUnsignedInt32 (std::uint32_t defaultValue = 0)
             : ProtoNumericType<std::uint32_t>(0, defaultValue)
             {}
+
+            virtual size_t parse (const unsigned char * pData)
+            {
+                size_t bytesParsed = 0;
+                std::uint32_t intValue = VarInt::parseUnsigned32(pData, &bytesParsed);
+
+                setValue(intValue);
+
+                return bytesParsed;
+            }
+
+            virtual std::string serialize () const
+            {
+                uint32_t intValue = value();
+
+                return VarInt::serializeUnsigned32(intValue);
+            }
         };
 
         class ProtoUnsignedInt64 : public ProtoNumericType<std::uint64_t>
@@ -421,6 +472,23 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoUnsignedInt64 (std::uint64_t defaultValue = 0)
             : ProtoNumericType<std::uint64_t>(0, defaultValue)
             {}
+
+            virtual size_t parse (const unsigned char * pData)
+            {
+                size_t bytesParsed = 0;
+                std::uint64_t intValue = VarInt::parseUnsigned64(pData, &bytesParsed);
+
+                setValue(intValue);
+
+                return bytesParsed;
+            }
+
+            virtual std::string serialize () const
+            {
+                uint64_t intValue = value();
+
+                return VarInt::serializeUnsigned64(intValue);
+            }
         };
 
         class ProtoSignedInt32 : public ProtoNumericType<std::int32_t>
@@ -430,9 +498,22 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericType<std::int32_t>(0, defaultValue)
             {}
 
-            virtual void parse (const std::string & data);
+            virtual size_t parse (const unsigned char * pData)
+            {
+                size_t bytesParsed = 0;
+                std::int32_t intValue = VarInt::parseSigned32(pData, &bytesParsed);
 
-            virtual std::string serialize () const;
+                setValue(intValue);
+
+                return bytesParsed;
+            }
+
+            virtual std::string serialize () const
+            {
+                int32_t intValue = value();
+
+                return VarInt::serializeSigned32(intValue);
+            }
         };
 
         class ProtoSignedInt64 : public ProtoNumericType<std::int64_t>
@@ -442,9 +523,22 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericType<std::int64_t>(0, defaultValue)
             {}
 
-            virtual void parse (const std::string & data);
+            virtual size_t parse (const unsigned char * pData)
+            {
+                size_t bytesParsed = 0;
+                std::int64_t intValue = VarInt::parseSigned64(pData, &bytesParsed);
 
-            virtual std::string serialize () const;
+                setValue(intValue);
+
+                return bytesParsed;
+            }
+
+            virtual std::string serialize () const
+            {
+                int64_t intValue = value();
+
+                return VarInt::serializeSigned64(intValue);
+            }
         };
 
         class ProtoFixed32 : public ProtoNumericType<std::int32_t>
