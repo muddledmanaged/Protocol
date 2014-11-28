@@ -87,66 +87,66 @@ R"MuddledManaged(namespace MuddledManaged
 
             static std::int32_t parse32 (const unsigned char * pData, int * pBytesParsed)
             {
-                return static_cast<std::int32_t>(parseUnsigned<std::uint64_t>(pData, pBytesParsed, 10));
+                return static_cast<std::int32_t>(parse<std::int64_t>(pData, pBytesParsed));
             }
 
             static std::int64_t parse64 (const unsigned char * pData, int * pBytesParsed)
             {
-                return static_cast<std::int64_t>(parseUnsigned<std::uint64_t>(pData, pBytesParsed, 10));
+                return parse<std::int64_t>(pData, pBytesParsed);
             }
 
             static std::int32_t parseSigned32 (const unsigned char * pData, int * pBytesParsed)
             {
-                std::uint32_t rawValue = parseUnsigned<std::uint32_t>(pData, pBytesParsed, 5);
-                return static_cast<std::int32_t>(rawValue >> 1) ^ (static_cast<std::int32_t>(rawValue << 31) >> 31);
+                std::uint32_t rawValue = parse<std::uint32_t>(pData, pBytesParsed);
+                return static_cast<std::int32_t>((rawValue >> 1) ^ ((rawValue << 31) >> 31));
             }
 
             static std::int64_t parseSigned64 (const unsigned char * pData, int * pBytesParsed)
             {
-                std::uint64_t rawValue = parseUnsigned<std::uint64_t>(pData, pBytesParsed, 10);
-                return static_cast<std::int64_t>(rawValue >> 1) ^ (static_cast<std::int64_t>(rawValue << 63) >> 63);
+                std::uint64_t rawValue = parse<std::uint64_t>(pData, pBytesParsed);
+                return static_cast<std::int64_t>((rawValue >> 1) ^ ((rawValue << 63) >> 63));
             }
 
             static std::uint32_t parseUnsigned32 (const unsigned char * pData, int * pBytesParsed)
             {
-                return parseUnsigned<std::uint32_t>(pData, pBytesParsed, 5);
+                return parse<std::uint32_t>(pData, pBytesParsed);
             }
 
             static std::uint64_t parseUnsigned64 (const unsigned char * pData, int * pBytesParsed)
             {
-                return parseUnsigned<std::uint64_t>(pData, pBytesParsed, 10);
+                return parse<std::uint64_t>(pData, pBytesParsed);
             }
 
             static std::string serialize32 (std::int32_t value) const
             {
-                return serializeUnsigned(static_cast<std::uint64_t>(static_cast<std::int64_t>(value)));
+                return serialize(value);
             }
 
             static std::string serialize64 (std::int64_t value) const
             {
-                return serializeUnsigned(static_cast<std::uint64_t>(value));
+                return serialize(value);
             }
 
             static std::string serializeSigned32 (std::int32_t value) const
             {
                 std::uint32_t rawValue = (value << 1) ^ (value >> 31);
-                return serializeUnsigned(rawValue);
+                return serialize(rawValue);
             }
 
             static std::string serializeSigned64 (std::int64_t value) const
             {
                 std::uint64_t rawValue = (value << 1) ^ (value >> 63);
-                return serializeUnsigned(rawValue);
+                return serialize(rawValue);
             }
 
             static std::string serializeUnsigned32 (std::uint32_t value) const
             {
-                return serializeUnsigned(value);
+                return serialize(value);
             }
 
             static std::string serializeUnsigned64 (std::uint64_t value) const
             {
-                return serializeUnsigned(value);
+                return serialize(value);
             }
 
         private:
@@ -154,17 +154,18 @@ R"MuddledManaged(namespace MuddledManaged
             {}
 
             template <typename ValueType>
-            static ValueType parseUnsigned (const unsigned char * pData, int * pBytesParsed, unsigned int maxByteCount)
+            static ValueType parse (const unsigned char * pData, unsigned int * pBytesParsed)
             {
                 if (pData == nullptr)
                 {
                     throw std::invalid_argument("pData cannot be null.");
                 }
                 ValueType value = 0;
-                int byteCount = 0;
+                unsigned int byteCount = 0;
+                unsigned int maxByteCount = sizeof(ValueType) + sizeof(ValueType) / 4;
                 while (true)
                 {
-                    ValueType currentMaskedValue = pData & 0x7f;
+                    ValueType currentMaskedValue = *pData & 0x7f;
                     currentMaskedValue << byteCount * 7;
                     value |= currentMaskedValue;
                     ++byteCount;
@@ -192,18 +193,17 @@ R"MuddledManaged(namespace MuddledManaged
             }
 
             template <typename ValueType>
-            static std::string serializeUnsigned (ValueType value) const
+            static std::string serialize (ValueType value) const
             {
+                std::uint64_t unsignedValue64 = value;
                 std::string result;
-                int byteCount = 0;
-                while (true)
+                bool lastByte = false;
+                while (!lastByte)
                 {
-                    ValueType currentMaskedValue = value & 0x7f;
-                    unsigned char currentByte = static_cast<unsigned char>(currentMaskedValue);
+                    unsigned char currentByte = unsignedValue64 & 0x7f;
 
-                    bool lastByte = false;
-                    value >> 7;
-                    if (value == 0)
+                    unsignedValue64 >> 7;
+                    if (unsignedValue64 == 0)
                     {
                         lastByte = true;
                     }
@@ -213,12 +213,6 @@ R"MuddledManaged(namespace MuddledManaged
                     }
 
                     result += currentByte;
-
-                    if (lastByte)
-                    {
-                        break;
-                    }
-                    ++byteCount;
                 }
                 
                 return result;
