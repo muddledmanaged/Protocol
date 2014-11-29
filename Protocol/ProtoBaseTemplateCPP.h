@@ -36,10 +36,10 @@ R"MuddledManaged(namespace MuddledManaged
             std::string mMessage;
         };
         
-        class VarInt
+        class PrimitiveEncoding
         {
         public:
-            static int size (unsigned long long value)
+            static int sizeVariableInt (unsigned long long value)
             {
                 if (value < (1ull << 7))
                 {
@@ -82,79 +82,139 @@ R"MuddledManaged(namespace MuddledManaged
 
             static int sizeIndex (unsigned long long index)
             {
-                return sizeVarInt(index << 3);
+                return sizeInt(index << 3);
             }
 
-            static std::int32_t parse32 (const unsigned char * pData, int * pBytesParsed)
+            static std::int32_t parseVariableInt32 (const unsigned char * pData, int * pBytesParsed)
             {
-                return static_cast<std::int32_t>(parse<std::int64_t>(pData, pBytesParsed));
+                return static_cast<std::int32_t>(parseVariable<std::int64_t>(pData, pBytesParsed));
             }
 
-            static std::int64_t parse64 (const unsigned char * pData, int * pBytesParsed)
+            static std::int32_t parseFixedInt32 (const unsigned char * pData)
             {
-                return parse<std::int64_t>(pData, pBytesParsed);
+                return parseFixed<std::int32_t>(pData);
             }
 
-            static std::int32_t parseSigned32 (const unsigned char * pData, int * pBytesParsed)
+            static std::int64_t parseVariableInt64 (const unsigned char * pData, int * pBytesParsed)
             {
-                std::uint32_t rawValue = parse<std::uint32_t>(pData, pBytesParsed);
+                return parseVariable<std::int64_t>(pData, pBytesParsed);
+            }
+
+            static std::int64_t parseFixedInt64 (const unsigned char * pData)
+            {
+                return parseFixed<std::int64_t>(pData);
+            }
+
+            static std::int32_t parseVariableSignedInt32 (const unsigned char * pData, int * pBytesParsed)
+            {
+                std::uint32_t rawValue = parseVariable<std::uint32_t>(pData, pBytesParsed);
                 return static_cast<std::int32_t>((rawValue >> 1) ^ ((rawValue << 31) >> 31));
             }
 
-            static std::int64_t parseSigned64 (const unsigned char * pData, int * pBytesParsed)
+            static std::int32_t parseFixedSignedInt32 (const unsigned char * pData)
             {
-                std::uint64_t rawValue = parse<std::uint64_t>(pData, pBytesParsed);
+                return parseFixed<std::int32_t>(pData);
+            }
+
+            static std::int64_t parseVariableSignedInt64 (const unsigned char * pData, int * pBytesParsed)
+            {
+                std::uint64_t rawValue = parseVariable<std::uint64_t>(pData, pBytesParsed);
                 return static_cast<std::int64_t>((rawValue >> 1) ^ ((rawValue << 63) >> 63));
             }
 
-            static std::uint32_t parseUnsigned32 (const unsigned char * pData, int * pBytesParsed)
+            static std::int64_t parseFixedSignedInt64 (const unsigned char * pData)
             {
-                return parse<std::uint32_t>(pData, pBytesParsed);
+                return parseFixed<std::int64_t>(pData);
             }
 
-            static std::uint64_t parseUnsigned64 (const unsigned char * pData, int * pBytesParsed)
+            static std::uint32_t parseVariableUnsignedInt32 (const unsigned char * pData, int * pBytesParsed)
             {
-                return parse<std::uint64_t>(pData, pBytesParsed);
+                return parseVariable<std::uint32_t>(pData, pBytesParsed);
             }
 
-            static std::string serialize32 (std::int32_t value) const
+            static std::uint64_t parseVariableUnsignedInt64 (const unsigned char * pData, int * pBytesParsed)
             {
-                return serialize(value);
+                return parseVariable<std::uint64_t>(pData, pBytesParsed);
             }
 
-            static std::string serialize64 (std::int64_t value) const
+            static float parseFloat (const unsigned char * pData)
             {
-                return serialize(value);
+                return parseFixed<float>(pData);
             }
 
-            static std::string serializeSigned32 (std::int32_t value) const
+            static double parseDouble (const unsigned char * pData)
+            {
+                return parseFixed<double>(pData);
+            }
+
+            static std::string serializeVariableInt32 (std::int32_t value) const
+            {
+                return serializeVariable(value);
+            }
+
+            static std::string serializeFixedInt32 (std::int32_t value) const
+            {
+                return serializeFixed(value);
+            }
+
+            static std::string serializeVariableInt64 (std::int64_t value) const
+            {
+                return serializeVariable(value);
+            }
+
+            static std::string serializeFixedInt64 (std::int64_t value) const
+            {
+                return serializeFixed(value);
+            }
+
+            static std::string serializeVariableSignedInt32 (std::int32_t value) const
             {
                 std::uint32_t rawValue = (value << 1) ^ (value >> 31);
-                return serialize(rawValue);
+                return serializeVariable(rawValue);
             }
 
-            static std::string serializeSigned64 (std::int64_t value) const
+            static std::string serializeFixedSignedInt32 (std::int32_t value) const
+            {
+                return serializeFixed(value);
+            }
+
+            static std::string serializeVariableSignedInt64 (std::int64_t value) const
             {
                 std::uint64_t rawValue = (value << 1) ^ (value >> 63);
-                return serialize(rawValue);
+                return serializeVariable(rawValue);
             }
 
-            static std::string serializeUnsigned32 (std::uint32_t value) const
+            static std::string serializeFixedSignedInt64 (std::int64_t value) const
             {
-                return serialize(value);
+                return serializeFixed(value);
             }
 
-            static std::string serializeUnsigned64 (std::uint64_t value) const
+            static std::string serializeVariableUnsignedInt32 (std::uint32_t value) const
             {
-                return serialize(value);
+                return serializeVariable(value);
+            }
+
+            static std::string serializeVariableUnsignedInt64 (std::uint64_t value) const
+            {
+                return serializeVariable(value);
+            }
+
+            static std::string serializeFloat (float value) const
+            {
+                return serializeFixed(value);
+            }
+
+            static std::string serializeDouble (double value) const
+            {
+                return serializeFixed(value);
             }
 
         private:
-            VarInt ()
+            PrimitiveEncoding ()
             {}
 
             template <typename ValueType>
-            static ValueType parse (const unsigned char * pData, unsigned int * pBytesParsed)
+            static ValueType parseVariable (const unsigned char * pData, unsigned int * pBytesParsed)
             {
                 if (pData == nullptr)
                 {
@@ -193,7 +253,25 @@ R"MuddledManaged(namespace MuddledManaged
             }
 
             template <typename ValueType>
-            static std::string serialize (ValueType value) const
+            static ValueType parseFixed (const unsigned char * pData)
+            {
+                if (pData == nullptr)
+                {
+                    throw std::invalid_argument("pData cannot be null.");
+                }
+                ValueType value = 0;
+                unsigned char * pValueChars = reinterpret_cast<unsigned char *>(&value);
+                for (int i = sizeof(ValueType) - 1; i >= 0; --i)
+                {
+                    pValueChars[i] = *pData;
+                    ++pData;
+                }
+
+                return value;
+            }
+
+            template <typename ValueType>
+            static std::string serializeVariable (ValueType value) const
             {
                 std::uint64_t unsignedValue64 = value;
                 std::string result;
@@ -217,96 +295,9 @@ R"MuddledManaged(namespace MuddledManaged
                 
                 return result;
             }
-        };
-
-        class FixedSize
-        {
-        public:
-
-            static std::int32_t parse32 (const unsigned char * pData)
-            {
-                return parse<std::int32_t>(pData);
-            }
-
-            static std::int64_t parse64 (const unsigned char * pData)
-            {
-                return parse<std::int64_t>(pData);
-            }
-
-            static std::int32_t parseSigned32 (const unsigned char * pData)
-            {
-                return parse<std::int32_t>(pData);
-            }
-
-            static std::int64_t parseSigned64 (const unsigned char * pData)
-            {
-                return parse<std::int64_t>(pData);
-            }
-
-            static float parseFloat (const unsigned char * pData)
-            {
-                return parse<float>(pData);
-            }
-
-            static double parseDouble (const unsigned char * pData)
-            {
-                return parse<double>(pData);
-            }
-
-            static std::string serialize32 (std::int32_t value) const
-            {
-                return serialize(value);
-            }
-
-            static std::string serialize64 (std::int64_t value) const
-            {
-                return serialize(value);
-            }
-
-            static std::string serializeSigned32 (std::int32_t value) const
-            {
-                return serialize(value);
-            }
-
-            static std::string serializeSigned64 (std::int64_t value) const
-            {
-                return serialize(value);
-            }
-
-            static std::string serializeFloat (float value) const
-            {
-                return serialize(value);
-            }
-
-            static std::string serializeDouble (double value) const
-            {
-                return serialize(value);
-            }
-
-        private:
-            FixedSize ()
-            {}
 
             template <typename ValueType>
-            static ValueType parse (const unsigned char * pData)
-            {
-                if (pData == nullptr)
-                {
-                    throw std::invalid_argument("pData cannot be null.");
-                }
-                ValueType value = 0;
-                unsigned char * pValueChars = reinterpret_cast<unsigned char *>(&value);
-                for (int i = sizeof(ValueType) - 1; i >= 0; --i)
-                {
-                    pValueChars[i] = *pData;
-                    ++pData;
-                }
-
-                return value;
-            }
-
-            template <typename ValueType>
-            static std::string serialize (ValueType value) const
+            static std::string serializeFixed (ValueType value) const
             {
                 std::string result;
                 unsigned char * pValueChars = reinterpret_cast<unsigned char *>(&value);
@@ -314,7 +305,7 @@ R"MuddledManaged(namespace MuddledManaged
                 {
                     result += pValueChars[i];
                 }
-                
+
                 return result;
             }
         };
