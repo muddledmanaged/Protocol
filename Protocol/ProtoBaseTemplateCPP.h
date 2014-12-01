@@ -587,7 +587,7 @@ R"MuddledManaged(namespace MuddledManaged
                 mSet = false;
             }
 
-            virtual int key (unsigned int index, bool packed) = 0;
+            virtual int key (unsigned int index) = 0;
 
             virtual size_t parse (const unsigned char * pData) = 0;
 
@@ -620,7 +620,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoMessage : public ProtoBase
         {
         public:
-            virtual int key (unsigned int index, bool packed)
+            virtual int key (unsigned int index)
             {
                 return (index << 3) | 0x02;
             }
@@ -633,8 +633,23 @@ R"MuddledManaged(namespace MuddledManaged
             virtual bool isValid () = 0;
         };
 
+        class ProtoNumericTypeBase : public ProtoBase
+        {
+        public:
+            virtual void setValueToDefault () = 0;
+
+            virtual int key (unsigned int index)
+            {
+                return (index << 3);
+            }
+
+        protected:
+            ProtoNumericTypeBase ()
+            {}
+        };
+
         template <typename NumericType>
-        class ProtoNumericType : public ProtoBase
+        class ProtoNumericType : public ProtoNumericTypeBase
         {
         public:
             NumericType value () const
@@ -648,19 +663,10 @@ R"MuddledManaged(namespace MuddledManaged
                 set();
             }
 
-            void setValueToDefault ()
+            virtual void setValueToDefault ()
             {
                 mValue = mValueDefault;
                 set();
-            }
-
-            virtual int key (unsigned int index, bool packed)
-            {
-                if (packed)
-                {
-                    return (index << 3) | 0x02;
-                }
-                return index << 3;
             }
 
             virtual size_t size () const
@@ -899,6 +905,11 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericType<std::int32_t>(0, defaultValue)
             {}
 
+            virtual int key (unsigned int index)
+            {
+                return (index << 3) | 0x05;
+            }
+
             virtual size_t parse (const unsigned char * pData)
             {
                 std::int32_t intValue = FixedSize::parse32(pData);
@@ -927,6 +938,11 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoFixed64 (std::int64_t defaultValue = 0)
             : ProtoNumericType<std::int64_t>(0, defaultValue)
             {}
+
+            virtual int key (unsigned int index)
+            {
+                return (index << 3) | 0x01;
+            }
 
             virtual size_t parse (const unsigned char * pData)
             {
@@ -973,6 +989,11 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericType<float>(0, defaultValue)
             {}
 
+            virtual int key (unsigned int index)
+            {
+                return (index << 3) | 0x05;
+            }
+
             virtual size_t parse (const unsigned char * pData)
             {
                 float floatValue = FixedSize::parseFloat(pData);
@@ -1001,6 +1022,11 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoDouble (double defaultValue = 0)
             : ProtoNumericType<double>(0, defaultValue)
             {}
+
+            virtual int key (unsigned int index)
+            {
+                return (index << 3) | 0x01;
+            }
 
             virtual size_t parse (const unsigned char * pData)
             {
@@ -1044,7 +1070,7 @@ R"MuddledManaged(namespace MuddledManaged
                 set();
             }
 
-            virtual int key (unsigned int index, bool packed)
+            virtual int key (unsigned int index)
             {
                 return (index << 3) | 0x02;
             }
