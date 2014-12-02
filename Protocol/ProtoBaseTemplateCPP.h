@@ -597,6 +597,16 @@ R"MuddledManaged(namespace MuddledManaged
                 mIndex = index;
             }
 
+            virtual bool isRequired ()
+            {
+                return mRequired;
+            }
+
+            virtual void setRequired (bool required)
+            {
+                mRequired = required;
+            }
+
             virtual unsigned int key () = 0;
 
             virtual size_t parse (const unsigned char * pData) = 0;
@@ -610,9 +620,18 @@ R"MuddledManaged(namespace MuddledManaged
                 return mSet;
             }
 
+            virtual bool isValid ()
+            {
+                if (isRequired() && !isSet())
+                {
+                    return false;
+                }
+                return true;
+            }
+
         protected:
             ProtoBase ()
-            : mSet(false)
+            : mIndex(0), mSet(false), mRequired(false)
             {}
 
             virtual void set ()
@@ -626,6 +645,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             unsigned int mIndex;
             bool mSet;
+            bool mRequired;
         };
 
         class ProtoMessage : public ProtoBase
@@ -640,8 +660,6 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 return true;
             }
-
-            virtual bool isValid () = 0;
         };
 
         template <typename MessageType>
@@ -689,6 +707,24 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual bool isValid ()
             {
+                if (mCollection.empty())
+                {
+                    if (isRequired())
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    for (auto & message: mCollection)
+                    {
+                        if (!message->isValid())
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
             }
 
         private:
