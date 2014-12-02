@@ -644,6 +644,57 @@ R"MuddledManaged(namespace MuddledManaged
             virtual bool isValid () = 0;
         };
 
+        template <typename MessageType>
+        class ProtoMessageCollection : public ProtoBase
+        {
+        public:
+            typedef std::vector<std::shared_ptr<MessageType>> CollectionType;
+
+            CollectionType * collection ()
+            {
+                return &mCollection;
+            }
+
+            virtual unsigned int key ()
+            {
+                return (index() << 3) | 0x02;
+            }
+
+            virtual size_t parse (const unsigned char * pData)
+            {
+                std::shared_ptr<MessageType> message(new MessageType());
+                size_t bytesParsed = message->parse(pData);
+
+                mCollection.push_back(message);
+
+                return bytesParsed;
+            }
+
+            virtual std::string serialize () const
+            {
+                std::string result;
+
+                for (auto & message : mCollection)
+                {
+                    result += message->serialize();
+                }
+
+                return result;
+            }
+
+            virtual bool isSet () const
+            {
+                return !mCollection.empty();
+            }
+
+            virtual bool isValid ()
+            {
+            }
+
+        private:
+            CollectionType mCollection;
+        };
+
         class ProtoNumericTypeBase : public ProtoBase
         {
         public:
