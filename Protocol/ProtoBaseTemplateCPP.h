@@ -808,6 +808,75 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
+        template <typename EnumType>
+        class ProtoEnumCollection : public ProtoBase
+        {
+        public:
+            typedef std::vector<ProtoEnum<EnumType>> CollectionType;
+
+            CollectionType * collection ()
+            {
+                return &mCollection;
+            }
+
+            virtual unsigned int key ()
+            {
+                if (isPacked())
+                {
+                    return (index() << 3) | 0x02;
+                }
+                return (index() << 3);
+            }
+
+            virtual size_t parse (const unsigned char * pData)
+            {
+                ProtoEnum<EnumType> value;
+                size_t bytesParsed = value->parse(pData);
+
+                mCollection.push_back(value);
+
+                return bytesParsed;
+            }
+
+            virtual std::string serialize () const
+            {
+                std::string result;
+
+                for (auto & value : mCollection)
+                {
+                    result += value->serialize();
+                }
+
+                return result;
+            }
+
+            virtual bool isSet () const
+            {
+                return !mCollection.empty();
+            }
+
+            virtual bool isValid ()
+            {
+                if (mCollection.empty())
+                {
+                    if (isRequired())
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            virtual bool isPacked ()
+            {
+                return mPacked;
+            }
+            
+        private:
+            CollectionType mCollection;
+            bool mPacked;
+        };
+
         class ProtoBool : public ProtoNumericType<bool>
         {
         public:
