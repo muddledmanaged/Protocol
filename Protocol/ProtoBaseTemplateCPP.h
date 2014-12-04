@@ -582,11 +582,6 @@ R"MuddledManaged(namespace MuddledManaged
             virtual ~ProtoBase ()
             {}
 
-            virtual void clear ()
-            {
-                mSet = false;
-            }
-
             virtual unsigned int index ()
             {
                 return mIndex;
@@ -597,7 +592,7 @@ R"MuddledManaged(namespace MuddledManaged
                 mIndex = index;
             }
 
-            virtual bool isRequired ()
+            virtual bool required ()
             {
                 return mRequired;
             }
@@ -615,14 +610,9 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual size_t size () const = 0;
 
-            virtual bool isSet () const
+            virtual bool valid ()
             {
-                return mSet;
-            }
-
-            virtual bool isValid ()
-            {
-                if (isRequired() && !isSet())
+                if (required() && !hasValue())
                 {
                     return false;
                 }
@@ -631,12 +621,22 @@ R"MuddledManaged(namespace MuddledManaged
 
         protected:
             ProtoBase ()
-            : mIndex(0), mSet(false), mRequired(false)
+            : mIndex(0), mHasValue(false), mRequired(false)
             {}
 
-            virtual void set ()
+            virtual bool hasValue () const
             {
-                mSet = true;
+                return mHasValue;
+            }
+
+            virtual void setValue ()
+            {
+                mHasValue = true;
+            }
+
+            virtual void clearValue ()
+            {
+                mHasValue = false;
             }
 
         private:
@@ -644,7 +644,7 @@ R"MuddledManaged(namespace MuddledManaged
             ProtoBase & operator = (const ProtoBase & rhs) = delete;
 
             unsigned int mIndex;
-            bool mSet;
+            bool mHasValue;
             bool mRequired;
         };
 
@@ -656,9 +656,10 @@ R"MuddledManaged(namespace MuddledManaged
                 return (index() << 3) | 0x02;
             }
 
-            virtual bool isSet () const
+        protected:
+            ProtoMessage ()
             {
-                return true;
+                setValueSet();
             }
         };
 
@@ -668,7 +669,7 @@ R"MuddledManaged(namespace MuddledManaged
         public:
             typedef std::vector<std::shared_ptr<MessageType>> CollectionType;
 
-            CollectionType * collection ()
+            virtual CollectionType * collection ()
             {
                 return &mCollection;
             }
@@ -700,16 +701,16 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual bool isSet () const
+            virtual bool hasValue () const
             {
                 return !mCollection.empty();
             }
 
-            virtual bool isValid ()
+            virtual bool valid ()
             {
                 if (mCollection.empty())
                 {
-                    if (isRequired())
+                    if (required())
                     {
                         return false;
                     }
@@ -718,7 +719,7 @@ R"MuddledManaged(namespace MuddledManaged
                 {
                     for (auto & message: mCollection)
                     {
-                        if (!message->isValid())
+                        if (!message->valid())
                         {
                             return false;
                         }
@@ -731,40 +732,41 @@ R"MuddledManaged(namespace MuddledManaged
             CollectionType mCollection;
         };
 
-        class ProtoNumericTypeBase : public ProtoBase
-        {
-        public:
-            virtual void setValueToDefault () = 0;
-
-            virtual unsigned int key ()
-            {
-                return (index() << 3);
-            }
-
-        protected:
-            ProtoNumericTypeBase ()
-            {}
-        };
-
         template <typename NumericType>
-        class ProtoNumericType : public ProtoNumericTypeBase
+        class ProtoNumericType : public ProtoBase
         {
         public:
-            NumericType value () const
+            virtual NumericType value () const
             {
                 return mValue;
             }
 
-            void setValue (NumericType value)
+            virtual void setValue (NumericType value)
             {
                 mValue = value;
-                set();
+                ProtoBase::setValue();
             }
 
             virtual void setValueToDefault ()
             {
                 mValue = mValueDefault;
-                set();
+                ProtoBase::setValue();
+            }
+
+            virtual bool hasValue () const
+            {
+                return ProtoBase::hasValue();
+            }
+
+            virtual void clearValue ()
+            {
+                mValue = mValueInitial;
+                ProtoBase::clearValue();
+            }
+
+            virtual unsigned int key ()
+            {
+                return (index() << 3);
             }
 
             virtual size_t size () const
@@ -774,11 +776,12 @@ R"MuddledManaged(namespace MuddledManaged
 
         protected:
             ProtoNumericType (NumericType value, NumericType defaultValue)
-            : mValue(value), mValueDefault(defaultValue)
+            : mValue(value), mValueInitial(value), mValueDefault(defaultValue)
             {}
 
         private:
             NumericType mValue;
+            NumericType mValueInitial;
             NumericType mValueDefault;
         };
 
@@ -814,14 +817,14 @@ R"MuddledManaged(namespace MuddledManaged
         public:
             typedef std::vector<ProtoEnum<EnumType>> CollectionType;
 
-            CollectionType * collection ()
+            virtual CollectionType * collection ()
             {
                 return &mCollection;
             }
 
             virtual unsigned int key ()
             {
-                if (isPacked())
+                if (packed())
                 {
                     return (index() << 3) | 0x02;
                 }
@@ -850,12 +853,12 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual bool isSet () const
+            virtual bool hasValue () const
             {
                 return !mCollection.empty();
             }
 
-            virtual bool isValid ()
+            virtual bool valid ()
             {
                 if (mCollection.empty())
                 {
@@ -867,7 +870,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return true;
             }
 
-            virtual bool isPacked ()
+            virtual bool packed ()
             {
                 return mPacked;
             }
@@ -1220,21 +1223,32 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoStringType : public ProtoBase
         {
         public:
-            std::string value () const
+            virtual std::string value () const
             {
                 return mValue;
             }
 
-            void setValue (const std::string & value)
+            virtual void setValue (const std::string & value)
             {
                 mValue = value;
-                set();
+                ProtoBase::setValue();
             }
 
-            void setValueToDefault ()
+            virtual void setValueToDefault ()
             {
                 mValue = mValueDefault;
-                set();
+                ProtoBase::setValue();
+            }
+
+            virtual bool hasValue () const
+            {
+                return ProtoBase::hasValue();
+            }
+
+            virtual void clearValue ()
+            {
+                mValue = mValueInitial;
+                ProtoBase::clearValue();
             }
 
             virtual unsigned int key ()
@@ -1253,11 +1267,12 @@ R"MuddledManaged(namespace MuddledManaged
 
         protected:
             ProtoStringType (const std::string & value, const std::string & defaultValue)
-            : mValue(value), mValueDefault(defaultValue)
+            : mValue(value), mValueInitial(value), mValueDefault(defaultValue)
             {}
             
         private:
             std::string mValue;
+            std::string mValueInitial;
             std::string mValueDefault;
         };
         
