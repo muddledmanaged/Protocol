@@ -667,9 +667,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoMessageCollection : public ProtoBase
         {
         public:
-            typedef std::vector<std::shared_ptr<MessageType>> CollectionType;
-
-            virtual CollectionType * collection ()
+            virtual std::vector<std::shared_ptr<MessageType>> * collection ()
             {
                 return &mCollection;
             }
@@ -706,6 +704,11 @@ R"MuddledManaged(namespace MuddledManaged
                 return !mCollection.empty();
             }
 
+            virtual void clearValue ()
+            {
+                mCollection.clear();
+            }
+
             virtual bool valid ()
             {
                 if (mCollection.empty())
@@ -729,7 +732,7 @@ R"MuddledManaged(namespace MuddledManaged
             }
 
         private:
-            CollectionType mCollection;
+            std::vector<std::shared_ptr<MessageType>> mCollection;
         };
 
         template <typename NumericType>
@@ -785,6 +788,83 @@ R"MuddledManaged(namespace MuddledManaged
             NumericType mValueDefault;
         };
 
+        template <typename ProtoType>
+        class ProtoNumericTypeCollection : public ProtoBase
+        {
+        public:
+            virtual std::vector<ProtoType> * collection ()
+            {
+                return &mCollection;
+            }
+
+            virtual unsigned int key ()
+            {
+                if (packed())
+                {
+                    return (index() << 3) | 0x02;
+                }
+                return (index() << 3);
+            }
+
+            virtual size_t parse (const unsigned char * pData)
+            {
+                ProtoType value;
+                size_t bytesParsed = value->parse(pData);
+
+                mCollection.push_back(value);
+
+                return bytesParsed;
+            }
+
+            virtual std::string serialize () const
+            {
+                std::string result;
+
+                for (auto & value : mCollection)
+                {
+                    result += value->serialize();
+                }
+
+                return result;
+            }
+
+            virtual bool hasValue () const
+            {
+                return !mCollection.empty();
+            }
+
+            virtual void clearValue ()
+            {
+                mCollection.clear();
+            }
+
+            virtual bool valid ()
+            {
+                if (mCollection.empty())
+                {
+                    if (isRequired())
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            virtual bool packed ()
+            {
+                return mPacked;
+            }
+
+            virtual void setPacked (bool packed)
+            {
+                mPacked = packed;
+            }
+            
+        private:
+            std::vector<ProtoType> mCollection;
+            bool mPacked;
+        };
+
         template <typename EnumType>
         class ProtoEnum : public ProtoNumericType<EnumType>
         {
@@ -812,72 +892,8 @@ R"MuddledManaged(namespace MuddledManaged
         };
 
         template <typename EnumType>
-        class ProtoEnumCollection : public ProtoBase
+        class ProtoEnumCollection : public ProtoNumericTypeCollection<ProtoEnum<EnumType>>
         {
-        public:
-            typedef std::vector<ProtoEnum<EnumType>> CollectionType;
-
-            virtual CollectionType * collection ()
-            {
-                return &mCollection;
-            }
-
-            virtual unsigned int key ()
-            {
-                if (packed())
-                {
-                    return (index() << 3) | 0x02;
-                }
-                return (index() << 3);
-            }
-
-            virtual size_t parse (const unsigned char * pData)
-            {
-                ProtoEnum<EnumType> value;
-                size_t bytesParsed = value->parse(pData);
-
-                mCollection.push_back(value);
-
-                return bytesParsed;
-            }
-
-            virtual std::string serialize () const
-            {
-                std::string result;
-
-                for (auto & value : mCollection)
-                {
-                    result += value->serialize();
-                }
-
-                return result;
-            }
-
-            virtual bool hasValue () const
-            {
-                return !mCollection.empty();
-            }
-
-            virtual bool valid ()
-            {
-                if (mCollection.empty())
-                {
-                    if (isRequired())
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-
-            virtual bool packed ()
-            {
-                return mPacked;
-            }
-            
-        private:
-            CollectionType mCollection;
-            bool mPacked;
         };
 
         class ProtoBool : public ProtoNumericType<bool>
@@ -918,6 +934,10 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
+        class ProtoBoolCollection : public ProtoNumericTypeCollection<ProtoBool>
+        {
+        };
+
         class ProtoInt32 : public ProtoNumericType<std::int32_t>
         {
         public:
@@ -941,6 +961,10 @@ R"MuddledManaged(namespace MuddledManaged
 
                 return VarInt::serialize32(intValue);
             }
+        };
+
+        class ProtoInt32Collection : public ProtoNumericTypeCollection<ProtoInt32>
+        {
         };
 
         class ProtoInt64 : public ProtoNumericType<std::int64_t>
@@ -968,6 +992,10 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
+        class ProtoInt64Collection : public ProtoNumericTypeCollection<ProtoInt64>
+        {
+        };
+
         class ProtoUnsignedInt32 : public ProtoNumericType<std::uint32_t>
         {
         public:
@@ -991,6 +1019,10 @@ R"MuddledManaged(namespace MuddledManaged
 
                 return VarInt::serializeUnsigned32(intValue);
             }
+        };
+
+        class ProtoUnsignedInt32Collection : public ProtoNumericTypeCollection<ProtoUnsignedInt32>
+        {
         };
 
         class ProtoUnsignedInt64 : public ProtoNumericType<std::uint64_t>
@@ -1018,6 +1050,10 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
+        class ProtoUnsignedInt64Collection : public ProtoNumericTypeCollection<ProtoUnsignedInt64>
+        {
+        };
+
         class ProtoSignedInt32 : public ProtoNumericType<std::int32_t>
         {
         public:
@@ -1043,6 +1079,10 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
+        class ProtoSignedInt32Collection : public ProtoNumericTypeCollection<ProtoSignedInt32>
+        {
+        };
+
         class ProtoSignedInt64 : public ProtoNumericType<std::int64_t>
         {
         public:
@@ -1066,6 +1106,10 @@ R"MuddledManaged(namespace MuddledManaged
 
                 return VarInt::serializeSigned64(intValue);
             }
+        };
+
+        class ProtoSignedInt64Collection : public ProtoNumericTypeCollection<ProtoSignedInt64>
+        {
         };
 
         class ProtoFixed32 : public ProtoNumericType<std::int32_t>
@@ -1102,6 +1146,10 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
+        class ProtoFixed32Collection : public ProtoNumericTypeCollection<ProtoFixed32>
+        {
+        };
+
         class ProtoFixed64 : public ProtoNumericType<std::int64_t>
         {
         public:
@@ -1136,6 +1184,10 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
+        class ProtoFixed64Collection : public ProtoNumericTypeCollection<ProtoFixed64>
+        {
+        };
+
         class ProtoSignedFixed32 : public ProtoFixed32
         {
         public:
@@ -1144,12 +1196,20 @@ R"MuddledManaged(namespace MuddledManaged
             {}
         };
 
+        class ProtoSignedFixed32Collection : public ProtoNumericTypeCollection<ProtoSignedFixed32>
+        {
+        };
+
         class ProtoSignedFixed64 : public ProtoFixed64
         {
         public:
             explicit ProtoSignedFixed64 (std::int64_t defaultValue = 0)
             : ProtoFixed64(defaultValue)
             {}
+        };
+
+        class ProtoSignedFixed64Collection : public ProtoNumericTypeCollection<ProtoSignedFixed64>
+        {
         };
 
         class ProtoFloat : public ProtoNumericType<float>
@@ -1186,6 +1246,10 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
+        class ProtoFloatCollection : public ProtoNumericTypeCollection<ProtoFloat>
+        {
+        };
+
         class ProtoDouble : public ProtoNumericType<double>
         {
         public:
@@ -1218,6 +1282,10 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 return 8;
             }
+        };
+
+        class ProtoDoubleCollection : public ProtoNumericTypeCollection<ProtoDouble>
+        {
         };
 
         class ProtoStringType : public ProtoBase
@@ -1275,7 +1343,69 @@ R"MuddledManaged(namespace MuddledManaged
             std::string mValueInitial;
             std::string mValueDefault;
         };
-        
+
+        template <typename ProtoType>
+        class ProtoStringTypeCollection : public ProtoBase
+        {
+        public:
+            virtual std::vector<std::shared_ptr<ProtoType>> * collection ()
+            {
+                return &mCollection;
+            }
+
+            virtual unsigned int key ()
+            {
+                return (index() << 3) | 0x02;
+            }
+
+            virtual size_t parse (const unsigned char * pData)
+            {
+                std::shared_ptr<ProtoType> value(new ProtoType());
+                size_t bytesParsed = value->parse(pData);
+
+                mCollection.push_back(value);
+
+                return bytesParsed;
+            }
+
+            virtual std::string serialize () const
+            {
+                std::string result;
+
+                for (auto & value : mCollection)
+                {
+                    result += value->serialize();
+                }
+
+                return result;
+            }
+
+            virtual bool hasValue () const
+            {
+                return !mCollection.empty();
+            }
+
+            virtual void clearValue ()
+            {
+                mCollection.clear();
+            }
+
+            virtual bool valid ()
+            {
+                if (mCollection.empty())
+                {
+                    if (required())
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            
+        private:
+            std::vector<std::shared_ptr<ProtoType>> mCollection;
+        };
+
         class ProtoString : public ProtoStringType
         {
         public:
@@ -1283,13 +1413,21 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoStringType("", defaultValue)
             {}
         };
-        
+
+        class ProtoStringCollection : public ProtoStringTypeCollection<ProtoString>
+        {
+        };
+
         class ProtoBytes : public ProtoStringType
         {
         public:
             explicit ProtoBytes ()
             : ProtoStringType("", "")
             {}
+        };
+
+        class ProtoBytesCollection : public ProtoStringTypeCollection<ProtoBytes>
+        {
         };
     }
 }
