@@ -1148,6 +1148,15 @@ R"MuddledManaged(namespace MuddledManaged
 
         class ProtoFixed32Collection : public ProtoNumericTypeCollection<ProtoFixed32>
         {
+        public:
+            virtual unsigned int key ()
+            {
+                if (packed())
+                {
+                    return (index() << 3) | 0x02;
+                }
+                return (index() << 3) | 0x05;
+            }
         };
 
         class ProtoFixed64 : public ProtoNumericType<std::int64_t>
@@ -1186,6 +1195,15 @@ R"MuddledManaged(namespace MuddledManaged
 
         class ProtoFixed64Collection : public ProtoNumericTypeCollection<ProtoFixed64>
         {
+        public:
+            virtual unsigned int key ()
+            {
+                if (packed())
+                {
+                    return (index() << 3) | 0x02;
+                }
+                return (index() << 3) | 0x01;
+            }
         };
 
         class ProtoSignedFixed32 : public ProtoFixed32
@@ -1198,6 +1216,15 @@ R"MuddledManaged(namespace MuddledManaged
 
         class ProtoSignedFixed32Collection : public ProtoNumericTypeCollection<ProtoSignedFixed32>
         {
+        public:
+            virtual unsigned int key ()
+            {
+                if (packed())
+                {
+                    return (index() << 3) | 0x02;
+                }
+                return (index() << 3) | 0x05;
+            }
         };
 
         class ProtoSignedFixed64 : public ProtoFixed64
@@ -1210,6 +1237,15 @@ R"MuddledManaged(namespace MuddledManaged
 
         class ProtoSignedFixed64Collection : public ProtoNumericTypeCollection<ProtoSignedFixed64>
         {
+        public:
+            virtual unsigned int key ()
+            {
+                if (packed())
+                {
+                    return (index() << 3) | 0x02;
+                }
+                return (index() << 3) | 0x01;
+            }
         };
 
         class ProtoFloat : public ProtoNumericType<float>
@@ -1248,6 +1284,15 @@ R"MuddledManaged(namespace MuddledManaged
 
         class ProtoFloatCollection : public ProtoNumericTypeCollection<ProtoFloat>
         {
+        public:
+            virtual unsigned int key ()
+            {
+                if (packed())
+                {
+                    return (index() << 3) | 0x02;
+                }
+                return (index() << 3) | 0x05;
+            }
         };
 
         class ProtoDouble : public ProtoNumericType<double>
@@ -1286,6 +1331,15 @@ R"MuddledManaged(namespace MuddledManaged
 
         class ProtoDoubleCollection : public ProtoNumericTypeCollection<ProtoDouble>
         {
+        public:
+            virtual unsigned int key ()
+            {
+                if (packed())
+                {
+                    return (index() << 3) | 0x02;
+                }
+                return (index() << 3) | 0x01;
+            }
         };
 
         class ProtoStringType : public ProtoBase
