@@ -659,7 +659,7 @@ R"MuddledManaged(namespace MuddledManaged
         protected:
             ProtoMessage ()
             {
-                setValueSet();
+                setValue();
             }
         };
 
@@ -670,6 +670,12 @@ R"MuddledManaged(namespace MuddledManaged
             virtual std::vector<std::shared_ptr<MessageType>> * collection ()
             {
                 return &mCollection;
+            }
+
+            virtual void addItem (std::shared_ptr<MessageType> & item)
+            {
+                item->setIndex(index());
+                mCollection.push_back(item);
             }
 
             virtual unsigned int key ()
@@ -795,6 +801,12 @@ R"MuddledManaged(namespace MuddledManaged
             virtual std::vector<ProtoType> * collection ()
             {
                 return &mCollection;
+            }
+
+            virtual void addItem (ProtoType & item)
+            {
+                item->setIndex(index());
+                mCollection.push_back(item);
             }
 
             virtual unsigned int key ()
@@ -1405,6 +1417,12 @@ R"MuddledManaged(namespace MuddledManaged
             virtual std::vector<std::shared_ptr<ProtoType>> * collection ()
             {
                 return &mCollection;
+            }
+
+            virtual void addItem (std::shared_ptr<ProtoType> & item)
+            {
+                item->setIndex(index());
+                mCollection.push_back(item);
             }
 
             virtual unsigned int key ()
