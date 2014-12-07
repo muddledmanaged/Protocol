@@ -672,10 +672,11 @@ R"MuddledManaged(namespace MuddledManaged
                 return &mCollection;
             }
 
-            virtual void addItem (std::shared_ptr<MessageType> & item)
+            virtual void addValue (std::shared_ptr<MessageType> & message)
             {
-                item->setIndex(index());
-                mCollection.push_back(item);
+                message->setIndex(index());
+
+                mCollection.push_back(message);
             }
 
             virtual unsigned int key ()
@@ -794,7 +795,7 @@ R"MuddledManaged(namespace MuddledManaged
             NumericType mValueDefault;
         };
 
-        template <typename ProtoType>
+        template <typename NumericType, typename ProtoType>
         class ProtoNumericTypeCollection : public ProtoBase
         {
         public:
@@ -803,10 +804,14 @@ R"MuddledManaged(namespace MuddledManaged
                 return &mCollection;
             }
 
-            virtual void addItem (ProtoType & item)
+            virtual void addValue (NumericType value)
             {
-                item->setIndex(index());
-                mCollection.push_back(item);
+                ProtoType valueType(mValueDefault);
+
+                valueType->setIndex(index());
+                valueType->setValue(value);
+
+                mCollection.push_back(valueType);
             }
 
             virtual unsigned int key ()
@@ -871,9 +876,15 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 mPacked = packed;
             }
-            
+
+        protected:
+            ProtoNumericTypeCollection (NumericType defaultValue)
+            : mValueDefault(defaultValue)
+            {}
+
         private:
             std::vector<ProtoType> mCollection;
+            NumericType mValueDefault;
             bool mPacked;
         };
 
@@ -904,8 +915,12 @@ R"MuddledManaged(namespace MuddledManaged
         };
 
         template <typename EnumType>
-        class ProtoEnumCollection : public ProtoNumericTypeCollection<ProtoEnum<EnumType>>
+        class ProtoEnumCollection : public ProtoNumericTypeCollection<EnumType, ProtoEnum<EnumType>>
         {
+        public:
+            explicit ProtoEnumCollection (EnumType defaultValue = 0)
+            : ProtoNumericTypeCollection<EnumType, ProtoEnum<EnumType>>(defaultValue)
+            {}
         };
 
         class ProtoBool : public ProtoNumericType<bool>
@@ -946,8 +961,12 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
-        class ProtoBoolCollection : public ProtoNumericTypeCollection<ProtoBool>
+        class ProtoBoolCollection : public ProtoNumericTypeCollection<bool, ProtoBool>
         {
+        public:
+            explicit ProtoBoolCollection (bool defaultValue = false)
+            : ProtoNumericTypeCollection<bool, ProtoBool>(defaultValue)
+            {}
         };
 
         class ProtoInt32 : public ProtoNumericType<std::int32_t>
@@ -975,8 +994,12 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
-        class ProtoInt32Collection : public ProtoNumericTypeCollection<ProtoInt32>
+        class ProtoInt32Collection : public ProtoNumericTypeCollection<std::int32_t, ProtoInt32>
         {
+        public:
+            explicit ProtoInt32Collection (std::int32_t defaultValue = 0)
+            : ProtoNumericTypeCollection<std::int32_t, ProtoInt32>(defaultValue)
+            {}
         };
 
         class ProtoInt64 : public ProtoNumericType<std::int64_t>
@@ -1004,8 +1027,12 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
-        class ProtoInt64Collection : public ProtoNumericTypeCollection<ProtoInt64>
+        class ProtoInt64Collection : public ProtoNumericTypeCollection<std::int64_t, ProtoInt64>
         {
+        public:
+            explicit ProtoInt64Collection (std::int64_t defaultValue = 0)
+            : ProtoNumericTypeCollection<std::int64_t, ProtoInt64>(defaultValue)
+            {}
         };
 
         class ProtoUnsignedInt32 : public ProtoNumericType<std::uint32_t>
@@ -1033,8 +1060,12 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
-        class ProtoUnsignedInt32Collection : public ProtoNumericTypeCollection<ProtoUnsignedInt32>
+        class ProtoUnsignedInt32Collection : public ProtoNumericTypeCollection<std::uint32_t, ProtoUnsignedInt32>
         {
+        public:
+            explicit ProtoUnsignedInt32Collection (std::uint32_t defaultValue = 0)
+            : ProtoNumericTypeCollection<std::uint32_t, ProtoUnsignedInt32>(defaultValue)
+            {}
         };
 
         class ProtoUnsignedInt64 : public ProtoNumericType<std::uint64_t>
@@ -1062,8 +1093,12 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
-        class ProtoUnsignedInt64Collection : public ProtoNumericTypeCollection<ProtoUnsignedInt64>
+        class ProtoUnsignedInt64Collection : public ProtoNumericTypeCollection<std::uint64_t, ProtoUnsignedInt64>
         {
+        public:
+            explicit ProtoUnsignedInt64Collection (std::uint64_t defaultValue = 0)
+            : ProtoNumericTypeCollection<std::uint64_t, ProtoUnsignedInt64>(defaultValue)
+            {}
         };
 
         class ProtoSignedInt32 : public ProtoNumericType<std::int32_t>
@@ -1091,8 +1126,12 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
-        class ProtoSignedInt32Collection : public ProtoNumericTypeCollection<ProtoSignedInt32>
+        class ProtoSignedInt32Collection : public ProtoNumericTypeCollection<std::int32_t, ProtoSignedInt32>
         {
+        public:
+            explicit ProtoSignedInt32Collection (std::int32_t defaultValue = 0)
+            : ProtoNumericTypeCollection<std::int32_t, ProtoSignedInt32>(defaultValue)
+            {}
         };
 
         class ProtoSignedInt64 : public ProtoNumericType<std::int64_t>
@@ -1120,8 +1159,12 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
-        class ProtoSignedInt64Collection : public ProtoNumericTypeCollection<ProtoSignedInt64>
+        class ProtoSignedInt64Collection : public ProtoNumericTypeCollection<std::int64_t, ProtoSignedInt64>
         {
+        public:
+            explicit ProtoSignedInt64Collection (std::int64_t defaultValue = 0)
+            : ProtoNumericTypeCollection<std::int64_t, ProtoSignedInt64>(defaultValue)
+            {}
         };
 
         class ProtoFixed32 : public ProtoNumericType<std::int32_t>
@@ -1158,9 +1201,13 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
-        class ProtoFixed32Collection : public ProtoNumericTypeCollection<ProtoFixed32>
+        class ProtoFixed32Collection : public ProtoNumericTypeCollection<std::int32_t, ProtoFixed32>
         {
         public:
+            explicit ProtoFixed32Collection (std::int32_t defaultValue = 0)
+            : ProtoNumericTypeCollection<std::int32_t, ProtoFixed32>(defaultValue)
+            {}
+
             virtual unsigned int key ()
             {
                 if (packed())
@@ -1205,9 +1252,13 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
-        class ProtoFixed64Collection : public ProtoNumericTypeCollection<ProtoFixed64>
+        class ProtoFixed64Collection : public ProtoNumericTypeCollection<std::int64_t, ProtoFixed64>
         {
         public:
+            explicit ProtoFixed64Collection (std::int64_t defaultValue = 0)
+            : ProtoNumericTypeCollection<std::int64_t, ProtoFixed64>(defaultValue)
+            {}
+
             virtual unsigned int key ()
             {
                 if (packed())
@@ -1226,9 +1277,13 @@ R"MuddledManaged(namespace MuddledManaged
             {}
         };
 
-        class ProtoSignedFixed32Collection : public ProtoNumericTypeCollection<ProtoSignedFixed32>
+        class ProtoSignedFixed32Collection : public ProtoNumericTypeCollection<std::int32_t, ProtoSignedFixed32>
         {
         public:
+            explicit ProtoSignedFixed32Collection (std::int32_t defaultValue = 0)
+            : ProtoNumericTypeCollection<std::int32_t, ProtoSignedFixed32>(defaultValue)
+            {}
+
             virtual unsigned int key ()
             {
                 if (packed())
@@ -1247,9 +1302,13 @@ R"MuddledManaged(namespace MuddledManaged
             {}
         };
 
-        class ProtoSignedFixed64Collection : public ProtoNumericTypeCollection<ProtoSignedFixed64>
+        class ProtoSignedFixed64Collection : public ProtoNumericTypeCollection<std::int64_t, ProtoSignedFixed64>
         {
         public:
+            explicit ProtoSignedFixed64Collection (std::int64_t defaultValue = 0)
+            : ProtoNumericTypeCollection<std::int64_t, ProtoSignedFixed64>(defaultValue)
+            {}
+
             virtual unsigned int key ()
             {
                 if (packed())
@@ -1294,9 +1353,13 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
-        class ProtoFloatCollection : public ProtoNumericTypeCollection<ProtoFloat>
+        class ProtoFloatCollection : public ProtoNumericTypeCollection<float, ProtoFloat>
         {
         public:
+            explicit ProtoFloatCollection (float defaultValue = 0)
+            : ProtoNumericTypeCollection<float, ProtoFloat>(defaultValue)
+            {}
+
             virtual unsigned int key ()
             {
                 if (packed())
@@ -1341,9 +1404,13 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
-        class ProtoDoubleCollection : public ProtoNumericTypeCollection<ProtoDouble>
+        class ProtoDoubleCollection : public ProtoNumericTypeCollection<double, ProtoDouble>
         {
         public:
+            explicit ProtoDoubleCollection (double defaultValue = 0)
+            : ProtoNumericTypeCollection<double, ProtoDouble>(defaultValue)
+            {}
+
             virtual unsigned int key ()
             {
                 if (packed())
@@ -1419,10 +1486,14 @@ R"MuddledManaged(namespace MuddledManaged
                 return &mCollection;
             }
 
-            virtual void addItem (std::shared_ptr<ProtoType> & item)
+            virtual void addValue (const std::string & value)
             {
-                item->setIndex(index());
-                mCollection.push_back(item);
+                std::shared_ptr<ProtoType> valueType(new ProtoType(mDefaultValue));
+
+                valueType->setIndex(index());
+                valueType->setValue(value);
+
+                mCollection.push_back(valueType);
             }
 
             virtual unsigned int key ()
@@ -1473,9 +1544,15 @@ R"MuddledManaged(namespace MuddledManaged
                 }
                 return true;
             }
-            
+
+        protected:
+            ProtoStringTypeCollection (const std::string & defaultValue)
+            : mValueDefault(defaultValue)
+            {}
+
         private:
             std::vector<std::shared_ptr<ProtoType>> mCollection;
+            std::string mValueDefault;
         };
 
         class ProtoString : public ProtoStringType
@@ -1488,18 +1565,26 @@ R"MuddledManaged(namespace MuddledManaged
 
         class ProtoStringCollection : public ProtoStringTypeCollection<ProtoString>
         {
+        public:
+            explicit ProtoStringCollection (const std::string & defaultValue = "")
+            : ProtoStringTypeCollection<ProtoString>(defaultValue)
+            {}
         };
 
         class ProtoBytes : public ProtoStringType
         {
         public:
-            explicit ProtoBytes ()
-            : ProtoStringType("", "")
+            explicit ProtoBytes (const std::string & defaultValue = "")
+            : ProtoStringType("", defaultValue)
             {}
         };
 
         class ProtoBytesCollection : public ProtoStringTypeCollection<ProtoBytes>
         {
+        public:
+            explicit ProtoBytesCollection (const std::string & defaultValue = "")
+            : ProtoStringTypeCollection<ProtoBytes>(defaultValue)
+            {}
         };
     }
 }
