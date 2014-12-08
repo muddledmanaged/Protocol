@@ -39,60 +39,85 @@ R"MuddledManaged(namespace MuddledManaged
         class PrimitiveEncoding
         {
         public:
-            static unsigned int sizeVariableInt (unsigned long long value)
+            static unsigned int sizeVariableInt32 (std::int32_t value)
             {
-                if (value < (1ull << 7))
+                return sizeVariableUnsignedInt32(static_cast<std::uint32_t>(value));
+            }
+            
+            static unsigned int sizeVariableUnsignedInt32 (std::uint32_t value)
+            {
+                std::uint32_t shiftBit = 1;
+
+                if (value < (shiftBit << 7))
                 {
                     return 1;
                 }
-                else if (value < (1ull << 14))
+                else if (value < (shiftBit << 14))
                 {
                     return 2;
                 }
-                else if (value < (1ull << 21))
+                else if (value < (shiftBit << 21))
                 {
                     return 3;
                 }
-                else if (value < (1ull << 28))
+                else if (value < (shiftBit << 28))
                 {
                     return 4;
                 }
-                else if (value < (1ull << 35))
+                return 5;
+            }
+
+            static unsigned int sizeVariableInt64 (std::int64_t value)
+            {
+                return sizeVariableUnsignedInt64(static_cast<std::uint64_t>(value));
+            }
+
+            static unsigned int sizeVariableUnsignedInt64 (std::uint64_t value)
+            {
+                std::uint64_t shiftBit = 1;
+
+                if (value < (shiftBit << 7))
+                {
+                    return 1;
+                }
+                else if (value < (shiftBit << 14))
+                {
+                    return 2;
+                }
+                else if (value < (shiftBit << 21))
+                {
+                    return 3;
+                }
+                else if (value < (shiftBit << 28))
+                {
+                    return 4;
+                }
+                else if (value < (shiftBit << 35))
                 {
                     return 5;
                 }
-                else if (value < (1ull << 42))
+                else if (value < (shiftBit << 42))
                 {
                     return 6;
                 }
-                else if (value < (1ull << 49))
+                else if (value < (shiftBit << 49))
                 {
                     return 7;
                 }
-                else if (value < (1ull << 56))
+                else if (value < (shiftBit << 56))
                 {
                     return 8;
                 }
-                else if (value < (1ull << 63))
+                else if (value < (shiftBit << 63))
                 {
                     return 9;
                 }
                 return 10;
             }
 
-            static unsigned int sizeIndex (unsigned long long index)
-            {
-                return sizeInt(index << 3);
-            }
-
             static std::int32_t parseVariableInt32 (const unsigned char * pData, unsigned int * pBytesParsed)
             {
-                return static_cast<std::int32_t>(parseVariable<std::int64_t>(pData, pBytesParsed));
-            }
-
-            static std::vector<std::int32_t> parsePackedVariableInt32 (const unsigned char * pData, unsigned int * pBytesParsed)
-            {
-                return parsePackedVariable<std::int32_t, std::int64_t>(pData, pBytesParsed);
+                return parseVariable<std::int32_t>(pData, pBytesParsed);
             }
 
             static std::int32_t parseFixedInt32 (const unsigned char * pData)
@@ -100,19 +125,9 @@ R"MuddledManaged(namespace MuddledManaged
                 return parseFixed<std::int32_t>(pData);
             }
 
-            static std::vector<std::int32_t> parsePackedFixedInt32 (const unsigned char * pData, unsigned int * pBytesParsed)
-            {
-                return parsePackedFixed<std::int32_t>(pData, pBytesParsed);
-            }
-
             static std::int64_t parseVariableInt64 (const unsigned char * pData, unsigned int * pBytesParsed)
             {
                 return parseVariable<std::int64_t>(pData, pBytesParsed);
-            }
-
-            static std::vector<std::int64_t> parsePackedVariableInt64 (const unsigned char * pData, unsigned int * pBytesParsed)
-            {
-                return parsePackedVariable<std::int64_t, std::int64_t>(pData, pBytesParsed);
             }
 
             static std::int64_t parseFixedInt64 (const unsigned char * pData)
@@ -120,19 +135,9 @@ R"MuddledManaged(namespace MuddledManaged
                 return parseFixed<std::int64_t>(pData);
             }
 
-            static std::vector<std::int64_t> parsePackedFixedInt64 (const unsigned char * pData, unsigned int * pBytesParsed)
-            {
-                return parsePackedFixed<std::int64_t>(pData, pBytesParsed);
-            }
-
             static std::int32_t parseVariableSignedInt32 (const unsigned char * pData, unsigned int * pBytesParsed)
             {
                 return parseVariable<std::int32_t>(pData, pBytesParsed, true);
-            }
-
-            static std::vector<std::int32_t> parsePackedVariableSignedInt32 (const unsigned char * pData, unsigned int * pBytesParsed)
-            {
-                return parsePackedVariable<std::int32_t, std::int32_t>(pData, pBytesParsed, true);
             }
 
             static std::int32_t parseFixedSignedInt32 (const unsigned char * pData)
@@ -140,19 +145,9 @@ R"MuddledManaged(namespace MuddledManaged
                 return parseFixed<std::int32_t>(pData);
             }
 
-            static std::vector<std::int32_t> parsePackedFixedSignedInt32 (const unsigned char * pData, unsigned int * pBytesParsed)
-            {
-                return parsePackedFixed<std::int32_t>(pData, pBytesParsed);
-            }
-
             static std::int64_t parseVariableSignedInt64 (const unsigned char * pData, unsigned int * pBytesParsed)
             {
                 return parseVariable<std::int64_t>(pData, pBytesParsed, true);
-            }
-
-            static std::vector<std::int64_t> parsePackedVariableSignedInt64 (const unsigned char * pData, unsigned int * pBytesParsed)
-            {
-                return parsePackedVariable<std::int64_t, std::int64_t>(pData, pBytesParsed, true);
             }
 
             static std::int64_t parseFixedSignedInt64 (const unsigned char * pData)
@@ -160,19 +155,9 @@ R"MuddledManaged(namespace MuddledManaged
                 return parseFixed<std::int64_t>(pData);
             }
 
-            static std::vector<std::int64_t> parsePackedFixedSignedInt64 (const unsigned char * pData, unsigned int * pBytesParsed)
-            {
-                return parsePackedFixed<std::int64_t>(pData, pBytesParsed);
-            }
-
             static std::uint32_t parseVariableUnsignedInt32 (const unsigned char * pData, unsigned int * pBytesParsed)
             {
                 return parseVariable<std::uint32_t>(pData, pBytesParsed);
-            }
-
-            static std::vector<std::uint32_t> parsePackedVariableUnsignedInt32 (const unsigned char * pData, unsigned int * pBytesParsed)
-            {
-                return parsePackedVariable<std::uint32_t, std::uint32_t>(pData, pBytesParsed);
             }
 
             static std::uint64_t parseVariableUnsignedInt64 (const unsigned char * pData, unsigned int * pBytesParsed)
@@ -180,29 +165,14 @@ R"MuddledManaged(namespace MuddledManaged
                 return parseVariable<std::uint64_t>(pData, pBytesParsed);
             }
 
-            static std::vector<std::uint64_t> parsePackedVariableUnsignedInt64 (const unsigned char * pData, unsigned int * pBytesParsed)
-            {
-                return parsePackedVariable<std::uint64_t, std::uint64_t>(pData, pBytesParsed);
-            }
-
             static float parseFloat (const unsigned char * pData)
             {
                 return parseFixed<float>(pData);
             }
 
-            static std::vector<sfloat> parsePackedFloat (const unsigned char * pData, unsigned int * pBytesParsed)
-            {
-                return parsePackedFixed<float>(pData, pBytesParsed);
-            }
-
             static double parseDouble (const unsigned char * pData)
             {
                 return parseFixed<double>(pData);
-            }
-
-            static std::vector<double> parsePackedDouble (const unsigned char * pData, unsigned int * pBytesParsed)
-            {
-                return parsePackedFixed<double>(pData, pBytesParsed);
             }
 
             static std::string parseString (const unsigned char * pData, unsigned int * pBytesParsed)
@@ -216,8 +186,9 @@ R"MuddledManaged(namespace MuddledManaged
                 {
                     throw std::invalid_argument("pData cannot be null.");
                 }
+
                 unsigned int bytesParsed = 0;
-                std::uint32_t length = parseUnsigned32(pData, &bytesParsed);
+                std::uint32_t length = parseVariableUnsignedInt32(pData, &bytesParsed);
                 pData += bytesParsed;
 
                 std::string result;
@@ -240,19 +211,9 @@ R"MuddledManaged(namespace MuddledManaged
                 return serializeVariable<std::int64_t>(value);
             }
 
-            static std::string serializePackedVariableInt32 (const std::vector<std::int32_t> & values) const
-            {
-                return serializePackedVariable<std::int32_t, std::int64_t>(values);
-            }
-
             static std::string serializeFixedInt32 (std::int32_t value) const
             {
                 return serializeFixed<std::int32_t>(value);
-            }
-
-            static std::string serializePackedFixedInt32 (const std::vector<std::int32_t> & values) const
-            {
-                return serializePackedFixed<std::int32_t>(values);
             }
 
             static std::string serializeVariableInt64 (std::int64_t value) const
@@ -260,19 +221,9 @@ R"MuddledManaged(namespace MuddledManaged
                 return serializeVariable<std::int64_t>(value);
             }
 
-            static std::string serializePackedVariableInt64 (const std::vector<std::int64_t> & values) const
-            {
-                return serializePackedVariable<std::int64_t, std::int64_t>(values);
-            }
-
             static std::string serializeFixedInt64 (std::int64_t value) const
             {
                 return serializeFixed<std::int64_t>(value);
-            }
-
-            static std::string serializePackedFixedInt64 (const std::vector<std::int64_t> & values) const
-            {
-                return serializePackedFixed<std::int64_t>(values);
             }
 
             static std::string serializeVariableSignedInt32 (std::int32_t value) const
@@ -280,19 +231,9 @@ R"MuddledManaged(namespace MuddledManaged
                 return serializeVariable<std::int32_t>(value, true);
             }
 
-            static std::string serializePackedVariableSignedInt32 (const std::vector<std::int32_t> & values) const
-            {
-                return serializePackedVariable<std::int32_t, std::int32_t>(values, true);
-            }
-
             static std::string serializeFixedSignedInt32 (std::int32_t value) const
             {
                 return serializeFixed<std::int32_t>(value);
-            }
-
-            static std::string serializePackedFixedSignedInt32 (const std::vector<std::int32_t> & values) const
-            {
-                return serializePackedFixed<std::int32_t>(values);
             }
 
             static std::string serializeVariableSignedInt64 (std::int64_t value) const
@@ -300,19 +241,9 @@ R"MuddledManaged(namespace MuddledManaged
                 return serializeVariable<std::int64_t>(value, true);
             }
 
-            static std::string serializePackedVariableSignedInt64 (const std::vector<std::int64_t> & values) const
-            {
-                return serializePackedVariable<std::int64_t, std::int64_t>(values, true);
-            }
-
             static std::string serializeFixedSignedInt64 (std::int64_t value) const
             {
                 return serializeFixed<std::int64_t>(value);
-            }
-
-            static std::string serializePackedFixedSignedInt64 (const std::vector<std::int64_t> & values) const
-            {
-                return serializePackedFixed<std::int64_t>(values);
             }
 
             static std::string serializeVariableUnsignedInt32 (std::uint32_t value) const
@@ -320,19 +251,9 @@ R"MuddledManaged(namespace MuddledManaged
                 return serializeVariable<std::uint32_t>(value);
             }
 
-            static std::string serializePackedVariableUnsignedInt32 (const std::vector<std::uint32_t> values) const
-            {
-                return serializePackedVariable<std::uint32_t, std::uint32_t>(values);
-            }
-
             static std::string serializeVariableUnsignedInt64 (std::uint64_t value) const
             {
                 return serializeVariable<std::uint64_t>(value);
-            }
-
-            static std::string serializePackedVariableUnsignedInt64 (const std::vector<std::uint64_t> values) const
-            {
-                return serializePackedVariable<std::uint64_t, std::uint64_t>(values);
             }
 
             static std::string serializeFloat (float value) const
@@ -340,19 +261,9 @@ R"MuddledManaged(namespace MuddledManaged
                 return serializeFixed<float>(value);
             }
 
-            static std::string serializePackedFloat (const std::vector<float> & values) const
-            {
-                return serializePackedFixed<float>(values);
-            }
-
             static std::string serializeDouble (double value) const
             {
                 return serializeFixed<double>(value);
-            }
-
-            static std::string serializePackedDouble (const std::vector<double> & values) const
-            {
-                return serializePackedFixed<double>(values);
             }
 
             static std::string serializeString (const std::string & value) const
@@ -364,7 +275,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                result = serializeVariableUnsignedInt32(value.length());
+                result = serializeVariableUnsignedInt32(static_cast<std::uint32_t>(value.length()));
                 result += value;
 
                 return result;
@@ -381,6 +292,7 @@ R"MuddledManaged(namespace MuddledManaged
                 {
                     throw std::invalid_argument("pData cannot be null.");
                 }
+
                 ValueType rawValue = 0;
                 unsigned int byteCount = 0;
                 unsigned int maxByteCount = sizeof(ValueType) + sizeof(ValueType) / 4;
@@ -431,6 +343,7 @@ R"MuddledManaged(namespace MuddledManaged
                 {
                     throw std::invalid_argument("pData cannot be null.");
                 }
+
                 ValueType value = 0;
                 unsigned char * pValueChars = reinterpret_cast<unsigned char *>(&value);
                 for (int i = sizeof(ValueType) - 1; i >= 0; --i)
@@ -440,64 +353,6 @@ R"MuddledManaged(namespace MuddledManaged
                 }
 
                 return value;
-            }
-
-            template <typename ValueType, typename PackedType>
-            static std::vector<ValueType> parsePackedVariable (const unsigned char * pData, unsigned int * pBytesParsed, bool useZigZag = false)
-            {
-                if (pData == nullptr)
-                {
-                    throw std::invalid_argument("pData cannot be null.");
-                }
-                unsigned int bytesParsed = 0;
-                std::uint32_t length = parseUnsigned32(pData, &bytesParsed);
-                pData += bytesParsed;
-
-                std::vector<ValueType> result;
-                std::uint32_t remainingBytes = length;
-                while (remainingBytes)
-                {
-                    unsigned int packedBytesParsed = 0;
-                    PackedType packedValue = parseVariable<PackedType>(pData, &packedBytesParsed, useZigZag);
-                    result.push_back(static_cast<ValueType>(packedValue));
-                    pData += packedBytesParsed;
-                    remainingBytes -= packedBytesParsed;
-                }
-
-                if (pBytesParsed != nullptr)
-                {
-                    *pBytesParsed = bytesParsed + length;
-                }
-
-                return result;
-            }
-
-            template <typename ValueType>
-            static std::vector<ValueType> parsePackedFixed (const unsigned char * pData, unsigned int * pBytesParsed)
-            {
-                if (pData == nullptr)
-                {
-                    throw std::invalid_argument("pData cannot be null.");
-                }
-                unsigned int bytesParsed = 0;
-                std::uint32_t length = parseUnsigned32(pData, &bytesParsed);
-                pData += bytesParsed;
-
-                std::vector<ValueType> result;
-                std::uint32_t itemCount = length / sizeof(ValueType);
-                for (int i = 0; i < itemCount, ++i)
-                {
-                    ValueType packedValue = parseFixed<ValueType>(pData);
-                    result.push_back(packedValue);
-                    pData += sizeof(ValueType);
-                }
-
-                if (pBytesParsed != nullptr)
-                {
-                    *pBytesParsed = bytesParsed + length;
-                }
-
-                return result;
             }
 
             template <typename ValueType>
@@ -543,34 +398,6 @@ R"MuddledManaged(namespace MuddledManaged
                 {
                     result += pValueChars[i];
                 }
-
-                return result;
-            }
-
-            template <typename ValueType, typename PackedType>
-            static std::string serializePackedVariable (const std::vector<ValueType> & values, bool useZigZag = false) const
-            {
-                std::string result;
-
-                for (auto packedValue: values)
-                {
-                    result += serializeVariable<PackedType>(packedValue, useZigZag);
-                }
-                result = serializeVariableUnsignedInt32(result.length()) + result;
-
-                return result;
-            }
-
-            template <typename ValueType>
-            static std::string serializePackedFixed (const std::vector<ValueType> & values) const
-            {
-                std::string result;
-
-                for (auto packedValue: values)
-                {
-                    result += serializeFixed<ValueType>(packedValue);
-                }
-                result = serializeVariableUnsignedInt32(result.length()) + result;
 
                 return result;
             }
@@ -686,10 +513,15 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual size_t parse (const unsigned char * pData)
             {
+                if (pData == nullptr)
+                {
+                    throw std::invalid_argument("pData cannot be null.");
+                }
+
                 std::shared_ptr<MessageType> message(new MessageType());
                 size_t bytesParsed = message->parse(pData);
 
-                mCollection.push_back(message);
+                addValue(message);
 
                 return bytesParsed;
             }
@@ -701,6 +533,18 @@ R"MuddledManaged(namespace MuddledManaged
                 for (auto & message : mCollection)
                 {
                     result += message->serialize();
+                }
+
+                return result;
+            }
+
+            virtual size_t size () const
+            {
+                size_t result = 0;
+
+                for (auto & message : mCollection)
+                {
+                    result += message->size();
                 }
 
                 return result;
@@ -779,11 +623,6 @@ R"MuddledManaged(namespace MuddledManaged
                 return (index() << 3);
             }
 
-            virtual size_t size () const
-            {
-                return sizeVarInt(mValue);
-            }
-
         protected:
             ProtoNumericType (NumericType value, NumericType defaultValue)
             : mValue(value), mValueInitial(value), mValueDefault(defaultValue)
@@ -823,28 +662,6 @@ R"MuddledManaged(namespace MuddledManaged
                 return (index() << 3);
             }
 
-            virtual size_t parse (const unsigned char * pData)
-            {
-                ProtoType value;
-                size_t bytesParsed = value->parse(pData);
-
-                mCollection.push_back(value);
-
-                return bytesParsed;
-            }
-
-            virtual std::string serialize () const
-            {
-                std::string result;
-
-                for (auto & value : mCollection)
-                {
-                    result += value->serialize();
-                }
-
-                return result;
-            }
-
             virtual bool hasValue () const
             {
                 return !mCollection.empty();
@@ -867,16 +684,6 @@ R"MuddledManaged(namespace MuddledManaged
                 return true;
             }
 
-            virtual bool packed ()
-            {
-                return mPacked;
-            }
-
-            virtual void setPacked (bool packed)
-            {
-                mPacked = packed;
-            }
-
         protected:
             ProtoNumericTypeCollection (NumericType defaultValue)
             : mValueDefault(defaultValue)
@@ -885,7 +692,6 @@ R"MuddledManaged(namespace MuddledManaged
         private:
             std::vector<ProtoType> mCollection;
             NumericType mValueDefault;
-            bool mPacked;
         };
 
         template <typename EnumType>
@@ -898,8 +704,13 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual size_t parse (const unsigned char * pData)
             {
+                if (pData == nullptr)
+                {
+                    throw std::invalid_argument("pData cannot be null.");
+                }
+
                 size_t bytesParsed = 0;
-                int enumValue = VarInt::parse32(pData, &bytesParsed);
+                std::int64_t enumValue = PrimitiveEncoding::parseVariableInt64(pData, &bytesParsed);
 
                 setValue(static_cast<EnumType>(enumValue));
 
@@ -908,9 +719,26 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual std::string serialize () const
             {
-                int32_t enumValue = value();
+                std::string result;
 
-                return serialize32(enumValue);
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+
+                std::int64_t enumValue = static_cast<std::int64_t>(value());
+                result += PrimitiveEncoding::serializeVariableInt64(enumValue);
+
+                return result;
+            }
+
+            virtual size_t size () const
+            {
+                size_t result = 0;
+
+                result += PrimitiveEncoding::sizeVariableInt32(key());
+
+                std::int64_t enumValue = static_cast<std::int64_t>(value());
+                result += PrimitiveEncoding::sizeVariableInt64(enumValue);
+
+                return result;
             }
         };
 
@@ -921,6 +749,67 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoEnumCollection (EnumType defaultValue = 0)
             : ProtoNumericTypeCollection<EnumType, ProtoEnum<EnumType>>(defaultValue)
             {}
+
+            virtual size_t parse (const unsigned char * pData)
+            {
+                if (pData == nullptr)
+                {
+                    throw std::invalid_argument("pData cannot be null.");
+                }
+
+                unsigned int lengthBytesParsed = 0;
+                std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
+                pData += lengthBytesParsed;
+
+                std::uint32_t remainingBytes = length;
+                while (remainingBytes)
+                {
+                    unsigned int bytesParsed = 0;
+                    std::int64_t enumValue = PrimitiveEncoding::parseVariableInt64(pData, &bytesParsed);
+
+                    addValue(static_cast<EnumType>(enumValue));
+                    
+                    pData += bytesParsed;
+                    remainingBytes -= bytesParsed;
+                }
+
+                if (pBytesParsed != nullptr)
+                {
+                    *pBytesParsed = lengthBytesParsed + length;
+                }
+                
+                return result;
+            }
+
+            virtual std::string serialize () const
+            {
+                std::string result;
+
+                for (auto & protoValue: *collection())
+                {
+                    result += PrimitiveEncoding::serializeVariableInt64(static_cast<std::int64_t>(protoValue.value()));
+                }
+                result = PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +
+                    PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
+                    result;
+
+                return result;
+            }
+
+            virtual size_t size () const
+            {
+                size_t result = 0;
+
+                for (auto & protoValue : *collection())
+                {
+                    result += PrimitiveEncoding::sizeVariableInt64(static_cast<std::int64_t>(protoValue.value()));
+                }
+
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+
+                return result;
+            }
         };
 
         class ProtoBool : public ProtoNumericType<bool>
@@ -932,8 +821,13 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual size_t parse (const unsigned char * pData)
             {
+                if (pData == nullptr)
+                {
+                    throw std::invalid_argument("pData cannot be null.");
+                }
+
                 size_t bytesParsed = 0;
-                int boolValue = VarInt::parse32(pData, &bytesParsed);
+                std::int32_t boolValue = PrimitiveEncoding::parseVariableInt32(pData, &bytesParsed);
                 if (bytesParsed != 1)
                 {
                     throw ProtocolBufferException("Boolean VarInt length exceeded one byte.");
@@ -957,7 +851,22 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual std::string serialize () const
             {
-                return VarInt::serialize32(value() ? 1 : 0);
+                std::string result;
+
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+
+                result += PrimitiveEncoding::serializeVariableInt32(value() ? 1 : 0);
+                
+                return result;
+            }
+
+            virtual size_t size () const
+            {
+                size_t result = 1;
+
+                result += PrimitiveEncoding::sizeVariableInt32(key());
+                
+                return result;
             }
         };
 
@@ -967,6 +876,23 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoBoolCollection (bool defaultValue = false)
             : ProtoNumericTypeCollection<bool, ProtoBool>(defaultValue)
             {}
+
+            virtual size_t size () const
+            {
+                size_t result = collection()->size();
+
+                if (packed())
+                {
+                    result += PrimitiveEncoding::sizeVariableInt(result);
+                    result += PrimitiveEncoding::sizeIndex(index());
+                }
+                else
+                {
+                    result += PrimitiveEncoding::sizeIndex(index()) * collection()->size();
+                }
+
+                return result;
+            }
         };
 
         class ProtoInt32 : public ProtoNumericType<std::int32_t>
@@ -992,6 +918,15 @@ R"MuddledManaged(namespace MuddledManaged
 
                 return VarInt::serialize32(intValue);
             }
+
+            virtual size_t size () const
+            {
+                size_t result = PrimitiveEncoding::sizeVariableInt(value());
+
+                result += PrimitiveEncoding::sizeIndex(index());
+
+                return result;
+            }
         };
 
         class ProtoInt32Collection : public ProtoNumericTypeCollection<std::int32_t, ProtoInt32>
@@ -1000,6 +935,28 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoInt32Collection (std::int32_t defaultValue = 0)
             : ProtoNumericTypeCollection<std::int32_t, ProtoInt32>(defaultValue)
             {}
+
+            virtual size_t size () const
+            {
+                size_t result = 0;
+
+                for (auto & protoValue : *collection())
+                {
+                    result += PrimitiveEncoding::sizeVariableInt(protoValue.value());
+                }
+
+                if (packed())
+                {
+                    result += PrimitiveEncoding::sizeVariableInt(result);
+                    result += PrimitiveEncoding::sizeIndex(index());
+                }
+                else
+                {
+                    result += PrimitiveEncoding::sizeIndex(index()) * collection()->size();
+                }
+
+                return result;
+            }
         };
 
         class ProtoInt64 : public ProtoNumericType<std::int64_t>
@@ -1025,6 +982,15 @@ R"MuddledManaged(namespace MuddledManaged
 
                 return VarInt::serialize64(intValue);
             }
+
+            virtual size_t size () const
+            {
+                size_t result = PrimitiveEncoding::sizeVariableInt(value());
+
+                result += PrimitiveEncoding::sizeIndex(index());
+
+                return result;
+            }
         };
 
         class ProtoInt64Collection : public ProtoNumericTypeCollection<std::int64_t, ProtoInt64>
@@ -1033,6 +999,28 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoInt64Collection (std::int64_t defaultValue = 0)
             : ProtoNumericTypeCollection<std::int64_t, ProtoInt64>(defaultValue)
             {}
+
+            virtual size_t size () const
+            {
+                size_t result = 0;
+
+                for (auto & protoValue : *collection())
+                {
+                    result += PrimitiveEncoding::sizeVariableInt(protoValue.value());
+                }
+
+                if (packed())
+                {
+                    result += PrimitiveEncoding::sizeVariableInt(result);
+                    result += PrimitiveEncoding::sizeIndex(index());
+                }
+                else
+                {
+                    result += PrimitiveEncoding::sizeIndex(index()) * collection()->size();
+                }
+
+                return result;
+            }
         };
 
         class ProtoUnsignedInt32 : public ProtoNumericType<std::uint32_t>
@@ -1058,6 +1046,15 @@ R"MuddledManaged(namespace MuddledManaged
 
                 return VarInt::serializeUnsigned32(intValue);
             }
+
+            virtual size_t size () const
+            {
+                size_t result = PrimitiveEncoding::sizeVariableInt(value());
+
+                result += PrimitiveEncoding::sizeIndex(index());
+
+                return result;
+            }
         };
 
         class ProtoUnsignedInt32Collection : public ProtoNumericTypeCollection<std::uint32_t, ProtoUnsignedInt32>
@@ -1066,6 +1063,28 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoUnsignedInt32Collection (std::uint32_t defaultValue = 0)
             : ProtoNumericTypeCollection<std::uint32_t, ProtoUnsignedInt32>(defaultValue)
             {}
+
+            virtual size_t size () const
+            {
+                size_t result = 0;
+
+                for (auto & protoValue : *collection())
+                {
+                    result += PrimitiveEncoding::sizeVariableInt(protoValue.value());
+                }
+
+                if (packed())
+                {
+                    result += PrimitiveEncoding::sizeVariableInt(result);
+                    result += PrimitiveEncoding::sizeIndex(index());
+                }
+                else
+                {
+                    result += PrimitiveEncoding::sizeIndex(index()) * collection()->size();
+                }
+
+                return result;
+            }
         };
 
         class ProtoUnsignedInt64 : public ProtoNumericType<std::uint64_t>
@@ -1091,6 +1110,15 @@ R"MuddledManaged(namespace MuddledManaged
 
                 return VarInt::serializeUnsigned64(intValue);
             }
+
+            virtual size_t size () const
+            {
+                size_t result = PrimitiveEncoding::sizeVariableInt(value());
+
+                result += PrimitiveEncoding::sizeIndex(index());
+
+                return result;
+            }
         };
 
         class ProtoUnsignedInt64Collection : public ProtoNumericTypeCollection<std::uint64_t, ProtoUnsignedInt64>
@@ -1099,6 +1127,28 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoUnsignedInt64Collection (std::uint64_t defaultValue = 0)
             : ProtoNumericTypeCollection<std::uint64_t, ProtoUnsignedInt64>(defaultValue)
             {}
+
+            virtual size_t size () const
+            {
+                size_t result = 0;
+
+                for (auto & protoValue : *collection())
+                {
+                    result += PrimitiveEncoding::sizeVariableInt(protoValue.value());
+                }
+
+                if (packed())
+                {
+                    result += PrimitiveEncoding::sizeVariableInt(result);
+                    result += PrimitiveEncoding::sizeIndex(index());
+                }
+                else
+                {
+                    result += PrimitiveEncoding::sizeIndex(index()) * collection()->size();
+                }
+
+                return result;
+            }
         };
 
         class ProtoSignedInt32 : public ProtoNumericType<std::int32_t>
@@ -1123,6 +1173,15 @@ R"MuddledManaged(namespace MuddledManaged
                 int32_t intValue = value();
 
                 return VarInt::serializeSigned32(intValue);
+            }
+
+            virtual size_t size () const
+            {
+                size_t result = PrimitiveEncoding::sizeVariableInt(value());
+
+                result += PrimitiveEncoding::sizeIndex(index());
+
+                return result;
             }
         };
 
@@ -1156,6 +1215,15 @@ R"MuddledManaged(namespace MuddledManaged
                 int64_t intValue = value();
 
                 return VarInt::serializeSigned64(intValue);
+            }
+
+            virtual size_t size () const
+            {
+                size_t result = PrimitiveEncoding::sizeVariableInt(value());
+
+                result += PrimitiveEncoding::sizeIndex(index());
+
+                return result;
             }
         };
 
@@ -1197,7 +1265,11 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual size_t size () const
             {
-                return 4;
+                size_t result = 4;
+
+                result += PrimitiveEncoding::sizeIndex(index());
+
+                return result;
             }
         };
 
@@ -1215,6 +1287,46 @@ R"MuddledManaged(namespace MuddledManaged
                     return (index() << 3) | 0x02;
                 }
                 return (index() << 3) | 0x05;
+            }
+
+            virtual size_t parse (const unsigned char * pData)
+            {
+                if (pData == nullptr)
+                {
+                    throw std::invalid_argument("pData cannot be null.");
+                }
+                unsigned int bytesParsed = 0;
+                std::uint32_t length = parseUnsigned32(pData, &bytesParsed);
+                pData += bytesParsed;
+
+                std::vector<ValueType> result;
+                std::uint32_t itemCount = length / sizeof(ValueType);
+                for (int i = 0; i < itemCount, ++i)
+                {
+                    ValueType packedValue = parseFixed<ValueType>(pData);
+                    result.push_back(packedValue);
+                    pData += sizeof(ValueType);
+                }
+
+                if (pBytesParsed != nullptr)
+                {
+                    *pBytesParsed = bytesParsed + length;
+                }
+                
+                return result;
+            }
+
+            virtual std::string serialize () const
+            {
+                std::string result;
+
+                for (auto packedValue: values)
+                {
+                    result += serializeVariable<PackedType>(packedValue, useZigZag);
+                }
+                result = serializeVariableUnsignedInt32(result.length()) + result;
+                
+                return result;
             }
         };
 
@@ -1248,7 +1360,11 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual size_t size () const
             {
-                return 8;
+                size_t result = 8;
+
+                result += PrimitiveEncoding::sizeIndex(index());
+
+                return result;
             }
         };
 
@@ -1349,7 +1465,11 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual size_t size () const
             {
-                return 4;
+                size_t result = 4;
+
+                result += PrimitiveEncoding::sizeIndex(index());
+
+                return result;
             }
         };
 
@@ -1400,7 +1520,11 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual size_t size () const
             {
-                return 8;
+                size_t result = 8;
+
+                result += PrimitiveEncoding::sizeIndex(index());
+
+                return result;
             }
         };
 
@@ -1463,7 +1587,12 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual size_t size () const
             {
-                return mValue.size();
+                size_t result = mValue.size();
+
+                result += PrimitiveEncoding::sizeVariableInt(result);
+                result += PrimitiveEncoding::sizeIndex(index());
+
+                return result;
             }
 
         protected:
@@ -1518,6 +1647,18 @@ R"MuddledManaged(namespace MuddledManaged
                 for (auto & value : mCollection)
                 {
                     result += value->serialize();
+                }
+
+                return result;
+            }
+
+            virtual size_t size () const
+            {
+                size_t result = 0;
+
+                for (auto & value : mCollection)
+                {
+                    result += value->size();
                 }
 
                 return result;
