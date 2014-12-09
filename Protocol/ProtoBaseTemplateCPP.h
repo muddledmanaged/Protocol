@@ -1674,12 +1674,11 @@ R"MuddledManaged(namespace MuddledManaged
                     throw std::invalid_argument("pData cannot be null.");
                 }
 
-                size_t bytesParsed = 0;
-                std::int32_t numericValue = PrimitiveEncoding::parseVariableInt32(pData, &bytesParsed);
+                std::int32_t numericValue = PrimitiveEncoding::parseFixedInt32(pData);
 
                 setValue(numericValue);
 
-                return bytesParsed;
+                return 4;
             }
 
             virtual std::string serialize () const
@@ -1688,7 +1687,7 @@ R"MuddledManaged(namespace MuddledManaged
 
                 result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
 
-                result += PrimitiveEncoding::serializeVariableInt32(value());
+                result += PrimitiveEncoding::serializeFixedInt32(value());
 
                 return result;
             }
@@ -1699,7 +1698,7 @@ R"MuddledManaged(namespace MuddledManaged
 
                 result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
                 
-                result += PrimitiveEncoding::sizeVariableInt32(value());
+                result += 4;
                 
                 return result;
             }
@@ -1727,69 +1726,22 @@ R"MuddledManaged(namespace MuddledManaged
                 {
                     throw std::invalid_argument("pData cannot be null.");
                 }
-                unsigned int bytesParsed = 0;
-                std::uint32_t length = parseUnsigned32(pData, &bytesParsed);
-                pData += bytesParsed;
-
-                std::vector<ValueType> result;
-                std::uint32_t itemCount = length / sizeof(ValueType);
-                for (int i = 0; i < itemCount, ++i)
-                {
-                    ValueType packedValue = parseFixed<ValueType>(pData);
-                    result.push_back(packedValue);
-                    pData += sizeof(ValueType);
-                }
-
-                if (pBytesParsed != nullptr)
-                {
-                    *pBytesParsed = bytesParsed + length;
-                }
-                
-                return result;
-            }
-
-            virtual std::string serialize () const
-            {
-                std::string result;
-
-                for (auto packedValue: values)
-                {
-                    result += serializeVariable<PackedType>(packedValue, useZigZag);
-                }
-                result = serializeVariableUnsignedInt32(result.length()) + result;
-                
-                return result;
-            }
-
-            virtual size_t parse (const unsigned char * pData)
-            {
-                if (pData == nullptr)
-                {
-                    throw std::invalid_argument("pData cannot be null.");
-                }
 
                 unsigned int lengthBytesParsed = 0;
                 std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
-                std::uint32_t remainingBytes = length;
-                while (remainingBytes)
+                std::uint32_t itemCount = length / 4;
+                for (int i = 0; i < itemCount, ++i)
                 {
-                    unsigned int bytesParsed = 0;
-                    std::int32_t numericValue = PrimitiveEncoding::parseVariableInt32(pData, &bytesParsed);
+                    std::int32_t numericValue = PrimitiveEncoding::parseFixedInt32(pData);
 
                     addValue(numericValue);
 
-                    pData += bytesParsed;
-                    remainingBytes -= bytesParsed;
+                    pData += 4;
                 }
 
-                if (pBytesParsed != nullptr)
-                {
-                    *pBytesParsed = lengthBytesParsed + length;
-                }
-
-                return result;
+                return lengthBytesParsed + length;
             }
 
             virtual std::string serialize () const
@@ -1798,7 +1750,7 @@ R"MuddledManaged(namespace MuddledManaged
 
                 for (auto & protoValue: *collection())
                 {
-                    result += PrimitiveEncoding::serializeVariableInt32(protoValue.value());
+                    result += PrimitiveEncoding::serializeFixedInt32(protoValue.value());
                 }
                 result = PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +
                 PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
@@ -1811,10 +1763,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                for (auto & protoValue : *collection())
-                {
-                    result += PrimitiveEncoding::sizeVariableInt32(protoValue.value());
-                }
+                result += *collection.size() * 4;
 
                 result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
                 result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
