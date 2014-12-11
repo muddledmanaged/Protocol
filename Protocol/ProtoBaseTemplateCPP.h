@@ -1713,11 +1713,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key ()
             {
-                if (packed())
-                {
-                    return (index() << 3) | 0x02;
-                }
-                return (index() << 3) | 0x05;
+                return (index() << 3) | 0x02;
             }
 
             virtual size_t parse (const unsigned char * pData)
@@ -1786,26 +1782,37 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual size_t parse (const unsigned char * pData)
             {
-                std::int64_t intValue = FixedSize::parse64(pData);
+                if (pData == nullptr)
+                {
+                    throw std::invalid_argument("pData cannot be null.");
+                }
 
-                setValue(intValue);
+                std::int64_t numericValue = PrimitiveEncoding::parseFixedInt64(pData);
+
+                setValue(numericValue);
 
                 return 8;
             }
 
             virtual std::string serialize () const
             {
-                int64_t intValue = value();
+                std::string result;
 
-                return FixedSize::serialize64(intValue);
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+
+                result += PrimitiveEncoding::serializeFixedInt64(value());
+
+                return result;
             }
 
             virtual size_t size () const
             {
-                size_t result = 8;
+                size_t result = 0;
 
-                result += PrimitiveEncoding::sizeIndex(index());
-
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                
+                result += 8;
+                
                 return result;
             }
         };
@@ -1819,11 +1826,58 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key ()
             {
-                if (packed())
+                return (index() << 3) | 0x02;
+            }
+
+            virtual size_t parse (const unsigned char * pData)
+            {
+                if (pData == nullptr)
                 {
-                    return (index() << 3) | 0x02;
+                    throw std::invalid_argument("pData cannot be null.");
                 }
-                return (index() << 3) | 0x01;
+
+                unsigned int lengthBytesParsed = 0;
+                std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
+                pData += lengthBytesParsed;
+
+                std::uint32_t itemCount = length / 8;
+                for (int i = 0; i < itemCount, ++i)
+                {
+                    std::int64_t numericValue = PrimitiveEncoding::parseFixedInt64(pData);
+
+                    addValue(numericValue);
+
+                    pData += 8;
+                }
+
+                return lengthBytesParsed + length;
+            }
+
+            virtual std::string serialize () const
+            {
+                std::string result;
+
+                for (auto & protoValue: *collection())
+                {
+                    result += PrimitiveEncoding::serializeFixedInt64(protoValue.value());
+                }
+                result = PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +
+                PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
+                result;
+
+                return result;
+            }
+
+            virtual size_t size () const
+            {
+                size_t result = 0;
+
+                result += *collection.size() * 8;
+
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                
+                return result;
             }
         };
 
@@ -1841,15 +1895,6 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoSignedFixed32Collection (std::int32_t defaultValue = 0)
             : ProtoNumericTypeCollection<std::int32_t, ProtoSignedFixed32>(defaultValue)
             {}
-
-            virtual unsigned int key ()
-            {
-                if (packed())
-                {
-                    return (index() << 3) | 0x02;
-                }
-                return (index() << 3) | 0x05;
-            }
         };
 
         class ProtoSignedFixed64 : public ProtoFixed64
@@ -1866,15 +1911,6 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoSignedFixed64Collection (std::int64_t defaultValue = 0)
             : ProtoNumericTypeCollection<std::int64_t, ProtoSignedFixed64>(defaultValue)
             {}
-
-            virtual unsigned int key ()
-            {
-                if (packed())
-                {
-                    return (index() << 3) | 0x02;
-                }
-                return (index() << 3) | 0x01;
-            }
         };
 
         class ProtoFloat : public ProtoNumericType<float>
@@ -1891,26 +1927,37 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual size_t parse (const unsigned char * pData)
             {
-                float floatValue = FixedSize::parseFloat(pData);
+                if (pData == nullptr)
+                {
+                    throw std::invalid_argument("pData cannot be null.");
+                }
 
-                setValue(floatValue);
+                float numericValue = PrimitiveEncoding::parseFloat(pData);
+
+                setValue(numericValue);
 
                 return 4;
             }
 
             virtual std::string serialize () const
             {
-                float floatValue = value();
+                std::string result;
 
-                return FixedSize::serializeFloat(floatValue);
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+
+                result += PrimitiveEncoding::serializeFloat(value());
+
+                return result;
             }
 
             virtual size_t size () const
             {
-                size_t result = 4;
+                size_t result = 0;
 
-                result += PrimitiveEncoding::sizeIndex(index());
-
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                
+                result += 4;
+                
                 return result;
             }
         };
@@ -1924,11 +1971,58 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key ()
             {
-                if (packed())
+                return (index() << 3) | 0x02;
+            }
+
+            virtual size_t parse (const unsigned char * pData)
+            {
+                if (pData == nullptr)
                 {
-                    return (index() << 3) | 0x02;
+                    throw std::invalid_argument("pData cannot be null.");
                 }
-                return (index() << 3) | 0x05;
+
+                unsigned int lengthBytesParsed = 0;
+                std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
+                pData += lengthBytesParsed;
+
+                std::uint32_t itemCount = length / 4;
+                for (int i = 0; i < itemCount, ++i)
+                {
+                    float numericValue = PrimitiveEncoding::parseFloat(pData);
+
+                    addValue(numericValue);
+
+                    pData += 4;
+                }
+
+                return lengthBytesParsed + length;
+            }
+
+            virtual std::string serialize () const
+            {
+                std::string result;
+
+                for (auto & protoValue: *collection())
+                {
+                    result += PrimitiveEncoding::serializeFloat(protoValue.value());
+                }
+                result = PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +
+                PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
+                result;
+
+                return result;
+            }
+
+            virtual size_t size () const
+            {
+                size_t result = 0;
+
+                result += *collection.size() * 4;
+
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                
+                return result;
             }
         };
 
@@ -1946,26 +2040,37 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual size_t parse (const unsigned char * pData)
             {
-                double doubleValue = FixedSize::parseDouble(pData);
+                if (pData == nullptr)
+                {
+                    throw std::invalid_argument("pData cannot be null.");
+                }
 
-                setValue(doubleValue);
+                double numericValue = PrimitiveEncoding::parseDouble(pData);
+
+                setValue(numericValue);
 
                 return 8;
             }
 
             virtual std::string serialize () const
             {
-                double doubleValue = value();
+                std::string result;
 
-                return FixedSize::parseDouble(doubleValue);
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+
+                result += PrimitiveEncoding::serializeDouble(value());
+
+                return result;
             }
 
             virtual size_t size () const
             {
-                size_t result = 8;
+                size_t result = 0;
 
-                result += PrimitiveEncoding::sizeIndex(index());
-
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                
+                result += 8;
+                
                 return result;
             }
         };
@@ -1979,11 +2084,58 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key ()
             {
-                if (packed())
+                return (index() << 3) | 0x02;
+            }
+
+            virtual size_t parse (const unsigned char * pData)
+            {
+                if (pData == nullptr)
                 {
-                    return (index() << 3) | 0x02;
+                    throw std::invalid_argument("pData cannot be null.");
                 }
-                return (index() << 3) | 0x01;
+
+                unsigned int lengthBytesParsed = 0;
+                std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
+                pData += lengthBytesParsed;
+
+                std::uint32_t itemCount = length / 8;
+                for (int i = 0; i < itemCount, ++i)
+                {
+                    double numericValue = PrimitiveEncoding::parseDouble(pData);
+
+                    addValue(numericValue);
+
+                    pData += 8;
+                }
+
+                return lengthBytesParsed + length;
+            }
+
+            virtual std::string serialize () const
+            {
+                std::string result;
+
+                for (auto & protoValue: *collection())
+                {
+                    result += PrimitiveEncoding::serializeDouble(protoValue.value());
+                }
+                result = PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +
+                PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
+                result;
+
+                return result;
+            }
+
+            virtual size_t size () const
+            {
+                size_t result = 0;
+
+                result += *collection.size() * 8;
+
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                
+                return result;
             }
         };
 
@@ -2023,16 +2175,47 @@ R"MuddledManaged(namespace MuddledManaged
                 return (index() << 3) | 0x02;
             }
 
-            virtual void parse (const std::string & data);
+            virtual size_t parse (const unsigned char * pData)
+            {
+                if (pData == nullptr)
+                {
+                    throw std::invalid_argument("pData cannot be null.");
+                }
 
-            virtual std::string serialize () const;
+                unsigned int lengthBytesParsed = 0;
+                std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
+                pData += lengthBytesParsed;
+
+                std::string stringValue;
+                for (unsigned int i = 0; i < length, ++i)
+                {
+                    stringValue += *pData;
+                    ++pData;
+                }
+                setValue(stringValue);
+
+                return lengthBytesParsed + length;
+            }
+
+            virtual std::string serialize () const
+            {
+                std::string result;
+
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(mValue.size()));
+
+                result += mValue;
+                
+                return result;
+            }
 
             virtual size_t size () const
             {
                 size_t result = mValue.size();
 
-                result += PrimitiveEncoding::sizeVariableInt(result);
-                result += PrimitiveEncoding::sizeIndex(index());
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
 
                 return result;
             }
