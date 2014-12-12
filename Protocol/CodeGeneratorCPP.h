@@ -35,8 +35,6 @@ namespace MuddledManaged
 
             void generateSourceFile (const std::string & outputFolder, const ProtoModel & protoModel, const std::string & projectName) const;
 
-            void generateSourceFileCommon (const std::string & outputFolder, const std::string & projectName) const;
-
             std::string headerIncludeBlockText (const ProtoModel & protoModel, const std::string & projectName) const;
 
             std::string headerIncludeBlockText (const std::string & headerBaseName, const std::string & projectName) const;
@@ -142,10 +140,8 @@ namespace MuddledManaged
             static const std::string mSourceFileExtension;
             static const std::string mGeneratedFileProlog;
             static const std::string mProtoBaseHeaderFileTemplate;
-            static const std::string mProtoBaseSourceFileTemplate;
             static const std::string mBaseClassesNamespace;
-            static const std::string mBaseClassesSourceFileName;
-            static const std::string mBaseClassesDestinationFileName;
+            static const std::string mBaseClassesFileName;
         };
 
     } // namespace Protocol

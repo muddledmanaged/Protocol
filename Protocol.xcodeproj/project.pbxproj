@@ -139,7 +139,6 @@
 		3E5B5C4C19D8F79B006EEE50 /* MessageNested.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageNested.proto; sourceTree = "<group>"; };
 		3E5B9CBE1A0C7C0A00AD9D73 /* MessageFieldReference.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageFieldReference.proto; sourceTree = "<group>"; };
 		3E6268A81A1C53000059E8A8 /* CodeGeneratorUtilityCPP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeGeneratorUtilityCPP.h; sourceTree = "<group>"; };
-		3E652BE21A19AECE004DA5FF /* ProtoBaseTemplateCPP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtoBaseTemplateCPP.cpp; sourceTree = "<group>"; };
 		3E652BE31A19AECE004DA5FF /* ProtoBaseTemplateCPP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtoBaseTemplateCPP.h; sourceTree = "<group>"; };
 		3E652BE71A1C4A67004DA5FF /* CodeGeneratorPrologCPP.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CodeGeneratorPrologCPP.cpp; sourceTree = "<group>"; };
 		3E6A2B1A1A05AF5D009C8DB3 /* Nameable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Nameable.h; sourceTree = "<group>"; };
@@ -333,7 +332,6 @@
 				3E652BE71A1C4A67004DA5FF /* CodeGeneratorPrologCPP.cpp */,
 				3E72E7EF19FCA364007EC254 /* CodeIndenter.h */,
 				3E0EAFB419FD6D96008E6F7C /* CodeWriterCPP.h */,
-				3E652BE21A19AECE004DA5FF /* ProtoBaseTemplateCPP.cpp */,
 				3E652BE31A19AECE004DA5FF /* ProtoBaseTemplateCPP.h */,
 			);
 			path = Protocol;
