@@ -784,8 +784,7 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldBackingFieldsToHeader (CodeWri
             {
                 backingFieldName = "m";
                 backingFieldName += messageFieldModel.namePascal() + "Collection";
-                backingFieldType = "std::vector<";
-                backingFieldType += fieldType + ">";
+                backingFieldType = fieldType;
                 headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
             }
             else
@@ -800,21 +799,38 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldBackingFieldsToHeader (CodeWri
 
         case MessageFieldModel::FieldCategory::stringType:
         case MessageFieldModel::FieldCategory::bytesType:
-        case MessageFieldModel::FieldCategory::messageType:
         {
             if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
             {
                 backingFieldName = "m";
                 backingFieldName += messageFieldModel.namePascal() + "Collection";
-                backingFieldType = "std::vector<std::unique_ptr<";
-                backingFieldType += fieldType + ">>";
+                backingFieldType = fieldType;
                 headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
             }
             else
             {
                 backingFieldName = "m";
                 backingFieldName += messageFieldModel.namePascal() + "Value";
-                backingFieldType = "std::unique_ptr<";
+                backingFieldType += fieldType;
+                headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
+            }
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+            {
+                backingFieldName = "m";
+                backingFieldName += messageFieldModel.namePascal() + "Collection";
+                backingFieldType = fieldType;
+                headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
+            }
+            else
+            {
+                backingFieldName = "m";
+                backingFieldName += messageFieldModel.namePascal() + "Value";
+                backingFieldType = "std::shared_ptr<";
                 backingFieldType += fieldType + ">";
                 headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
             }
@@ -1544,63 +1560,138 @@ string Protocol::CodeGeneratorCPP::fullTypeNameInternal (const MessageFieldModel
     string fieldType = messageFieldModel.fieldType();
     if (fieldType == "bool")
     {
-        return mBaseClassesNamespace + "::ProtoBool";
+        fieldType = mBaseClassesNamespace + "::ProtoBool";
+        if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            fieldType += "Collection";
+        }
+        return fieldType;
     }
     if (fieldType == "string")
     {
-        return mBaseClassesNamespace + "::ProtoString";
+        fieldType = mBaseClassesNamespace + "::ProtoString";
+        if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            fieldType += "Collection";
+        }
+        return fieldType;
     }
     if (fieldType == "double")
     {
-        return mBaseClassesNamespace + "::ProtoDouble";
+        fieldType = mBaseClassesNamespace + "::ProtoDouble";
+        if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            fieldType += "Collection";
+        }
+        return fieldType;
     }
     if (fieldType == "float")
     {
-        return mBaseClassesNamespace + "::ProtoFloat";
+        fieldType = mBaseClassesNamespace + "::ProtoFloat";
+        if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            fieldType += "Collection";
+        }
+        return fieldType;
     }
     if (fieldType == "int32")
     {
-        return mBaseClassesNamespace + "::ProtoInt32";
+        fieldType = mBaseClassesNamespace + "::ProtoInt32";
+        if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            fieldType += "Collection";
+        }
+        return fieldType;
     }
     if (fieldType == "int64")
     {
-        return mBaseClassesNamespace + "::ProtoInt64";
+        fieldType = mBaseClassesNamespace + "::ProtoInt64";
+        if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            fieldType += "Collection";
+        }
+        return fieldType;
     }
     if (fieldType == "uint32")
     {
-        return mBaseClassesNamespace + "::ProtoUnsignedInt32";
+        fieldType = mBaseClassesNamespace + "::ProtoUnsignedInt32";
+        if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            fieldType += "Collection";
+        }
+        return fieldType;
     }
     if (fieldType == "uint64")
     {
-        return mBaseClassesNamespace + "::ProtoUnsignedInt64";
+        fieldType = mBaseClassesNamespace + "::ProtoUnsignedInt64";
+        if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            fieldType += "Collection";
+        }
+        return fieldType;
     }
     if (fieldType == "sint32")
     {
-        return mBaseClassesNamespace + "::ProtoSignedInt32";
+        fieldType = mBaseClassesNamespace + "::ProtoSignedInt32";
+        if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            fieldType += "Collection";
+        }
+        return fieldType;
     }
     if (fieldType == "sint64")
     {
-        return mBaseClassesNamespace + "::ProtoSignedInt64";
+        fieldType = mBaseClassesNamespace + "::ProtoSignedInt64";
+        if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            fieldType += "Collection";
+        }
+        return fieldType;
     }
     if (fieldType == "fixed32")
     {
-        return mBaseClassesNamespace + "::ProtoFixed32";
+        fieldType = mBaseClassesNamespace + "::ProtoFixed32";
+        if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            fieldType += "Collection";
+        }
+        return fieldType;
     }
     if (fieldType == "fixed64")
     {
-        return mBaseClassesNamespace + "::ProtoFixed64";
+        fieldType = mBaseClassesNamespace + "::ProtoFixed64";
+        if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            fieldType += "Collection";
+        }
+        return fieldType;
     }
     if (fieldType == "sfixed32")
     {
-        return mBaseClassesNamespace + "::ProtoSignedFixed32";
+        fieldType = mBaseClassesNamespace + "::ProtoSignedFixed32";
+        if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            fieldType += "Collection";
+        }
+        return fieldType;
     }
     if (fieldType == "sfixed64")
     {
-        return mBaseClassesNamespace + "::ProtoSignedFixed64";
+        fieldType = mBaseClassesNamespace + "::ProtoSignedFixed64";
+        if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            fieldType += "Collection";
+        }
+        return fieldType;
     }
     if (fieldType == "bytes")
     {
-        return mBaseClassesNamespace + "::ProtoBytes";
+        fieldType = mBaseClassesNamespace + "::ProtoBytes";
+        if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            fieldType += "Collection";
+        }
+        return fieldType;
     }
 
     boost::replace_all(fieldType, ".", "_");
@@ -1614,7 +1705,20 @@ string Protocol::CodeGeneratorCPP::fullTypeNameInternal (const MessageFieldModel
 
     if (messageFieldModel.fieldCategory() == MessageFieldModel::FieldCategory::enumType)
     {
-        fieldType = mBaseClassesNamespace + "::ProtoEnum<" + fieldType + ">";
+        if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            fieldType = mBaseClassesNamespace + "::ProtoEnumCollection<" + fieldType + ">";
+        }
+        else
+        {
+            fieldType = mBaseClassesNamespace + "::ProtoEnum<" + fieldType + ">";
+        }
+        return fieldType;
+    }
+
+    if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+    {
+        fieldType = mBaseClassesNamespace + "::ProtoMessageCollection<" + fieldType + ">";
     }
 
     return fieldType;
