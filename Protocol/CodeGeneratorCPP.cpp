@@ -1298,22 +1298,13 @@ void Protocol::CodeGeneratorCPP::writeMessageSizeToSource (CodeWriter & sourceFi
             statement = "size += sizeCollection;";
             sourceFileWriter.writeLineIndented(statement);
 
-            if (messageFieldModel->packed())
-            {
-                statement = "size += ";
-                statement += to_string(indexSize) + ";";
-                sourceFileWriter.writeLineIndented(statement);
+            statement = "size += ";
+            statement += to_string(indexSize) + ";";
+            sourceFileWriter.writeLineIndented(statement);
 
-                statement = "size += MuddledManaged::Protocol::sizeVarInt(sizeCollection);";
-                statement += to_string(indexSize) + ";";
-                sourceFileWriter.writeLineIndented(statement);
-            }
-            else
-            {
-                statement = "size += ";
-                statement += to_string(indexSize) + " * " + fieldValueName + ".size();";
-                sourceFileWriter.writeLineIndented(statement);
-            }
+            statement = "size += MuddledManaged::Protocol::sizeVarInt(sizeCollection);";
+            statement += to_string(indexSize) + ";";
+            sourceFileWriter.writeLineIndented(statement);
 
             sourceFileWriter.writeIfClosing();
         }

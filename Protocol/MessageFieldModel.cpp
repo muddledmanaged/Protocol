@@ -15,15 +15,14 @@ using namespace MuddledManaged;
 
 Protocol::MessageFieldModel::MessageFieldModel (Requiredness requiredness, const std::string & fieldType,
                                                 const std::string & name, unsigned int index)
-: Nameable(name), mRequiredness(requiredness), mFieldType(fieldType), mIndex(index), mPacked(false)
+: Nameable(name), mRequiredness(requiredness), mFieldType(fieldType), mIndex(index)
 {
     setFieldCategory();
 }
 
 Protocol::MessageFieldModel::MessageFieldModel (const MessageFieldModel & src)
 : Nameable(src), Packageable(src), OptionModelContainer(src), mRequiredness(src.mRequiredness), mFieldType(src.mFieldType),
-  mFieldTypePackage(src.mFieldTypePackage), mFieldCategory(src.mFieldCategory), mIndex(src.mIndex), mPacked(src.mPacked),
-  mDefaultValue(src.mDefaultValue)
+  mFieldTypePackage(src.mFieldTypePackage), mFieldCategory(src.mFieldCategory), mIndex(src.mIndex), mDefaultValue(src.mDefaultValue)
 {
 }
 
@@ -45,16 +44,6 @@ string Protocol::MessageFieldModel::fieldTypePackage () const
 Protocol::MessageFieldModel::FieldCategory Protocol::MessageFieldModel::fieldCategory () const
 {
     return mFieldCategory;
-}
-
-bool Protocol::MessageFieldModel::packed () const
-{
-    return mPacked;
-}
-
-void Protocol::MessageFieldModel::setPacked (bool packed)
-{
-    mPacked = packed;
 }
 
 std::string Protocol::MessageFieldModel::defaultValue () const
@@ -105,7 +94,6 @@ Protocol::MessageFieldModel & Protocol::MessageFieldModel::operator = (const Mes
 
     mRequiredness = rhs.mRequiredness;
     mFieldCategory = rhs.mFieldCategory;
-    mPacked = rhs.mPacked;
     mDefaultValue = rhs.mDefaultValue;
     mFieldType = rhs.mFieldType;
     mFieldTypePackage = rhs.mFieldTypePackage;

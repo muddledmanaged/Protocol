@@ -60,9 +60,6 @@ namespace MuddledManaged
 
             FieldCategory fieldCategory () const;
 
-            bool packed () const;
-            void setPacked (bool packed);
-
             std::string defaultValue () const;
             void setDefaultValue (const std::string & defaultValue);
 
@@ -78,7 +75,6 @@ namespace MuddledManaged
 
             Requiredness mRequiredness;
             FieldCategory mFieldCategory;
-            bool mPacked;
             std::string mDefaultValue;
             std::string mFieldType;
             std::string mFieldTypePackage;
