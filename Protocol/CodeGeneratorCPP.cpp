@@ -1069,12 +1069,16 @@ void Protocol::CodeGeneratorCPP::writeMessageDataConstructorToSource (CodeWriter
 
 std::string Protocol::CodeGeneratorCPP::messageFieldInitialization (const MessageFieldModel & messageFieldModel) const
 {
+    string fieldInitialization;
+
     if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
     {
-        return "";
+        fieldInitialization = "m" + messageFieldModel.namePascal() + "Collection";
     }
-
-    string fieldInitialization = "m" + messageFieldModel.namePascal() + "Value";
+    else
+    {
+        fieldInitialization = "m" + messageFieldModel.namePascal() + "Value";
+    }
 
     switch (messageFieldModel.fieldCategory())
     {
@@ -1102,16 +1106,15 @@ std::string Protocol::CodeGeneratorCPP::messageFieldInitialization (const Messag
 
         case MessageFieldModel::FieldCategory::stringType:
         {
-            fieldInitialization += "(new ProtoString(\"" + messageFieldModel.defaultValue() + "\"))";
+            if (messageFieldModel.defaultValue().empty())
+            {
+                return "";
+            }
+            fieldInitialization += "(\"" + messageFieldModel.defaultValue() + "\")";
             break;
         }
 
         case MessageFieldModel::FieldCategory::bytesType:
-        {
-            fieldInitialization += "(new ProtoBytes())";
-            break;
-        }
-
         case MessageFieldModel::FieldCategory::messageType:
         {
             return "";
