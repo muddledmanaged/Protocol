@@ -132,9 +132,9 @@ namespace MuddledManaged
                                            const MessageModel & messageModel, const std::string & className,
                                            const std::string & fullScope) const;
 
-            void writeMessageIsValidToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                              const MessageModel & messageModel, const std::string & className,
-                                              const std::string & fullScope) const;
+            void writeMessageValidToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                            const MessageModel & messageModel, const std::string & className,
+                                            const std::string & fullScope) const;
 
             static const std::string mHeaderFileExtension;
             static const std::string mSourceFileExtension;

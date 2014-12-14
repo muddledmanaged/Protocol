@@ -584,14 +584,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual bool valid ()
             {
-                if (mCollection.empty())
-                {
-                    if (required())
-                    {
-                        return false;
-                    }
-                }
-                else
+                if (!mCollection.empty())
                 {
                     for (auto & message: mCollection)
                     {
@@ -692,13 +685,6 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual bool valid ()
             {
-                if (mCollection.empty())
-                {
-                    if (isRequired())
-                    {
-                        return false;
-                    }
-                }
                 return true;
             }
 
@@ -2257,13 +2243,6 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual bool valid ()
             {
-                if (mCollection.empty())
-                {
-                    if (required())
-                    {
-                        return false;
-                    }
-                }
                 return true;
             }
 
