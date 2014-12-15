@@ -1260,6 +1260,64 @@ void Protocol::CodeGeneratorCPP::writeMessageSerializeToSource (CodeWriter & sou
     string methodName = fullScope + "::serialize";
     string methodReturn = "std::string";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, true);
+
+    string statement = "std::string result;";
+    sourceFileWriter.writeLineIndented(statement);
+    sourceFileWriter.writeBlankLine();
+
+    auto messageFieldBegin = messageModel.fields()->cbegin();
+    auto messageFieldEnd = messageModel.fields()->cend();
+    while (messageFieldBegin != messageFieldEnd)
+    {
+        auto messageFieldModel = *messageFieldBegin;
+
+        string fieldValueName = "mData->m";
+        fieldValueName += messageFieldModel->namePascal();
+        if (messageFieldModel->requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            fieldValueName += "Collection";
+        }
+        else
+        {
+            fieldValueName += "Value";
+        }
+
+        if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::messageType &&
+            messageFieldModel->requiredness() != MessageFieldModel::Requiredness::repeated)
+        {
+            statement = fieldValueName + " != nullptr";
+            sourceFileWriter.writeIfOpening(statement);
+            statement = "result += ";
+            statement += fieldValueName + "->serialize();";
+            sourceFileWriter.writeLineIndented(statement);
+            sourceFileWriter.writeIfClosing();
+        }
+        else
+        {
+            statement = "result += ";
+            statement += fieldValueName + ".serialize();";
+            sourceFileWriter.writeLineIndented(statement);
+        }
+
+        sourceFileWriter.writeBlankLine();
+
+        ++messageFieldBegin;
+    }
+
+    statement = "result = MuddledManaged::Protocol::PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +";
+    sourceFileWriter.writeLineIndented(statement);
+
+    statement = "    MuddledManaged::Protocol::PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +";
+    sourceFileWriter.writeLineIndented(statement);
+
+    statement = "    result;";
+    sourceFileWriter.writeLineIndented(statement);
+
+    sourceFileWriter.writeBlankLine();
+
+    statement = "return result;";
+    sourceFileWriter.writeLineIndented(statement);
+
     sourceFileWriter.writeMethodImplementationClosing();
 }
 
