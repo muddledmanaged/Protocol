@@ -1271,7 +1271,7 @@ void Protocol::CodeGeneratorCPP::writeMessageSizeToSource (CodeWriter & sourceFi
     string methodReturn = "size_t";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, true);
 
-    string statement = "size_t size = 0;";
+    string statement = "size_t result = 0;";
     sourceFileWriter.writeLineIndented(statement);
     sourceFileWriter.writeBlankLine();
 
@@ -1281,97 +1281,48 @@ void Protocol::CodeGeneratorCPP::writeMessageSizeToSource (CodeWriter & sourceFi
     {
         auto messageFieldModel = *messageFieldBegin;
 
-        int indexSize = Protocol::sizeIndex(messageFieldModel->index());
+        string fieldValueName = "mData->m";
+        fieldValueName += messageFieldModel->namePascal();
         if (messageFieldModel->requiredness() == MessageFieldModel::Requiredness::repeated)
         {
-            string fieldValueName = "mData->m";
-            fieldValueName += messageFieldModel->namePascal() + "Collection";
+            fieldValueName += "Collection";
+        }
+        else
+        {
+            fieldValueName += "Value";
+        }
 
-            statement = "!";
-            statement += fieldValueName + ".empty()";
+        if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::messageType &&
+            messageFieldModel->requiredness() != MessageFieldModel::Requiredness::repeated)
+        {
+            statement = fieldValueName + " != nullptr";
             sourceFileWriter.writeIfOpening(statement);
-
-            statement = "size_t sizeCollection = 0;";
+            statement = "result += ";
+            statement += fieldValueName + "->size();";
             sourceFileWriter.writeLineIndented(statement);
-
-            string loopValueName = "item";
-            statement = "auto & ";
-            statement += loopValueName;
-            sourceFileWriter.writeForEachLoopOpening(statement, fieldValueName);
-
-            statement = "sizeCollection += ";
-            if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::messageType ||
-                messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::stringType ||
-                messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::bytesType)
-            {
-                statement += loopValueName + "->size()";
-            }
-            else
-            {
-                statement += loopValueName + ".size()";
-            }
-            sourceFileWriter.writeLineIndented(statement);
-
-            sourceFileWriter.writeForEachLoopClosing();
-
-            statement = "size += sizeCollection;";
-            sourceFileWriter.writeLineIndented(statement);
-
-            statement = "size += ";
-            statement += to_string(indexSize) + ";";
-            sourceFileWriter.writeLineIndented(statement);
-
-            statement = "size += MuddledManaged::Protocol::sizeVarInt(sizeCollection);";
-            statement += to_string(indexSize) + ";";
-            sourceFileWriter.writeLineIndented(statement);
-
             sourceFileWriter.writeIfClosing();
         }
         else
         {
-            string fieldValueName = "mData->m";
-            fieldValueName += messageFieldModel->namePascal() + "Value";
-
-            if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::messageType)
-            {
-                statement = fieldValueName + " != nullptr";
-            }
-            else if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::stringType ||
-                     messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::bytesType)
-            {
-                statement = fieldValueName + "->isSet()";
-            }
-            else
-            {
-                statement = fieldValueName + ".isSet()";
-            }
-            sourceFileWriter.writeIfOpening(statement);
-
-            statement = "size += ";
-            statement += to_string(indexSize) + ";";
+            statement = "result += ";
+            statement += fieldValueName + ".size();";
             sourceFileWriter.writeLineIndented(statement);
-
-            statement = "size += ";
-            if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::messageType ||
-                messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::stringType ||
-                messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::bytesType)
-            {
-                statement += fieldValueName + "->size()";
-            }
-            else
-            {
-                statement += fieldValueName + ".size()";
-            }
-            sourceFileWriter.writeLineIndented(statement);
-
-            sourceFileWriter.writeIfClosing();
         }
 
         sourceFileWriter.writeBlankLine();
         
         ++messageFieldBegin;
     }
-    statement = "return size;";
+
+    statement = "result += MuddledManaged::Protocol::PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));";
+    sourceFileWriter.writeLineIndented(statement);
+
+    statement = "result += MuddledManaged::Protocol::PrimitiveEncoding::sizeVariableUnsignedInt32(key());";
+    sourceFileWriter.writeLineIndented(statement);
+
+    sourceFileWriter.writeBlankLine();
+
+    statement = "return result;";
     sourceFileWriter.writeLineIndented(statement);
     
     sourceFileWriter.writeMethodImplementationClosing();
