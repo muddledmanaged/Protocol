@@ -1250,6 +1250,21 @@ void Protocol::CodeGeneratorCPP::writeMessageParseToSource (CodeWriter & sourceF
     string methodReturn = "size_t";
     string methodParameters = "const unsigned char * pData";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+    string statement = "pData == nullptr";
+    sourceFileWriter.writeIfOpening(statement);
+    statement = "throw std::invalid_argument(\"pData cannot be null.\");";
+    sourceFileWriter.writeLineIndented(statement);
+    sourceFileWriter.writeIfClosing();
+
+    sourceFileWriter.writeBlankLine();
+
+    statement = "size_t bytesParsed = 0;";
+    sourceFileWriter.writeLineIndented(statement);
+
+    statement = "return bytesParsed;";
+    sourceFileWriter.writeLineIndented(statement);
+
     sourceFileWriter.writeMethodImplementationClosing();
 }
 
