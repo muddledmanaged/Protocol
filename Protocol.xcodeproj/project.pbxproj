@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		3E03213519EB20FB00E21D52 /* ImportParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E03213319EB20FB00E21D52 /* ImportParser.cpp */; };
 		3E03213619EB20FB00E21D52 /* ImportParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E03213419EB20FB00E21D52 /* ImportParser.h */; };
+		3E08D6A61A4281F500D17E46 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E08D6A51A4281F500D17E46 /* main.cpp */; };
+		3E08D6AA1A42823600D17E46 /* libProtocol.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF78A6119C53BD800976ADA /* libProtocol.a */; };
+		3E08D6AE1A4284DB00D17E46 /* Message.protocol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E08D6AC1A4284DB00D17E46 /* Message.protocol.cpp */; };
 		3E3051DC19DCED6A008245F5 /* EnumParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E3051DB19DCED6A008245F5 /* EnumParserScenarios.cpp */; };
 		3E37A5CF19DF916600BED294 /* MessageFieldModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E37A5CD19DF916600BED294 /* MessageFieldModel.cpp */; };
 		3E37A5D019DF916600BED294 /* MessageFieldModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E37A5CE19DF916600BED294 /* MessageFieldModel.h */; };
@@ -74,6 +77,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		3E08D6A11A4281F500D17E46 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		3EF78A4419C5321D00976ADA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -91,6 +103,10 @@
 		3E03213319EB20FB00E21D52 /* ImportParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImportParser.cpp; sourceTree = "<group>"; };
 		3E03213419EB20FB00E21D52 /* ImportParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportParser.h; sourceTree = "<group>"; };
 		3E05239919F00C68000493EB /* CodeGeneratorInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeGeneratorInterface.h; sourceTree = "<group>"; };
+		3E08D6A31A4281F500D17E46 /* ProtocolGeneratedDesign */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ProtocolGeneratedDesign; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E08D6A51A4281F500D17E46 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		3E08D6AC1A4284DB00D17E46 /* Message.protocol.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Message.protocol.cpp; sourceTree = "<group>"; };
+		3E08D6AD1A4284DB00D17E46 /* Message.protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.protocol.h; sourceTree = "<group>"; };
 		3E0D56BF19F602C8003AE7E7 /* EnumModelContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnumModelContainer.h; sourceTree = "<group>"; };
 		3E0EAFB419FD6D96008E6F7C /* CodeWriterCPP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeWriterCPP.h; sourceTree = "<group>"; };
 		3E1B9A2519C1569F00AAAA0D /* TokenReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TokenReader.cpp; sourceTree = "<group>"; };
@@ -226,6 +242,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3E08D6A01A4281F500D17E46 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3E08D6AA1A42823600D17E46 /* libProtocol.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3EF78A4319C5321D00976ADA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -246,6 +270,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E08D6A41A4281F500D17E46 /* ProtocolGeneratedDesign */ = {
+			isa = PBXGroup;
+			children = (
+				3E08D6AB1A42833B00D17E46 /* Generated */,
+				3E08D6A51A4281F500D17E46 /* main.cpp */,
+			);
+			path = ProtocolGeneratedDesign;
+			sourceTree = "<group>";
+		};
+		3E08D6AB1A42833B00D17E46 /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				3E08D6AC1A4284DB00D17E46 /* Message.protocol.cpp */,
+				3E08D6AD1A4284DB00D17E46 /* Message.protocol.h */,
+			);
+			name = Generated;
+			path = ProtocolDesign/Messages/Generated;
+			sourceTree = SOURCE_ROOT;
+		};
 		3E606E5919BFF9C6009692B8 = {
 			isa = PBXGroup;
 			children = (
@@ -254,6 +297,7 @@
 				3EF78A2C19C4E9FA00976ADA /* Submodules */,
 				3E606E6419BFF9C6009692B8 /* Protocol */,
 				3EF78A4719C5321D00976ADA /* ProtocolDesign */,
+				3E08D6A41A4281F500D17E46 /* ProtocolGeneratedDesign */,
 				3E606E6319BFF9C6009692B8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -263,6 +307,7 @@
 			children = (
 				3EF78A4619C5321D00976ADA /* ProtocolDesign */,
 				3EF78A6119C53BD800976ADA /* libProtocol.a */,
+				3E08D6A31A4281F500D17E46 /* ProtocolGeneratedDesign */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -482,6 +527,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		3E08D6A21A4281F500D17E46 /* ProtocolGeneratedDesign */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3E08D6A91A4281F500D17E46 /* Build configuration list for PBXNativeTarget "ProtocolGeneratedDesign" */;
+			buildPhases = (
+				3E08D69F1A4281F500D17E46 /* Sources */,
+				3E08D6A01A4281F500D17E46 /* Frameworks */,
+				3E08D6A11A4281F500D17E46 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ProtocolGeneratedDesign;
+			productName = ProtocolGeneratedDesign;
+			productReference = 3E08D6A31A4281F500D17E46 /* ProtocolGeneratedDesign */;
+			productType = "com.apple.product-type.tool";
+		};
 		3EF78A4519C5321D00976ADA /* ProtocolDesign */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3EF78A4C19C5321E00976ADA /* Build configuration list for PBXNativeTarget "ProtocolDesign" */;
@@ -524,6 +586,11 @@
 			attributes = {
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = MuddledManaged;
+				TargetAttributes = {
+					3E08D6A21A4281F500D17E46 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+				};
 			};
 			buildConfigurationList = 3E606E5D19BFF9C6009692B8 /* Build configuration list for PBXProject "Protocol" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -539,11 +606,21 @@
 			targets = (
 				3EF78A6019C53BD800976ADA /* Protocol */,
 				3EF78A4519C5321D00976ADA /* ProtocolDesign */,
+				3E08D6A21A4281F500D17E46 /* ProtocolGeneratedDesign */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3E08D69F1A4281F500D17E46 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3E08D6AE1A4284DB00D17E46 /* Message.protocol.cpp in Sources */,
+				3E08D6A61A4281F500D17E46 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3EF78A4219C5321D00976ADA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -598,6 +675,30 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		3E08D6A71A4281F500D17E46 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		3E08D6A81A4281F500D17E46 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		3E606E6919BFF9C6009692B8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -731,6 +832,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3E08D6A91A4281F500D17E46 /* Build configuration list for PBXNativeTarget "ProtocolGeneratedDesign" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3E08D6A71A4281F500D17E46 /* Debug */,
+				3E08D6A81A4281F500D17E46 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		3E606E5D19BFF9C6009692B8 /* Build configuration list for PBXProject "Protocol" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
