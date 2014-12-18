@@ -107,6 +107,7 @@
 		3E08D6A51A4281F500D17E46 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		3E08D6AC1A4284DB00D17E46 /* Message.protocol.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Message.protocol.cpp; sourceTree = "<group>"; };
 		3E08D6AD1A4284DB00D17E46 /* Message.protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.protocol.h; sourceTree = "<group>"; };
+		3E08D6AF1A428A7400D17E46 /* ProtoBase.protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtoBase.protocol.h; sourceTree = "<group>"; };
 		3E0D56BF19F602C8003AE7E7 /* EnumModelContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnumModelContainer.h; sourceTree = "<group>"; };
 		3E0EAFB419FD6D96008E6F7C /* CodeWriterCPP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeWriterCPP.h; sourceTree = "<group>"; };
 		3E1B9A2519C1569F00AAAA0D /* TokenReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TokenReader.cpp; sourceTree = "<group>"; };
@@ -282,6 +283,7 @@
 		3E08D6AB1A42833B00D17E46 /* Generated */ = {
 			isa = PBXGroup;
 			children = (
+				3E08D6AF1A428A7400D17E46 /* ProtoBase.protocol.h */,
 				3E08D6AC1A4284DB00D17E46 /* Message.protocol.cpp */,
 				3E08D6AD1A4284DB00D17E46 /* Message.protocol.h */,
 			);

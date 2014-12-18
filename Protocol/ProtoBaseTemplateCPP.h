@@ -30,7 +30,7 @@ R"MuddledManaged(namespace MuddledManaged
 
         protected:
             ProtocolBufferException ()
-            : std::logic_error("")
+            : std::runtime_error("")
             { }
 
             std::string mMessage;
@@ -39,12 +39,12 @@ R"MuddledManaged(namespace MuddledManaged
         class PrimitiveEncoding
         {
         public:
-            static unsigned int sizeVariableInt32 (std::int32_t value)
+            static size_t sizeVariableInt32 (std::int32_t value)
             {
                 return sizeVariableUnsignedInt32(static_cast<std::uint32_t>(value));
             }
             
-            static unsigned int sizeVariableUnsignedInt32 (std::uint32_t value)
+            static size_t sizeVariableUnsignedInt32 (std::uint32_t value)
             {
                 std::uint32_t shiftBit = 1;
 
@@ -67,7 +67,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return 5;
             }
 
-            static unsigned int sizeVariableSignedInt32 (std::int32_t value)
+            static size_t sizeVariableSignedInt32 (std::int32_t value)
             {
                 std::uint32_t unsignedValue = static_cast<std::uint32_t>(value);
 
@@ -76,12 +76,12 @@ R"MuddledManaged(namespace MuddledManaged
                 return sizeVariableUnsignedInt32(unsignedValue);
             }
 
-            static unsigned int sizeVariableInt64 (std::int64_t value)
+            static size_t sizeVariableInt64 (std::int64_t value)
             {
                 return sizeVariableUnsignedInt64(static_cast<std::uint64_t>(value));
             }
 
-            static unsigned int sizeVariableUnsignedInt64 (std::uint64_t value)
+            static size_t sizeVariableUnsignedInt64 (std::uint64_t value)
             {
                 std::uint64_t shiftBit = 1;
 
@@ -124,7 +124,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return 10;
             }
 
-            static unsigned int sizeVariableSignedInt64 (std::int64_t value)
+            static size_t sizeVariableSignedInt64 (std::int64_t value)
             {
                 std::uint64_t unsignedValue = static_cast<std::uint64_t>(value);
 
@@ -133,7 +133,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return sizeVariableUnsignedInt64(unsignedValue);
             }
 
-            static std::int32_t parseVariableInt32 (const unsigned char * pData, unsigned int * pBytesParsed)
+            static std::int32_t parseVariableInt32 (const unsigned char * pData, size_t * pBytesParsed)
             {
                 return parseVariable<std::int32_t>(pData, pBytesParsed);
             }
@@ -143,7 +143,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return parseFixed<std::int32_t>(pData);
             }
 
-            static std::int64_t parseVariableInt64 (const unsigned char * pData, unsigned int * pBytesParsed)
+            static std::int64_t parseVariableInt64 (const unsigned char * pData, size_t * pBytesParsed)
             {
                 return parseVariable<std::int64_t>(pData, pBytesParsed);
             }
@@ -153,7 +153,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return parseFixed<std::int64_t>(pData);
             }
 
-            static std::int32_t parseVariableSignedInt32 (const unsigned char * pData, unsigned int * pBytesParsed)
+            static std::int32_t parseVariableSignedInt32 (const unsigned char * pData, size_t * pBytesParsed)
             {
                 return parseVariable<std::int32_t>(pData, pBytesParsed, true);
             }
@@ -163,7 +163,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return parseFixed<std::int32_t>(pData);
             }
 
-            static std::int64_t parseVariableSignedInt64 (const unsigned char * pData, unsigned int * pBytesParsed)
+            static std::int64_t parseVariableSignedInt64 (const unsigned char * pData, size_t * pBytesParsed)
             {
                 return parseVariable<std::int64_t>(pData, pBytesParsed, true);
             }
@@ -173,12 +173,12 @@ R"MuddledManaged(namespace MuddledManaged
                 return parseFixed<std::int64_t>(pData);
             }
 
-            static std::uint32_t parseVariableUnsignedInt32 (const unsigned char * pData, unsigned int * pBytesParsed)
+            static std::uint32_t parseVariableUnsignedInt32 (const unsigned char * pData, size_t * pBytesParsed)
             {
                 return parseVariable<std::uint32_t>(pData, pBytesParsed);
             }
 
-            static std::uint64_t parseVariableUnsignedInt64 (const unsigned char * pData, unsigned int * pBytesParsed)
+            static std::uint64_t parseVariableUnsignedInt64 (const unsigned char * pData, size_t * pBytesParsed)
             {
                 return parseVariable<std::uint64_t>(pData, pBytesParsed);
             }
@@ -193,19 +193,19 @@ R"MuddledManaged(namespace MuddledManaged
                 return parseFixed<double>(pData);
             }
 
-            static std::string parseString (const unsigned char * pData, unsigned int * pBytesParsed)
+            static std::string parseString (const unsigned char * pData, size_t * pBytesParsed)
             {
                 return parseBytes(pData, pBytesParsed);
             }
 
-            static std::string parseBytes (const unsigned char * pData, unsigned int * pBytesParsed)
+            static std::string parseBytes (const unsigned char * pData, size_t * pBytesParsed)
             {
                 if (pData == nullptr)
                 {
                     throw std::invalid_argument("pData cannot be null.");
                 }
 
-                unsigned int bytesParsed = 0;
+                size_t bytesParsed = 0;
                 std::uint32_t length = parseVariableUnsignedInt32(pData, &bytesParsed);
                 pData += bytesParsed;
 
@@ -224,72 +224,72 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            static std::string serializeVariableInt32 (std::int32_t value) const
+            static std::string serializeVariableInt32 (std::int32_t value)
             {
                 return serializeVariable<std::int64_t>(value);
             }
 
-            static std::string serializeFixedInt32 (std::int32_t value) const
+            static std::string serializeFixedInt32 (std::int32_t value)
             {
                 return serializeFixed<std::int32_t>(value);
             }
 
-            static std::string serializeVariableInt64 (std::int64_t value) const
+            static std::string serializeVariableInt64 (std::int64_t value)
             {
                 return serializeVariable<std::int64_t>(value);
             }
 
-            static std::string serializeFixedInt64 (std::int64_t value) const
+            static std::string serializeFixedInt64 (std::int64_t value)
             {
                 return serializeFixed<std::int64_t>(value);
             }
 
-            static std::string serializeVariableSignedInt32 (std::int32_t value) const
+            static std::string serializeVariableSignedInt32 (std::int32_t value)
             {
                 return serializeVariable<std::int32_t>(value, true);
             }
 
-            static std::string serializeFixedSignedInt32 (std::int32_t value) const
+            static std::string serializeFixedSignedInt32 (std::int32_t value)
             {
                 return serializeFixed<std::int32_t>(value);
             }
 
-            static std::string serializeVariableSignedInt64 (std::int64_t value) const
+            static std::string serializeVariableSignedInt64 (std::int64_t value)
             {
                 return serializeVariable<std::int64_t>(value, true);
             }
 
-            static std::string serializeFixedSignedInt64 (std::int64_t value) const
+            static std::string serializeFixedSignedInt64 (std::int64_t value)
             {
                 return serializeFixed<std::int64_t>(value);
             }
 
-            static std::string serializeVariableUnsignedInt32 (std::uint32_t value) const
+            static std::string serializeVariableUnsignedInt32 (std::uint32_t value)
             {
                 return serializeVariable<std::uint32_t>(value);
             }
 
-            static std::string serializeVariableUnsignedInt64 (std::uint64_t value) const
+            static std::string serializeVariableUnsignedInt64 (std::uint64_t value)
             {
                 return serializeVariable<std::uint64_t>(value);
             }
 
-            static std::string serializeFloat (float value) const
+            static std::string serializeFloat (float value)
             {
                 return serializeFixed<float>(value);
             }
 
-            static std::string serializeDouble (double value) const
+            static std::string serializeDouble (double value)
             {
                 return serializeFixed<double>(value);
             }
 
-            static std::string serializeString (const std::string & value) const
+            static std::string serializeString (const std::string & value)
             {
                 return serializeBytes(value);
             }
 
-            static std::string serializeBytes (const std::string & value) const
+            static std::string serializeBytes (const std::string & value)
             {
                 std::string result;
 
@@ -304,7 +304,7 @@ R"MuddledManaged(namespace MuddledManaged
             {}
 
             template <typename ValueType>
-            static ValueType parseVariable (const unsigned char * pData, unsigned int * pBytesParsed, bool useZigZag = false)
+            static ValueType parseVariable (const unsigned char * pData, size_t * pBytesParsed, bool useZigZag = false)
             {
                 if (pData == nullptr)
                 {
@@ -321,7 +321,7 @@ R"MuddledManaged(namespace MuddledManaged
                     rawValue |= currentMaskedValue;
                     ++byteCount;
 
-                    bool lastByte = pData & 0x80;
+                    bool lastByte = *pData & 0x80;
                     if (lastByte)
                     {
                         break;
@@ -376,7 +376,7 @@ R"MuddledManaged(namespace MuddledManaged
             }
 
             template <typename ValueType>
-            static std::string serializeVariable (ValueType value, bool useZigZag = false) const
+            static std::string serializeVariable (ValueType value, bool useZigZag = false)
             {
                 typename std::make_unsigned<ValueType>::type unsignedValue =
                     static_cast<typename std::make_unsigned<ValueType>::type>(value);
@@ -412,7 +412,7 @@ R"MuddledManaged(namespace MuddledManaged
             }
 
             template <typename ValueType>
-            static std::string serializeFixed (ValueType value) const
+            static std::string serializeFixed (ValueType value)
             {
                 std::string result;
                 unsigned char * pValueChars = reinterpret_cast<unsigned char *>(&value);
@@ -772,7 +772,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
 
                 unsigned int lengthBytesParsed = 0;
-                std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
+                std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::uint32_t remainingBytes = length;
@@ -918,7 +918,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
 
                 unsigned int lengthBytesParsed = 0;
-                std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
+                std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 for (unsigned int i = 0; i < length; ++i)
@@ -1062,7 +1062,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
 
                 unsigned int lengthBytesParsed = 0;
-                std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
+                std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::uint32_t remainingBytes = length;
@@ -1193,7 +1193,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
 
                 unsigned int lengthBytesParsed = 0;
-                std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
+                std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::uint32_t remainingBytes = length;
@@ -1324,7 +1324,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
 
                 unsigned int lengthBytesParsed = 0;
-                std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
+                std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::uint32_t remainingBytes = length;
@@ -1455,7 +1455,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
 
                 unsigned int lengthBytesParsed = 0;
-                std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
+                std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::uint32_t remainingBytes = length;
@@ -1586,7 +1586,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
 
                 unsigned int lengthBytesParsed = 0;
-                std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
+                std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::uint32_t remainingBytes = length;
@@ -1717,7 +1717,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
 
                 unsigned int lengthBytesParsed = 0;
-                std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
+                std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::uint32_t remainingBytes = length;
@@ -1857,7 +1857,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
 
                 unsigned int lengthBytesParsed = 0;
-                std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
+                std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::uint32_t itemCount = length / 4;
@@ -1995,7 +1995,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
 
                 unsigned int lengthBytesParsed = 0;
-                std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
+                std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::uint32_t itemCount = length / 8;
@@ -2165,7 +2165,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
 
                 unsigned int lengthBytesParsed = 0;
-                std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
+                std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::uint32_t itemCount = length / 4;
@@ -2303,7 +2303,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
 
                 unsigned int lengthBytesParsed = 0;
-                std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
+                std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::uint32_t itemCount = length / 8;
@@ -2406,7 +2406,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
 
                 unsigned int lengthBytesParsed = 0;
-                std::uint32_t length = PrimitiveEncoding::parseUnsignedInt32(pData, &lengthBytesParsed);
+                std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::string stringValue;
