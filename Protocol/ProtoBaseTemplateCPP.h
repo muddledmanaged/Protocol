@@ -725,14 +725,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(this->key());
 
-                std::int64_t enumValue = static_cast<std::int64_t>(value());
+                std::int64_t enumValue = static_cast<std::int64_t>(this->value());
                 result += PrimitiveEncoding::serializeVariableInt64(enumValue);
 
                 return result;
@@ -742,14 +742,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
 
-                std::int64_t enumValue = static_cast<std::int64_t>(value());
+                std::int64_t enumValue = static_cast<std::int64_t>(this->value());
                 result += PrimitiveEncoding::sizeVariableInt64(enumValue);
 
                 return result;
@@ -803,7 +803,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
                 if (!result.empty())
                 {
-                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +
+                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(this->key()) +
                         PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
                         result;
                 }
@@ -826,7 +826,7 @@ R"MuddledManaged(namespace MuddledManaged
                 if (result != 0)
                 {
                     result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
-                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 }
 
                 return result;
@@ -874,14 +874,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(this->key());
 
-                result += PrimitiveEncoding::serializeVariableInt32(value() ? 1 : 0);
+                result += PrimitiveEncoding::serializeVariableInt32(this->value() ? 1 : 0);
                 
                 return result;
             }
@@ -890,12 +890,12 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
 
                 result += 1;
                 
@@ -962,7 +962,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
                 if (!result.empty())
                 {
-                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +
+                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(this->key()) +
                         PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
                         result;
                 }
@@ -985,7 +985,7 @@ R"MuddledManaged(namespace MuddledManaged
                 if (result != 0)
                 {
                     result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
-                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 }
 
                 return result;
@@ -1018,14 +1018,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(this->key());
 
-                result += PrimitiveEncoding::serializeVariableInt32(value());
+                result += PrimitiveEncoding::serializeVariableInt32(this->value());
 
                 return result;
             }
@@ -1034,14 +1034,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
 
-                result += PrimitiveEncoding::sizeVariableInt32(value());
+                result += PrimitiveEncoding::sizeVariableInt32(this->value());
 
                 return result;
             }
@@ -1093,7 +1093,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
                 if (!result.empty())
                 {
-                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +
+                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(this->key()) +
                         PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
                         result;
                 }
@@ -1116,7 +1116,7 @@ R"MuddledManaged(namespace MuddledManaged
                 if (result != 0)
                 {
                     result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
-                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 }
                 
                 return result;
@@ -1149,14 +1149,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(this->key());
 
-                result += PrimitiveEncoding::serializeVariableInt64(value());
+                result += PrimitiveEncoding::serializeVariableInt64(this->value());
 
                 return result;
             }
@@ -1165,14 +1165,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 
-                result += PrimitiveEncoding::sizeVariableInt64(value());
+                result += PrimitiveEncoding::sizeVariableInt64(this->value());
                 
                 return result;
             }
@@ -1224,7 +1224,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
                 if (!result.empty())
                 {
-                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +
+                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(this->key()) +
                         PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
                         result;
                 }
@@ -1247,7 +1247,7 @@ R"MuddledManaged(namespace MuddledManaged
                 if (result != 0)
                 {
                     result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
-                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 }
                 
                 return result;
@@ -1280,14 +1280,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(this->key());
 
-                result += PrimitiveEncoding::serializeVariableUnsignedInt32(value());
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(this->value());
 
                 return result;
             }
@@ -1296,14 +1296,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 
-                result += PrimitiveEncoding::sizeVariableUnsignedInt32(value());
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->value());
                 
                 return result;
             }
@@ -1355,7 +1355,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
                 if (!result.empty())
                 {
-                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +
+                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(this->key()) +
                         PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
                         result;
                 }
@@ -1378,7 +1378,7 @@ R"MuddledManaged(namespace MuddledManaged
                 if (result != 0)
                 {
                     result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
-                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 }
                 
                 return result;
@@ -1411,14 +1411,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(this->key());
 
-                result += PrimitiveEncoding::serializeVariableUnsignedInt64(value());
+                result += PrimitiveEncoding::serializeVariableUnsignedInt64(this->value());
 
                 return result;
             }
@@ -1427,14 +1427,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 
-                result += PrimitiveEncoding::sizeVariableUnsignedInt64(value());
+                result += PrimitiveEncoding::sizeVariableUnsignedInt64(this->value());
                 
                 return result;
             }
@@ -1486,7 +1486,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
                 if (!result.empty())
                 {
-                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +
+                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(this->key()) +
                         PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
                         result;
                 }
@@ -1509,7 +1509,7 @@ R"MuddledManaged(namespace MuddledManaged
                 if (result != 0)
                 {
                     result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
-                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 }
                 
                 return result;
@@ -1542,14 +1542,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(this->key());
 
-                result += PrimitiveEncoding::serializeVariableSignedInt32(value());
+                result += PrimitiveEncoding::serializeVariableSignedInt32(this->value());
 
                 return result;
             }
@@ -1558,14 +1558,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 
-                result += PrimitiveEncoding::sizeVariableSignedInt32(value());
+                result += PrimitiveEncoding::sizeVariableSignedInt32(this->value());
                 
                 return result;
             }
@@ -1617,7 +1617,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
                 if (!result.empty())
                 {
-                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +
+                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(this->key()) +
                         PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
                         result;
                 }
@@ -1640,7 +1640,7 @@ R"MuddledManaged(namespace MuddledManaged
                 if (result != 0)
                 {
                     result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
-                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 }
                 
                 return result;
@@ -1673,14 +1673,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(this->key());
 
-                result += PrimitiveEncoding::serializeVariableSignedInt64(value());
+                result += PrimitiveEncoding::serializeVariableSignedInt64(this->value());
 
                 return result;
             }
@@ -1689,14 +1689,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 
-                result += PrimitiveEncoding::sizeVariableSignedInt64(value());
+                result += PrimitiveEncoding::sizeVariableSignedInt64(this->value());
                 
                 return result;
             }
@@ -1748,7 +1748,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
                 if (!result.empty())
                 {
-                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +
+                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(this->key()) +
                         PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
                         result;
                 }
@@ -1771,7 +1771,7 @@ R"MuddledManaged(namespace MuddledManaged
                 if (result != 0)
                 {
                     result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
-                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 }
                 
                 return result;
@@ -1808,14 +1808,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(this->key());
 
-                result += PrimitiveEncoding::serializeFixedInt32(value());
+                result += PrimitiveEncoding::serializeFixedInt32(this->value());
 
                 return result;
             }
@@ -1824,12 +1824,12 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 
                 result += 4;
                 
@@ -1886,7 +1886,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
                 if (!result.empty())
                 {
-                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +
+                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(this->key()) +
                         PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
                         result;
                 }
@@ -1909,7 +1909,7 @@ R"MuddledManaged(namespace MuddledManaged
                 if (result != 0)
                 {
                     result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
-                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 }
                 
                 return result;
@@ -1946,14 +1946,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(this->key());
 
-                result += PrimitiveEncoding::serializeFixedInt64(value());
+                result += PrimitiveEncoding::serializeFixedInt64(this->value());
 
                 return result;
             }
@@ -1962,12 +1962,12 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 
                 result += 8;
                 
@@ -2024,7 +2024,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
                 if (!result.empty())
                 {
-                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +
+                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(this->key()) +
                         PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
                         result;
                 }
@@ -2047,7 +2047,7 @@ R"MuddledManaged(namespace MuddledManaged
                 if (result != 0)
                 {
                     result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
-                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 }
                 
                 return result;
@@ -2116,14 +2116,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(this->key());
 
-                result += PrimitiveEncoding::serializeFloat(value());
+                result += PrimitiveEncoding::serializeFloat(this->value());
 
                 return result;
             }
@@ -2132,12 +2132,12 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 
                 result += 4;
                 
@@ -2194,7 +2194,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
                 if (!result.empty())
                 {
-                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +
+                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(this->key()) +
                         PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
                         result;
                 }
@@ -2217,7 +2217,7 @@ R"MuddledManaged(namespace MuddledManaged
                 if (result != 0)
                 {
                     result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
-                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 }
                 
                 return result;
@@ -2254,14 +2254,14 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(this->key());
 
-                result += PrimitiveEncoding::serializeDouble(value());
+                result += PrimitiveEncoding::serializeDouble(this->value());
 
                 return result;
             }
@@ -2270,12 +2270,12 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 
                 result += 8;
                 
@@ -2332,7 +2332,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
                 if (!result.empty())
                 {
-                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +
+                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(this->key()) +
                         PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
                         result;
                 }
@@ -2355,7 +2355,7 @@ R"MuddledManaged(namespace MuddledManaged
                 if (result != 0)
                 {
                     result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
-                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
                 }
                 
                 return result;
@@ -2424,12 +2424,12 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
-                result += PrimitiveEncoding::serializeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::serializeVariableUnsignedInt32(this->key());
 
                 result += PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(mValue.size()));
 
@@ -2442,13 +2442,13 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = mValue.size();
 
-                if (!hasValue())
+                if (!this->hasValue())
                 {
                     return result;
                 }
 
                 result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
-                result += PrimitiveEncoding::sizeVariableUnsignedInt32(key());
+                result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
 
                 return result;
             }
