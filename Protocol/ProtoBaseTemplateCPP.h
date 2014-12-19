@@ -771,14 +771,14 @@ R"MuddledManaged(namespace MuddledManaged
                     throw std::invalid_argument("pData cannot be null.");
                 }
 
-                unsigned int lengthBytesParsed = 0;
+                size_t lengthBytesParsed = 0;
                 std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::uint32_t remainingBytes = length;
                 while (remainingBytes)
                 {
-                    unsigned int bytesParsed = 0;
+                    size_t bytesParsed = 0;
                     std::int64_t enumValue = PrimitiveEncoding::parseVariableInt64(pData, &bytesParsed);
 
                     addValue(static_cast<EnumType>(enumValue));
@@ -917,13 +917,13 @@ R"MuddledManaged(namespace MuddledManaged
                     throw std::invalid_argument("pData cannot be null.");
                 }
 
-                unsigned int lengthBytesParsed = 0;
+                size_t lengthBytesParsed = 0;
                 std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 for (unsigned int i = 0; i < length; ++i)
                 {
-                    unsigned int bytesParsed = 0;
+                    size_t bytesParsed = 0;
                     std::int64_t boolValue = PrimitiveEncoding::parseVariableInt32(pData, &bytesParsed);
                     if (bytesParsed != 1)
                     {
@@ -1061,14 +1061,14 @@ R"MuddledManaged(namespace MuddledManaged
                     throw std::invalid_argument("pData cannot be null.");
                 }
 
-                unsigned int lengthBytesParsed = 0;
+                size_t lengthBytesParsed = 0;
                 std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::uint32_t remainingBytes = length;
                 while (remainingBytes)
                 {
-                    unsigned int bytesParsed = 0;
+                    size_t bytesParsed = 0;
                     std::int32_t numericValue = PrimitiveEncoding::parseVariableInt32(pData, &bytesParsed);
 
                     addValue(numericValue);
@@ -1192,14 +1192,14 @@ R"MuddledManaged(namespace MuddledManaged
                     throw std::invalid_argument("pData cannot be null.");
                 }
 
-                unsigned int lengthBytesParsed = 0;
+                size_t lengthBytesParsed = 0;
                 std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::uint32_t remainingBytes = length;
                 while (remainingBytes)
                 {
-                    unsigned int bytesParsed = 0;
+                    size_t bytesParsed = 0;
                     std::int64_t numericValue = PrimitiveEncoding::parseVariableInt64(pData, &bytesParsed);
 
                     addValue(numericValue);
@@ -1323,14 +1323,14 @@ R"MuddledManaged(namespace MuddledManaged
                     throw std::invalid_argument("pData cannot be null.");
                 }
 
-                unsigned int lengthBytesParsed = 0;
+                size_t lengthBytesParsed = 0;
                 std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::uint32_t remainingBytes = length;
                 while (remainingBytes)
                 {
-                    unsigned int bytesParsed = 0;
+                    size_t bytesParsed = 0;
                     std::uint32_t numericValue = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &bytesParsed);
 
                     addValue(numericValue);
@@ -1454,14 +1454,14 @@ R"MuddledManaged(namespace MuddledManaged
                     throw std::invalid_argument("pData cannot be null.");
                 }
 
-                unsigned int lengthBytesParsed = 0;
+                size_t lengthBytesParsed = 0;
                 std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::uint32_t remainingBytes = length;
                 while (remainingBytes)
                 {
-                    unsigned int bytesParsed = 0;
+                    size_t bytesParsed = 0;
                     std::uint64_t numericValue = PrimitiveEncoding::parseVariableUnsignedInt64(pData, &bytesParsed);
 
                     addValue(numericValue);
@@ -1585,14 +1585,14 @@ R"MuddledManaged(namespace MuddledManaged
                     throw std::invalid_argument("pData cannot be null.");
                 }
 
-                unsigned int lengthBytesParsed = 0;
+                size_t lengthBytesParsed = 0;
                 std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::uint32_t remainingBytes = length;
                 while (remainingBytes)
                 {
-                    unsigned int bytesParsed = 0;
+                    size_t bytesParsed = 0;
                     std::int32_t numericValue = PrimitiveEncoding::parseVariableSignedInt32(pData, &bytesParsed);
 
                     addValue(numericValue);
@@ -1716,14 +1716,14 @@ R"MuddledManaged(namespace MuddledManaged
                     throw std::invalid_argument("pData cannot be null.");
                 }
 
-                unsigned int lengthBytesParsed = 0;
+                size_t lengthBytesParsed = 0;
                 std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
                 std::uint32_t remainingBytes = length;
                 while (remainingBytes)
                 {
-                    unsigned int bytesParsed = 0;
+                    size_t bytesParsed = 0;
                     std::int64_t numericValue = PrimitiveEncoding::parseVariableSignedInt64(pData, &bytesParsed);
 
                     addValue(numericValue);
@@ -1856,7 +1856,7 @@ R"MuddledManaged(namespace MuddledManaged
                     throw std::invalid_argument("pData cannot be null.");
                 }
 
-                unsigned int lengthBytesParsed = 0;
+                size_t lengthBytesParsed = 0;
                 std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
@@ -1994,7 +1994,7 @@ R"MuddledManaged(namespace MuddledManaged
                     throw std::invalid_argument("pData cannot be null.");
                 }
 
-                unsigned int lengthBytesParsed = 0;
+                size_t lengthBytesParsed = 0;
                 std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
@@ -2164,7 +2164,7 @@ R"MuddledManaged(namespace MuddledManaged
                     throw std::invalid_argument("pData cannot be null.");
                 }
 
-                unsigned int lengthBytesParsed = 0;
+                size_t lengthBytesParsed = 0;
                 std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
@@ -2302,7 +2302,7 @@ R"MuddledManaged(namespace MuddledManaged
                     throw std::invalid_argument("pData cannot be null.");
                 }
 
-                unsigned int lengthBytesParsed = 0;
+                size_t lengthBytesParsed = 0;
                 std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
@@ -2405,7 +2405,7 @@ R"MuddledManaged(namespace MuddledManaged
                     throw std::invalid_argument("pData cannot be null.");
                 }
 
-                unsigned int lengthBytesParsed = 0;
+                size_t lengthBytesParsed = 0;
                 std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
                 pData += lengthBytesParsed;
 
