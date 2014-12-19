@@ -431,7 +431,7 @@ R"MuddledManaged(namespace MuddledManaged
             virtual ~ProtoBase ()
             {}
 
-            virtual unsigned int index ()
+            virtual unsigned int index () const
             {
                 return mIndex;
             }
@@ -441,7 +441,7 @@ R"MuddledManaged(namespace MuddledManaged
                 mIndex = index;
             }
 
-            virtual bool required ()
+            virtual bool required () const
             {
                 return mRequired;
             }
@@ -451,7 +451,7 @@ R"MuddledManaged(namespace MuddledManaged
                 mRequired = required;
             }
 
-            virtual unsigned int key () = 0;
+            virtual unsigned int key () const = 0;
 
             virtual size_t parse (const unsigned char * pData) = 0;
 
@@ -459,7 +459,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual size_t size () const = 0;
 
-            virtual bool valid ()
+            virtual bool valid () const
             {
                 if (required() && !hasValue())
                 {
@@ -500,7 +500,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoMessage : public ProtoBase
         {
         public:
-            virtual unsigned int key ()
+            virtual unsigned int key () const
             {
                 return (index() << 3) | 0x02;
             }
@@ -528,7 +528,7 @@ R"MuddledManaged(namespace MuddledManaged
                 mCollection.push_back(message);
             }
 
-            virtual unsigned int key ()
+            virtual unsigned int key () const
             {
                 return (index() << 3) | 0x02;
             }
@@ -582,7 +582,7 @@ R"MuddledManaged(namespace MuddledManaged
                 mCollection.clear();
             }
 
-            virtual bool valid ()
+            virtual bool valid () const
             {
                 if (!mCollection.empty())
                 {
@@ -633,7 +633,7 @@ R"MuddledManaged(namespace MuddledManaged
                 ProtoBase::clearValue();
             }
 
-            virtual unsigned int key ()
+            virtual unsigned int key () const
             {
                 return (index() << 3);
             }
@@ -668,7 +668,7 @@ R"MuddledManaged(namespace MuddledManaged
                 mCollection.push_back(valueType);
             }
 
-            virtual unsigned int key ()
+            virtual unsigned int key () const
             {
                 return (index() << 3) | 0x02;
             }
@@ -683,7 +683,7 @@ R"MuddledManaged(namespace MuddledManaged
                 mCollection.clear();
             }
 
-            virtual bool valid ()
+            virtual bool valid () const
             {
                 return true;
             }
@@ -1785,7 +1785,7 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericType<std::int32_t>(0, defaultValue)
             {}
 
-            virtual unsigned int key ()
+            virtual unsigned int key () const
             {
                 return (index() << 3) | 0x05;
             }
@@ -1844,7 +1844,7 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericTypeCollection<std::int32_t, ProtoFixed32>(defaultValue)
             {}
 
-            virtual unsigned int key ()
+            virtual unsigned int key () const
             {
                 return (index() << 3) | 0x02;
             }
@@ -1923,7 +1923,7 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericType<std::int64_t>(0, defaultValue)
             {}
 
-            virtual unsigned int key ()
+            virtual unsigned int key () const
             {
                 return (index() << 3) | 0x01;
             }
@@ -1982,7 +1982,7 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericTypeCollection<std::int64_t, ProtoFixed64>(defaultValue)
             {}
 
-            virtual unsigned int key ()
+            virtual unsigned int key () const
             {
                 return (index() << 3) | 0x02;
             }
@@ -2093,7 +2093,7 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericType<float>(0, defaultValue)
             {}
 
-            virtual unsigned int key ()
+            virtual unsigned int key () const
             {
                 return (index() << 3) | 0x05;
             }
@@ -2152,7 +2152,7 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericTypeCollection<float, ProtoFloat>(defaultValue)
             {}
 
-            virtual unsigned int key ()
+            virtual unsigned int key () const
             {
                 return (index() << 3) | 0x02;
             }
@@ -2231,7 +2231,7 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericType<double>(0, defaultValue)
             {}
 
-            virtual unsigned int key ()
+            virtual unsigned int key () const
             {
                 return (index() << 3) | 0x01;
             }
@@ -2290,7 +2290,7 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericTypeCollection<double, ProtoDouble>(defaultValue)
             {}
 
-            virtual unsigned int key ()
+            virtual unsigned int key () const
             {
                 return (index() << 3) | 0x02;
             }
@@ -2393,7 +2393,7 @@ R"MuddledManaged(namespace MuddledManaged
                 ProtoBase::clearValue();
             }
 
-            virtual unsigned int key ()
+            virtual unsigned int key () const
             {
                 return (index() << 3) | 0x02;
             }
@@ -2483,7 +2483,7 @@ R"MuddledManaged(namespace MuddledManaged
                 mCollection.push_back(valueType);
             }
 
-            virtual unsigned int key ()
+            virtual unsigned int key () const
             {
                 return (index() << 3) | 0x02;
             }
@@ -2532,7 +2532,7 @@ R"MuddledManaged(namespace MuddledManaged
                 mCollection.clear();
             }
 
-            virtual bool valid ()
+            virtual bool valid () const
             {
                 return true;
             }
