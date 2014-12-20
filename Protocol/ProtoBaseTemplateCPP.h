@@ -516,7 +516,12 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoMessageCollection : public ProtoBase
         {
         public:
-            virtual std::vector<std::shared_ptr<MessageType>> * collection ()
+            virtual const std::vector<std::shared_ptr<MessageType>> * collection () const
+            {
+                return &mCollection;
+            }
+
+            virtual std::vector<std::shared_ptr<MessageType>> * mutableCollection ()
             {
                 return &mCollection;
             }
@@ -653,7 +658,12 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoNumericTypeCollection : public ProtoBase
         {
         public:
-            virtual std::vector<ProtoType> * collection ()
+            virtual const std::vector<ProtoType> * collection () const
+            {
+                return &mCollection;
+            }
+
+            virtual std::vector<ProtoType> * mutableCollection ()
             {
                 return &mCollection;
             }
@@ -794,7 +804,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                for (auto & protoValue: *collection())
+                for (auto & protoValue: *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -815,7 +825,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                for (auto & protoValue : *collection())
+                for (auto & protoValue : *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -953,7 +963,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                for (auto & protoValue: *collection())
+                for (auto & protoValue: *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -974,7 +984,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                for (auto & protoValue : *collection())
+                for (auto & protoValue : *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -1084,7 +1094,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                for (auto & protoValue: *collection())
+                for (auto & protoValue: *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -1105,7 +1115,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                for (auto & protoValue : *collection())
+                for (auto & protoValue : *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -1215,7 +1225,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                for (auto & protoValue: *collection())
+                for (auto & protoValue: *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -1236,7 +1246,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                for (auto & protoValue : *collection())
+                for (auto & protoValue : *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -1346,7 +1356,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                for (auto & protoValue: *collection())
+                for (auto & protoValue: *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -1367,7 +1377,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                for (auto & protoValue : *collection())
+                for (auto & protoValue : *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -1477,7 +1487,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                for (auto & protoValue: *collection())
+                for (auto & protoValue: *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -1498,7 +1508,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                for (auto & protoValue : *collection())
+                for (auto & protoValue : *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -1608,7 +1618,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                for (auto & protoValue: *collection())
+                for (auto & protoValue: *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -1629,7 +1639,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                for (auto & protoValue : *collection())
+                for (auto & protoValue : *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -1739,7 +1749,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                for (auto & protoValue: *collection())
+                for (auto & protoValue: *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -1760,7 +1770,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                for (auto & protoValue : *collection())
+                for (auto & protoValue : *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -1877,7 +1887,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                for (auto & protoValue: *collection())
+                for (auto & protoValue: *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -1898,7 +1908,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                for (auto & protoValue : *collection())
+                for (auto & protoValue : *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -2015,7 +2025,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                for (auto & protoValue: *collection())
+                for (auto & protoValue: *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -2036,7 +2046,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                for (auto & protoValue : *collection())
+                for (auto & protoValue : *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -2185,7 +2195,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                for (auto & protoValue: *collection())
+                for (auto & protoValue: *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -2206,7 +2216,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                for (auto & protoValue : *collection())
+                for (auto & protoValue : *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -2323,7 +2333,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 std::string result;
 
-                for (auto & protoValue: *collection())
+                for (auto & protoValue: *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -2344,7 +2354,7 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 size_t result = 0;
 
-                for (auto & protoValue : *collection())
+                for (auto & protoValue : *this->collection())
                 {
                     if (protoValue.hasValue())
                     {
@@ -2468,7 +2478,12 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoStringTypeCollection : public ProtoBase
         {
         public:
-            virtual std::vector<std::shared_ptr<ProtoType>> * collection ()
+            virtual const std::vector<std::shared_ptr<ProtoType>> * collection () const
+            {
+                return &mCollection;
+            }
+
+            virtual std::vector<std::shared_ptr<ProtoType>> * mutableCollection ()
             {
                 return &mCollection;
             }
