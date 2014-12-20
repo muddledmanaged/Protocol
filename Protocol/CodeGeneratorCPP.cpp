@@ -1214,14 +1214,14 @@ void Protocol::CodeGeneratorCPP::writeMessageSwapToSource (CodeWriter & sourceFi
     dataType += className + "Data>";
     string statement = dataType + " thisData(mData);";
     sourceFileWriter.writeLineIndented(statement);
-    statement = dataType + " otherData(other.mData);";
+    statement = dataType + " otherData(other->mData);";
     sourceFileWriter.writeLineIndented(statement);
 
     sourceFileWriter.writeBlankLine();
 
     statement = "mData = otherData;";
     sourceFileWriter.writeLineIndented(statement);
-    statement = "other.mData = thisData;";
+    statement = "other->mData = thisData;";
     sourceFileWriter.writeLineIndented(statement);
 
     sourceFileWriter.writeMethodImplementationClosing();
@@ -1235,8 +1235,8 @@ void Protocol::CodeGeneratorCPP::writeMessageClearToSource (CodeWriter & sourceF
     string methodReturn = "void";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn);
 
-    string statement = "mData = new ";
-    statement += className + "Data();";
+    string statement = "mData.reset(new ";
+    statement += className + "Data());";
     sourceFileWriter.writeLineIndented(statement);
 
     sourceFileWriter.writeMethodImplementationClosing();
