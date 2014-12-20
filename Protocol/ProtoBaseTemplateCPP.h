@@ -317,7 +317,7 @@ R"MuddledManaged(namespace MuddledManaged
                 while (true)
                 {
                     ValueType currentMaskedValue = *pData & 0x7f;
-                    currentMaskedValue << byteCount * 7;
+                    currentMaskedValue = currentMaskedValue << byteCount * 7;
                     rawValue |= currentMaskedValue;
                     ++byteCount;
 
@@ -395,7 +395,7 @@ R"MuddledManaged(namespace MuddledManaged
                 {
                     unsigned char currentByte = unsignedValue & 0x7f;
 
-                    unsignedValue >> 7;
+                    unsignedValue = unsignedValue >> 7;
                     if (unsignedValue == 0)
                     {
                         lastByte = true;
@@ -672,8 +672,8 @@ R"MuddledManaged(namespace MuddledManaged
             {
                 ProtoType valueType(mValueDefault);
 
-                valueType->setIndex(index());
-                valueType->setValue(value);
+                valueType.setIndex(index());
+                valueType.setValue(value);
 
                 mCollection.push_back(valueType);
             }
@@ -1871,7 +1871,7 @@ R"MuddledManaged(namespace MuddledManaged
                 pData += lengthBytesParsed;
 
                 std::uint32_t itemCount = length / 4;
-                for (int i = 0; i < itemCount, ++i)
+                for (unsigned int i = 0; i < itemCount; ++i)
                 {
                     std::int32_t numericValue = PrimitiveEncoding::parseFixedInt32(pData);
 
@@ -2009,7 +2009,7 @@ R"MuddledManaged(namespace MuddledManaged
                 pData += lengthBytesParsed;
 
                 std::uint32_t itemCount = length / 8;
-                for (int i = 0; i < itemCount, ++i)
+                for (unsigned int i = 0; i < itemCount; ++i)
                 {
                     std::int64_t numericValue = PrimitiveEncoding::parseFixedInt64(pData);
 
@@ -2179,7 +2179,7 @@ R"MuddledManaged(namespace MuddledManaged
                 pData += lengthBytesParsed;
 
                 std::uint32_t itemCount = length / 4;
-                for (int i = 0; i < itemCount, ++i)
+                for (unsigned int i = 0; i < itemCount; ++i)
                 {
                     float numericValue = PrimitiveEncoding::parseFloat(pData);
 
@@ -2317,7 +2317,7 @@ R"MuddledManaged(namespace MuddledManaged
                 pData += lengthBytesParsed;
 
                 std::uint32_t itemCount = length / 8;
-                for (int i = 0; i < itemCount, ++i)
+                for (unsigned int i = 0; i < itemCount; ++i)
                 {
                     double numericValue = PrimitiveEncoding::parseDouble(pData);
 
@@ -2420,7 +2420,7 @@ R"MuddledManaged(namespace MuddledManaged
                 pData += lengthBytesParsed;
 
                 std::string stringValue;
-                for (unsigned int i = 0; i < length, ++i)
+                for (unsigned int i = 0; i < length; ++i)
                 {
                     stringValue += *pData;
                     ++pData;
@@ -2490,10 +2490,10 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual void addValue (const std::string & value)
             {
-                std::shared_ptr<ProtoType> valueType(new ProtoType(mDefaultValue));
+                std::shared_ptr<ProtoType> valueType(new ProtoType(mValueDefault));
 
-                valueType->setIndex(index());
-                valueType->setValue(value);
+                valueType.setIndex(index());
+                valueType.setValue(value);
 
                 mCollection.push_back(valueType);
             }
