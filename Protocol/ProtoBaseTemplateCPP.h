@@ -473,6 +473,11 @@ R"MuddledManaged(namespace MuddledManaged
             : mIndex(0), mHasValue(false), mRequired(false)
             {}
 
+            ProtoBase (const ProtoBase & src)
+            : mIndex(src.mIndex), mHasValue(src.mHasValue), mRequired(src.mRequired)
+            {
+            }
+
             virtual bool hasValue () const
             {
                 return mHasValue;
@@ -488,10 +493,21 @@ R"MuddledManaged(namespace MuddledManaged
                 mHasValue = false;
             }
 
-        private:
-            ProtoBase (const ProtoBase & src) = delete;
-            ProtoBase & operator = (const ProtoBase & rhs) = delete;
+            ProtoBase & operator = (const ProtoBase & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
 
+                mIndex = rhs.mIndex;
+                mHasValue = rhs.mHasValue;
+                mRequired = rhs.mRequired;
+
+                return *this;
+            }
+
+        private:
             unsigned int mIndex;
             bool mHasValue;
             bool mRequired;
@@ -603,6 +619,9 @@ R"MuddledManaged(namespace MuddledManaged
             }
 
         private:
+            ProtoMessageCollection (const ProtoMessageCollection<MessageType> & src) = delete;
+            ProtoMessageCollection<MessageType> & operator = (const ProtoMessageCollection<MessageType> & rhs) = delete;
+
             std::vector<std::shared_ptr<MessageType>> mCollection;
         };
 
@@ -647,6 +666,27 @@ R"MuddledManaged(namespace MuddledManaged
             ProtoNumericType (NumericType value, NumericType defaultValue)
             : mValue(value), mValueInitial(value), mValueDefault(defaultValue)
             {}
+
+            ProtoNumericType (const ProtoNumericType<NumericType> & src)
+            : ProtoBase(src), mValue(src.mValue), mValueInitial(src.mValueInitial), mValueDefault(src.mValueDefault)
+            {
+            }
+
+            ProtoNumericType<NumericType> & operator = (const ProtoNumericType<NumericType> & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoBase::operator=(rhs);
+
+                mValue = rhs.mValue;
+                mValueInitial = rhs.mValueInitial;
+                mValueDefault = rhs.mValueDefault;
+
+                return *this;
+            }
 
         private:
             NumericType mValue;
@@ -704,6 +744,9 @@ R"MuddledManaged(namespace MuddledManaged
             {}
 
         private:
+            ProtoNumericTypeCollection (const ProtoNumericTypeCollection<NumericType, ProtoType> & src) = delete;
+            ProtoNumericTypeCollection<NumericType, ProtoType> & operator = (const ProtoNumericTypeCollection<NumericType, ProtoType> & rhs) = delete;
+
             std::vector<ProtoType> mCollection;
             NumericType mValueDefault;
         };
@@ -715,6 +758,23 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoEnum (EnumType defaultValue = 0)
             : ProtoNumericType<EnumType>(0, defaultValue)
             {}
+
+            ProtoEnum (const ProtoEnum<EnumType> & src)
+            : ProtoNumericType<EnumType>(src)
+            {
+            }
+
+            ProtoEnum<EnumType> & operator = (const ProtoEnum<EnumType> & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoNumericType<EnumType>::operator=(rhs);
+
+                return *this;
+            }
 
             virtual size_t parse (const unsigned char * pData)
             {
@@ -849,6 +909,23 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoBool (bool defaultValue = false)
             : ProtoNumericType<bool>(false, defaultValue)
             {}
+
+            ProtoBool (const ProtoBool & src)
+            : ProtoNumericType<bool>(src)
+            {
+            }
+
+            ProtoBool & operator = (const ProtoBool & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoNumericType<bool>::operator=(rhs);
+
+                return *this;
+            }
 
             virtual size_t parse (const unsigned char * pData)
             {
@@ -1009,6 +1086,23 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericType<std::int32_t>(0, defaultValue)
             {}
 
+            ProtoInt32 (const ProtoInt32 & src)
+            : ProtoNumericType<std::int32_t>(src)
+            {
+            }
+
+            ProtoInt32 & operator = (const ProtoInt32 & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoNumericType<std::int32_t>::operator=(rhs);
+
+                return *this;
+            }
+
             virtual size_t parse (const unsigned char * pData)
             {
                 if (pData == nullptr)
@@ -1139,6 +1233,23 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoInt64 (std::int64_t defaultValue = 0)
             : ProtoNumericType<std::int64_t>(0, defaultValue)
             {}
+
+            ProtoInt64 (const ProtoInt64 & src)
+            : ProtoNumericType<std::int64_t>(src)
+            {
+            }
+
+            ProtoInt64 & operator = (const ProtoInt64 & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoNumericType<std::int64_t>::operator=(rhs);
+
+                return *this;
+            }
 
             virtual size_t parse (const unsigned char * pData)
             {
@@ -1271,6 +1382,23 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericType<std::uint32_t>(0, defaultValue)
             {}
 
+            ProtoUnsignedInt32 (const ProtoUnsignedInt32 & src)
+            : ProtoNumericType<std::uint32_t>(src)
+            {
+            }
+
+            ProtoUnsignedInt32 & operator = (const ProtoUnsignedInt32 & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoNumericType<std::uint32_t>::operator=(rhs);
+
+                return *this;
+            }
+
             virtual size_t parse (const unsigned char * pData)
             {
                 if (pData == nullptr)
@@ -1401,6 +1529,23 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoUnsignedInt64 (std::uint64_t defaultValue = 0)
             : ProtoNumericType<std::uint64_t>(0, defaultValue)
             {}
+
+            ProtoUnsignedInt64 (const ProtoUnsignedInt64 & src)
+            : ProtoNumericType<std::uint64_t>(src)
+            {
+            }
+
+            ProtoUnsignedInt64 & operator = (const ProtoUnsignedInt64 & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoNumericType<std::uint64_t>::operator=(rhs);
+
+                return *this;
+            }
 
             virtual size_t parse (const unsigned char * pData)
             {
@@ -1533,6 +1678,23 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericType<std::int32_t>(0, defaultValue)
             {}
 
+            ProtoSignedInt32 (const ProtoSignedInt32 & src)
+            : ProtoNumericType<std::int32_t>(src)
+            {
+            }
+
+            ProtoSignedInt32 & operator = (const ProtoSignedInt32 & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoNumericType<std::int32_t>::operator=(rhs);
+
+                return *this;
+            }
+
             virtual size_t parse (const unsigned char * pData)
             {
                 if (pData == nullptr)
@@ -1664,6 +1826,23 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericType<std::int64_t>(0, defaultValue)
             {}
 
+            ProtoSignedInt64 (const ProtoSignedInt64 & src)
+            : ProtoNumericType<std::int64_t>(src)
+            {
+            }
+
+            ProtoSignedInt64 & operator = (const ProtoSignedInt64 & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoNumericType<std::int64_t>::operator=(rhs);
+
+                return *this;
+            }
+
             virtual size_t parse (const unsigned char * pData)
             {
                 if (pData == nullptr)
@@ -1794,6 +1973,23 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoFixed32 (std::int32_t defaultValue = 0)
             : ProtoNumericType<std::int32_t>(0, defaultValue)
             {}
+
+            ProtoFixed32 (const ProtoFixed32 & src)
+            : ProtoNumericType<std::int32_t>(src)
+            {
+            }
+
+            ProtoFixed32 & operator = (const ProtoFixed32 & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoNumericType<std::int32_t>::operator=(rhs);
+
+                return *this;
+            }
 
             virtual unsigned int key () const
             {
@@ -1933,6 +2129,23 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericType<std::int64_t>(0, defaultValue)
             {}
 
+            ProtoFixed64 (const ProtoFixed64 & src)
+            : ProtoNumericType<std::int64_t>(src)
+            {
+            }
+
+            ProtoFixed64 & operator = (const ProtoFixed64 & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoNumericType<std::int64_t>::operator=(rhs);
+
+                return *this;
+            }
+
             virtual unsigned int key () const
             {
                 return (index() << 3) | 0x01;
@@ -2070,6 +2283,23 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoSignedFixed32 (std::int32_t defaultValue = 0)
             : ProtoFixed32(defaultValue)
             {}
+
+            ProtoSignedFixed32 (const ProtoSignedFixed32 & src)
+            : ProtoFixed32(src)
+            {
+            }
+
+            ProtoSignedFixed32 & operator = (const ProtoSignedFixed32 & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoFixed32::operator=(rhs);
+
+                return *this;
+            }
         };
 
         class ProtoSignedFixed32Collection : public ProtoNumericTypeCollection<std::int32_t, ProtoSignedFixed32>
@@ -2086,6 +2316,23 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoSignedFixed64 (std::int64_t defaultValue = 0)
             : ProtoFixed64(defaultValue)
             {}
+
+            ProtoSignedFixed64 (const ProtoSignedFixed64 & src)
+            : ProtoFixed64(src)
+            {
+            }
+
+            ProtoSignedFixed64 & operator = (const ProtoSignedFixed64 & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoFixed64::operator=(rhs);
+
+                return *this;
+            }
         };
 
         class ProtoSignedFixed64Collection : public ProtoNumericTypeCollection<std::int64_t, ProtoSignedFixed64>
@@ -2102,6 +2349,23 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoFloat (float defaultValue = 0)
             : ProtoNumericType<float>(0, defaultValue)
             {}
+
+            ProtoFloat (const ProtoFloat & src)
+            : ProtoNumericType<float>(src)
+            {
+            }
+
+            ProtoFloat & operator = (const ProtoFloat & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoNumericType<float>::operator=(rhs);
+
+                return *this;
+            }
 
             virtual unsigned int key () const
             {
@@ -2240,6 +2504,23 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoDouble (double defaultValue = 0)
             : ProtoNumericType<double>(0, defaultValue)
             {}
+
+            ProtoDouble (const ProtoDouble & src)
+            : ProtoNumericType<double>(src)
+            {
+            }
+
+            ProtoDouble & operator = (const ProtoDouble & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoNumericType<double>::operator=(rhs);
+
+                return *this;
+            }
 
             virtual unsigned int key () const
             {
@@ -2467,7 +2748,28 @@ R"MuddledManaged(namespace MuddledManaged
             ProtoStringType (const std::string & value, const std::string & defaultValue)
             : mValue(value), mValueInitial(value), mValueDefault(defaultValue)
             {}
-            
+
+            ProtoStringType (const ProtoStringType & src)
+            : ProtoBase(src), mValue(src.mValue), mValueInitial(src.mValueInitial), mValueDefault(src.mValueDefault)
+            {
+            }
+
+            ProtoStringType & operator = (const ProtoStringType & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoBase::operator=(rhs);
+
+                mValue = rhs.mValue;
+                mValueInitial = rhs.mValueInitial;
+                mValueDefault = rhs.mValueDefault;
+
+                return *this;
+            }
+
         private:
             std::string mValue;
             std::string mValueInitial;
@@ -2558,6 +2860,9 @@ R"MuddledManaged(namespace MuddledManaged
             {}
 
         private:
+            ProtoStringTypeCollection (const ProtoStringTypeCollection<ProtoType> & src) = delete;
+            ProtoStringTypeCollection<ProtoType> & operator = (const ProtoStringTypeCollection<ProtoType> & rhs) = delete;
+
             std::vector<std::shared_ptr<ProtoType>> mCollection;
             std::string mValueDefault;
         };
@@ -2568,6 +2873,23 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoString (const std::string & defaultValue = "")
             : ProtoStringType("", defaultValue)
             {}
+
+            ProtoString (const ProtoString & src)
+            : ProtoStringType(src)
+            {
+            }
+
+            ProtoString & operator = (const ProtoString & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoStringType::operator=(rhs);
+
+                return *this;
+            }
         };
 
         class ProtoStringCollection : public ProtoStringTypeCollection<ProtoString>
@@ -2584,6 +2906,23 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoBytes (const std::string & defaultValue = "")
             : ProtoStringType("", defaultValue)
             {}
+
+            ProtoBytes (const ProtoBytes & src)
+            : ProtoStringType(src)
+            {
+            }
+
+            ProtoBytes & operator = (const ProtoBytes & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoStringType::operator=(rhs);
+
+                return *this;
+            }
         };
 
         class ProtoBytesCollection : public ProtoStringTypeCollection<ProtoBytes>
