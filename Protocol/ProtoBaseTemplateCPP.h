@@ -710,12 +710,12 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual void addValue (NumericType value)
             {
-                ProtoType valueType(mValueDefault);
+                ProtoType newValue(mValueDefault);
 
-                valueType.setIndex(index());
-                valueType.setValue(value);
+                newValue.setIndex(index());
+                newValue.setValue(value);
 
-                mCollection.push_back(valueType);
+                mCollection.push_back(newValue);
             }
 
             virtual unsigned int key () const
@@ -2792,12 +2792,12 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual void addValue (const std::string & value)
             {
-                std::shared_ptr<ProtoType> valueType(new ProtoType(mValueDefault));
+                std::shared_ptr<ProtoType> newValue(new ProtoType(mValueDefault));
 
-                valueType.setIndex(index());
-                valueType.setValue(value);
+                newValue->setIndex(index());
+                newValue->setValue(value);
 
-                mCollection.push_back(valueType);
+                mCollection.push_back(newValue);
             }
 
             virtual unsigned int key () const
