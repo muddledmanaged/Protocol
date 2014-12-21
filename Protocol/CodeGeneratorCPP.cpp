@@ -1624,7 +1624,7 @@ string Protocol::CodeGeneratorCPP::fullTypeNameInternal (const MessageFieldModel
     }
     if (fieldType == "fixed32")
     {
-        fieldType = mBaseClassesNamespace + "::ProtoFixed32";
+        fieldType = mBaseClassesNamespace + "::ProtoFixedInt32";
         if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
         {
             fieldType += "Collection";
@@ -1633,7 +1633,7 @@ string Protocol::CodeGeneratorCPP::fullTypeNameInternal (const MessageFieldModel
     }
     if (fieldType == "fixed64")
     {
-        fieldType = mBaseClassesNamespace + "::ProtoFixed64";
+        fieldType = mBaseClassesNamespace + "::ProtoFixedInt64";
         if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
         {
             fieldType += "Collection";
@@ -1642,7 +1642,7 @@ string Protocol::CodeGeneratorCPP::fullTypeNameInternal (const MessageFieldModel
     }
     if (fieldType == "sfixed32")
     {
-        fieldType = mBaseClassesNamespace + "::ProtoSignedFixed32";
+        fieldType = mBaseClassesNamespace + "::ProtoFixedSignedInt32";
         if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
         {
             fieldType += "Collection";
@@ -1651,7 +1651,7 @@ string Protocol::CodeGeneratorCPP::fullTypeNameInternal (const MessageFieldModel
     }
     if (fieldType == "sfixed64")
     {
-        fieldType = mBaseClassesNamespace + "::ProtoSignedFixed64";
+        fieldType = mBaseClassesNamespace + "::ProtoFixedSignedInt64";
         if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
         {
             fieldType += "Collection";

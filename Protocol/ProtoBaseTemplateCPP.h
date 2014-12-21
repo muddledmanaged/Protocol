@@ -1970,19 +1970,19 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
-        class ProtoFixed32 : public ProtoNumericType<std::int32_t>
+        class ProtoFixedInt32 : public ProtoNumericType<std::int32_t>
         {
         public:
-            explicit ProtoFixed32 (std::int32_t defaultValue = 0)
+            explicit ProtoFixedInt32 (std::int32_t defaultValue = 0)
             : ProtoNumericType<std::int32_t>(0, defaultValue)
             {}
 
-            ProtoFixed32 (const ProtoFixed32 & src)
+            ProtoFixedInt32 (const ProtoFixedInt32 & src)
             : ProtoNumericType<std::int32_t>(src)
             {
             }
 
-            ProtoFixed32 & operator = (const ProtoFixed32 & rhs)
+            ProtoFixedInt32 & operator = (const ProtoFixedInt32 & rhs)
             {
                 if (this == &rhs)
                 {
@@ -2046,11 +2046,11 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
-        class ProtoFixed32Collection : public ProtoNumericTypeCollection<std::int32_t, ProtoFixed32>
+        class ProtoFixedInt32Collection : public ProtoNumericTypeCollection<std::int32_t, ProtoFixedInt32>
         {
         public:
-            explicit ProtoFixed32Collection (std::int32_t defaultValue = 0)
-            : ProtoNumericTypeCollection<std::int32_t, ProtoFixed32>(defaultValue)
+            explicit ProtoFixedInt32Collection (std::int32_t defaultValue = 0)
+            : ProtoNumericTypeCollection<std::int32_t, ProtoFixedInt32>(defaultValue)
             {}
 
             virtual unsigned int key () const
@@ -2125,19 +2125,19 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
-        class ProtoFixed64 : public ProtoNumericType<std::int64_t>
+        class ProtoFixedInt64 : public ProtoNumericType<std::int64_t>
         {
         public:
-            explicit ProtoFixed64 (std::int64_t defaultValue = 0)
+            explicit ProtoFixedInt64 (std::int64_t defaultValue = 0)
             : ProtoNumericType<std::int64_t>(0, defaultValue)
             {}
 
-            ProtoFixed64 (const ProtoFixed64 & src)
+            ProtoFixedInt64 (const ProtoFixedInt64 & src)
             : ProtoNumericType<std::int64_t>(src)
             {
             }
 
-            ProtoFixed64 & operator = (const ProtoFixed64 & rhs)
+            ProtoFixedInt64 & operator = (const ProtoFixedInt64 & rhs)
             {
                 if (this == &rhs)
                 {
@@ -2201,11 +2201,11 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
-        class ProtoFixed64Collection : public ProtoNumericTypeCollection<std::int64_t, ProtoFixed64>
+        class ProtoFixedInt64Collection : public ProtoNumericTypeCollection<std::int64_t, ProtoFixedInt64>
         {
         public:
-            explicit ProtoFixed64Collection (std::int64_t defaultValue = 0)
-            : ProtoNumericTypeCollection<std::int64_t, ProtoFixed64>(defaultValue)
+            explicit ProtoFixedInt64Collection (std::int64_t defaultValue = 0)
+            : ProtoNumericTypeCollection<std::int64_t, ProtoFixedInt64>(defaultValue)
             {}
 
             virtual unsigned int key () const
@@ -2280,36 +2280,36 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
-        class ProtoSignedFixed32 : public ProtoFixed32
+        class ProtoFixedSignedInt32 : public ProtoFixedInt32
         {
         public:
-            explicit ProtoSignedFixed32 (std::int32_t defaultValue = 0)
-            : ProtoFixed32(defaultValue)
+            explicit ProtoFixedSignedInt32 (std::int32_t defaultValue = 0)
+            : ProtoFixedInt32(defaultValue)
             {}
 
-            ProtoSignedFixed32 (const ProtoSignedFixed32 & src)
-            : ProtoFixed32(src)
+            ProtoFixedSignedInt32 (const ProtoFixedSignedInt32 & src)
+            : ProtoFixedInt32(src)
             {
             }
 
-            ProtoSignedFixed32 & operator = (const ProtoSignedFixed32 & rhs)
+            ProtoFixedSignedInt32 & operator = (const ProtoFixedSignedInt32 & rhs)
             {
                 if (this == &rhs)
                 {
                     return *this;
                 }
 
-                ProtoFixed32::operator=(rhs);
+                ProtoFixedInt32::operator=(rhs);
 
                 return *this;
             }
         };
 
-        class ProtoSignedFixed32Collection : public ProtoNumericTypeCollection<std::int32_t, ProtoSignedFixed32>
+        class ProtoFixedSignedInt32Collection : public ProtoNumericTypeCollection<std::int32_t, ProtoFixedSignedInt32>
         {
         public:
-            explicit ProtoSignedFixed32Collection (std::int32_t defaultValue = 0)
-            : ProtoNumericTypeCollection<std::int32_t, ProtoSignedFixed32>(defaultValue)
+            explicit ProtoFixedSignedInt32Collection (std::int32_t defaultValue = 0)
+            : ProtoNumericTypeCollection<std::int32_t, ProtoFixedSignedInt32>(defaultValue)
             {}
 
             virtual unsigned int key () const
@@ -2384,36 +2384,36 @@ R"MuddledManaged(namespace MuddledManaged
             }
         };
 
-        class ProtoSignedFixed64 : public ProtoFixed64
+        class ProtoFixedSignedInt64 : public ProtoFixedInt64
         {
         public:
-            explicit ProtoSignedFixed64 (std::int64_t defaultValue = 0)
-            : ProtoFixed64(defaultValue)
+            explicit ProtoFixedSignedInt64 (std::int64_t defaultValue = 0)
+            : ProtoFixedInt64(defaultValue)
             {}
 
-            ProtoSignedFixed64 (const ProtoSignedFixed64 & src)
-            : ProtoFixed64(src)
+            ProtoFixedSignedInt64 (const ProtoFixedSignedInt64 & src)
+            : ProtoFixedInt64(src)
             {
             }
 
-            ProtoSignedFixed64 & operator = (const ProtoSignedFixed64 & rhs)
+            ProtoFixedSignedInt64 & operator = (const ProtoFixedSignedInt64 & rhs)
             {
                 if (this == &rhs)
                 {
                     return *this;
                 }
 
-                ProtoFixed64::operator=(rhs);
+                ProtoFixedInt64::operator=(rhs);
 
                 return *this;
             }
         };
 
-        class ProtoSignedFixed64Collection : public ProtoNumericTypeCollection<std::int64_t, ProtoSignedFixed64>
+        class ProtoFixedSignedInt64Collection : public ProtoNumericTypeCollection<std::int64_t, ProtoFixedSignedInt64>
         {
         public:
-            explicit ProtoSignedFixed64Collection (std::int64_t defaultValue = 0)
-            : ProtoNumericTypeCollection<std::int64_t, ProtoSignedFixed64>(defaultValue)
+            explicit ProtoFixedSignedInt64Collection (std::int64_t defaultValue = 0)
+            : ProtoNumericTypeCollection<std::int64_t, ProtoFixedSignedInt64>(defaultValue)
             {}
 
             virtual unsigned int key () const
