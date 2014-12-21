@@ -524,7 +524,7 @@ R"MuddledManaged(namespace MuddledManaged
         protected:
             ProtoMessage ()
             {
-                setValue();
+                this->setValue();
             }
         };
 
@@ -532,6 +532,9 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoMessageCollection : public ProtoBase
         {
         public:
+            explicit ProtoMessageCollection ()
+            {}
+
             virtual const std::vector<std::shared_ptr<MessageType>> * collection () const
             {
                 return &mCollection;
@@ -564,7 +567,7 @@ R"MuddledManaged(namespace MuddledManaged
                 std::shared_ptr<MessageType> message(new MessageType());
                 size_t bytesParsed = message->parse(pData);
 
-                addValue(message);
+                this->addValue(message);
 
                 return bytesParsed;
             }
@@ -755,8 +758,8 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoEnum : public ProtoNumericType<EnumType>
         {
         public:
-            explicit ProtoEnum (EnumType defaultValue = 0)
-            : ProtoNumericType<EnumType>(0, defaultValue)
+            explicit ProtoEnum (EnumType defaultValue = static_cast<EnumType>(0))
+            : ProtoNumericType<EnumType>(static_cast<EnumType>(0), defaultValue)
             {}
 
             ProtoEnum (const ProtoEnum<EnumType> & src)
@@ -786,7 +789,7 @@ R"MuddledManaged(namespace MuddledManaged
                 size_t bytesParsed = 0;
                 std::int64_t enumValue = PrimitiveEncoding::parseVariableInt64(pData, &bytesParsed);
 
-                setValue(static_cast<EnumType>(enumValue));
+                this->setValue(static_cast<EnumType>(enumValue));
 
                 return bytesParsed;
             }
@@ -830,7 +833,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoEnumCollection : public ProtoNumericTypeCollection<EnumType, ProtoEnum<EnumType>>
         {
         public:
-            explicit ProtoEnumCollection (EnumType defaultValue = 0)
+            explicit ProtoEnumCollection (EnumType defaultValue = static_cast<EnumType>(0))
             : ProtoNumericTypeCollection<EnumType, ProtoEnum<EnumType>>(defaultValue)
             {}
 
@@ -851,7 +854,7 @@ R"MuddledManaged(namespace MuddledManaged
                     size_t bytesParsed = 0;
                     std::int64_t enumValue = PrimitiveEncoding::parseVariableInt64(pData, &bytesParsed);
 
-                    addValue(static_cast<EnumType>(enumValue));
+                    this->addValue(static_cast<EnumType>(enumValue));
                     
                     pData += bytesParsed;
                     remainingBytes -= bytesParsed;
@@ -943,11 +946,11 @@ R"MuddledManaged(namespace MuddledManaged
 
                 if (boolValue == 0)
                 {
-                    setValue(false);
+                    this->setValue(false);
                 }
                 else if (boolValue == 1)
                 {
-                    setValue(true);
+                    this->setValue(true);
                 }
                 else
                 {
@@ -1019,11 +1022,11 @@ R"MuddledManaged(namespace MuddledManaged
 
                     if (boolValue == 0)
                     {
-                        addValue(false);
+                        this->addValue(false);
                     }
                     else if (boolValue == 1)
                     {
-                        addValue(true);
+                        this->addValue(true);
                     }
                     else
                     {
@@ -1113,7 +1116,7 @@ R"MuddledManaged(namespace MuddledManaged
                 size_t bytesParsed = 0;
                 std::int32_t numericValue = PrimitiveEncoding::parseVariableInt32(pData, &bytesParsed);
 
-                setValue(numericValue);
+                this->setValue(numericValue);
 
                 return bytesParsed;
             }
@@ -1175,7 +1178,7 @@ R"MuddledManaged(namespace MuddledManaged
                     size_t bytesParsed = 0;
                     std::int32_t numericValue = PrimitiveEncoding::parseVariableInt32(pData, &bytesParsed);
 
-                    addValue(numericValue);
+                    this->addValue(numericValue);
 
                     pData += bytesParsed;
                     remainingBytes -= bytesParsed;
@@ -1261,7 +1264,7 @@ R"MuddledManaged(namespace MuddledManaged
                 size_t bytesParsed = 0;
                 std::int64_t numericValue = PrimitiveEncoding::parseVariableInt64(pData, &bytesParsed);
 
-                setValue(numericValue);
+                this->setValue(numericValue);
 
                 return bytesParsed;
             }
@@ -1323,7 +1326,7 @@ R"MuddledManaged(namespace MuddledManaged
                     size_t bytesParsed = 0;
                     std::int64_t numericValue = PrimitiveEncoding::parseVariableInt64(pData, &bytesParsed);
 
-                    addValue(numericValue);
+                    this->addValue(numericValue);
 
                     pData += bytesParsed;
                     remainingBytes -= bytesParsed;
@@ -1409,7 +1412,7 @@ R"MuddledManaged(namespace MuddledManaged
                 size_t bytesParsed = 0;
                 std::uint32_t numericValue = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &bytesParsed);
 
-                setValue(numericValue);
+                this->setValue(numericValue);
 
                 return bytesParsed;
             }
@@ -1471,7 +1474,7 @@ R"MuddledManaged(namespace MuddledManaged
                     size_t bytesParsed = 0;
                     std::uint32_t numericValue = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &bytesParsed);
 
-                    addValue(numericValue);
+                    this->addValue(numericValue);
 
                     pData += bytesParsed;
                     remainingBytes -= bytesParsed;
@@ -1557,7 +1560,7 @@ R"MuddledManaged(namespace MuddledManaged
                 size_t bytesParsed = 0;
                 std::uint64_t numericValue = PrimitiveEncoding::parseVariableUnsignedInt64(pData, &bytesParsed);
 
-                setValue(numericValue);
+                this->setValue(numericValue);
 
                 return bytesParsed;
             }
@@ -1619,7 +1622,7 @@ R"MuddledManaged(namespace MuddledManaged
                     size_t bytesParsed = 0;
                     std::uint64_t numericValue = PrimitiveEncoding::parseVariableUnsignedInt64(pData, &bytesParsed);
 
-                    addValue(numericValue);
+                    this->addValue(numericValue);
 
                     pData += bytesParsed;
                     remainingBytes -= bytesParsed;
@@ -1705,7 +1708,7 @@ R"MuddledManaged(namespace MuddledManaged
                 size_t bytesParsed = 0;
                 std::int32_t numericValue = PrimitiveEncoding::parseVariableSignedInt32(pData, &bytesParsed);
 
-                setValue(numericValue);
+                this->setValue(numericValue);
 
                 return bytesParsed;
             }
@@ -1767,7 +1770,7 @@ R"MuddledManaged(namespace MuddledManaged
                     size_t bytesParsed = 0;
                     std::int32_t numericValue = PrimitiveEncoding::parseVariableSignedInt32(pData, &bytesParsed);
 
-                    addValue(numericValue);
+                    this->addValue(numericValue);
 
                     pData += bytesParsed;
                     remainingBytes -= bytesParsed;
@@ -1853,7 +1856,7 @@ R"MuddledManaged(namespace MuddledManaged
                 size_t bytesParsed = 0;
                 std::int64_t numericValue = PrimitiveEncoding::parseVariableSignedInt64(pData, &bytesParsed);
 
-                setValue(numericValue);
+                this->setValue(numericValue);
 
                 return bytesParsed;
             }
@@ -1915,7 +1918,7 @@ R"MuddledManaged(namespace MuddledManaged
                     size_t bytesParsed = 0;
                     std::int64_t numericValue = PrimitiveEncoding::parseVariableSignedInt64(pData, &bytesParsed);
 
-                    addValue(numericValue);
+                    this->addValue(numericValue);
 
                     pData += bytesParsed;
                     remainingBytes -= bytesParsed;
@@ -2005,7 +2008,7 @@ R"MuddledManaged(namespace MuddledManaged
 
                 std::int32_t numericValue = PrimitiveEncoding::parseFixedInt32(pData);
 
-                setValue(numericValue);
+                this->setValue(numericValue);
 
                 return 4;
             }
@@ -2071,7 +2074,7 @@ R"MuddledManaged(namespace MuddledManaged
                 {
                     std::int32_t numericValue = PrimitiveEncoding::parseFixedInt32(pData);
 
-                    addValue(numericValue);
+                    this->addValue(numericValue);
 
                     pData += 4;
                 }
@@ -2160,7 +2163,7 @@ R"MuddledManaged(namespace MuddledManaged
 
                 std::int64_t numericValue = PrimitiveEncoding::parseFixedInt64(pData);
 
-                setValue(numericValue);
+                this->setValue(numericValue);
 
                 return 8;
             }
@@ -2226,7 +2229,7 @@ R"MuddledManaged(namespace MuddledManaged
                 {
                     std::int64_t numericValue = PrimitiveEncoding::parseFixedInt64(pData);
 
-                    addValue(numericValue);
+                    this->addValue(numericValue);
 
                     pData += 8;
                 }
@@ -2308,6 +2311,77 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoSignedFixed32Collection (std::int32_t defaultValue = 0)
             : ProtoNumericTypeCollection<std::int32_t, ProtoSignedFixed32>(defaultValue)
             {}
+
+            virtual unsigned int key () const
+            {
+                return (index() << 3) | 0x02;
+            }
+
+            virtual size_t parse (const unsigned char * pData)
+            {
+                if (pData == nullptr)
+                {
+                    throw std::invalid_argument("pData cannot be null.");
+                }
+
+                size_t lengthBytesParsed = 0;
+                std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
+                pData += lengthBytesParsed;
+
+                std::uint32_t itemCount = length / 4;
+                for (unsigned int i = 0; i < itemCount; ++i)
+                {
+                    std::int32_t numericValue = PrimitiveEncoding::parseFixedSignedInt32(pData);
+
+                    this->addValue(numericValue);
+
+                    pData += 4;
+                }
+
+                return lengthBytesParsed + length;
+            }
+
+            virtual std::string serialize () const
+            {
+                std::string result;
+
+                for (auto & protoValue: *this->collection())
+                {
+                    if (protoValue.hasValue())
+                    {
+                        result += PrimitiveEncoding::serializeFixedSignedInt32(protoValue.value());
+                    }
+                }
+                if (!result.empty())
+                {
+                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(this->key()) +
+                    PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
+                    result;
+                }
+
+                return result;
+            }
+
+            virtual size_t size () const
+            {
+                size_t result = 0;
+
+                for (auto & protoValue : *this->collection())
+                {
+                    if (protoValue.hasValue())
+                    {
+                        result += 4;
+                    }
+                }
+
+                if (result != 0)
+                {
+                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
+                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
+                }
+                
+                return result;
+            }
         };
 
         class ProtoSignedFixed64 : public ProtoFixed64
@@ -2341,6 +2415,77 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoSignedFixed64Collection (std::int64_t defaultValue = 0)
             : ProtoNumericTypeCollection<std::int64_t, ProtoSignedFixed64>(defaultValue)
             {}
+
+            virtual unsigned int key () const
+            {
+                return (index() << 3) | 0x02;
+            }
+
+            virtual size_t parse (const unsigned char * pData)
+            {
+                if (pData == nullptr)
+                {
+                    throw std::invalid_argument("pData cannot be null.");
+                }
+
+                size_t lengthBytesParsed = 0;
+                std::uint32_t length = PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);
+                pData += lengthBytesParsed;
+
+                std::uint32_t itemCount = length / 8;
+                for (unsigned int i = 0; i < itemCount; ++i)
+                {
+                    std::int64_t numericValue = PrimitiveEncoding::parseFixedSignedInt64(pData);
+
+                    this->addValue(numericValue);
+
+                    pData += 8;
+                }
+
+                return lengthBytesParsed + length;
+            }
+
+            virtual std::string serialize () const
+            {
+                std::string result;
+
+                for (auto & protoValue: *this->collection())
+                {
+                    if (protoValue.hasValue())
+                    {
+                        result += PrimitiveEncoding::serializeFixedSignedInt64(protoValue.value());
+                    }
+                }
+                if (!result.empty())
+                {
+                    result = PrimitiveEncoding::serializeVariableUnsignedInt32(this->key()) +
+                    PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +
+                    result;
+                }
+
+                return result;
+            }
+
+            virtual size_t size () const
+            {
+                size_t result = 0;
+
+                for (auto & protoValue : *this->collection())
+                {
+                    if (protoValue.hasValue())
+                    {
+                        result += 8;
+                    }
+                }
+
+                if (result != 0)
+                {
+                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
+                    result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
+                }
+                
+                return result;
+            }
         };
 
         class ProtoFloat : public ProtoNumericType<float>
@@ -2381,7 +2526,7 @@ R"MuddledManaged(namespace MuddledManaged
 
                 float numericValue = PrimitiveEncoding::parseFloat(pData);
 
-                setValue(numericValue);
+                this->setValue(numericValue);
 
                 return 4;
             }
@@ -2447,7 +2592,7 @@ R"MuddledManaged(namespace MuddledManaged
                 {
                     float numericValue = PrimitiveEncoding::parseFloat(pData);
 
-                    addValue(numericValue);
+                    this->addValue(numericValue);
 
                     pData += 4;
                 }
@@ -2536,7 +2681,7 @@ R"MuddledManaged(namespace MuddledManaged
 
                 double numericValue = PrimitiveEncoding::parseDouble(pData);
 
-                setValue(numericValue);
+                this->setValue(numericValue);
 
                 return 8;
             }
@@ -2602,7 +2747,7 @@ R"MuddledManaged(namespace MuddledManaged
                 {
                     double numericValue = PrimitiveEncoding::parseDouble(pData);
 
-                    addValue(numericValue);
+                    this->addValue(numericValue);
 
                     pData += 8;
                 }
@@ -2706,7 +2851,7 @@ R"MuddledManaged(namespace MuddledManaged
                     stringValue += *pData;
                     ++pData;
                 }
-                setValue(stringValue);
+                this->setValue(stringValue);
 
                 return lengthBytesParsed + length;
             }
