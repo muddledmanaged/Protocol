@@ -976,6 +976,28 @@ void Protocol::CodeGeneratorCPP::writeMessageToSource (CodeWriter & sourceFileWr
     writeMessageSizeToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
 
     writeMessageValidToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
+
+    auto messageFieldBegin = messageModel.fields()->cbegin();
+    auto messageFieldEnd = messageModel.fields()->cend();
+    while (messageFieldBegin != messageFieldEnd)
+    {
+        auto messageFieldModel = *messageFieldBegin;
+
+        writeMessageFieldToSource(sourceFileWriter, protoModel, *messageFieldModel, className, fullScope);
+
+        ++messageFieldBegin;
+    }
+
+    auto oneofBegin = messageModel.oneofs()->cbegin();
+    auto oneofEnd = messageModel.oneofs()->cend();
+    while (oneofBegin != oneofEnd)
+    {
+        auto oneofModel = *oneofBegin;
+
+        writeOneofToSource(sourceFileWriter, protoModel, *oneofModel, className, fullScope);
+        
+        ++oneofBegin;
+    }
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageDataConstructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
@@ -1427,6 +1449,120 @@ void Protocol::CodeGeneratorCPP::writeMessageValidToSource (CodeWriter & sourceF
     sourceFileWriter.writeLineIndented(statement);
 
     sourceFileWriter.writeMethodImplementationClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                            const MessageFieldModel & messageFieldModel, const std::string & className,
+                                                            const std::string & fullScope) const
+{
+    if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+    {
+        writeMessageFieldSizeRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
+
+        writeMessageFieldGetRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
+
+        writeMessageFieldGetMutableRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
+
+        writeMessageFieldSetRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
+
+        writeMessageFieldAddRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
+
+        writeMessageFieldClearRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
+    }
+    else
+    {
+        writeMessageFieldHasToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
+
+        writeMessageFieldGetToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
+
+        writeMessageFieldGetMutableToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
+
+        writeMessageFieldSetToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
+
+        writeMessageFieldClearToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
+    }
+}
+
+void Protocol::CodeGeneratorCPP::writeOneofToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                     const OneofModel & oneofModel, const std::string & className,
+                                                     const std::string & fullScope) const
+{
+    auto messageFieldBegin = oneofModel.fields()->cbegin();
+    auto messageFieldEnd = oneofModel.fields()->cend();
+    while (messageFieldBegin != messageFieldEnd)
+    {
+        auto messageFieldModel = *messageFieldBegin;
+
+        writeMessageFieldToSource(sourceFileWriter, protoModel, *messageFieldModel, className, fullScope);
+
+        ++messageFieldBegin;
+    }
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldSizeRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                        const MessageFieldModel & messageFieldModel, const std::string & className,
+                                                                        const std::string & fullScope) const
+{
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldGetRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                       const MessageFieldModel & messageFieldModel, const std::string & className,
+                                                                       const std::string & fullScope) const
+{
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldGetMutableRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                              const MessageFieldModel & messageFieldModel, const std::string & className,
+                                                                              const std::string & fullScope) const
+{
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldSetRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                       const MessageFieldModel & messageFieldModel, const std::string & className,
+                                                                       const std::string & fullScope) const
+{
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldAddRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                       const MessageFieldModel & messageFieldModel, const std::string & className,
+                                                                       const std::string & fullScope) const
+{
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldClearRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                         const MessageFieldModel & messageFieldModel, const std::string & className,
+                                                                         const std::string & fullScope) const
+{
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldHasToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                               const MessageFieldModel & messageFieldModel, const std::string & className,
+                                                               const std::string & fullScope) const
+{
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldGetToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                               const MessageFieldModel & messageFieldModel, const std::string & className,
+                                                               const std::string & fullScope) const
+{
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldGetMutableToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                      const MessageFieldModel & messageFieldModel, const std::string & className,
+                                                                      const std::string & fullScope) const
+{
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldSetToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                               const MessageFieldModel & messageFieldModel, const std::string & className,
+                                                               const std::string & fullScope) const
+{
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldClearToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                 const MessageFieldModel & messageFieldModel, const std::string & className,
+                                                                 const std::string & fullScope) const
+{
 }
 
 string Protocol::CodeGeneratorCPP::fullTypeName (const MessageFieldModel & messageFieldModel) const
