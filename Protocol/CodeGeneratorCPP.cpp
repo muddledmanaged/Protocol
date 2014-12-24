@@ -1503,66 +1503,389 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldSizeRepeatedToSource (CodeWrit
                                                                         const MessageFieldModel & messageFieldModel, const std::string & className,
                                                                         const std::string & fullScope) const
 {
+    string methodName = fullScope + "::size";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = "size_t";
+    string methodParameters = "";
+    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::numericType:
+        case MessageFieldModel::FieldCategory::enumType:
+        {
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::stringType:
+        case MessageFieldModel::FieldCategory::bytesType:
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            break;
+        }
+            
+        default:
+            break;
+    }
+    
+    sourceFileWriter.writeMethodImplementationClosing();
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldGetRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                                        const MessageFieldModel & messageFieldModel, const std::string & className,
                                                                        const std::string & fullScope) const
 {
+    string fieldType = fullTypeName(messageFieldModel);
+    string methodName = fullScope + "::";
+    methodName += messageFieldModel.name();
+    string methodReturn = "";
+    string methodParameters = "size_t index";
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::numericType:
+        case MessageFieldModel::FieldCategory::enumType:
+        {
+            methodReturn += fieldType;
+            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
+
+            sourceFileWriter.writeMethodImplementationClosing();
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::stringType:
+        case MessageFieldModel::FieldCategory::bytesType:
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            methodReturn += "const ";
+            methodReturn += fieldType + " &";
+            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
+
+            sourceFileWriter.writeMethodImplementationClosing();
+            break;
+        }
+
+        default:
+            break;
+    }
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldGetMutableRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                                               const MessageFieldModel & messageFieldModel, const std::string & className,
                                                                               const std::string & fullScope) const
 {
+    string fieldType = fullTypeName(messageFieldModel);
+    string methodName = fullScope + "::mutable";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = fieldType + " &";
+    string methodParameters = "size_t index";
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::numericType:
+        case MessageFieldModel::FieldCategory::enumType:
+        {
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::stringType:
+        case MessageFieldModel::FieldCategory::bytesType:
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+            sourceFileWriter.writeMethodImplementationClosing();
+            break;
+        }
+
+        default:
+            break;
+    }
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldSetRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                                        const MessageFieldModel & messageFieldModel, const std::string & className,
                                                                        const std::string & fullScope) const
 {
+    string fieldType = fullTypeName(messageFieldModel);
+    string methodName = fullScope + "::set";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = "void";
+    string methodParameters = "size_t index, ";
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::numericType:
+        case MessageFieldModel::FieldCategory::enumType:
+        {
+            methodParameters += fieldType + " value";
+            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+            sourceFileWriter.writeMethodImplementationClosing();
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::stringType:
+        case MessageFieldModel::FieldCategory::bytesType:
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            methodParameters += "const ";
+            methodParameters += fieldType + " & value";
+            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+            sourceFileWriter.writeMethodImplementationClosing();
+            break;
+        }
+
+        default:
+            break;
+    }
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldAddRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                                        const MessageFieldModel & messageFieldModel, const std::string & className,
                                                                        const std::string & fullScope) const
 {
+    string fieldType = fullTypeName(messageFieldModel);
+    string methodName = fullScope + "::add";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = "void";
+    string methodParameters = "";
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::numericType:
+        case MessageFieldModel::FieldCategory::enumType:
+        {
+            methodParameters += fieldType + " value";
+            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+            sourceFileWriter.writeMethodImplementationClosing();
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::stringType:
+        case MessageFieldModel::FieldCategory::bytesType:
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            methodParameters += "const ";
+            methodParameters += fieldType + " & value";
+            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+            sourceFileWriter.writeMethodImplementationClosing();
+            break;
+        }
+
+        default:
+            break;
+    }
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldClearRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                                          const MessageFieldModel & messageFieldModel, const std::string & className,
                                                                          const std::string & fullScope) const
 {
+    string methodName = fullScope + "::clear";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = "void";
+    string methodParameters = "";
+    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::numericType:
+        case MessageFieldModel::FieldCategory::enumType:
+        {
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::stringType:
+        case MessageFieldModel::FieldCategory::bytesType:
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            break;
+        }
+
+        default:
+            break;
+    }
+
+    sourceFileWriter.writeMethodImplementationClosing();
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldHasToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                                const MessageFieldModel & messageFieldModel, const std::string & className,
                                                                const std::string & fullScope) const
 {
+    string methodName = fullScope + "::has";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = "bool";
+    string methodParameters = "";
+    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::numericType:
+        case MessageFieldModel::FieldCategory::enumType:
+        {
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::stringType:
+        case MessageFieldModel::FieldCategory::bytesType:
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            break;
+        }
+
+        default:
+            break;
+    }
+
+    sourceFileWriter.writeMethodImplementationClosing();
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldGetToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                                const MessageFieldModel & messageFieldModel, const std::string & className,
                                                                const std::string & fullScope) const
 {
+    string fieldType = fullTypeName(messageFieldModel);
+    string methodName = fullScope + "::";
+    methodName += messageFieldModel.name();
+    string methodReturn = "";
+    string methodParameters = "";
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::numericType:
+        case MessageFieldModel::FieldCategory::enumType:
+        {
+            methodReturn += fieldType;
+            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
+
+            sourceFileWriter.writeMethodImplementationClosing();
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::stringType:
+        case MessageFieldModel::FieldCategory::bytesType:
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            methodReturn += "const ";
+            methodReturn += fieldType + " &";
+            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
+
+            sourceFileWriter.writeMethodImplementationClosing();
+            break;
+        }
+
+        default:
+            break;
+    }
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldGetMutableToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                                       const MessageFieldModel & messageFieldModel, const std::string & className,
                                                                       const std::string & fullScope) const
 {
+    string fieldType = fullTypeName(messageFieldModel);
+    string methodName = fullScope + "::mutable";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = fieldType + " &";
+    string methodParameters = "";
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::numericType:
+        case MessageFieldModel::FieldCategory::enumType:
+        {
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::stringType:
+        case MessageFieldModel::FieldCategory::bytesType:
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+            sourceFileWriter.writeMethodImplementationClosing();
+            break;
+        }
+
+        default:
+            break;
+    }
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldSetToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                                const MessageFieldModel & messageFieldModel, const std::string & className,
                                                                const std::string & fullScope) const
 {
+    string fieldType = fullTypeName(messageFieldModel);
+    string methodName = fullScope + "::set";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = "void";
+    string methodParameters = "";
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::numericType:
+        case MessageFieldModel::FieldCategory::enumType:
+        {
+            methodParameters += fieldType + " value";
+            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+            sourceFileWriter.writeMethodImplementationClosing();
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::stringType:
+        case MessageFieldModel::FieldCategory::bytesType:
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            methodParameters += "const ";
+            methodParameters += fieldType + " & value";
+            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+            sourceFileWriter.writeMethodImplementationClosing();
+            break;
+        }
+
+        default:
+            break;
+    }
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldClearToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                                  const MessageFieldModel & messageFieldModel, const std::string & className,
                                                                  const std::string & fullScope) const
 {
+    string methodName = fullScope + "::clear";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = "void";
+    string methodParameters = "";
+    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::numericType:
+        case MessageFieldModel::FieldCategory::enumType:
+        {
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::stringType:
+        case MessageFieldModel::FieldCategory::bytesType:
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            break;
+        }
+
+        default:
+            break;
+    }
+
+    sourceFileWriter.writeMethodImplementationClosing();
 }
 
 string Protocol::CodeGeneratorCPP::fullTypeName (const MessageFieldModel & messageFieldModel) const
