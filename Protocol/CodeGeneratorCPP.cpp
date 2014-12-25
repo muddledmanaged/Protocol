@@ -1089,7 +1089,7 @@ void Protocol::CodeGeneratorCPP::writeMessageCopyConstructorToSource (CodeWriter
     string methodReturn = "";
     string methodParameters = "const ";
     methodParameters += className + " & src";
-    string initializationParameters = "mData(src.mData)";
+    string initializationParameters = "MuddledManaged::Protocol::ProtoMessage(src), mData(src.mData)";
     sourceFileWriter.writeConstructorImplementationOpening(methodName, methodParameters, initializationParameters);
     sourceFileWriter.writeMethodImplementationClosing();
 }
@@ -1118,6 +1118,11 @@ void Protocol::CodeGeneratorCPP::writeMessageAssignmentOperatorToSource (CodeWri
     statement = "return *this;";
     sourceFileWriter.writeLineIndented(statement);
     sourceFileWriter.writeIfClosing();
+
+    sourceFileWriter.writeBlankLine();
+
+    statement = "MuddledManaged::Protocol::ProtoMessage::operator=(rhs);";
+    sourceFileWriter.writeLineIndented(statement);
 
     sourceFileWriter.writeBlankLine();
 
