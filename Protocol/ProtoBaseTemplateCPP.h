@@ -535,6 +535,10 @@ R"MuddledManaged(namespace MuddledManaged
             explicit ProtoMessageField ()
             {}
 
+            ProtoMessageField (const ProtoMessageField & src)
+            : ProtoBase(src), mValue(src.mValue)
+            {}
+
             virtual const MessageType & value () const
             {
                 return *mValue;
@@ -543,6 +547,8 @@ R"MuddledManaged(namespace MuddledManaged
             virtual void setValue (const MessageType & message)
             {
                 std::shared_ptr<MessageType> newValue(new MessageType(message));
+
+                newValue->setIndex(this->index());
 
                 mValue = newValue;
             }
@@ -554,6 +560,12 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual size_t parse (const unsigned char * pData)
             {
+                std::shared_ptr<MessageType> newValue(new MessageType());
+
+                newValue->setIndex(this->index());
+
+                mValue = newValue;
+
                 return mValue->parse(pData);
             }
 
@@ -598,10 +610,21 @@ R"MuddledManaged(namespace MuddledManaged
                 return true;
             }
 
+            ProtoMessageField & operator = (const ProtoMessageField & rhs)
+            {
+                if (this == &rhs)
+                {
+                    return *this;
+                }
+
+                ProtoBase::operator=(rhs);
+                
+                mValue = rhs.mValue;
+
+                return *this;
+            }
+
         private:
-            ProtoMessageField (const ProtoMessageField & src) = delete;
-            ProtoMessageField & operator = (const ProtoMessageField & rhs) = delete;
-            
             std::shared_ptr<MessageType> mValue;
         };
 
@@ -619,18 +642,20 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual void setValue (size_t index, const MessageType & message)
             {
-                ProtoMessageField<MessageType> newValue(new MessageType(message));
+                ProtoMessageField<MessageType> newValue;
 
                 newValue.setIndex(this->index());
+                newValue.setValue(message);
                 
                 mCollection[index] = newValue;
             }
 
             virtual void addValue (const MessageType & message)
             {
-                ProtoMessageField<MessageType> newValue(new MessageType(message));
+                ProtoMessageField<MessageType> newValue;
 
                 newValue.setIndex(this->index());
+                newValue.setValue(message);
 
                 mCollection.push_back(newValue);
             }
@@ -647,10 +672,12 @@ R"MuddledManaged(namespace MuddledManaged
                     throw std::invalid_argument("pData cannot be null.");
                 }
 
-                ProtoMessageField<MessageType> newValue(new MessageType());
+                ProtoMessageField<MessageType> newValue;
+
+                newValue.setIndex(this->index());
                 size_t bytesParsed = newValue.parse(pData);
 
-                this->addValue(newValue);
+                mCollection.push_back(newValue);
 
                 return bytesParsed;
             }

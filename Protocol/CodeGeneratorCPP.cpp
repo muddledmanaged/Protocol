@@ -593,6 +593,7 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldToHeader (CodeWriter & headerF
 
     switch (messageFieldModel.fieldCategory())
     {
+        case MessageFieldModel::FieldCategory::boolType:
         case MessageFieldModel::FieldCategory::numericType:
         case MessageFieldModel::FieldCategory::enumType:
         {
@@ -1418,13 +1419,21 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldGetRepeatedToSource (CodeWrite
     string methodReturn;
     string methodParameters = "size_t index";
 
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Collection";
+    string statement = "return ";
+    statement += fieldValueName + ".value(index);";
+
     switch (messageFieldModel.fieldCategory())
     {
+        case MessageFieldModel::FieldCategory::boolType:
         case MessageFieldModel::FieldCategory::numericType:
         case MessageFieldModel::FieldCategory::enumType:
         {
             methodReturn += fieldType;
             sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
+
+            sourceFileWriter.writeLineIndented(statement);
 
             sourceFileWriter.writeMethodImplementationClosing();
             break;
@@ -1437,6 +1446,8 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldGetRepeatedToSource (CodeWrite
             methodReturn += "const ";
             methodReturn += fieldType + " &";
             sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
+
+            sourceFileWriter.writeLineIndented(statement);
 
             sourceFileWriter.writeMethodImplementationClosing();
             break;
@@ -1457,13 +1468,20 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldSetRepeatedToSource (CodeWrite
     string methodReturn = "void";
     string methodParameters = "size_t index, ";
 
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Collection";
+    string statement = fieldValueName + ".setValue(index, value);";
+
     switch (messageFieldModel.fieldCategory())
     {
+        case MessageFieldModel::FieldCategory::boolType:
         case MessageFieldModel::FieldCategory::numericType:
         case MessageFieldModel::FieldCategory::enumType:
         {
             methodParameters += fieldType + " value";
             sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+            sourceFileWriter.writeLineIndented(statement);
 
             sourceFileWriter.writeMethodImplementationClosing();
             break;
@@ -1476,6 +1494,8 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldSetRepeatedToSource (CodeWrite
             methodParameters += "const ";
             methodParameters += fieldType + " & value";
             sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+            sourceFileWriter.writeLineIndented(statement);
 
             sourceFileWriter.writeMethodImplementationClosing();
             break;
@@ -1496,13 +1516,20 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldAddRepeatedToSource (CodeWrite
     string methodReturn = "void";
     string methodParameters = "";
 
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Collection";
+    string statement = fieldValueName + ".addValue(value);";
+
     switch (messageFieldModel.fieldCategory())
     {
+        case MessageFieldModel::FieldCategory::boolType:
         case MessageFieldModel::FieldCategory::numericType:
         case MessageFieldModel::FieldCategory::enumType:
         {
             methodParameters += fieldType + " value";
             sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+            sourceFileWriter.writeLineIndented(statement);
 
             sourceFileWriter.writeMethodImplementationClosing();
             break;
@@ -1515,6 +1542,8 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldAddRepeatedToSource (CodeWrite
             methodParameters += "const ";
             methodParameters += fieldType + " & value";
             sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+            sourceFileWriter.writeLineIndented(statement);
 
             sourceFileWriter.writeMethodImplementationClosing();
             break;
@@ -1533,26 +1562,14 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldClearRepeatedToSource (CodeWri
     methodName += messageFieldModel.namePascal();
     string methodReturn = "void";
     string methodParameters = "";
+
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Collection";
+    string statement = fieldValueName + ".clearValue();";
+
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
 
-    switch (messageFieldModel.fieldCategory())
-    {
-        case MessageFieldModel::FieldCategory::numericType:
-        case MessageFieldModel::FieldCategory::enumType:
-        {
-            break;
-        }
-
-        case MessageFieldModel::FieldCategory::stringType:
-        case MessageFieldModel::FieldCategory::bytesType:
-        case MessageFieldModel::FieldCategory::messageType:
-        {
-            break;
-        }
-
-        default:
-            break;
-    }
+    sourceFileWriter.writeLineIndented(statement);
 
     sourceFileWriter.writeMethodImplementationClosing();
 }
@@ -1565,26 +1582,15 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldHasToSource (CodeWriter & sour
     methodName += messageFieldModel.namePascal();
     string methodReturn = "bool";
     string methodParameters = "";
+
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Value";
+    string statement = "return ";
+    statement += fieldValueName + ".hasValue();";
+
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
 
-    switch (messageFieldModel.fieldCategory())
-    {
-        case MessageFieldModel::FieldCategory::numericType:
-        case MessageFieldModel::FieldCategory::enumType:
-        {
-            break;
-        }
-
-        case MessageFieldModel::FieldCategory::stringType:
-        case MessageFieldModel::FieldCategory::bytesType:
-        case MessageFieldModel::FieldCategory::messageType:
-        {
-            break;
-        }
-
-        default:
-            break;
-    }
+    sourceFileWriter.writeLineIndented(statement);
 
     sourceFileWriter.writeMethodImplementationClosing();
 }
@@ -1599,13 +1605,21 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldGetToSource (CodeWriter & sour
     string methodReturn = "";
     string methodParameters = "";
 
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Value";
+    string statement = "return ";
+    statement += fieldValueName + ".value();";
+
     switch (messageFieldModel.fieldCategory())
     {
+        case MessageFieldModel::FieldCategory::boolType:
         case MessageFieldModel::FieldCategory::numericType:
         case MessageFieldModel::FieldCategory::enumType:
         {
             methodReturn += fieldType;
             sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
+
+            sourceFileWriter.writeLineIndented(statement);
 
             sourceFileWriter.writeMethodImplementationClosing();
             break;
@@ -1618,6 +1632,8 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldGetToSource (CodeWriter & sour
             methodReturn += "const ";
             methodReturn += fieldType + " &";
             sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
+
+            sourceFileWriter.writeLineIndented(statement);
 
             sourceFileWriter.writeMethodImplementationClosing();
             break;
@@ -1638,13 +1654,20 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldSetToSource (CodeWriter & sour
     string methodReturn = "void";
     string methodParameters = "";
 
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Value";
+    string statement = fieldValueName + ".setValue(value);";
+
     switch (messageFieldModel.fieldCategory())
     {
+        case MessageFieldModel::FieldCategory::boolType:
         case MessageFieldModel::FieldCategory::numericType:
         case MessageFieldModel::FieldCategory::enumType:
         {
             methodParameters += fieldType + " value";
             sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+            sourceFileWriter.writeLineIndented(statement);
 
             sourceFileWriter.writeMethodImplementationClosing();
             break;
@@ -1657,6 +1680,8 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldSetToSource (CodeWriter & sour
             methodParameters += "const ";
             methodParameters += fieldType + " & value";
             sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+            sourceFileWriter.writeLineIndented(statement);
 
             sourceFileWriter.writeMethodImplementationClosing();
             break;
@@ -1675,26 +1700,14 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldClearToSource (CodeWriter & so
     methodName += messageFieldModel.namePascal();
     string methodReturn = "void";
     string methodParameters = "";
+
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Value";
+    string statement = fieldValueName + ".clearValue();";
+
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
 
-    switch (messageFieldModel.fieldCategory())
-    {
-        case MessageFieldModel::FieldCategory::numericType:
-        case MessageFieldModel::FieldCategory::enumType:
-        {
-            break;
-        }
-
-        case MessageFieldModel::FieldCategory::stringType:
-        case MessageFieldModel::FieldCategory::bytesType:
-        case MessageFieldModel::FieldCategory::messageType:
-        {
-            break;
-        }
-
-        default:
-            break;
-    }
+    sourceFileWriter.writeLineIndented(statement);
 
     sourceFileWriter.writeMethodImplementationClosing();
 }
