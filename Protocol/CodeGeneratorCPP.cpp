@@ -1509,25 +1509,12 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldSizeRepeatedToSource (CodeWrit
     string methodParameters = "";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
 
-    switch (messageFieldModel.fieldCategory())
-    {
-        case MessageFieldModel::FieldCategory::numericType:
-        case MessageFieldModel::FieldCategory::enumType:
-        {
-            break;
-        }
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Collection";
+    string statement = "return ";
+    statement += fieldValueName + ".size();";
+    sourceFileWriter.writeLineIndented(statement);
 
-        case MessageFieldModel::FieldCategory::stringType:
-        case MessageFieldModel::FieldCategory::bytesType:
-        case MessageFieldModel::FieldCategory::messageType:
-        {
-            break;
-        }
-            
-        default:
-            break;
-    }
-    
     sourceFileWriter.writeMethodImplementationClosing();
 }
 
