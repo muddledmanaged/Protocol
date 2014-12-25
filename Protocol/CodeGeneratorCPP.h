@@ -152,10 +152,6 @@ namespace MuddledManaged
                                                        const MessageFieldModel & messageFieldModel, const std::string & className,
                                                        const std::string & fullScope) const;
 
-            void writeMessageFieldGetMutableRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                              const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                              const std::string & fullScope) const;
-
             void writeMessageFieldSetRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                        const MessageFieldModel & messageFieldModel, const std::string & className,
                                                        const std::string & fullScope) const;
@@ -175,10 +171,6 @@ namespace MuddledManaged
             void writeMessageFieldGetToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                const MessageFieldModel & messageFieldModel, const std::string & className,
                                                const std::string & fullScope) const;
-
-            void writeMessageFieldGetMutableToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                      const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                      const std::string & fullScope) const;
 
             void writeMessageFieldSetToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                const MessageFieldModel & messageFieldModel, const std::string & className,

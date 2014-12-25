@@ -674,12 +674,6 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldToHeader (CodeWriter & headerF
                 methodParameters = "size_t index";
                 headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
 
-                methodName = "mutable";
-                methodName += messageFieldModel.namePascal();
-                methodReturn = fieldType + " &";
-                methodParameters = "size_t index";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
-
                 methodName = "set";
                 methodName += messageFieldModel.namePascal();
                 methodReturn = "void";
@@ -715,12 +709,6 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldToHeader (CodeWriter & headerF
                 methodParameters = "";
                 headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
 
-                methodName = "mutable";
-                methodName += messageFieldModel.namePascal();
-                methodReturn = fieldType + " &";
-                methodParameters = "";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
-
                 methodName = "set";
                 methodName += messageFieldModel.namePascal();
                 methodReturn = "void";
@@ -746,74 +734,19 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldBackingFieldsToHeader (CodeWri
                                                                          const MessageFieldModel & messageFieldModel) const
 {
     string backingFieldName;
-    string backingFieldType;
     string fieldType = fullTypeNameInternal(messageFieldModel);
 
-    switch (messageFieldModel.fieldCategory())
+    if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
     {
-        case MessageFieldModel::FieldCategory::boolType:
-        case MessageFieldModel::FieldCategory::numericType:
-        case MessageFieldModel::FieldCategory::enumType:
-        {
-            if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
-            {
-                backingFieldName = "m";
-                backingFieldName += messageFieldModel.namePascal() + "Collection";
-                backingFieldType = fieldType;
-                headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
-            }
-            else
-            {
-                backingFieldName = "m";
-                backingFieldName += messageFieldModel.namePascal() + "Value";
-                backingFieldType = fieldType;
-                headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
-            }
-            break;
-        }
-
-        case MessageFieldModel::FieldCategory::stringType:
-        case MessageFieldModel::FieldCategory::bytesType:
-        {
-            if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
-            {
-                backingFieldName = "m";
-                backingFieldName += messageFieldModel.namePascal() + "Collection";
-                backingFieldType = fieldType;
-                headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
-            }
-            else
-            {
-                backingFieldName = "m";
-                backingFieldName += messageFieldModel.namePascal() + "Value";
-                backingFieldType += fieldType;
-                headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
-            }
-            break;
-        }
-
-        case MessageFieldModel::FieldCategory::messageType:
-        {
-            if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
-            {
-                backingFieldName = "m";
-                backingFieldName += messageFieldModel.namePascal() + "Collection";
-                backingFieldType = fieldType;
-                headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
-            }
-            else
-            {
-                backingFieldName = "m";
-                backingFieldName += messageFieldModel.namePascal() + "Value";
-                backingFieldType = "std::shared_ptr<";
-                backingFieldType += fieldType + ">";
-                headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
-            }
-            break;
-        }
-            
-        default:
-            break;
+        backingFieldName = "m";
+        backingFieldName += messageFieldModel.namePascal() + "Collection";
+        headerFileWriter.writeClassFieldDeclaration(backingFieldName, fieldType);
+    }
+    else
+    {
+        backingFieldName = "m";
+        backingFieldName += messageFieldModel.namePascal() + "Value";
+        headerFileWriter.writeClassFieldDeclaration(backingFieldName, fieldType);
     }
 }
 
@@ -1294,22 +1227,9 @@ void Protocol::CodeGeneratorCPP::writeMessageSerializeToSource (CodeWriter & sou
             fieldValueName += "Value";
         }
 
-        if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::messageType &&
-            messageFieldModel->requiredness() != MessageFieldModel::Requiredness::repeated)
-        {
-            statement = fieldValueName + " != nullptr";
-            sourceFileWriter.writeIfOpening(statement);
-            statement = "result += ";
-            statement += fieldValueName + "->serialize();";
-            sourceFileWriter.writeLineIndented(statement);
-            sourceFileWriter.writeIfClosing();
-        }
-        else
-        {
-            statement = "result += ";
-            statement += fieldValueName + ".serialize();";
-            sourceFileWriter.writeLineIndented(statement);
-        }
+        statement = "result += ";
+        statement += fieldValueName + ".serialize();";
+        sourceFileWriter.writeLineIndented(statement);
 
         sourceFileWriter.writeBlankLine();
 
@@ -1362,22 +1282,9 @@ void Protocol::CodeGeneratorCPP::writeMessageSizeToSource (CodeWriter & sourceFi
             fieldValueName += "Value";
         }
 
-        if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::messageType &&
-            messageFieldModel->requiredness() != MessageFieldModel::Requiredness::repeated)
-        {
-            statement = fieldValueName + " != nullptr";
-            sourceFileWriter.writeIfOpening(statement);
-            statement = "result += ";
-            statement += fieldValueName + "->size();";
-            sourceFileWriter.writeLineIndented(statement);
-            sourceFileWriter.writeIfClosing();
-        }
-        else
-        {
-            statement = "result += ";
-            statement += fieldValueName + ".size();";
-            sourceFileWriter.writeLineIndented(statement);
-        }
+        statement = "result += ";
+        statement += fieldValueName + ".size();";
+        sourceFileWriter.writeLineIndented(statement);
 
         sourceFileWriter.writeBlankLine();
         
@@ -1424,24 +1331,11 @@ void Protocol::CodeGeneratorCPP::writeMessageValidToSource (CodeWriter & sourceF
             fieldValueName += "Value";
         }
 
-        if (messageFieldModel->fieldCategory() == MessageFieldModel::FieldCategory::messageType &&
-            messageFieldModel->requiredness() != MessageFieldModel::Requiredness::repeated)
-        {
-            statement = fieldValueName + " != nullptr && ";
-            statement += "!" + fieldValueName + "->valid()";
-            sourceFileWriter.writeIfOpening(statement);
-            statement = "return false;";
-            sourceFileWriter.writeLineIndented(statement);
-            sourceFileWriter.writeIfClosing();
-        }
-        else
-        {
-            statement = "!" + fieldValueName + ".valid()";
-            sourceFileWriter.writeIfOpening(statement);
-            statement = "return false;";
-            sourceFileWriter.writeLineIndented(statement);
-            sourceFileWriter.writeIfClosing();
-        }
+        statement = "!" + fieldValueName + ".valid()";
+        sourceFileWriter.writeIfOpening(statement);
+        statement = "return false;";
+        sourceFileWriter.writeLineIndented(statement);
+        sourceFileWriter.writeIfClosing();
 
         ++messageFieldBegin;
     }
@@ -1461,8 +1355,6 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldToSource (CodeWriter & sourceF
 
         writeMessageFieldGetRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
 
-        writeMessageFieldGetMutableRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
-
         writeMessageFieldSetRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
 
         writeMessageFieldAddRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
@@ -1474,8 +1366,6 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldToSource (CodeWriter & sourceF
         writeMessageFieldHasToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
 
         writeMessageFieldGetToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
-
-        writeMessageFieldGetMutableToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
 
         writeMessageFieldSetToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
 
@@ -1525,7 +1415,7 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldGetRepeatedToSource (CodeWrite
     string fieldType = fullTypeName(messageFieldModel);
     string methodName = fullScope + "::";
     methodName += messageFieldModel.name();
-    string methodReturn = "";
+    string methodReturn;
     string methodParameters = "size_t index";
 
     switch (messageFieldModel.fieldCategory())
@@ -1547,39 +1437,6 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldGetRepeatedToSource (CodeWrite
             methodReturn += "const ";
             methodReturn += fieldType + " &";
             sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
-
-            sourceFileWriter.writeMethodImplementationClosing();
-            break;
-        }
-
-        default:
-            break;
-    }
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageFieldGetMutableRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                                              const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                                              const std::string & fullScope) const
-{
-    string fieldType = fullTypeName(messageFieldModel);
-    string methodName = fullScope + "::mutable";
-    methodName += messageFieldModel.namePascal();
-    string methodReturn = fieldType + " &";
-    string methodParameters = "size_t index";
-
-    switch (messageFieldModel.fieldCategory())
-    {
-        case MessageFieldModel::FieldCategory::numericType:
-        case MessageFieldModel::FieldCategory::enumType:
-        {
-            break;
-        }
-
-        case MessageFieldModel::FieldCategory::stringType:
-        case MessageFieldModel::FieldCategory::bytesType:
-        case MessageFieldModel::FieldCategory::messageType:
-        {
-            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
 
             sourceFileWriter.writeMethodImplementationClosing();
             break;
@@ -1761,39 +1618,6 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldGetToSource (CodeWriter & sour
             methodReturn += "const ";
             methodReturn += fieldType + " &";
             sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
-
-            sourceFileWriter.writeMethodImplementationClosing();
-            break;
-        }
-
-        default:
-            break;
-    }
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageFieldGetMutableToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                                      const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                                      const std::string & fullScope) const
-{
-    string fieldType = fullTypeName(messageFieldModel);
-    string methodName = fullScope + "::mutable";
-    methodName += messageFieldModel.namePascal();
-    string methodReturn = fieldType + " &";
-    string methodParameters = "";
-
-    switch (messageFieldModel.fieldCategory())
-    {
-        case MessageFieldModel::FieldCategory::numericType:
-        case MessageFieldModel::FieldCategory::enumType:
-        {
-            break;
-        }
-
-        case MessageFieldModel::FieldCategory::stringType:
-        case MessageFieldModel::FieldCategory::bytesType:
-        case MessageFieldModel::FieldCategory::messageType:
-        {
-            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
 
             sourceFileWriter.writeMethodImplementationClosing();
             break;
@@ -2114,6 +1938,10 @@ string Protocol::CodeGeneratorCPP::fullTypeNameInternal (const MessageFieldModel
     if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
     {
         fieldType = mBaseClassesNamespace + "::ProtoMessageCollection<" + fieldType + ">";
+    }
+    else
+    {
+        fieldType = mBaseClassesNamespace + "::ProtoMessageField<" + fieldType + ">";
     }
 
     return fieldType;

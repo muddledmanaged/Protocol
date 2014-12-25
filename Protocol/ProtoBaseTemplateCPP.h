@@ -518,7 +518,7 @@ R"MuddledManaged(namespace MuddledManaged
         public:
             virtual unsigned int key () const
             {
-                return (index() << 3) | 0x02;
+                return (this->index() << 3) | 0x02;
             }
 
         protected:
@@ -529,32 +529,115 @@ R"MuddledManaged(namespace MuddledManaged
         };
 
         template <typename MessageType>
+        class ProtoMessageField : public ProtoBase
+        {
+        public:
+            explicit ProtoMessageField ()
+            {}
+
+            virtual const MessageType & value () const
+            {
+                return *mValue;
+            }
+
+            virtual void setValue (const MessageType & message)
+            {
+                std::shared_ptr<MessageType> newValue(new MessageType(message));
+
+                mValue = newValue;
+            }
+
+            virtual unsigned int key () const
+            {
+                return mValue->key();
+            }
+
+            virtual size_t parse (const unsigned char * pData)
+            {
+                return mValue->parse(pData);
+            }
+
+            virtual std::string serialize () const
+            {
+                if (!this->hasValue())
+                {
+                    return "";
+                }
+                return mValue->serialize();
+            }
+
+            virtual size_t size () const
+            {
+                if (!this->hasValue())
+                {
+                    return 0;
+                }
+                return mValue->size();
+            }
+
+            virtual bool hasValue () const
+            {
+                return mValue != nullptr;
+            }
+
+            virtual void clearValue ()
+            {
+                mValue = nullptr;
+            }
+
+            virtual bool valid () const
+            {
+                if (hasValue())
+                {
+                    return mValue->valid();
+                }
+                else if (required())
+                {
+                    return false;
+                }
+                return true;
+            }
+
+        private:
+            ProtoMessageField (const ProtoMessageField & src) = delete;
+            ProtoMessageField & operator = (const ProtoMessageField & rhs) = delete;
+            
+            std::shared_ptr<MessageType> mValue;
+        };
+
+        template <typename MessageType>
         class ProtoMessageCollection : public ProtoBase
         {
         public:
             explicit ProtoMessageCollection ()
             {}
 
-            virtual const std::vector<std::shared_ptr<MessageType>> * collection () const
+            virtual const MessageType & value (size_t index) const
             {
-                return &mCollection;
+                return mCollection[index].value();
             }
 
-            virtual std::vector<std::shared_ptr<MessageType>> * mutableCollection ()
+            virtual void setValue (size_t index, const MessageType & message)
             {
-                return &mCollection;
+                ProtoMessageField<MessageType> newValue(new MessageType(message));
+
+                newValue.setIndex(this->index());
+                
+                mCollection[index] = newValue;
             }
 
-            virtual void addValue (std::shared_ptr<MessageType> & message)
+            virtual void addValue (const MessageType & message)
             {
-                message->setIndex(index());
+                ProtoMessageField<MessageType> newValue(new MessageType(message));
 
-                mCollection.push_back(message);
+                newValue.setIndex(this->index());
+
+                mCollection.push_back(newValue);
             }
 
             virtual unsigned int key () const
             {
-                return (index() << 3) | 0x02;
+                return (this->index() << 3) | 0x02;
             }
 
             virtual size_t parse (const unsigned char * pData)
@@ -564,10 +647,10 @@ R"MuddledManaged(namespace MuddledManaged
                     throw std::invalid_argument("pData cannot be null.");
                 }
 
-                std::shared_ptr<MessageType> message(new MessageType());
-                size_t bytesParsed = message->parse(pData);
+                ProtoMessageField<MessageType> newValue(new MessageType());
+                size_t bytesParsed = newValue.parse(pData);
 
-                this->addValue(message);
+                this->addValue(newValue);
 
                 return bytesParsed;
             }
@@ -578,7 +661,7 @@ R"MuddledManaged(namespace MuddledManaged
 
                 for (auto & message : mCollection)
                 {
-                    result += message->serialize();
+                    result += message.serialize();
                 }
 
                 return result;
@@ -590,7 +673,7 @@ R"MuddledManaged(namespace MuddledManaged
 
                 for (auto & message : mCollection)
                 {
-                    result += message->size();
+                    result += message.size();
                 }
 
                 return result;
@@ -612,7 +695,7 @@ R"MuddledManaged(namespace MuddledManaged
                 {
                     for (auto & message: mCollection)
                     {
-                        if (!message->valid())
+                        if (!message.valid())
                         {
                             return false;
                         }
@@ -621,11 +704,17 @@ R"MuddledManaged(namespace MuddledManaged
                 return true;
             }
 
+        protected:
+            virtual const std::vector<ProtoMessageField<MessageType>> * collection () const
+            {
+                return &mCollection;
+            }
+
         private:
             ProtoMessageCollection (const ProtoMessageCollection<MessageType> & src) = delete;
             ProtoMessageCollection<MessageType> & operator = (const ProtoMessageCollection<MessageType> & rhs) = delete;
 
-            std::vector<std::shared_ptr<MessageType>> mCollection;
+            std::vector<ProtoMessageField<MessageType>> mCollection;
         };
 
         template <typename NumericType>
@@ -662,7 +751,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key () const
             {
-                return (index() << 3);
+                return (this->index() << 3);
             }
 
         protected:
@@ -701,21 +790,21 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoNumericTypeCollection : public ProtoBase
         {
         public:
-            virtual const std::vector<ProtoType> * collection () const
+            virtual NumericType value (size_t index) const
             {
-                return &mCollection;
+                return mCollection[index].value();
             }
 
-            virtual std::vector<ProtoType> * mutableCollection ()
+            virtual void setValue (size_t index, NumericType value)
             {
-                return &mCollection;
+                mCollection[index].setValue(value);
             }
 
             virtual void addValue (NumericType value)
             {
                 ProtoType newValue(mValueDefault);
 
-                newValue.setIndex(index());
+                newValue.setIndex(this->index());
                 newValue.setValue(value);
 
                 mCollection.push_back(newValue);
@@ -723,7 +812,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key () const
             {
-                return (index() << 3) | 0x02;
+                return (this->index() << 3) | 0x02;
             }
 
             virtual bool hasValue () const
@@ -745,6 +834,11 @@ R"MuddledManaged(namespace MuddledManaged
             ProtoNumericTypeCollection (NumericType defaultValue)
             : mValueDefault(defaultValue)
             {}
+
+            virtual const std::vector<ProtoType> * collection () const
+            {
+                return &mCollection;
+            }
 
         private:
             ProtoNumericTypeCollection (const ProtoNumericTypeCollection<NumericType, ProtoType> & src) = delete;
@@ -1996,7 +2090,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key () const
             {
-                return (index() << 3) | 0x05;
+                return (this->index() << 3) | 0x05;
             }
 
             virtual size_t parse (const unsigned char * pData)
@@ -2055,7 +2149,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key () const
             {
-                return (index() << 3) | 0x02;
+                return (this->index() << 3) | 0x02;
             }
 
             virtual size_t parse (const unsigned char * pData)
@@ -2151,7 +2245,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key () const
             {
-                return (index() << 3) | 0x01;
+                return (this->index() << 3) | 0x01;
             }
 
             virtual size_t parse (const unsigned char * pData)
@@ -2210,7 +2304,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key () const
             {
-                return (index() << 3) | 0x02;
+                return (this->index() << 3) | 0x02;
             }
 
             virtual size_t parse (const unsigned char * pData)
@@ -2314,7 +2408,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key () const
             {
-                return (index() << 3) | 0x02;
+                return (this->index() << 3) | 0x02;
             }
 
             virtual size_t parse (const unsigned char * pData)
@@ -2418,7 +2512,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key () const
             {
-                return (index() << 3) | 0x02;
+                return (this->index() << 3) | 0x02;
             }
 
             virtual size_t parse (const unsigned char * pData)
@@ -2514,7 +2608,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key () const
             {
-                return (index() << 3) | 0x05;
+                return (this->index() << 3) | 0x05;
             }
 
             virtual size_t parse (const unsigned char * pData)
@@ -2573,7 +2667,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key () const
             {
-                return (index() << 3) | 0x02;
+                return (this->index() << 3) | 0x02;
             }
 
             virtual size_t parse (const unsigned char * pData)
@@ -2669,7 +2763,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key () const
             {
-                return (index() << 3) | 0x01;
+                return (this->index() << 3) | 0x01;
             }
 
             virtual size_t parse (const unsigned char * pData)
@@ -2728,7 +2822,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key () const
             {
-                return (index() << 3) | 0x02;
+                return (this->index() << 3) | 0x02;
             }
 
             virtual size_t parse (const unsigned char * pData)
@@ -2801,7 +2895,7 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoStringType : public ProtoBase
         {
         public:
-            virtual std::string value () const
+            virtual const std::string & value () const
             {
                 return mValue;
             }
@@ -2831,7 +2925,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key () const
             {
-                return (index() << 3) | 0x02;
+                return (this->index() << 3) | 0x02;
             }
 
             virtual size_t parse (const unsigned char * pData)
@@ -2925,21 +3019,26 @@ R"MuddledManaged(namespace MuddledManaged
         class ProtoStringTypeCollection : public ProtoBase
         {
         public:
-            virtual const std::vector<std::shared_ptr<ProtoType>> * collection () const
+            virtual const std::string & value (size_t index) const
             {
-                return &mCollection;
+                return mCollection[index]->value();
             }
 
-            virtual std::vector<std::shared_ptr<ProtoType>> * mutableCollection ()
+            virtual void setValue (size_t index, const std::string & value)
             {
-                return &mCollection;
-            }
+                std::shared_ptr<ProtoType> newValue(new ProtoType(mValueDefault));
 
+                newValue->setIndex(this->index());
+                newValue->setValue(value);
+                
+                mCollection[index] = newValue;
+            }
+            
             virtual void addValue (const std::string & value)
             {
                 std::shared_ptr<ProtoType> newValue(new ProtoType(mValueDefault));
 
-                newValue->setIndex(index());
+                newValue->setIndex(this->index());
                 newValue->setValue(value);
 
                 mCollection.push_back(newValue);
@@ -2947,7 +3046,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key () const
             {
-                return (index() << 3) | 0x02;
+                return (this->index() << 3) | 0x02;
             }
 
             virtual size_t parse (const unsigned char * pData)
@@ -3003,6 +3102,11 @@ R"MuddledManaged(namespace MuddledManaged
             ProtoStringTypeCollection (const std::string & defaultValue)
             : mValueDefault(defaultValue)
             {}
+
+            virtual const std::vector<std::shared_ptr<ProtoType>> * collection () const
+            {
+                return &mCollection;
+            }
 
         private:
             ProtoStringTypeCollection (const ProtoStringTypeCollection<ProtoType> & src) = delete;
