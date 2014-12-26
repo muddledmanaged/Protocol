@@ -1232,6 +1232,39 @@ void Protocol::CodeGeneratorCPP::writeMessageParseToSource (CodeWriter & sourceF
     statement = "fieldIndex";
     sourceFileWriter.writeSwitchOpening(statement);
 
+    auto messageFieldBegin = messageModel.fields()->cbegin();
+    auto messageFieldEnd = messageModel.fields()->cend();
+    while (messageFieldBegin != messageFieldEnd)
+    {
+        auto messageFieldModel = *messageFieldBegin;
+
+        string fieldIndexName = "m";
+        fieldIndexName += messageFieldModel->namePascal() + "Index";
+
+        sourceFileWriter.writeSwitchCaseOpening(fieldIndexName);
+
+        string fieldValueName = "mData->m";
+        fieldValueName += messageFieldModel->namePascal();
+        if (messageFieldModel->requiredness() == MessageFieldModel::Requiredness::repeated)
+        {
+            fieldValueName += "Collection";
+        }
+        else
+        {
+            fieldValueName += "Value";
+        }
+
+        statement = "fieldBytesParsed = ";
+        statement += fieldValueName + ".parse(pData);";
+        sourceFileWriter.writeLineIndented(statement);
+
+        sourceFileWriter.writeSwitchCaseClosing();
+
+        sourceFileWriter.writeBlankLine();
+
+        ++messageFieldBegin;
+    }
+
     sourceFileWriter.writeSwitchDefaultCaseOpening();
     statement = "fieldWireType";
     sourceFileWriter.writeSwitchOpening(statement);
