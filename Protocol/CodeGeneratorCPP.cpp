@@ -501,6 +501,9 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
 
     headerFileWriter.writeClassPrivate();
 
+    string classDataName = className + "Data";
+    headerFileWriter.writeStructOpening(classDataName);
+
     messageFieldBegin = messageModel.fields()->cbegin();
     messageFieldEnd = messageModel.fields()->cend();
     while (messageFieldBegin != messageFieldEnd)
@@ -524,9 +527,6 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
     }
 
     headerFileWriter.writeBlankLine();
-
-    string classDataName = className + "Data";
-    headerFileWriter.writeStructOpening(classDataName);
 
     methodName = classDataName;
     headerFileWriter.writeClassMethodDeclaration(methodName);
@@ -995,7 +995,60 @@ void Protocol::CodeGeneratorCPP::writeMessageDataConstructorToSource (CodeWriter
     string methodParameters = "";
     sourceFileWriter.writeConstructorImplementationOpening(methodName, methodParameters, initializationParameters);
 
+    messageFieldBegin = messageModel.fields()->cbegin();
+    messageFieldEnd = messageModel.fields()->cend();
+    while (messageFieldBegin != messageFieldEnd)
+    {
+        auto messageFieldModel = *messageFieldBegin;
+
+        writeMessageDataFieldInitializationToSource(sourceFileWriter, protoModel, *messageFieldModel, className, fullScope);
+
+        ++messageFieldBegin;
+    }
+
+    oneofBegin = messageModel.oneofs()->cbegin();
+    oneofEnd = messageModel.oneofs()->cend();
+    while (oneofBegin != oneofEnd)
+    {
+        auto oneofModel = *oneofBegin;
+
+        messageFieldBegin = oneofModel->fields()->cbegin();
+        messageFieldEnd = oneofModel->fields()->cend();
+        while (messageFieldBegin != messageFieldEnd)
+        {
+            auto messageFieldModel = *messageFieldBegin;
+
+            writeMessageDataFieldInitializationToSource(sourceFileWriter, protoModel, *messageFieldModel, className, fullScope);
+
+            ++messageFieldBegin;
+        }
+        
+        ++oneofBegin;
+    }
+
     sourceFileWriter.writeMethodImplementationClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageDataFieldInitializationToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                              const MessageFieldModel & messageFieldModel, const std::string & className,
+                                                                              const std::string & fullScope) const
+{
+    string fieldValueName = "m";
+    fieldValueName += messageFieldModel.namePascal();
+    if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+    {
+        fieldValueName += "Collection";
+    }
+    else
+    {
+        fieldValueName += "Value";
+    }
+
+    string fieldIndexName = "m";
+    fieldIndexName += messageFieldModel.namePascal() + "Index";
+
+    string statement = fieldValueName + ".setIndex(" + fieldIndexName + ");";
+    sourceFileWriter.writeLineIndented(statement);
 }
 
 std::string Protocol::CodeGeneratorCPP::messageFieldInitialization (const MessageFieldModel & messageFieldModel) const
@@ -1238,7 +1291,7 @@ void Protocol::CodeGeneratorCPP::writeMessageParseToSource (CodeWriter & sourceF
     {
         auto messageFieldModel = *messageFieldBegin;
 
-        string fieldIndexName = "m";
+        string fieldIndexName = className + "Data::m";
         fieldIndexName += messageFieldModel->namePascal() + "Index";
 
         sourceFileWriter.writeSwitchCaseOpening(fieldIndexName);
@@ -1352,14 +1405,25 @@ void Protocol::CodeGeneratorCPP::writeMessageSerializeToSource (CodeWriter & sou
         ++messageFieldBegin;
     }
 
-    statement = "result = MuddledManaged::Protocol::PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +";
-    sourceFileWriter.writeLineIndented(statement);
+    statement = "this->index() == 0";
+    sourceFileWriter.writeIfOpening(statement);
 
-    statement = "    MuddledManaged::Protocol::PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +";
+    statement = "result = MuddledManaged::Protocol::PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +";
     sourceFileWriter.writeLineIndented(statement);
-
     statement = "    result;";
     sourceFileWriter.writeLineIndented(statement);
+
+    sourceFileWriter.writeIfClosing();
+    sourceFileWriter.writeElseOpening();
+
+    statement = "result = MuddledManaged::Protocol::PrimitiveEncoding::serializeVariableUnsignedInt32(key()) +";
+    sourceFileWriter.writeLineIndented(statement);
+    statement = "    MuddledManaged::Protocol::PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +";
+    sourceFileWriter.writeLineIndented(statement);
+    statement = "    result;";
+    sourceFileWriter.writeLineIndented(statement);
+
+    sourceFileWriter.writeIfClosing();
 
     sourceFileWriter.writeBlankLine();
 

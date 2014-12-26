@@ -90,6 +90,10 @@ namespace MuddledManaged
                                                   const MessageModel & messageModel, const std::string & className,
                                                   const std::string & fullScope) const;
 
+            void writeMessageDataFieldInitializationToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                              const MessageFieldModel & messageFieldModel, const std::string & className,
+                                                              const std::string & fullScope) const;
+
             std::string messageFieldInitialization (const MessageFieldModel & messageFieldModel) const;
 
             void writeMessageDataDestructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,

@@ -514,6 +514,12 @@ namespace MuddledManaged
                 writeCurlyBraceOpening();
             }
 
+            void writeElseOpening ()
+            {
+                mStream << mIndenter.prefix() << "else" << std::endl;
+                writeCurlyBraceOpening();
+            }
+
             void writeElseIfOpening (const std::string & ifValue)
             {
                 mStream << mIndenter.prefix() << "else if (" << ifValue << ")" << std::endl;

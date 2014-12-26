@@ -14,7 +14,7 @@
 using namespace std;
 using namespace MuddledManaged;
 
-DESIGNER_SCENARIO( ProtoParser, "Generation/Normal", "Generated class can be constructed." )
+DESIGNER_SCENARIO( MessageEmpty, "Generation/Normal", "Generated class can be constructed." )
 {
     Empty message;
 }

@@ -321,7 +321,7 @@ R"MuddledManaged(namespace MuddledManaged
                     rawValue |= currentMaskedValue;
                     ++byteCount;
 
-                    bool lastByte = *pData & 0x80;
+                    bool lastByte = (*pData & 0x80) == 0;
                     if (lastByte)
                     {
                         break;
