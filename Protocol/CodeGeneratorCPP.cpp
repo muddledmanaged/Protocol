@@ -1195,10 +1195,87 @@ void Protocol::CodeGeneratorCPP::writeMessageParseToSource (CodeWriter & sourceF
 
     sourceFileWriter.writeBlankLine();
 
-    statement = "size_t bytesParsed = 0;";
+    statement = "size_t lengthBytesParsed = 0;";
+    sourceFileWriter.writeLineIndented(statement);
+    statement = "std::uint32_t length = MuddledManaged::Protocol::PrimitiveEncoding::parseVariableUnsignedInt32(pData, &lengthBytesParsed);";
+    sourceFileWriter.writeLineIndented(statement);
+    statement = "pData += lengthBytesParsed;";
     sourceFileWriter.writeLineIndented(statement);
 
-    statement = "return bytesParsed;";
+    sourceFileWriter.writeBlankLine();
+
+    statement = "std::uint32_t remainingBytes = length;";
+    sourceFileWriter.writeLineIndented(statement);
+    statement = "remainingBytes";
+    sourceFileWriter.writeWhileLoopOpening(statement);
+
+    statement = "size_t fieldKeyBytesParsed = 0;";
+    sourceFileWriter.writeLineIndented(statement);
+    statement = "std::uint32_t fieldKey = MuddledManaged::Protocol::PrimitiveEncoding::parseVariableUnsignedInt32(pData, &fieldKeyBytesParsed);";
+    sourceFileWriter.writeLineIndented(statement);
+    statement = "pData += fieldKeyBytesParsed;";
+    sourceFileWriter.writeLineIndented(statement);
+    statement = "remainingBytes -= fieldKeyBytesParsed;";
+    sourceFileWriter.writeLineIndented(statement);
+
+    sourceFileWriter.writeBlankLine();
+
+    statement = "std::uint32_t fieldIndex = fieldKey >> 3;";
+    sourceFileWriter.writeLineIndented(statement);
+    statement = "std::uint32_t fieldWireType = fieldKey & 0x07;";
+    sourceFileWriter.writeLineIndented(statement);
+
+    sourceFileWriter.writeBlankLine();
+
+    statement = "size_t fieldBytesParsed = 0;";
+    sourceFileWriter.writeLineIndented(statement);
+    statement = "fieldIndex";
+    sourceFileWriter.writeSwitchOpening(statement);
+
+    sourceFileWriter.writeSwitchDefaultCaseOpening();
+    statement = "fieldWireType";
+    sourceFileWriter.writeSwitchOpening(statement);
+
+    statement = "0";
+    sourceFileWriter.writeSwitchCaseOpening(statement);
+    statement = "MuddledManaged::Protocol::PrimitiveEncoding::parseVariableUnsignedInt64(pData, &fieldBytesParsed);";
+    sourceFileWriter.writeLineIndented(statement);
+    sourceFileWriter.writeSwitchCaseClosing();
+
+    statement = "1";
+    sourceFileWriter.writeSwitchCaseOpening(statement);
+    statement = "fieldBytesParsed = 8;";
+    sourceFileWriter.writeLineIndented(statement);
+    sourceFileWriter.writeSwitchCaseClosing();
+
+    statement = "2";
+    sourceFileWriter.writeSwitchCaseOpening(statement);
+    statement = "size_t fieldLengthBytesParsed = 0;";
+    sourceFileWriter.writeLineIndented(statement);
+    statement = "std::uint32_t fieldLength = MuddledManaged::Protocol::PrimitiveEncoding::parseVariableUnsignedInt32(pData, &fieldLengthBytesParsed);";
+    sourceFileWriter.writeLineIndented(statement);
+    statement = "fieldBytesParsed = fieldLengthBytesParsed + fieldLength;";
+    sourceFileWriter.writeLineIndented(statement);
+    sourceFileWriter.writeSwitchCaseClosing();
+
+    statement = "5";
+    sourceFileWriter.writeSwitchCaseOpening(statement);
+    statement = "fieldBytesParsed = 4;";
+    sourceFileWriter.writeLineIndented(statement);
+    sourceFileWriter.writeSwitchCaseClosing();
+
+    sourceFileWriter.writeSwitchClosing();
+    sourceFileWriter.writeSwitchCaseClosing();
+
+    sourceFileWriter.writeSwitchClosing();
+    statement = "pData += fieldBytesParsed;";
+    sourceFileWriter.writeLineIndented(statement);
+    statement = "remainingBytes -= fieldBytesParsed;";
+    sourceFileWriter.writeLineIndented(statement);
+
+    sourceFileWriter.writeWhileLoopClosing();
+
+    statement = "return lengthBytesParsed + length;";
     sourceFileWriter.writeLineIndented(statement);
 
     sourceFileWriter.writeMethodImplementationClosing();

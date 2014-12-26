@@ -478,6 +478,7 @@ namespace MuddledManaged
             {
                 --mIndenter;
                 mStream << mIndenter.prefix() << "case " << switchCaseValue << ":" << std::endl;
+                ++mIndenter;
                 writeCurlyBraceOpening();
             }
 
@@ -492,6 +493,7 @@ namespace MuddledManaged
             {
                 --mIndenter;
                 mStream << mIndenter.prefix() << "default:" << std::endl;
+                ++mIndenter;
                 writeCurlyBraceOpening();
             }
 
