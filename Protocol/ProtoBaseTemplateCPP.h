@@ -457,7 +457,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual std::string serialize () const = 0;
 
-            virtual size_t size () const = 0;
+            virtual size_t byteSize () const = 0;
 
             virtual bool valid () const
             {
@@ -578,13 +578,13 @@ R"MuddledManaged(namespace MuddledManaged
                 return mValue->serialize();
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 if (!this->hasValue())
                 {
                     return 0;
                 }
-                return mValue->size();
+                return mValue->byteSize();
             }
 
             virtual bool hasValue () const
@@ -694,16 +694,21 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
                 for (auto & message : mCollection)
                 {
-                    result += message.size();
+                    result += message.byteSize();
                 }
 
                 return result;
+            }
+
+            virtual size_t size () const
+            {
+                return mCollection.size();
             }
 
             virtual bool hasValue () const
@@ -842,6 +847,11 @@ R"MuddledManaged(namespace MuddledManaged
                 return (this->index() << 3) | 0x02;
             }
 
+            virtual size_t size () const
+            {
+                return mCollection.size();
+            }
+
             virtual bool hasValue () const
             {
                 return !mCollection.empty();
@@ -932,7 +942,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -1005,7 +1015,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -1097,7 +1107,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -1181,7 +1191,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -1258,7 +1268,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -1329,7 +1339,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -1406,7 +1416,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -1477,7 +1487,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -1554,7 +1564,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -1625,7 +1635,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -1702,7 +1712,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -1773,7 +1783,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -1850,7 +1860,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -1921,7 +1931,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -1998,7 +2008,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -2069,7 +2079,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -2150,7 +2160,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -2224,7 +2234,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -2305,7 +2315,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -2379,7 +2389,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -2483,7 +2493,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -2587,7 +2597,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -2668,7 +2678,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -2742,7 +2752,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -2823,7 +2833,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -2897,7 +2907,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
@@ -2995,15 +3005,16 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
-                size_t result = mValue.size();
+                size_t result = 0;
 
                 if (!this->hasValue())
                 {
                     return result;
                 }
 
+                result += mValue.size();
                 result += PrimitiveEncoding::sizeVariableUnsignedInt32(static_cast<std::uint32_t>(result));
                 result += PrimitiveEncoding::sizeVariableUnsignedInt32(this->key());
 
@@ -3098,16 +3109,21 @@ R"MuddledManaged(namespace MuddledManaged
                 return result;
             }
 
-            virtual size_t size () const
+            virtual size_t byteSize () const
             {
                 size_t result = 0;
 
                 for (auto & value : mCollection)
                 {
-                    result += value->size();
+                    result += value->byteSize();
                 }
 
                 return result;
+            }
+
+            virtual size_t size () const
+            {
+                return mCollection.size();
             }
 
             virtual bool hasValue () const

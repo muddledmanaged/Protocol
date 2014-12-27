@@ -469,7 +469,7 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
     methodReturn = "std::string";
     headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, true, true);
 
-    methodName = "size";
+    methodName = "byteSize";
     methodReturn = "size_t";
     headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, true, true);
 
@@ -907,7 +907,7 @@ void Protocol::CodeGeneratorCPP::writeMessageToSource (CodeWriter & sourceFileWr
 
     writeMessageSerializeToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
 
-    writeMessageSizeToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
+    writeMessageByteSizeToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
 
     writeMessageValidToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
 
@@ -1433,11 +1433,11 @@ void Protocol::CodeGeneratorCPP::writeMessageSerializeToSource (CodeWriter & sou
     sourceFileWriter.writeMethodImplementationClosing();
 }
 
-void Protocol::CodeGeneratorCPP::writeMessageSizeToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                           const MessageModel & messageModel, const std::string & className,
-                                                           const std::string & fullScope) const
+void Protocol::CodeGeneratorCPP::writeMessageByteSizeToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                               const MessageModel & messageModel, const std::string & className,
+                                                               const std::string & fullScope) const
 {
-    string methodName = fullScope + "::size";
+    string methodName = fullScope + "::byteSize";
     string methodReturn = "size_t";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, true);
 
@@ -1463,7 +1463,7 @@ void Protocol::CodeGeneratorCPP::writeMessageSizeToSource (CodeWriter & sourceFi
         }
 
         statement = "result += ";
-        statement += fieldValueName + ".size();";
+        statement += fieldValueName + ".byteSize();";
         sourceFileWriter.writeLineIndented(statement);
 
         sourceFileWriter.writeBlankLine();

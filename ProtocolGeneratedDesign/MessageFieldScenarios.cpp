@@ -39,7 +39,7 @@ DESIGNER_SCENARIO( MessageField, "Serialization/Normal", "Generated class can be
 
     verifyTrue(parsedMessage.hasSOne());
     verifyFalse(parsedMessage.hasBOne());
-    //verifyTrue(parsedMessage.sizeIOne() == 1);
+    verifyTrue(parsedMessage.sizeIOne() == 1);
 
     verifyEqual(stringValue, parsedMessage.sOne());
     verifyEqual(42, parsedMessage.iOne(0));
