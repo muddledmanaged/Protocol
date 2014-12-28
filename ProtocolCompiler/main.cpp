@@ -99,7 +99,7 @@ int main(int argc, const char ** argv)
         argumentError = true;
     }
 
-    if (protoFile.empty())
+    if (!generateCommonClasses && protoFile.empty())
     {
         displayUsage = true;
         argumentError = true;
@@ -108,11 +108,12 @@ int main(int argc, const char ** argv)
     if (displayUsage)
     {
         cout << "ProtocolCompiler version " << version << endl;
-        cout << "Usage: ProtocolCompiler [-h] [-c] [-o path] [-p project] file" << endl;
+        cout << "Usage: ProtocolCompiler [-h] [-c] [-o path] [-p project] [file]" << endl;
         cout << "    Display usage: -h" << endl;
         cout << "    Generate common classes: -c" << endl;
         cout << "    Specify output path: -o path" << endl;
         cout << "    Specify project name used in include files: -p project" << endl;
+        cout << "Either common classes, a file, or both must be specified." << endl;
         return argumentError ? 1 : 0;
     }
 
@@ -122,13 +123,16 @@ int main(int argc, const char ** argv)
     }
 
     Protocol::CodeGeneratorManager * pManager = Protocol::CodeGeneratorManager::instance();
-
     auto generator = pManager->generator("CPlusPlus");
+    shared_ptr<Protocol::ProtoModel> model;
 
-    Protocol::ProtoParser parser(protoFile);
-    auto model = parser.parse();
+    if (!protoFile.empty())
+    {
+        Protocol::ProtoParser parser(protoFile);
+        model = parser.parse();
+    }
 
-    generator->generateCode(outputPath, *model, projectName, generateCommonClasses);
+    generator->generateCode(outputPath, model.get(), projectName, generateCommonClasses);
 
     cout << "ProtocolCompiler version " << version << " completed successfully." << endl;
     return 0;

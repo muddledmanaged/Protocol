@@ -21,7 +21,7 @@ namespace MuddledManaged
         class CodeGeneratorCPP : public CodeGeneratorInterface
         {
         public:
-            virtual void generateCode (const std::string & outputFolder, const ProtoModel & protoModel,
+            virtual void generateCode (const std::string & outputFolder, const ProtoModel * protoModel,
                                        const std::string & projectName, bool generateCommonCode) const;
 
         private:

@@ -32,11 +32,14 @@ const string Protocol::CodeGeneratorCPP::mBaseClassesFileName = "ProtoBase";
 Protocol::CodeGeneratorCPP::CodeGeneratorCPP ()
 { }
 
-void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, const ProtoModel & protoModel,
+void Protocol::CodeGeneratorCPP::generateCode (const string & outputFolder, const ProtoModel * protoModel,
                                                const std::string & projectName, bool generateCommonCode) const
 {
-    generateHeaderFile(outputFolder, protoModel, projectName);
-    generateSourceFile(outputFolder, protoModel, projectName);
+    if (protoModel != nullptr)
+    {
+        generateHeaderFile(outputFolder, *protoModel, projectName);
+        generateSourceFile(outputFolder, *protoModel, projectName);
+    }
     if (generateCommonCode)
     {
         generateHeaderFileCommon(outputFolder, projectName);

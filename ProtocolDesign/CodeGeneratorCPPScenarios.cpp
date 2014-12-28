@@ -24,7 +24,7 @@ DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can crea
     Protocol::ProtoParser parser("Empty.proto");
     auto model = parser.parse();
 
-    generator->generateCode("Generated", *model, "ProtocolDesign", true);
+    generator->generateCode("Generated", model.get(), "ProtocolDesign", true);
 }
 
 DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can create empty file." )
@@ -36,7 +36,7 @@ DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can crea
     Protocol::ProtoParser parser("Empty.proto");
     auto model = parser.parse();
 
-    generator->generateCode("Generated", *model);
+    generator->generateCode("Generated", model.get());
 }
 
 DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can create file with empty message." )
@@ -48,7 +48,7 @@ DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can crea
     Protocol::ProtoParser parser("Message.proto");
     auto model = parser.parse();
 
-    generator->generateCode("Generated", *model);
+    generator->generateCode("Generated", model.get());
 }
 
 DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can create file with message and all fields." )
@@ -60,7 +60,7 @@ DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can crea
     Protocol::ProtoParser parser("MessageAllFields.proto");
     auto model = parser.parse();
 
-    generator->generateCode("Generated", *model);
+    generator->generateCode("Generated", model.get());
 }
 
 DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can create file with enums." )
@@ -72,7 +72,7 @@ DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can crea
     Protocol::ProtoParser parser("EnumMultiple.proto");
     auto model = parser.parse();
 
-    generator->generateCode("Generated", *model);
+    generator->generateCode("Generated", model.get());
 }
 
 DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can create file with enum and values." )
@@ -84,7 +84,7 @@ DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can crea
     Protocol::ProtoParser parser("EnumValue.proto");
     auto model = parser.parse();
 
-    generator->generateCode("Generated", *model, "ProtocolDesign");
+    generator->generateCode("Generated", model.get(), "ProtocolDesign");
 }
 
 DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can create file with imports, message, and enum." )
@@ -96,7 +96,7 @@ DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can crea
     Protocol::ProtoParser parser("ImportPublic.proto");
     auto model = parser.parse();
 
-    generator->generateCode("Generated", *model, "ProtocolDesign");
+    generator->generateCode("Generated", model.get(), "ProtocolDesign");
 }
 
 DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can create file with message fields." )
@@ -108,7 +108,7 @@ DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can crea
     Protocol::ProtoParser parser("MessageField.proto");
     auto model = parser.parse();
 
-    generator->generateCode("Generated", *model, "ProtocolDesign");
+    generator->generateCode("Generated", model.get(), "ProtocolDesign");
 }
 
 DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can create file with nested messages." )
@@ -120,7 +120,7 @@ DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can crea
     Protocol::ProtoParser parser("MessageNested.proto");
     auto model = parser.parse();
 
-    generator->generateCode("Generated", *model, "ProtocolDesign");
+    generator->generateCode("Generated", model.get(), "ProtocolDesign");
 }
 
 DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can create file with oneof fields." )
@@ -132,7 +132,7 @@ DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can crea
     Protocol::ProtoParser parser("MessageOneof.proto");
     auto model = parser.parse();
 
-    generator->generateCode("Generated", *model, "ProtocolDesign");
+    generator->generateCode("Generated", model.get(), "ProtocolDesign");
 }
 
 DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can create file with nested message, fields, and oneof fields." )
@@ -144,7 +144,7 @@ DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can crea
     Protocol::ProtoParser parser("MessageOneofMultiple.proto");
     auto model = parser.parse();
 
-    generator->generateCode("Generated", *model, "ProtocolDesign");
+    generator->generateCode("Generated", model.get(), "ProtocolDesign");
 }
 
 DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can create file with package." )
@@ -156,7 +156,7 @@ DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can crea
     Protocol::ProtoParser parser("MessageNamespace.proto");
     auto model = parser.parse();
 
-    generator->generateCode("Generated", *model, "ProtocolDesign");
+    generator->generateCode("Generated", model.get(), "ProtocolDesign");
 }
 
 DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can create file with multiple enum packages." )
@@ -168,7 +168,7 @@ DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can crea
     Protocol::ProtoParser parser("EnumMultiplePackage.proto");
     auto model = parser.parse();
 
-    generator->generateCode("Generated", *model, "ProtocolDesign");
+    generator->generateCode("Generated", model.get(), "ProtocolDesign");
 }
 
 DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can create file with multiple message packages." )
@@ -180,7 +180,7 @@ DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can crea
     Protocol::ProtoParser parser("MessageMultiplePackage.proto");
     auto model = parser.parse();
 
-    generator->generateCode("Generated", *model, "ProtocolDesign");
+    generator->generateCode("Generated", model.get(), "ProtocolDesign");
 }
 
 DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can create file with enum and message field types." )
@@ -192,7 +192,7 @@ DESIGNER_SCENARIO( CodeGeneratorCPP, "Operation/Normal", "CPP generator can crea
     Protocol::ProtoParser parser("MessageFieldReference.proto");
     auto model = parser.parse();
 
-    generator->generateCode("Generated", *model, "ProtocolDesign");
+    generator->generateCode("Generated", model.get(), "ProtocolDesign");
 }
 
 namespace A
