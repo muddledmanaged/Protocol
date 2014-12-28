@@ -121,7 +121,7 @@ string Protocol::CodeGeneratorCPP::headerIncludeBlockText (const ProtoModel & pr
 
     filesystem::path modelPath(protoModel.namePascal());
     text += filesystem::basename(modelPath.filename());
-    text += "_h";
+    text += "_protocol_h";
 
     return text;
 }
