@@ -48,7 +48,7 @@ void Protocol::CodeGeneratorCPP::generateHeaderFile (const std::string & outputF
 {
     filesystem::path outputPath(outputFolder);
     filesystem::path modelPath(protoModel.namePascal());
-    filesystem::path headerPath(outputPath / filesystem::change_extension(modelPath, mHeaderFileExtension));
+    filesystem::path headerPath(outputPath / filesystem::change_extension(modelPath.filename(), mHeaderFileExtension));
 
     filesystem::create_directory(outputFolder);
     filesystem::ofstream headerFile(headerPath, ios::out | ios::trunc);
@@ -92,7 +92,7 @@ void Protocol::CodeGeneratorCPP::generateSourceFile (const std::string & outputF
 {
     filesystem::path outputPath(outputFolder);
     filesystem::path modelPath(protoModel.namePascal());
-    filesystem::path sourcePath(outputPath / filesystem::change_extension(modelPath, mSourceFileExtension));
+    filesystem::path sourcePath(outputPath / filesystem::change_extension(modelPath.filename(), mSourceFileExtension));
 
     filesystem::create_directory(outputFolder);
     filesystem::ofstream sourceFile(sourcePath, ios::out | ios::trunc);

@@ -5,9 +5,131 @@
 //  Created by Wahid Tanner on 12/27/14.
 //
 
+#include <string>
 #include <iostream>
+#include <vector>
 
-int main(int argc, const char * argv[])
+#include "../Protocol/CodeGeneratorManager.h"
+#include "../Protocol/ProtoParser.h"
+
+using namespace std;
+using namespace MuddledManaged;
+
+int main(int argc, const char ** argv)
 {
+    const string version = "1.0";
+
+    vector<string> args(argv + 1, argv + argc);
+    string outputPath;
+    string projectName;
+    string protoFile;
+
+    bool displayUsage = false;
+    bool outputPathExpected = false;
+    bool projectNameExpected = false;
+    bool generateCommonClasses = false;
+    bool argumentError = false;
+
+    for (auto & arg: args)
+    {
+        if (arg == "-h")
+        {
+            displayUsage = true;
+            break;
+        }
+        else if (arg == "-c")
+        {
+            if (generateCommonClasses || outputPathExpected || projectNameExpected)
+            {
+                displayUsage = true;
+                argumentError = true;
+                break;
+            }
+            generateCommonClasses = true;
+            continue;
+        }
+        else if (arg == "-o")
+        {
+            if (!outputPath.empty() || outputPathExpected || projectNameExpected)
+            {
+                displayUsage = true;
+                argumentError = true;
+                break;
+            }
+            outputPathExpected = true;
+            continue;
+        }
+        else if (arg == "-p")
+        {
+            if (!projectName.empty() || outputPathExpected || projectNameExpected)
+            {
+                displayUsage = true;
+                argumentError = true;
+                break;
+            }
+            projectNameExpected = true;
+            continue;
+        }
+
+        if (outputPathExpected)
+        {
+            outputPath = arg;
+            outputPathExpected = false;
+        }
+        else if (projectNameExpected)
+        {
+            projectName = arg;
+            projectNameExpected = false;
+        }
+        else
+        {
+            if (!protoFile.empty())
+            {
+                displayUsage = true;
+                argumentError = true;
+                break;
+            }
+            protoFile = arg;
+        }
+    }
+
+    if (outputPathExpected || projectNameExpected)
+    {
+        displayUsage = true;
+        argumentError = true;
+    }
+
+    if (protoFile.empty())
+    {
+        displayUsage = true;
+        argumentError = true;
+    }
+
+    if (displayUsage)
+    {
+        cout << "ProtocolCompiler version " << version << endl;
+        cout << "Usage: ProtocolCompiler [-h] [-c] [-o path] [-p project] file" << endl;
+        cout << "    Display usage: -h" << endl;
+        cout << "    Generate common classes: -c" << endl;
+        cout << "    Specify output path: -o path" << endl;
+        cout << "    Specify project name used in include files: -p project" << endl;
+        return argumentError ? 1 : 0;
+    }
+
+    if (outputPath.empty())
+    {
+        outputPath = ".";
+    }
+
+    Protocol::CodeGeneratorManager * pManager = Protocol::CodeGeneratorManager::instance();
+
+    auto generator = pManager->generator("CPlusPlus");
+
+    Protocol::ProtoParser parser(protoFile);
+    auto model = parser.parse();
+
+    generator->generateCode(outputPath, *model, projectName, generateCommonClasses);
+
+    cout << "ProtocolCompiler version " << version << " completed successfully." << endl;
     return 0;
 }
