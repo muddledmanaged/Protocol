@@ -553,6 +553,17 @@ R"MuddledManaged(namespace MuddledManaged
                 mValue = newValue;
             }
 
+            virtual MessageType & createNewValue ()
+            {
+                std::shared_ptr<MessageType> newValue(new MessageType());
+
+                newValue->setIndex(this->index());
+
+                mValue = newValue;
+
+                return *mValue;
+            }
+
             virtual unsigned int key () const
             {
                 return mValue->key();
@@ -658,6 +669,19 @@ R"MuddledManaged(namespace MuddledManaged
                 newValue.setValue(message);
 
                 mCollection.push_back(newValue);
+            }
+
+            virtual MessageType & addNewValue ()
+            {
+                ProtoMessageField<MessageType> newValue;
+
+                newValue.setIndex(this->index());
+
+                MessageType & returnValue = newValue.createNewValue();
+
+                mCollection.push_back(newValue);
+
+                return returnValue;
             }
 
             virtual unsigned int key () const

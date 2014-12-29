@@ -660,9 +660,29 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldToHeader (CodeWriter & headerF
             break;
         }
 
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+            {
+                methodName = "addNew";
+                methodName += messageFieldModel.namePascal();
+                methodReturn = fieldType + " &";
+                methodParameters = "";
+                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+            }
+            else
+            {
+                methodName = "createNew";
+                methodName += messageFieldModel.namePascal();
+                methodReturn = fieldType + " &";
+                methodParameters = "";
+                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+            }
+        }
+        // Fall through to the next case.
+
         case MessageFieldModel::FieldCategory::stringType:
         case MessageFieldModel::FieldCategory::bytesType:
-        case MessageFieldModel::FieldCategory::messageType:
         {
             if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
             {
@@ -1542,6 +1562,8 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldToSource (CodeWriter & sourceF
 
         writeMessageFieldAddRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
 
+        writeMessageFieldAddNewRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
+
         writeMessageFieldClearRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
     }
     else
@@ -1551,6 +1573,8 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldToSource (CodeWriter & sourceF
         writeMessageFieldGetToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
 
         writeMessageFieldSetToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
+
+        writeMessageFieldCreateNewToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
 
         writeMessageFieldClearToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
     }
@@ -1736,6 +1760,37 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldAddRepeatedToSource (CodeWrite
     }
 }
 
+void Protocol::CodeGeneratorCPP::writeMessageFieldAddNewRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                          const MessageFieldModel & messageFieldModel, const std::string & className,
+                                                                          const std::string & fullScope) const
+{
+    string fieldType = fullTypeName(messageFieldModel);
+    string methodName = fullScope + "::addNew";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = fieldType + " &";
+    string methodParameters = "";
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+            string fieldValueName = "mData->m";
+            fieldValueName += messageFieldModel.namePascal() + "Collection";
+            string statement = "return ";
+            statement += fieldValueName + ".addNewValue();";
+            sourceFileWriter.writeLineIndented(statement);
+
+            sourceFileWriter.writeMethodImplementationClosing();
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
 void Protocol::CodeGeneratorCPP::writeMessageFieldClearRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                                          const MessageFieldModel & messageFieldModel, const std::string & className,
                                                                          const std::string & fullScope) const
@@ -1863,6 +1918,37 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldSetToSource (CodeWriter & sour
             methodParameters += fieldType + " & value";
             sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
 
+            sourceFileWriter.writeLineIndented(statement);
+
+            sourceFileWriter.writeMethodImplementationClosing();
+            break;
+        }
+
+        default:
+            break;
+    }
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldCreateNewToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                     const MessageFieldModel & messageFieldModel, const std::string & className,
+                                                                     const std::string & fullScope) const
+{
+    string fieldType = fullTypeName(messageFieldModel);
+    string methodName = fullScope + "::createNew";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = fieldType + " &";
+    string methodParameters = "";
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+            string fieldValueName = "mData->m";
+            fieldValueName += messageFieldModel.namePascal() + "Value";
+            string statement = "return ";
+            statement += fieldValueName + ".createNewValue();";
             sourceFileWriter.writeLineIndented(statement);
 
             sourceFileWriter.writeMethodImplementationClosing();
