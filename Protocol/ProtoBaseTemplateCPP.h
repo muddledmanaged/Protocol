@@ -133,72 +133,72 @@ R"MuddledManaged(namespace MuddledManaged
                 return sizeVariableUnsignedInt64(unsignedValue);
             }
 
-            static std::int32_t parseVariableInt32 (const unsigned char * pData, size_t * pBytesParsed)
+            static std::int32_t parseVariableInt32 (const char * pData, size_t * pBytesParsed)
             {
                 return parseVariable<std::int32_t>(pData, pBytesParsed);
             }
 
-            static std::int32_t parseFixedInt32 (const unsigned char * pData)
+            static std::int32_t parseFixedInt32 (const char * pData)
             {
                 return parseFixed<std::int32_t>(pData);
             }
 
-            static std::int64_t parseVariableInt64 (const unsigned char * pData, size_t * pBytesParsed)
+            static std::int64_t parseVariableInt64 (const char * pData, size_t * pBytesParsed)
             {
                 return parseVariable<std::int64_t>(pData, pBytesParsed);
             }
 
-            static std::int64_t parseFixedInt64 (const unsigned char * pData)
+            static std::int64_t parseFixedInt64 (const char * pData)
             {
                 return parseFixed<std::int64_t>(pData);
             }
 
-            static std::int32_t parseVariableSignedInt32 (const unsigned char * pData, size_t * pBytesParsed)
+            static std::int32_t parseVariableSignedInt32 (const char * pData, size_t * pBytesParsed)
             {
                 return parseVariable<std::int32_t>(pData, pBytesParsed, true);
             }
 
-            static std::int32_t parseFixedSignedInt32 (const unsigned char * pData)
+            static std::int32_t parseFixedSignedInt32 (const char * pData)
             {
                 return parseFixed<std::int32_t>(pData);
             }
 
-            static std::int64_t parseVariableSignedInt64 (const unsigned char * pData, size_t * pBytesParsed)
+            static std::int64_t parseVariableSignedInt64 (const char * pData, size_t * pBytesParsed)
             {
                 return parseVariable<std::int64_t>(pData, pBytesParsed, true);
             }
 
-            static std::int64_t parseFixedSignedInt64 (const unsigned char * pData)
+            static std::int64_t parseFixedSignedInt64 (const char * pData)
             {
                 return parseFixed<std::int64_t>(pData);
             }
 
-            static std::uint32_t parseVariableUnsignedInt32 (const unsigned char * pData, size_t * pBytesParsed)
+            static std::uint32_t parseVariableUnsignedInt32 (const char * pData, size_t * pBytesParsed)
             {
                 return parseVariable<std::uint32_t>(pData, pBytesParsed);
             }
 
-            static std::uint64_t parseVariableUnsignedInt64 (const unsigned char * pData, size_t * pBytesParsed)
+            static std::uint64_t parseVariableUnsignedInt64 (const char * pData, size_t * pBytesParsed)
             {
                 return parseVariable<std::uint64_t>(pData, pBytesParsed);
             }
 
-            static float parseFloat (const unsigned char * pData)
+            static float parseFloat (const char * pData)
             {
                 return parseFixed<float>(pData);
             }
 
-            static double parseDouble (const unsigned char * pData)
+            static double parseDouble (const char * pData)
             {
                 return parseFixed<double>(pData);
             }
 
-            static std::string parseString (const unsigned char * pData, size_t * pBytesParsed)
+            static std::string parseString (const char * pData, size_t * pBytesParsed)
             {
                 return parseBytes(pData, pBytesParsed);
             }
 
-            static std::string parseBytes (const unsigned char * pData, size_t * pBytesParsed)
+            static std::string parseBytes (const char * pData, size_t * pBytesParsed)
             {
                 if (pData == nullptr)
                 {
@@ -304,7 +304,7 @@ R"MuddledManaged(namespace MuddledManaged
             {}
 
             template <typename ValueType>
-            static ValueType parseVariable (const unsigned char * pData, size_t * pBytesParsed, bool useZigZag = false)
+            static ValueType parseVariable (const char * pData, size_t * pBytesParsed, bool useZigZag = false)
             {
                 if (pData == nullptr)
                 {
@@ -357,7 +357,7 @@ R"MuddledManaged(namespace MuddledManaged
             }
 
             template <typename ValueType>
-            static ValueType parseFixed (const unsigned char * pData)
+            static ValueType parseFixed (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -365,7 +365,7 @@ R"MuddledManaged(namespace MuddledManaged
                 }
 
                 ValueType value = 0;
-                unsigned char * pValueChars = reinterpret_cast<unsigned char *>(&value);
+                char * pValueChars = reinterpret_cast<char *>(&value);
                 for (int i = sizeof(ValueType) - 1; i >= 0; --i)
                 {
                     pValueChars[i] = *pData;
@@ -393,7 +393,7 @@ R"MuddledManaged(namespace MuddledManaged
                 bool lastByte = false;
                 while (!lastByte)
                 {
-                    unsigned char currentByte = unsignedValue & 0x7f;
+                    char currentByte = unsignedValue & 0x7f;
 
                     unsignedValue = unsignedValue >> 7;
                     if (unsignedValue == 0)
@@ -415,7 +415,7 @@ R"MuddledManaged(namespace MuddledManaged
             static std::string serializeFixed (ValueType value)
             {
                 std::string result;
-                unsigned char * pValueChars = reinterpret_cast<unsigned char *>(&value);
+                char * pValueChars = reinterpret_cast<char *>(&value);
                 for (int i = sizeof(ValueType) - 1; i >= 0; --i)
                 {
                     result += pValueChars[i];
@@ -453,7 +453,7 @@ R"MuddledManaged(namespace MuddledManaged
 
             virtual unsigned int key () const = 0;
 
-            virtual size_t parse (const unsigned char * pData) = 0;
+            virtual size_t parse (const char * pData) = 0;
 
             virtual std::string serialize () const = 0;
 
@@ -569,7 +569,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return mValue->key();
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 std::shared_ptr<MessageType> newValue(new MessageType());
 
@@ -689,7 +689,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return (this->index() << 3) | 0x02;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -934,7 +934,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return *this;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -992,7 +992,7 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericTypeCollection<EnumType, ProtoEnum<EnumType>>(defaultValue)
             {}
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -1085,7 +1085,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return *this;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -1155,7 +1155,7 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericTypeCollection<bool, ProtoBool>(defaultValue)
             {}
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -1261,7 +1261,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return *this;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -1316,7 +1316,7 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericTypeCollection<std::int32_t, ProtoInt32>(defaultValue)
             {}
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -1409,7 +1409,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return *this;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -1464,7 +1464,7 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericTypeCollection<std::int64_t, ProtoInt64>(defaultValue)
             {}
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -1557,7 +1557,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return *this;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -1612,7 +1612,7 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericTypeCollection<std::uint32_t, ProtoUnsignedInt32>(defaultValue)
             {}
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -1705,7 +1705,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return *this;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -1760,7 +1760,7 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericTypeCollection<std::uint64_t, ProtoUnsignedInt64>(defaultValue)
             {}
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -1853,7 +1853,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return *this;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -1908,7 +1908,7 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericTypeCollection<std::int32_t, ProtoSignedInt32>(defaultValue)
             {}
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -2001,7 +2001,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return *this;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -2056,7 +2056,7 @@ R"MuddledManaged(namespace MuddledManaged
             : ProtoNumericTypeCollection<std::int64_t, ProtoSignedInt64>(defaultValue)
             {}
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -2154,7 +2154,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return (this->index() << 3) | 0x05;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -2213,7 +2213,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return (this->index() << 3) | 0x02;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -2309,7 +2309,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return (this->index() << 3) | 0x01;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -2368,7 +2368,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return (this->index() << 3) | 0x02;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -2472,7 +2472,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return (this->index() << 3) | 0x02;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -2576,7 +2576,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return (this->index() << 3) | 0x02;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -2672,7 +2672,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return (this->index() << 3) | 0x05;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -2731,7 +2731,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return (this->index() << 3) | 0x02;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -2827,7 +2827,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return (this->index() << 3) | 0x01;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -2886,7 +2886,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return (this->index() << 3) | 0x02;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -2989,7 +2989,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return (this->index() << 3) | 0x02;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 if (pData == nullptr)
                 {
@@ -3111,7 +3111,7 @@ R"MuddledManaged(namespace MuddledManaged
                 return (this->index() << 3) | 0x02;
             }
 
-            virtual size_t parse (const unsigned char * pData)
+            virtual size_t parse (const char * pData)
             {
                 std::shared_ptr<ProtoType> value(new ProtoType());
                 size_t bytesParsed = value->parse(pData);

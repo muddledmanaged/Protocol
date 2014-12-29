@@ -35,7 +35,7 @@ DESIGNER_SCENARIO( MessageField, "Serialization/Normal", "Generated class can be
     cout << "serialized message: " << result.str() << endl;
 
     MessageOne parsedMessage;
-    parsedMessage.parse(reinterpret_cast<const unsigned char *>(serialized.data()));
+    parsedMessage.parse(serialized.data());
 
     verifyTrue(parsedMessage.hasSOne());
     verifyFalse(parsedMessage.hasBOne());

@@ -465,7 +465,7 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
 
     methodName = "parse";
     methodReturn = "size_t";
-    methodParameters = "const unsigned char * pData";
+    methodParameters = "const char * pData";
     headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, false, true);
 
     methodName = "serialize";
@@ -1260,7 +1260,7 @@ void Protocol::CodeGeneratorCPP::writeMessageParseToSource (CodeWriter & sourceF
 {
     string methodName = fullScope + "::parse";
     string methodReturn = "size_t";
-    string methodParameters = "const unsigned char * pData";
+    string methodParameters = "const char * pData";
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
 
     string statement = "pData == nullptr";
