@@ -1,6 +1,6 @@
-message messageOne
+message messageOneof
 {
-    oneof choicesOne
+    oneof choicesOneof
     {
         string sOne = 1;
         bool bOne = 2;

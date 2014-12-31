@@ -54,6 +54,8 @@
 		3EB0EBD819E23E580097929D /* OneofParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB0EBD719E23E580097929D /* OneofParserScenarios.cpp */; };
 		3EB0FA2419DA4B66003633C8 /* ParserManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB0FA2219DA4B65003633C8 /* ParserManager.cpp */; };
 		3EB0FA2519DA4B66003633C8 /* ParserManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EB0FA2319DA4B65003633C8 /* ParserManager.h */; };
+		3EB51F4B1A53AF5B00227C64 /* MessageOneofScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB51F4A1A53AF5B00227C64 /* MessageOneofScenarios.cpp */; };
+		3EB51F4E1A53AFD700227C64 /* MessageOneof.protocol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB51F4C1A53AFD700227C64 /* MessageOneof.protocol.cpp */; };
 		3EC1F8DA19E4E24D0035376F /* EnumValueParserScenarios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EC1F8D919E4E24D0035376F /* EnumValueParserScenarios.cpp */; };
 		3EC7155A1A09EE6900C19A3F /* Packageable.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EC715591A09EE6900C19A3F /* Packageable.h */; };
 		3ECE389D19DBAA3100A042B4 /* EnumParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ECE389B19DBAA3100A042B4 /* EnumParser.cpp */; };
@@ -222,6 +224,9 @@
 		3EB0EBD719E23E580097929D /* OneofParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OneofParserScenarios.cpp; sourceTree = "<group>"; };
 		3EB0FA2219DA4B65003633C8 /* ParserManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParserManager.cpp; sourceTree = "<group>"; };
 		3EB0FA2319DA4B65003633C8 /* ParserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParserManager.h; sourceTree = "<group>"; };
+		3EB51F4A1A53AF5B00227C64 /* MessageOneofScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageOneofScenarios.cpp; sourceTree = "<group>"; };
+		3EB51F4C1A53AFD700227C64 /* MessageOneof.protocol.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageOneof.protocol.cpp; sourceTree = "<group>"; };
+		3EB51F4D1A53AFD700227C64 /* MessageOneof.protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageOneof.protocol.h; sourceTree = "<group>"; };
 		3EC1F8D619E4DFE80035376F /* EnumValue.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EnumValue.proto; sourceTree = "<group>"; };
 		3EC1F8D819E4E02B0035376F /* EnumValueMultipleMessage.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EnumValueMultipleMessage.proto; sourceTree = "<group>"; };
 		3EC1F8D919E4E24D0035376F /* EnumValueParserScenarios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnumValueParserScenarios.cpp; sourceTree = "<group>"; };
@@ -308,6 +313,7 @@
 				3E08D6A51A4281F500D17E46 /* main.cpp */,
 				3E08D6B01A46658300D17E46 /* MessageEmptyScenarios.cpp */,
 				3E08D6B91A4D164E00D17E46 /* MessageFieldScenarios.cpp */,
+				3EB51F4A1A53AF5B00227C64 /* MessageOneofScenarios.cpp */,
 			);
 			path = ProtocolGeneratedDesign;
 			sourceTree = "<group>";
@@ -315,6 +321,8 @@
 		3E08D6AB1A42833B00D17E46 /* Generated */ = {
 			isa = PBXGroup;
 			children = (
+				3EB51F4C1A53AFD700227C64 /* MessageOneof.protocol.cpp */,
+				3EB51F4D1A53AFD700227C64 /* MessageOneof.protocol.h */,
 				3E08D6AF1A428A7400D17E46 /* ProtoBase.protocol.h */,
 				3E08D6AC1A4284DB00D17E46 /* Message.protocol.cpp */,
 				3E08D6AD1A4284DB00D17E46 /* Message.protocol.h */,
@@ -687,10 +695,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E08D6BA1A4D164E00D17E46 /* MessageFieldScenarios.cpp in Sources */,
+				3EB51F4B1A53AF5B00227C64 /* MessageOneofScenarios.cpp in Sources */,
 				3E08D6B81A4D151F00D17E46 /* MessageField.protocol.cpp in Sources */,
 				3E08D6AE1A4284DB00D17E46 /* Message.protocol.cpp in Sources */,
 				3E08D6B11A46658300D17E46 /* MessageEmptyScenarios.cpp in Sources */,
 				3E08D6A61A4281F500D17E46 /* main.cpp in Sources */,
+				3EB51F4E1A53AFD700227C64 /* MessageOneof.protocol.cpp in Sources */,
 				3E08D6B51A46971C00D17E46 /* MessageAllFields.protocol.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -945,6 +955,7 @@
 				3E08D6A81A4281F500D17E46 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3E08D6C31A4F64CF00D17E46 /* Build configuration list for PBXNativeTarget "ProtocolCompiler" */ = {
 			isa = XCConfigurationList;
@@ -953,6 +964,7 @@
 				3E08D6C51A4F64CF00D17E46 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3E606E5D19BFF9C6009692B8 /* Build configuration list for PBXProject "Protocol" */ = {
 			isa = XCConfigurationList;

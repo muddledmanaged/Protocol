@@ -34,7 +34,7 @@ DESIGNER_SCENARIO( OneofParser, "Parsing/Normal", "OneofParser can parse simple 
     {
         messageCount++;
         auto message = *begin1;
-        verifyEqual("messageOne", message->name());
+        verifyEqual("messageOneof", message->name());
         verifyTrue(message->fields()->empty());
 
         int oneofCount = 0;
