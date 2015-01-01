@@ -1341,6 +1341,56 @@ void Protocol::CodeGeneratorCPP::writeMessageParseToSource (CodeWriter & sourceF
         ++messageFieldBegin;
     }
 
+    auto oneofBegin = messageModel.oneofs()->cbegin();
+    auto oneofEnd = messageModel.oneofs()->cend();
+    while (oneofBegin != oneofEnd)
+    {
+        auto oneofModel = *oneofBegin;
+
+        string oneofEnumClassName = oneofModel->namePascal() + "Choices";
+        string oneofEnumInstanceName = "mData->mCurrent";
+        oneofEnumInstanceName += oneofModel->namePascal() + "Choice";
+
+        messageFieldBegin = oneofModel->fields()->cbegin();
+        messageFieldEnd = oneofModel->fields()->cend();
+        while (messageFieldBegin != messageFieldEnd)
+        {
+            auto messageFieldModel = *messageFieldBegin;
+
+            string fieldIndexName = className + "Data::m";
+            fieldIndexName += messageFieldModel->namePascal() + "Index";
+
+            sourceFileWriter.writeSwitchCaseOpening(fieldIndexName);
+
+            string fieldValueName = "mData->m";
+            fieldValueName += messageFieldModel->namePascal();
+            if (messageFieldModel->requiredness() == MessageFieldModel::Requiredness::repeated)
+            {
+                fieldValueName += "Collection";
+            }
+            else
+            {
+                fieldValueName += "Value";
+            }
+
+            statement = "fieldBytesParsed = ";
+            statement += fieldValueName + ".parse(pData);";
+            sourceFileWriter.writeLineIndented(statement);
+
+            statement = oneofEnumInstanceName + " = ";
+            statement += oneofEnumClassName + "::" + messageFieldModel->name() + ";";
+            sourceFileWriter.writeLineIndented(statement);
+
+            sourceFileWriter.writeSwitchCaseClosing();
+            
+            sourceFileWriter.writeBlankLine();
+
+            ++messageFieldBegin;
+        }
+        
+        ++oneofBegin;
+    }
+
     sourceFileWriter.writeSwitchDefaultCaseOpening();
     statement = "fieldWireType";
     sourceFileWriter.writeSwitchOpening(statement);
@@ -1426,6 +1476,41 @@ void Protocol::CodeGeneratorCPP::writeMessageSerializeToSource (CodeWriter & sou
         sourceFileWriter.writeBlankLine();
 
         ++messageFieldBegin;
+    }
+
+    auto oneofBegin = messageModel.oneofs()->cbegin();
+    auto oneofEnd = messageModel.oneofs()->cend();
+    while (oneofBegin != oneofEnd)
+    {
+        auto oneofModel = *oneofBegin;
+
+        messageFieldBegin = oneofModel->fields()->cbegin();
+        messageFieldEnd = oneofModel->fields()->cend();
+        while (messageFieldBegin != messageFieldEnd)
+        {
+            auto messageFieldModel = *messageFieldBegin;
+
+            string fieldValueName = "mData->m";
+            fieldValueName += messageFieldModel->namePascal();
+            if (messageFieldModel->requiredness() == MessageFieldModel::Requiredness::repeated)
+            {
+                fieldValueName += "Collection";
+            }
+            else
+            {
+                fieldValueName += "Value";
+            }
+
+            statement = "result += ";
+            statement += fieldValueName + ".serialize();";
+            sourceFileWriter.writeLineIndented(statement);
+            
+            sourceFileWriter.writeBlankLine();
+
+            ++messageFieldBegin;
+        }
+        
+        ++oneofBegin;
     }
 
     statement = "this->index() == 0";
