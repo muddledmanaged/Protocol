@@ -148,6 +148,10 @@ namespace MuddledManaged
                                      const OneofModel & oneofModel, const std::string & className,
                                      const std::string & fullScope) const;
 
+            void writeMessageOneofCurrentToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                 const OneofModel & oneofModel, const std::string & className,
+                                                 const std::string & fullScope) const;
+
             void writeMessageOneofClearToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                  const OneofModel & oneofModel, const std::string & className,
                                                  const std::string & fullScope) const;

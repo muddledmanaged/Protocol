@@ -811,7 +811,7 @@ void Protocol::CodeGeneratorCPP::writeOneofToHeader (CodeWriter & headerFileWrit
     methodName += oneofModel.namePascal() + "Choice";
     string methodReturn = enumName;
     string methodParameters = "";
-    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
 
     methodName = "clear";
     methodName += oneofModel.namePascal();
@@ -1669,6 +1669,7 @@ void Protocol::CodeGeneratorCPP::writeOneofToSource (CodeWriter & sourceFileWrit
                                                      const OneofModel & oneofModel, const std::string & className,
                                                      const std::string & fullScope) const
 {
+    writeMessageOneofCurrentToSource(sourceFileWriter, protoModel, oneofModel, className, fullScope);
     writeMessageOneofClearToSource(sourceFileWriter, protoModel, oneofModel, className, fullScope);
 
     auto messageFieldBegin = oneofModel.fields()->cbegin();
@@ -1681,6 +1682,27 @@ void Protocol::CodeGeneratorCPP::writeOneofToSource (CodeWriter & sourceFileWrit
 
         ++messageFieldBegin;
     }
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageOneofCurrentToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                   const OneofModel & oneofModel, const std::string & className,
+                                                                   const std::string & fullScope) const
+{
+    string oneofEnumClassName = oneofModel.namePascal() + "Choices";
+    string oneofEnumInstanceName = "mData->mCurrent";
+    oneofEnumInstanceName += oneofModel.namePascal() + "Choice";
+
+    string methodName = fullScope + "::current";
+    methodName += oneofModel.namePascal() + "Choice";
+    string methodReturn = fullScope + "::" + oneofEnumClassName;
+    string methodParameters = "";
+    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
+
+    string statement = "return ";
+    statement += oneofEnumInstanceName + ";";
+    sourceFileWriter.writeLineIndented(statement);
+
+    sourceFileWriter.writeMethodImplementationClosing();
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageOneofClearToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
