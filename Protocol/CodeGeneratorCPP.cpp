@@ -1669,6 +1669,8 @@ void Protocol::CodeGeneratorCPP::writeOneofToSource (CodeWriter & sourceFileWrit
                                                      const OneofModel & oneofModel, const std::string & className,
                                                      const std::string & fullScope) const
 {
+    writeMessageOneofClearToSource(sourceFileWriter, protoModel, oneofModel, className, fullScope);
+
     auto messageFieldBegin = oneofModel.fields()->cbegin();
     auto messageFieldEnd = oneofModel.fields()->cend();
     while (messageFieldBegin != messageFieldEnd)
@@ -1679,6 +1681,26 @@ void Protocol::CodeGeneratorCPP::writeOneofToSource (CodeWriter & sourceFileWrit
 
         ++messageFieldBegin;
     }
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageOneofClearToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                                 const OneofModel & oneofModel, const std::string & className,
+                                                                 const std::string & fullScope) const
+{
+    string methodName = fullScope + "::clear";
+    methodName += oneofModel.namePascal();
+    string methodReturn = "void";
+    string methodParameters = "";
+    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
+
+    string oneofEnumClassName = oneofModel.namePascal() + "Choices";
+    string oneofEnumInstanceName = "mData->mCurrent";
+    oneofEnumInstanceName += oneofModel.namePascal() + "Choice";
+
+    string statement = oneofEnumInstanceName + " = " + oneofEnumClassName + "::none;";
+    sourceFileWriter.writeLineIndented(statement);
+
+    sourceFileWriter.writeMethodImplementationClosing();
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldSizeRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
