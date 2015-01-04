@@ -906,13 +906,9 @@ void Protocol::CodeGeneratorCPP::writeMessageToSource (CodeWriter & sourceFileWr
     }
     fullScope += className;
 
-    string classDataName = className + "Data";
-    string fullDataScope = fullScope + "::";
-    fullDataScope += classDataName;
+    writeMessageDataConstructorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
 
-    writeMessageDataConstructorToSource(sourceFileWriter, protoModel, messageModel, classDataName, fullDataScope);
-
-    writeMessageDataDestructorToSource(sourceFileWriter, protoModel, messageModel, classDataName, fullDataScope);
+    writeMessageDataDestructorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
 
     writeMessageConstructorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
 
@@ -961,6 +957,10 @@ void Protocol::CodeGeneratorCPP::writeMessageDataConstructorToSource (CodeWriter
                                                                   const MessageModel & messageModel, const std::string & className,
                                                                   const std::string & fullScope) const
 {
+    string classDataName = className + "Data";
+    string fullDataScope = fullScope + "::";
+    fullDataScope += classDataName;
+
     string initializationParameters = "";
     bool firstParameter = true;
     auto messageFieldBegin = messageModel.fields()->cbegin();
@@ -990,6 +990,18 @@ void Protocol::CodeGeneratorCPP::writeMessageDataConstructorToSource (CodeWriter
     {
         auto oneofModel = *oneofBegin;
 
+        if (!firstParameter)
+        {
+            initializationParameters += ", ";
+        }
+        firstParameter = false;
+
+        string oneofEnumClassName = fullScope + "::" + oneofModel->namePascal() + "Choices";
+        string oneofEnumInstanceName = "mCurrent";
+        oneofEnumInstanceName += oneofModel->namePascal() + "Choice";
+
+        initializationParameters += oneofEnumInstanceName + "(" + oneofEnumClassName + "::none)";
+
         messageFieldBegin = oneofModel->fields()->cbegin();
         messageFieldEnd = oneofModel->fields()->cend();
         while (messageFieldBegin != messageFieldEnd)
@@ -999,11 +1011,7 @@ void Protocol::CodeGeneratorCPP::writeMessageDataConstructorToSource (CodeWriter
             string fieldInitialization = messageFieldInitialization(*messageFieldModel);
             if (!fieldInitialization.empty())
             {
-                if (!firstParameter)
-                {
-                    initializationParameters += ", ";
-                }
-                firstParameter = false;
+                initializationParameters += ", ";
 
                 initializationParameters += fieldInitialization;
             }
@@ -1014,7 +1022,7 @@ void Protocol::CodeGeneratorCPP::writeMessageDataConstructorToSource (CodeWriter
         ++oneofBegin;
     }
 
-    string methodName = fullScope + "::" + className;
+    string methodName = fullDataScope + "::" + classDataName;
     string methodParameters = "";
     sourceFileWriter.writeConstructorImplementationOpening(methodName, methodParameters, initializationParameters);
 
@@ -1024,7 +1032,7 @@ void Protocol::CodeGeneratorCPP::writeMessageDataConstructorToSource (CodeWriter
     {
         auto messageFieldModel = *messageFieldBegin;
 
-        writeMessageDataFieldInitializationToSource(sourceFileWriter, protoModel, *messageFieldModel, className, fullScope);
+        writeMessageDataFieldInitializationToSource(sourceFileWriter, protoModel, *messageFieldModel, classDataName, fullDataScope);
 
         ++messageFieldBegin;
     }
@@ -1041,7 +1049,7 @@ void Protocol::CodeGeneratorCPP::writeMessageDataConstructorToSource (CodeWriter
         {
             auto messageFieldModel = *messageFieldBegin;
 
-            writeMessageDataFieldInitializationToSource(sourceFileWriter, protoModel, *messageFieldModel, className, fullScope);
+            writeMessageDataFieldInitializationToSource(sourceFileWriter, protoModel, *messageFieldModel, classDataName, fullDataScope);
 
             ++messageFieldBegin;
         }
@@ -1138,7 +1146,11 @@ void Protocol::CodeGeneratorCPP::writeMessageDataDestructorToSource (CodeWriter 
                                                                  const MessageModel & messageModel, const std::string & className,
                                                                  const std::string & fullScope) const
 {
-    string methodName = fullScope + "::~" + className;
+    string classDataName = className + "Data";
+    string fullDataScope = fullScope + "::";
+    fullDataScope += classDataName;
+
+    string methodName = fullDataScope + "::~" + classDataName;
     sourceFileWriter.writeMethodImplementationOpening(methodName);
 
     sourceFileWriter.writeMethodImplementationClosing();
