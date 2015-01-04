@@ -1525,8 +1525,16 @@ void Protocol::CodeGeneratorCPP::writeMessageSerializeToSource (CodeWriter & sou
         ++oneofBegin;
     }
 
-    statement = "this->index() == 0";
+    statement = "result.empty()";
     sourceFileWriter.writeIfOpening(statement);
+
+    statement = "return result;";
+    sourceFileWriter.writeLineIndented(statement);
+
+    sourceFileWriter.writeIfClosing();
+
+    statement = "this->index() == 0";
+    sourceFileWriter.writeElseIfOpening(statement);
 
     statement = "result = MuddledManaged::Protocol::PrimitiveEncoding::serializeVariableUnsignedInt32(static_cast<std::uint32_t>(result.length())) +";
     sourceFileWriter.writeLineIndented(statement);
