@@ -1496,11 +1496,26 @@ void Protocol::CodeGeneratorCPP::writeMessageSerializeToSource (CodeWriter & sou
     {
         auto oneofModel = *oneofBegin;
 
+        string oneofEnumClassName = oneofModel->namePascal() + "Choices";
+        string oneofEnumInstanceName = "mData->mCurrent";
+        oneofEnumInstanceName += oneofModel->namePascal() + "Choice";
+
+        statement = oneofEnumInstanceName;
+        sourceFileWriter.writeSwitchOpening(statement);
+        string oneofEnumCase = oneofEnumClassName + "::none";
+        sourceFileWriter.writeSwitchCaseOpening(oneofEnumCase);
+        sourceFileWriter.writeSwitchCaseClosing();
+
         messageFieldBegin = oneofModel->fields()->cbegin();
         messageFieldEnd = oneofModel->fields()->cend();
         while (messageFieldBegin != messageFieldEnd)
         {
             auto messageFieldModel = *messageFieldBegin;
+
+            sourceFileWriter.writeBlankLine();
+            
+            oneofEnumCase = oneofEnumClassName + "::" + messageFieldModel->name();
+            sourceFileWriter.writeSwitchCaseOpening(oneofEnumCase);
 
             string fieldValueName = "mData->m";
             fieldValueName += messageFieldModel->namePascal();
@@ -1516,12 +1531,15 @@ void Protocol::CodeGeneratorCPP::writeMessageSerializeToSource (CodeWriter & sou
             statement = "result += ";
             statement += fieldValueName + ".serialize();";
             sourceFileWriter.writeLineIndented(statement);
-            
-            sourceFileWriter.writeBlankLine();
+
+            sourceFileWriter.writeSwitchCaseClosing();
 
             ++messageFieldBegin;
         }
-        
+
+        sourceFileWriter.writeSwitchClosing();
+        sourceFileWriter.writeBlankLine();
+
         ++oneofBegin;
     }
 
@@ -1698,10 +1716,25 @@ void Protocol::CodeGeneratorCPP::writeOneofToSource (CodeWriter & sourceFileWrit
     {
         auto messageFieldModel = *messageFieldBegin;
 
-        writeMessageFieldToSource(sourceFileWriter, protoModel, *messageFieldModel, className, fullScope);
+        writeMessageOneofFieldToSource(sourceFileWriter, protoModel, *messageFieldModel, className, fullScope, &oneofModel);
 
         ++messageFieldBegin;
     }
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageOneofFieldToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                            const MessageFieldModel & messageFieldModel, const std::string & className,
+                                                            const std::string & fullScope, const OneofModel * oneofModel) const
+{
+    writeMessageFieldHasToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope, oneofModel);
+
+    writeMessageFieldGetToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope, oneofModel);
+
+    writeMessageFieldSetToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope, oneofModel);
+
+    writeMessageFieldCreateNewToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope, oneofModel);
+
+    writeMessageFieldClearToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope, oneofModel);
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageOneofCurrentToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
@@ -1962,19 +1995,36 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldClearRepeatedToSource (CodeWri
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldHasToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                                const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                               const std::string & fullScope) const
+                                                               const std::string & fullScope, const OneofModel * oneofModel) const
 {
     string methodName = fullScope + "::has";
     methodName += messageFieldModel.namePascal();
     string methodReturn = "bool";
     string methodParameters = "";
 
+    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
+
+    string statement;
+    if (oneofModel != nullptr)
+    {
+        string oneofEnumClassName = oneofModel->namePascal() + "Choices";
+        string oneofEnumInstanceName = "mData->mCurrent";
+        oneofEnumInstanceName += oneofModel->namePascal() + "Choice";
+
+        statement = oneofEnumInstanceName + " != " + oneofEnumClassName + "::" + messageFieldModel.name();
+        sourceFileWriter.writeIfOpening(statement);
+
+        statement = "return false;";
+        sourceFileWriter.writeLineIndented(statement);
+
+        sourceFileWriter.writeIfClosing();
+        sourceFileWriter.writeBlankLine();
+    }
+
     string fieldValueName = "mData->m";
     fieldValueName += messageFieldModel.namePascal() + "Value";
-    string statement = "return ";
+    statement = "return ";
     statement += fieldValueName + ".hasValue();";
-
-    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
 
     sourceFileWriter.writeLineIndented(statement);
 
@@ -1983,7 +2033,7 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldHasToSource (CodeWriter & sour
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldGetToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                                const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                               const std::string & fullScope) const
+                                                               const std::string & fullScope, const OneofModel * oneofModel) const
 {
     string fieldType = fullTypeName(messageFieldModel);
     string methodName = fullScope + "::";
@@ -2032,7 +2082,7 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldGetToSource (CodeWriter & sour
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldSetToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                                const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                               const std::string & fullScope) const
+                                                               const std::string & fullScope, const OneofModel * oneofModel) const
 {
     string fieldType = fullTypeName(messageFieldModel);
     string methodName = fullScope + "::set";
@@ -2054,8 +2104,6 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldSetToSource (CodeWriter & sour
             sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
 
             sourceFileWriter.writeLineIndented(statement);
-
-            sourceFileWriter.writeMethodImplementationClosing();
             break;
         }
 
@@ -2068,19 +2116,31 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldSetToSource (CodeWriter & sour
             sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
 
             sourceFileWriter.writeLineIndented(statement);
-
-            sourceFileWriter.writeMethodImplementationClosing();
             break;
         }
 
         default:
             break;
     }
+
+    if (oneofModel != nullptr)
+    {
+        sourceFileWriter.writeBlankLine();
+
+        string oneofEnumClassName = oneofModel->namePascal() + "Choices";
+        string oneofEnumInstanceName = "mData->mCurrent";
+        oneofEnumInstanceName += oneofModel->namePascal() + "Choice";
+
+        statement = oneofEnumInstanceName + " = " + oneofEnumClassName + "::" + messageFieldModel.name() + ";";
+        sourceFileWriter.writeLineIndented(statement);
+    }
+
+    sourceFileWriter.writeMethodImplementationClosing();
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldCreateNewToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                                      const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                                     const std::string & fullScope) const
+                                                                     const std::string & fullScope, const OneofModel * oneofModel) const
 {
     string fieldType = fullTypeName(messageFieldModel);
     string methodName = fullScope + "::createNew";
@@ -2100,6 +2160,18 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldCreateNewToSource (CodeWriter 
             statement += fieldValueName + ".createNewValue();";
             sourceFileWriter.writeLineIndented(statement);
 
+            if (oneofModel != nullptr)
+            {
+                sourceFileWriter.writeBlankLine();
+
+                string oneofEnumClassName = oneofModel->namePascal() + "Choices";
+                string oneofEnumInstanceName = "mData->mCurrent";
+                oneofEnumInstanceName += oneofModel->namePascal() + "Choice";
+
+                statement = oneofEnumInstanceName + " = " + oneofEnumClassName + "::" + messageFieldModel.name() + ";";
+                sourceFileWriter.writeLineIndented(statement);
+            }
+
             sourceFileWriter.writeMethodImplementationClosing();
             break;
         }
@@ -2111,20 +2183,47 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldCreateNewToSource (CodeWriter 
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldClearToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                                  const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                                 const std::string & fullScope) const
+                                                                 const std::string & fullScope, const OneofModel * oneofModel) const
 {
     string methodName = fullScope + "::clear";
     methodName += messageFieldModel.namePascal();
     string methodReturn = "void";
     string methodParameters = "";
 
-    string fieldValueName = "mData->m";
-    fieldValueName += messageFieldModel.namePascal() + "Value";
-    string statement = fieldValueName + ".clearValue();";
-
     sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
 
+    string statement;
+    string oneofEnumClassName;
+    string oneofEnumInstanceName;
+    if (oneofModel != nullptr)
+    {
+        oneofEnumClassName = oneofModel->namePascal() + "Choices";
+        oneofEnumInstanceName = "mData->mCurrent";
+        oneofEnumInstanceName += oneofModel->namePascal() + "Choice";
+
+        statement = oneofEnumInstanceName + " != " + oneofEnumClassName + "::" + messageFieldModel.name();
+        sourceFileWriter.writeIfOpening(statement);
+
+        statement = "return;";
+        sourceFileWriter.writeLineIndented(statement);
+
+        sourceFileWriter.writeIfClosing();
+        sourceFileWriter.writeBlankLine();
+    }
+
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Value";
+    statement = fieldValueName + ".clearValue();";
+
     sourceFileWriter.writeLineIndented(statement);
+
+    if (oneofModel != nullptr)
+    {
+        sourceFileWriter.writeBlankLine();
+
+        statement = oneofEnumInstanceName + " = " + oneofEnumClassName + "::none;";
+        sourceFileWriter.writeLineIndented(statement);
+    }
 
     sourceFileWriter.writeMethodImplementationClosing();
 }
