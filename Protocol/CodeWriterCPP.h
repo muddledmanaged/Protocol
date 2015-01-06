@@ -467,10 +467,12 @@ namespace MuddledManaged
             {
                 mStream << mIndenter.prefix() << "switch (" << switchValue << ")" << std::endl;
                 writeCurlyBraceOpening();
+                ++mIndenter;
             }
 
             void writeSwitchClosing ()
             {
+                --mIndenter;
                 writeCurlyBraceClosing();
             }
 
