@@ -446,7 +446,8 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
 
     methodName = "~";
     methodName += className;
-    headerFileWriter.writeClassMethodDeclaration(methodName);
+    headerFileWriter.writeClassMethodInlineOpening(methodName, false, true);
+    headerFileWriter.writeClassMethodInlineClosing();
 
     methodName = "operator =";
     methodReturn = className + " &";
@@ -536,7 +537,8 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
 
     methodName = "~";
     methodName += classDataName;
-    headerFileWriter.writeClassMethodDeclaration(methodName);
+    headerFileWriter.writeClassMethodInlineOpening(methodName);
+    headerFileWriter.writeClassMethodInlineClosing();
 
     messageFieldBegin = messageModel.fields()->cbegin();
     messageFieldEnd = messageModel.fields()->cend();
@@ -908,13 +910,9 @@ void Protocol::CodeGeneratorCPP::writeMessageToSource (CodeWriter & sourceFileWr
 
     writeMessageDataConstructorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
 
-    writeMessageDataDestructorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
-
     writeMessageConstructorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
 
     writeMessageCopyConstructorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
-
-    writeMessageDestructorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
 
     writeMessageAssignmentOperatorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
 
@@ -1142,20 +1140,6 @@ std::string Protocol::CodeGeneratorCPP::messageFieldInitialization (const Messag
     return fieldInitialization;
 }
 
-void Protocol::CodeGeneratorCPP::writeMessageDataDestructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                                 const MessageModel & messageModel, const std::string & className,
-                                                                 const std::string & fullScope) const
-{
-    string classDataName = className + "Data";
-    string fullDataScope = fullScope + "::";
-    fullDataScope += classDataName;
-
-    string methodName = fullDataScope + "::~" + classDataName;
-    sourceFileWriter.writeMethodImplementationOpening(methodName);
-
-    sourceFileWriter.writeMethodImplementationClosing();
-}
-
 void Protocol::CodeGeneratorCPP::writeMessageConstructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                                   const MessageModel & messageModel, const std::string & className,
                                                                   const std::string & fullScope) const
@@ -1179,15 +1163,6 @@ void Protocol::CodeGeneratorCPP::writeMessageCopyConstructorToSource (CodeWriter
     methodParameters += className + " & src";
     string initializationParameters = "MuddledManaged::Protocol::ProtoMessage(src), mData(src.mData)";
     sourceFileWriter.writeConstructorImplementationOpening(methodName, methodParameters, initializationParameters);
-    sourceFileWriter.writeMethodImplementationClosing();
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageDestructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                                 const MessageModel & messageModel, const std::string & className,
-                                                                 const std::string & fullScope) const
-{
-    string methodName = fullScope + "::~" + className;
-    sourceFileWriter.writeMethodImplementationOpening(methodName);
     sourceFileWriter.writeMethodImplementationClosing();
 }
 

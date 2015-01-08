@@ -362,6 +362,8 @@ namespace MuddledManaged
                     mStream << " const";
                 }
 
+                mStream << std::endl;
+
                 writeCurlyBraceOpening();
             }
 
