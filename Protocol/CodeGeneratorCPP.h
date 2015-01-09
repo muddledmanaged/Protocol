@@ -63,6 +63,24 @@ namespace MuddledManaged
             void writeMessageToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
                                        const MessageModel & messageModel, const std::string & className) const;
 
+            void writeMessageConstructorToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                  const MessageModel & messageModel, const std::string & className) const;
+
+            void writeMessageCopyConstructorToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                      const MessageModel & messageModel, const std::string & className) const;
+
+            void writeMessageDestructorToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                 const MessageModel & messageModel, const std::string & className) const;
+
+            void writeMessageAssignmentOperatorToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                         const MessageModel & messageModel, const std::string & className) const;
+
+            void writeMessageSwapToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                           const MessageModel & messageModel, const std::string & className) const;
+
+            void writeMessageClearToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                            const MessageModel & messageModel, const std::string & className) const;
+
             void writeMessageFieldToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
                                             const MessageFieldModel & messageFieldModel) const;
 
@@ -95,26 +113,6 @@ namespace MuddledManaged
                                                               const std::string & fullScope) const;
 
             std::string messageFieldInitialization (const MessageFieldModel & messageFieldModel) const;
-
-            void writeMessageConstructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                  const MessageModel & messageModel, const std::string & className,
-                                                  const std::string & fullScope) const;
-
-            void writeMessageCopyConstructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                      const MessageModel & messageModel, const std::string & className,
-                                                      const std::string & fullScope) const;
-
-            void writeMessageAssignmentOperatorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                         const MessageModel & messageModel, const std::string & className,
-                                                         const std::string & fullScope) const;
-
-            void writeMessageSwapToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                           const MessageModel & messageModel, const std::string & className,
-                                           const std::string & fullScope) const;
-
-            void writeMessageClearToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                            const MessageModel & messageModel, const std::string & className,
-                                            const std::string & fullScope) const;
 
             void writeMessageParseToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                             const MessageModel & messageModel, const std::string & className,

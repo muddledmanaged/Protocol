@@ -436,37 +436,21 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
         headerFileWriter.writeClassPublic();
     }
 
-    string methodName = className;
-    headerFileWriter.writeClassMethodDeclaration(methodName);
+    writeMessageConstructorToHeader(headerFileWriter, protoModel, messageModel, className);
 
-    string methodReturn = "";
-    string methodParameters = "const ";
-    methodParameters += className + " & src";
-    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+    writeMessageCopyConstructorToHeader(headerFileWriter, protoModel, messageModel, className);
 
-    methodName = "~";
-    methodName += className;
-    headerFileWriter.writeClassMethodInlineOpening(methodName, false, true);
-    headerFileWriter.writeClassMethodInlineClosing();
+    writeMessageDestructorToHeader(headerFileWriter, protoModel, messageModel, className);
 
-    methodName = "operator =";
-    methodReturn = className + " &";
-    methodParameters = "const ";
-    methodParameters += className + " & rhs";
-    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+    writeMessageAssignmentOperatorToHeader(headerFileWriter, protoModel, messageModel, className);
 
-    methodName = "swap";
-    methodReturn = "void";
-    methodParameters = className + " * other";
-    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+    writeMessageSwapToHeader(headerFileWriter, protoModel, messageModel, className);
 
-    methodName = "clear";
-    methodReturn = "void";
-    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, false, true);
+    writeMessageClearToHeader(headerFileWriter, protoModel, messageModel, className);
 
-    methodName = "parse";
-    methodReturn = "size_t";
-    methodParameters = "const char * pData";
+    string methodName = "parse";
+    string methodReturn = "size_t";
+    string methodParameters = "const char * pData";
     headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, false, true);
 
     methodName = "serialize";
@@ -586,6 +570,111 @@ void Protocol::CodeGeneratorCPP::writeMessageToHeader (CodeWriter & headerFileWr
     headerFileWriter.writeClassFieldDeclaration(backingFieldName, backingFieldType);
 
     headerFileWriter.writeClassClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageConstructorToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                                  const MessageModel & messageModel, const std::string & className) const
+{
+    string methodName = className;
+    string methodParameters = "";
+    string initializationParameters = "mData(new ";
+    initializationParameters += className + "Data())";
+    headerFileWriter.writeConstructorImplementationOpening(methodName, methodParameters, initializationParameters);
+    headerFileWriter.writeClassMethodInlineClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageCopyConstructorToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                                      const MessageModel & messageModel, const std::string & className) const
+{
+    string methodName = className;
+    string methodParameters = "const ";
+    methodParameters += className + " & src";
+    string initializationParameters = "ProtoMessage(src), mData(src.mData)";
+    headerFileWriter.writeConstructorImplementationOpening(methodName, methodParameters, initializationParameters);
+    headerFileWriter.writeClassMethodInlineClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageDestructorToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                                 const MessageModel & messageModel, const std::string & className) const
+{
+    string methodName = "~";
+    methodName += className;
+    string methodReturn = "";
+    headerFileWriter.writeClassMethodInlineOpening(methodName, false, true);
+    headerFileWriter.writeClassMethodInlineClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageAssignmentOperatorToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                                         const MessageModel & messageModel,
+                                                                         const std::string & className) const
+{
+    string methodName = "operator =";
+    string methodReturn = className + " &";
+    string methodParameters = "const ";
+    methodParameters += className + " & rhs";
+    headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters);
+
+    string statement = "this == &rhs";
+    headerFileWriter.writeIfOpening(statement);
+    statement = "return *this;";
+    headerFileWriter.writeLineIndented(statement);
+    headerFileWriter.writeIfClosing();
+
+    headerFileWriter.writeBlankLine();
+
+    statement = "ProtoMessage::operator=(rhs);";
+    headerFileWriter.writeLineIndented(statement);
+
+    headerFileWriter.writeBlankLine();
+
+    statement = "mData = rhs.mData;";
+    headerFileWriter.writeLineIndented(statement);
+
+    headerFileWriter.writeBlankLine();
+
+    statement = "return *this;";
+    headerFileWriter.writeLineIndented(statement);
+
+    headerFileWriter.writeClassMethodInlineClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageSwapToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                           const MessageModel & messageModel, const std::string & className) const
+{
+    string methodName = "swap";
+    string methodReturn = "void";
+    string methodParameters = className + " * other";
+    headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters);
+
+    string dataType = "std::shared_ptr<";
+    dataType += className + "Data>";
+    string statement = dataType + " thisData(mData);";
+    headerFileWriter.writeLineIndented(statement);
+    statement = dataType + " otherData(other->mData);";
+    headerFileWriter.writeLineIndented(statement);
+
+    headerFileWriter.writeBlankLine();
+
+    statement = "mData = otherData;";
+    headerFileWriter.writeLineIndented(statement);
+    statement = "other->mData = thisData;";
+    headerFileWriter.writeLineIndented(statement);
+
+    headerFileWriter.writeClassMethodInlineClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageClearToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                            const MessageModel & messageModel, const std::string & className) const
+{
+    string methodName = "clear";
+    string methodReturn = "void";
+    headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn);
+
+    string statement = "mData.reset(new ";
+    statement += className + "Data());";
+    headerFileWriter.writeLineIndented(statement);
+    
+    headerFileWriter.writeClassMethodInlineClosing();
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
@@ -910,16 +999,6 @@ void Protocol::CodeGeneratorCPP::writeMessageToSource (CodeWriter & sourceFileWr
 
     writeMessageDataConstructorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
 
-    writeMessageConstructorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
-
-    writeMessageCopyConstructorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
-
-    writeMessageAssignmentOperatorToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
-
-    writeMessageSwapToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
-
-    writeMessageClearToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
-
     writeMessageParseToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
 
     writeMessageSerializeToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
@@ -1138,107 +1217,6 @@ std::string Protocol::CodeGeneratorCPP::messageFieldInitialization (const Messag
     }
 
     return fieldInitialization;
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageConstructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                                  const MessageModel & messageModel, const std::string & className,
-                                                                  const std::string & fullScope) const
-{
-    string methodName = fullScope + "::" + className;
-    string methodParameters = "";
-    string initializationParameters = "mData(new ";
-    initializationParameters += className + "Data())";
-    sourceFileWriter.writeConstructorImplementationOpening(methodName, methodParameters, initializationParameters);
-    
-    sourceFileWriter.writeMethodImplementationClosing();
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageCopyConstructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                                      const MessageModel & messageModel, const std::string & className,
-                                                                      const std::string & fullScope) const
-{
-    string methodName = fullScope + "::" + className;
-    string methodReturn = "";
-    string methodParameters = "const ";
-    methodParameters += className + " & src";
-    string initializationParameters = "MuddledManaged::Protocol::ProtoMessage(src), mData(src.mData)";
-    sourceFileWriter.writeConstructorImplementationOpening(methodName, methodParameters, initializationParameters);
-    sourceFileWriter.writeMethodImplementationClosing();
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageAssignmentOperatorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                                         const MessageModel & messageModel, const std::string & className,
-                                                                         const std::string & fullScope) const
-{
-    string methodName = fullScope + "::operator =";
-    string methodReturn = fullScope + " &";
-    string methodParameters = "const ";
-    methodParameters += className + " & rhs";
-    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
-
-    string statement = "this == &rhs";
-    sourceFileWriter.writeIfOpening(statement);
-    statement = "return *this;";
-    sourceFileWriter.writeLineIndented(statement);
-    sourceFileWriter.writeIfClosing();
-
-    sourceFileWriter.writeBlankLine();
-
-    statement = "MuddledManaged::Protocol::ProtoMessage::operator=(rhs);";
-    sourceFileWriter.writeLineIndented(statement);
-
-    sourceFileWriter.writeBlankLine();
-
-    statement = "mData = rhs.mData;";
-    sourceFileWriter.writeLineIndented(statement);
-
-    sourceFileWriter.writeBlankLine();
-
-    statement = "return *this;";
-    sourceFileWriter.writeLineIndented(statement);
-
-    sourceFileWriter.writeMethodImplementationClosing();
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageSwapToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                           const MessageModel & messageModel, const std::string & className,
-                                                           const std::string & fullScope) const
-{
-    string methodName = fullScope + "::swap";
-    string methodReturn = "void";
-    string methodParameters = className + " * other";
-    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
-
-    string dataType = "shared_ptr<";
-    dataType += className + "Data>";
-    string statement = dataType + " thisData(mData);";
-    sourceFileWriter.writeLineIndented(statement);
-    statement = dataType + " otherData(other->mData);";
-    sourceFileWriter.writeLineIndented(statement);
-
-    sourceFileWriter.writeBlankLine();
-
-    statement = "mData = otherData;";
-    sourceFileWriter.writeLineIndented(statement);
-    statement = "other->mData = thisData;";
-    sourceFileWriter.writeLineIndented(statement);
-
-    sourceFileWriter.writeMethodImplementationClosing();
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageClearToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                            const MessageModel & messageModel, const std::string & className,
-                                                            const std::string & fullScope) const
-{
-    string methodName = fullScope + "::clear";
-    string methodReturn = "void";
-    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn);
-
-    string statement = "mData.reset(new ";
-    statement += className + "Data());";
-    sourceFileWriter.writeLineIndented(statement);
-
-    sourceFileWriter.writeMethodImplementationClosing();
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageParseToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
