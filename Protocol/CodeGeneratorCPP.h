@@ -99,6 +99,12 @@ namespace MuddledManaged
             void writeMessageFieldIndexesToHeader (CodeWriter & headerFileWriter,
                                                  const OneofModel & oneofModel) const;
 
+            void writeMessageOneofCurrentToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                   const OneofModel & oneofModel) const;
+
+            void writeMessageOneofClearToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                 const OneofModel & oneofModel) const;
+
             void writeProtoMessagesToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel) const;
 
             void writeMessageToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
@@ -141,14 +147,6 @@ namespace MuddledManaged
             void writeOneofToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                      const OneofModel & oneofModel, const std::string & className,
                                      const std::string & fullScope) const;
-
-            void writeMessageOneofCurrentToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                 const OneofModel & oneofModel, const std::string & className,
-                                                 const std::string & fullScope) const;
-
-            void writeMessageOneofClearToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                 const OneofModel & oneofModel, const std::string & className,
-                                                 const std::string & fullScope) const;
 
             void writeMessageFieldSizeRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                                         const MessageFieldModel & messageFieldModel, const std::string & className,

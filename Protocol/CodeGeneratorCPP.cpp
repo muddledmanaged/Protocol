@@ -898,17 +898,9 @@ void Protocol::CodeGeneratorCPP::writeOneofToHeader (CodeWriter & headerFileWrit
 
     headerFileWriter.writeEnumClosing();
 
-    string methodName = "current";
-    methodName += oneofModel.namePascal() + "Choice";
-    string methodReturn = enumName;
-    string methodParameters = "";
-    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
+    writeMessageOneofCurrentToHeader(headerFileWriter, protoModel, oneofModel);
 
-    methodName = "clear";
-    methodName += oneofModel.namePascal();
-    methodReturn = "void";
-    methodParameters = "";
-    headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
+    writeMessageOneofClearToHeader(headerFileWriter, protoModel, oneofModel);
 
     messageFieldBegin = oneofModel.fields()->cbegin();
     messageFieldEnd = oneofModel.fields()->cend();
@@ -958,6 +950,45 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldIndexesToHeader (CodeWriter & 
 
         ++messageFieldBegin;
     }
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageOneofCurrentToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                                   const OneofModel & oneofModel) const
+{
+    string oneofEnumClassName = oneofModel.namePascal() + "Choices";
+    string oneofEnumInstanceName = "mData->mCurrent";
+    oneofEnumInstanceName += oneofModel.namePascal() + "Choice";
+
+    string methodName = "current";
+    methodName += oneofModel.namePascal() + "Choice";
+    string methodReturn = oneofEnumClassName;
+    string methodParameters = "";
+    headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters, true);
+
+    string statement = "return ";
+    statement += oneofEnumInstanceName + ";";
+    headerFileWriter.writeLineIndented(statement);
+
+    headerFileWriter.writeClassMethodInlineClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageOneofClearToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                                 const OneofModel & oneofModel) const
+{
+    string methodName = "clear";
+    methodName += oneofModel.namePascal();
+    string methodReturn = "void";
+    string methodParameters = "";
+    headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters);
+
+    string oneofEnumClassName = oneofModel.namePascal() + "Choices";
+    string oneofEnumInstanceName = "mData->mCurrent";
+    oneofEnumInstanceName += oneofModel.namePascal() + "Choice";
+
+    string statement = oneofEnumInstanceName + " = " + oneofEnumClassName + "::none;";
+    headerFileWriter.writeLineIndented(statement);
+
+    headerFileWriter.writeClassMethodInlineClosing();
 }
 
 void Protocol::CodeGeneratorCPP::writeProtoMessagesToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel) const
@@ -1660,9 +1691,6 @@ void Protocol::CodeGeneratorCPP::writeOneofToSource (CodeWriter & sourceFileWrit
                                                      const OneofModel & oneofModel, const std::string & className,
                                                      const std::string & fullScope) const
 {
-    writeMessageOneofCurrentToSource(sourceFileWriter, protoModel, oneofModel, className, fullScope);
-    writeMessageOneofClearToSource(sourceFileWriter, protoModel, oneofModel, className, fullScope);
-
     auto messageFieldBegin = oneofModel.fields()->cbegin();
     auto messageFieldEnd = oneofModel.fields()->cend();
     while (messageFieldBegin != messageFieldEnd)
@@ -1688,47 +1716,6 @@ void Protocol::CodeGeneratorCPP::writeMessageOneofFieldToSource (CodeWriter & so
     writeMessageFieldCreateNewToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope, oneofModel);
 
     writeMessageFieldClearToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope, oneofModel);
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageOneofCurrentToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                                   const OneofModel & oneofModel, const std::string & className,
-                                                                   const std::string & fullScope) const
-{
-    string oneofEnumClassName = oneofModel.namePascal() + "Choices";
-    string oneofEnumInstanceName = "mData->mCurrent";
-    oneofEnumInstanceName += oneofModel.namePascal() + "Choice";
-
-    string methodName = fullScope + "::current";
-    methodName += oneofModel.namePascal() + "Choice";
-    string methodReturn = fullScope + "::" + oneofEnumClassName;
-    string methodParameters = "";
-    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
-
-    string statement = "return ";
-    statement += oneofEnumInstanceName + ";";
-    sourceFileWriter.writeLineIndented(statement);
-
-    sourceFileWriter.writeMethodImplementationClosing();
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageOneofClearToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                                 const OneofModel & oneofModel, const std::string & className,
-                                                                 const std::string & fullScope) const
-{
-    string methodName = fullScope + "::clear";
-    methodName += oneofModel.namePascal();
-    string methodReturn = "void";
-    string methodParameters = "";
-    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
-
-    string oneofEnumClassName = oneofModel.namePascal() + "Choices";
-    string oneofEnumInstanceName = "mData->mCurrent";
-    oneofEnumInstanceName += oneofModel.namePascal() + "Choice";
-
-    string statement = oneofEnumInstanceName + " = " + oneofEnumClassName + "::none;";
-    sourceFileWriter.writeLineIndented(statement);
-
-    sourceFileWriter.writeMethodImplementationClosing();
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldSizeRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
