@@ -680,10 +680,79 @@ void Protocol::CodeGeneratorCPP::writeMessageClearToHeader (CodeWriter & headerF
 void Protocol::CodeGeneratorCPP::writeMessageFieldToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
                                                             const MessageFieldModel & messageFieldModel) const
 {
-    string methodName;
-    string methodReturn;
-    string methodParameters;
+    if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
+    {
+        writeMessageFieldSizeRepeatedToHeader(headerFileWriter, protoModel, messageFieldModel);
+
+        writeMessageFieldGetRepeatedToHeader(headerFileWriter, protoModel, messageFieldModel);
+
+        writeMessageFieldSetRepeatedToHeader(headerFileWriter, protoModel, messageFieldModel);
+
+        writeMessageFieldAddRepeatedToHeader(headerFileWriter, protoModel, messageFieldModel);
+
+        writeMessageFieldAddNewRepeatedToHeader(headerFileWriter, protoModel, messageFieldModel);
+
+        writeMessageFieldClearRepeatedToHeader(headerFileWriter, protoModel, messageFieldModel);
+    }
+    else
+    {
+        writeMessageFieldHasToHeader(headerFileWriter, protoModel, messageFieldModel);
+
+        writeMessageFieldGetToHeader(headerFileWriter, protoModel, messageFieldModel);
+
+        writeMessageFieldSetToHeader(headerFileWriter, protoModel, messageFieldModel);
+
+        writeMessageFieldCreateNewToHeader(headerFileWriter, protoModel, messageFieldModel);
+
+        writeMessageFieldClearToHeader(headerFileWriter, protoModel, messageFieldModel);
+    }
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageOneofFieldToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                                 const MessageFieldModel & messageFieldModel,
+                                                                 const OneofModel & oneofModel) const
+{
+    writeMessageFieldHasToHeader(headerFileWriter, protoModel, messageFieldModel, &oneofModel);
+
+    writeMessageFieldGetToHeader(headerFileWriter, protoModel, messageFieldModel, &oneofModel);
+
+    writeMessageFieldSetToHeader(headerFileWriter, protoModel, messageFieldModel, &oneofModel);
+
+    writeMessageFieldCreateNewToHeader(headerFileWriter, protoModel, messageFieldModel, &oneofModel);
+
+    writeMessageFieldClearToHeader(headerFileWriter, protoModel, messageFieldModel, &oneofModel);
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldSizeRepeatedToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                                        const MessageFieldModel & messageFieldModel) const
+{
+    string methodName = "size";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = "size_t";
+    string methodParameters = "";
+    headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters, true);
+
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Collection";
+    string statement = "return ";
+    statement += fieldValueName + ".size();";
+    headerFileWriter.writeLineIndented(statement);
+
+    headerFileWriter.writeClassMethodInlineClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldGetRepeatedToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                                       const MessageFieldModel & messageFieldModel) const
+{
     string fieldType = fullTypeName(messageFieldModel);
+    string methodName = messageFieldModel.name();
+    string methodReturn;
+    string methodParameters = "size_t index";
+
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Collection";
+    string statement = "return ";
+    statement += fieldValueName + ".value(index);";
 
     switch (messageFieldModel.fieldCategory())
     {
@@ -691,158 +760,401 @@ void Protocol::CodeGeneratorCPP::writeMessageFieldToHeader (CodeWriter & headerF
         case MessageFieldModel::FieldCategory::numericType:
         case MessageFieldModel::FieldCategory::enumType:
         {
-            if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
-            {
-                methodName = "size";
-                methodName += messageFieldModel.namePascal();
-                methodReturn = "size_t";
-                methodParameters = "";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
+            methodReturn += fieldType;
+            headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters, true);
 
-                methodName = messageFieldModel.name();
-                methodReturn = fieldType;
-                methodParameters = "size_t index";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
-
-                methodName = "set";
-                methodName += messageFieldModel.namePascal();
-                methodReturn = "void";
-                methodParameters = "size_t index, ";
-                methodParameters += fieldType + " value";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
-
-                methodName = "add";
-                methodName += messageFieldModel.namePascal();
-                methodReturn = "void";
-                methodParameters = fieldType + " value";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
-
-                methodName = "clear";
-                methodName += messageFieldModel.namePascal();
-                methodReturn = "void";
-                methodParameters = "";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
-            }
-            else
-            {
-                methodName = "has";
-                methodName += messageFieldModel.namePascal();
-                methodReturn = "bool";
-                methodParameters = "";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
-
-                methodName = messageFieldModel.name();
-                methodReturn = fieldType;
-                methodParameters = "";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
-
-                methodName = "set";
-                methodName += messageFieldModel.namePascal();
-                methodReturn = "void";
-                methodParameters = fieldType + " value";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
-
-                methodName = "clear";
-                methodName += messageFieldModel.namePascal();
-                methodReturn = "void";
-                methodParameters = "";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
-            }
+            headerFileWriter.writeLineIndented(statement);
             break;
         }
 
-        case MessageFieldModel::FieldCategory::messageType:
-        {
-            if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
-            {
-                methodName = "addNew";
-                methodName += messageFieldModel.namePascal();
-                methodReturn = fieldType + " &";
-                methodParameters = "";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
-            }
-            else
-            {
-                methodName = "createNew";
-                methodName += messageFieldModel.namePascal();
-                methodReturn = fieldType + " &";
-                methodParameters = "";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
-            }
-        }
-        // Fall through to the next case.
-
         case MessageFieldModel::FieldCategory::stringType:
         case MessageFieldModel::FieldCategory::bytesType:
+        case MessageFieldModel::FieldCategory::messageType:
         {
-            if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
-            {
-                methodName = "size";
-                methodName += messageFieldModel.namePascal();
-                methodReturn = "size_t";
-                methodParameters = "";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
+            methodReturn += "const ";
+            methodReturn += fieldType + " &";
+            headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters, true);
 
-                methodName = messageFieldModel.name();
-                methodReturn = "const ";
-                methodReturn += fieldType + " &";
-                methodParameters = "size_t index";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
-
-                methodName = "set";
-                methodName += messageFieldModel.namePascal();
-                methodReturn = "void";
-                methodParameters = "size_t index, ";
-                methodParameters += "const ";
-                methodParameters += fieldType + " & value";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
-
-                methodName = "add";
-                methodName += messageFieldModel.namePascal();
-                methodReturn = "void";
-                methodParameters = "const ";
-                methodParameters += fieldType + " & value";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
-
-                methodName = "clear";
-                methodName += messageFieldModel.namePascal();
-                methodReturn = "void";
-                methodParameters = "";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
-            }
-            else
-            {
-                methodName = "has";
-                methodName += messageFieldModel.namePascal();
-                methodReturn = "bool";
-                methodParameters = "";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
-
-                methodName = messageFieldModel.name();
-                methodReturn = "const ";
-                methodReturn += fieldType + " &";
-                methodParameters = "";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters, true);
-
-                methodName = "set";
-                methodName += messageFieldModel.namePascal();
-                methodReturn = "void";
-                methodParameters = "const ";
-                methodParameters += fieldType + " & value";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
-
-                methodName = "clear";
-                methodName += messageFieldModel.namePascal();
-                methodReturn = "void";
-                methodParameters = "";
-                headerFileWriter.writeClassMethodDeclaration(methodName, methodReturn, methodParameters);
-            }
+            headerFileWriter.writeLineIndented(statement);
             break;
         }
 
         default:
             break;
     }
+
+    headerFileWriter.writeClassMethodInlineClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldSetRepeatedToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                                       const MessageFieldModel & messageFieldModel) const
+{
+    string fieldType = fullTypeName(messageFieldModel);
+    string methodName = "set";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = "void";
+    string methodParameters = "size_t index, ";
+
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Collection";
+    string statement = fieldValueName + ".setValue(index, value);";
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::boolType:
+        case MessageFieldModel::FieldCategory::numericType:
+        case MessageFieldModel::FieldCategory::enumType:
+        {
+            methodParameters += fieldType + " value";
+            headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters);
+
+            headerFileWriter.writeLineIndented(statement);
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::stringType:
+        case MessageFieldModel::FieldCategory::bytesType:
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            methodParameters += "const ";
+            methodParameters += fieldType + " & value";
+            headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters);
+
+            headerFileWriter.writeLineIndented(statement);
+            break;
+        }
+
+        default:
+            break;
+    }
+
+    headerFileWriter.writeClassMethodInlineClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldAddRepeatedToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                                       const MessageFieldModel & messageFieldModel) const
+{
+    string fieldType = fullTypeName(messageFieldModel);
+    string methodName = "add";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = "void";
+    string methodParameters = "";
+
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Collection";
+    string statement = fieldValueName + ".addValue(value);";
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::boolType:
+        case MessageFieldModel::FieldCategory::numericType:
+        case MessageFieldModel::FieldCategory::enumType:
+        {
+            methodParameters += fieldType + " value";
+            headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters);
+
+            headerFileWriter.writeLineIndented(statement);
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::stringType:
+        case MessageFieldModel::FieldCategory::bytesType:
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            methodParameters += "const ";
+            methodParameters += fieldType + " & value";
+            headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters);
+
+            headerFileWriter.writeLineIndented(statement);
+            break;
+        }
+
+        default:
+            break;
+    }
+
+    headerFileWriter.writeClassMethodInlineClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldAddNewRepeatedToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                                          const MessageFieldModel & messageFieldModel) const
+{
+    string fieldType = fullTypeName(messageFieldModel);
+    string methodName = "addNew";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = fieldType + " &";
+    string methodParameters = "";
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters);
+
+            string fieldValueName = "mData->m";
+            fieldValueName += messageFieldModel.namePascal() + "Collection";
+            string statement = "return ";
+            statement += fieldValueName + ".addNewValue();";
+            headerFileWriter.writeLineIndented(statement);
+
+            headerFileWriter.writeClassMethodInlineClosing();
+            break;
+        }
+
+        default:
+            break;
+    }
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldClearRepeatedToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                                         const MessageFieldModel & messageFieldModel) const
+{
+    string methodName = "clear";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = "void";
+    string methodParameters = "";
+
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Collection";
+    string statement = fieldValueName + ".clearValue();";
+
+    headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters);
+
+    headerFileWriter.writeLineIndented(statement);
+
+    headerFileWriter.writeClassMethodInlineClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldHasToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                               const MessageFieldModel & messageFieldModel,
+                                                               const OneofModel * oneofModel) const
+{
+    string methodName = "has";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = "bool";
+    string methodParameters = "";
+
+    headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters, true);
+
+    string statement;
+    if (oneofModel != nullptr)
+    {
+        string oneofEnumClassName = oneofModel->namePascal() + "Choices";
+        string oneofEnumInstanceName = "mData->mCurrent";
+        oneofEnumInstanceName += oneofModel->namePascal() + "Choice";
+
+        statement = oneofEnumInstanceName + " != " + oneofEnumClassName + "::" + messageFieldModel.name();
+        headerFileWriter.writeIfOpening(statement);
+
+        statement = "return false;";
+        headerFileWriter.writeLineIndented(statement);
+
+        headerFileWriter.writeIfClosing();
+        headerFileWriter.writeBlankLine();
+    }
+
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Value";
+    statement = "return ";
+    statement += fieldValueName + ".hasValue();";
+
+    headerFileWriter.writeLineIndented(statement);
+
+    headerFileWriter.writeClassMethodInlineClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldGetToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                               const MessageFieldModel & messageFieldModel,
+                                                               const OneofModel * oneofModel) const
+{
+    string fieldType = fullTypeName(messageFieldModel);
+    string methodName = messageFieldModel.name();
+    string methodReturn = "";
+    string methodParameters = "";
+
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Value";
+    string statement = "return ";
+    statement += fieldValueName + ".value();";
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::boolType:
+        case MessageFieldModel::FieldCategory::numericType:
+        case MessageFieldModel::FieldCategory::enumType:
+        {
+            methodReturn += fieldType;
+            headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters, true);
+
+            headerFileWriter.writeLineIndented(statement);
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::stringType:
+        case MessageFieldModel::FieldCategory::bytesType:
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            methodReturn += "const ";
+            methodReturn += fieldType + " &";
+            headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters, true);
+
+            headerFileWriter.writeLineIndented(statement);
+            break;
+        }
+
+        default:
+            break;
+    }
+
+    headerFileWriter.writeClassMethodInlineClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldSetToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                               const MessageFieldModel & messageFieldModel,
+                                                               const OneofModel * oneofModel) const
+{
+    string fieldType = fullTypeName(messageFieldModel);
+    string methodName = "set";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = "void";
+    string methodParameters = "";
+
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Value";
+    string statement = fieldValueName + ".setValue(value);";
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::boolType:
+        case MessageFieldModel::FieldCategory::numericType:
+        case MessageFieldModel::FieldCategory::enumType:
+        {
+            methodParameters += fieldType + " value";
+            headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters);
+
+            headerFileWriter.writeLineIndented(statement);
+            break;
+        }
+
+        case MessageFieldModel::FieldCategory::stringType:
+        case MessageFieldModel::FieldCategory::bytesType:
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            methodParameters += "const ";
+            methodParameters += fieldType + " & value";
+            headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters);
+
+            headerFileWriter.writeLineIndented(statement);
+            break;
+        }
+
+        default:
+            break;
+    }
+
+    if (oneofModel != nullptr)
+    {
+        headerFileWriter.writeBlankLine();
+
+        string oneofEnumClassName = oneofModel->namePascal() + "Choices";
+        string oneofEnumInstanceName = "mData->mCurrent";
+        oneofEnumInstanceName += oneofModel->namePascal() + "Choice";
+
+        statement = oneofEnumInstanceName + " = " + oneofEnumClassName + "::" + messageFieldModel.name() + ";";
+        headerFileWriter.writeLineIndented(statement);
+    }
+
+    headerFileWriter.writeClassMethodInlineClosing();
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldCreateNewToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                                     const MessageFieldModel & messageFieldModel,
+                                                                     const OneofModel * oneofModel) const
+{
+    string fieldType = fullTypeName(messageFieldModel);
+    string methodName = "createNew";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = fieldType + " &";
+    string methodParameters = "";
+
+    switch (messageFieldModel.fieldCategory())
+    {
+        case MessageFieldModel::FieldCategory::messageType:
+        {
+            headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters);
+
+            string fieldValueName = "mData->m";
+            fieldValueName += messageFieldModel.namePascal() + "Value";
+            string statement = "return ";
+            statement += fieldValueName + ".createNewValue();";
+            headerFileWriter.writeLineIndented(statement);
+
+            if (oneofModel != nullptr)
+            {
+                headerFileWriter.writeBlankLine();
+
+                string oneofEnumClassName = oneofModel->namePascal() + "Choices";
+                string oneofEnumInstanceName = "mData->mCurrent";
+                oneofEnumInstanceName += oneofModel->namePascal() + "Choice";
+
+                statement = oneofEnumInstanceName + " = " + oneofEnumClassName + "::" + messageFieldModel.name() + ";";
+                headerFileWriter.writeLineIndented(statement);
+            }
+
+            headerFileWriter.writeClassMethodInlineClosing();
+            break;
+        }
+
+        default:
+            break;
+    }
+}
+
+void Protocol::CodeGeneratorCPP::writeMessageFieldClearToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
+                                                                 const MessageFieldModel & messageFieldModel,
+                                                                 const OneofModel * oneofModel) const
+{
+    string methodName = "clear";
+    methodName += messageFieldModel.namePascal();
+    string methodReturn = "void";
+    string methodParameters = "";
+
+    headerFileWriter.writeClassMethodInlineOpening(methodName, methodReturn, methodParameters);
+
+    string statement;
+    string oneofEnumClassName;
+    string oneofEnumInstanceName;
+    if (oneofModel != nullptr)
+    {
+        oneofEnumClassName = oneofModel->namePascal() + "Choices";
+        oneofEnumInstanceName = "mData->mCurrent";
+        oneofEnumInstanceName += oneofModel->namePascal() + "Choice";
+
+        statement = oneofEnumInstanceName + " != " + oneofEnumClassName + "::" + messageFieldModel.name();
+        headerFileWriter.writeIfOpening(statement);
+
+        statement = "return;";
+        headerFileWriter.writeLineIndented(statement);
+        
+        headerFileWriter.writeIfClosing();
+        headerFileWriter.writeBlankLine();
+    }
+    
+    string fieldValueName = "mData->m";
+    fieldValueName += messageFieldModel.namePascal() + "Value";
+    statement = fieldValueName + ".clearValue();";
+    
+    headerFileWriter.writeLineIndented(statement);
+    
+    if (oneofModel != nullptr)
+    {
+        headerFileWriter.writeBlankLine();
+        
+        statement = oneofEnumInstanceName + " = " + oneofEnumClassName + "::none;";
+        headerFileWriter.writeLineIndented(statement);
+    }
+    
+    headerFileWriter.writeClassMethodInlineClosing();
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageFieldBackingFieldsToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
@@ -908,7 +1220,7 @@ void Protocol::CodeGeneratorCPP::writeOneofToHeader (CodeWriter & headerFileWrit
     {
         auto messageFieldModel = *messageFieldBegin;
 
-        writeMessageFieldToHeader(headerFileWriter, protoModel, *messageFieldModel);
+        writeMessageOneofFieldToHeader(headerFileWriter, protoModel, *messageFieldModel, oneofModel);
 
         ++messageFieldBegin;
     }
@@ -1037,28 +1349,6 @@ void Protocol::CodeGeneratorCPP::writeMessageToSource (CodeWriter & sourceFileWr
     writeMessageByteSizeToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
 
     writeMessageValidToSource(sourceFileWriter, protoModel, messageModel, className, fullScope);
-
-    auto messageFieldBegin = messageModel.fields()->cbegin();
-    auto messageFieldEnd = messageModel.fields()->cend();
-    while (messageFieldBegin != messageFieldEnd)
-    {
-        auto messageFieldModel = *messageFieldBegin;
-
-        writeMessageFieldToSource(sourceFileWriter, protoModel, *messageFieldModel, className, fullScope);
-
-        ++messageFieldBegin;
-    }
-
-    auto oneofBegin = messageModel.oneofs()->cbegin();
-    auto oneofEnd = messageModel.oneofs()->cend();
-    while (oneofBegin != oneofEnd)
-    {
-        auto oneofModel = *oneofBegin;
-
-        writeOneofToSource(sourceFileWriter, protoModel, *oneofModel, className, fullScope);
-        
-        ++oneofBegin;
-    }
 }
 
 void Protocol::CodeGeneratorCPP::writeMessageDataConstructorToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
@@ -1651,519 +1941,6 @@ void Protocol::CodeGeneratorCPP::writeMessageValidToSource (CodeWriter & sourceF
     }
     statement = "return true;";
     sourceFileWriter.writeLineIndented(statement);
-
-    sourceFileWriter.writeMethodImplementationClosing();
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageFieldToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                            const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                            const std::string & fullScope) const
-{
-    if (messageFieldModel.requiredness() == MessageFieldModel::Requiredness::repeated)
-    {
-        writeMessageFieldSizeRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
-
-        writeMessageFieldGetRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
-
-        writeMessageFieldSetRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
-
-        writeMessageFieldAddRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
-
-        writeMessageFieldAddNewRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
-
-        writeMessageFieldClearRepeatedToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
-    }
-    else
-    {
-        writeMessageFieldHasToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
-
-        writeMessageFieldGetToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
-
-        writeMessageFieldSetToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
-
-        writeMessageFieldCreateNewToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
-
-        writeMessageFieldClearToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope);
-    }
-}
-
-void Protocol::CodeGeneratorCPP::writeOneofToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                     const OneofModel & oneofModel, const std::string & className,
-                                                     const std::string & fullScope) const
-{
-    auto messageFieldBegin = oneofModel.fields()->cbegin();
-    auto messageFieldEnd = oneofModel.fields()->cend();
-    while (messageFieldBegin != messageFieldEnd)
-    {
-        auto messageFieldModel = *messageFieldBegin;
-
-        writeMessageOneofFieldToSource(sourceFileWriter, protoModel, *messageFieldModel, className, fullScope, &oneofModel);
-
-        ++messageFieldBegin;
-    }
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageOneofFieldToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                            const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                            const std::string & fullScope, const OneofModel * oneofModel) const
-{
-    writeMessageFieldHasToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope, oneofModel);
-
-    writeMessageFieldGetToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope, oneofModel);
-
-    writeMessageFieldSetToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope, oneofModel);
-
-    writeMessageFieldCreateNewToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope, oneofModel);
-
-    writeMessageFieldClearToSource(sourceFileWriter, protoModel, messageFieldModel, className, fullScope, oneofModel);
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageFieldSizeRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                                        const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                                        const std::string & fullScope) const
-{
-    string methodName = fullScope + "::size";
-    methodName += messageFieldModel.namePascal();
-    string methodReturn = "size_t";
-    string methodParameters = "";
-    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
-
-    string fieldValueName = "mData->m";
-    fieldValueName += messageFieldModel.namePascal() + "Collection";
-    string statement = "return ";
-    statement += fieldValueName + ".size();";
-    sourceFileWriter.writeLineIndented(statement);
-
-    sourceFileWriter.writeMethodImplementationClosing();
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageFieldGetRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                                       const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                                       const std::string & fullScope) const
-{
-    string fieldType = fullTypeName(messageFieldModel);
-    string methodName = fullScope + "::";
-    methodName += messageFieldModel.name();
-    string methodReturn;
-    string methodParameters = "size_t index";
-
-    string fieldValueName = "mData->m";
-    fieldValueName += messageFieldModel.namePascal() + "Collection";
-    string statement = "return ";
-    statement += fieldValueName + ".value(index);";
-
-    switch (messageFieldModel.fieldCategory())
-    {
-        case MessageFieldModel::FieldCategory::boolType:
-        case MessageFieldModel::FieldCategory::numericType:
-        case MessageFieldModel::FieldCategory::enumType:
-        {
-            methodReturn += fieldType;
-            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
-
-            sourceFileWriter.writeLineIndented(statement);
-
-            sourceFileWriter.writeMethodImplementationClosing();
-            break;
-        }
-
-        case MessageFieldModel::FieldCategory::stringType:
-        case MessageFieldModel::FieldCategory::bytesType:
-        case MessageFieldModel::FieldCategory::messageType:
-        {
-            methodReturn += "const ";
-            methodReturn += fieldType + " &";
-            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
-
-            sourceFileWriter.writeLineIndented(statement);
-
-            sourceFileWriter.writeMethodImplementationClosing();
-            break;
-        }
-
-        default:
-            break;
-    }
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageFieldSetRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                                       const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                                       const std::string & fullScope) const
-{
-    string fieldType = fullTypeName(messageFieldModel);
-    string methodName = fullScope + "::set";
-    methodName += messageFieldModel.namePascal();
-    string methodReturn = "void";
-    string methodParameters = "size_t index, ";
-
-    string fieldValueName = "mData->m";
-    fieldValueName += messageFieldModel.namePascal() + "Collection";
-    string statement = fieldValueName + ".setValue(index, value);";
-
-    switch (messageFieldModel.fieldCategory())
-    {
-        case MessageFieldModel::FieldCategory::boolType:
-        case MessageFieldModel::FieldCategory::numericType:
-        case MessageFieldModel::FieldCategory::enumType:
-        {
-            methodParameters += fieldType + " value";
-            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
-
-            sourceFileWriter.writeLineIndented(statement);
-
-            sourceFileWriter.writeMethodImplementationClosing();
-            break;
-        }
-
-        case MessageFieldModel::FieldCategory::stringType:
-        case MessageFieldModel::FieldCategory::bytesType:
-        case MessageFieldModel::FieldCategory::messageType:
-        {
-            methodParameters += "const ";
-            methodParameters += fieldType + " & value";
-            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
-
-            sourceFileWriter.writeLineIndented(statement);
-
-            sourceFileWriter.writeMethodImplementationClosing();
-            break;
-        }
-
-        default:
-            break;
-    }
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageFieldAddRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                                       const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                                       const std::string & fullScope) const
-{
-    string fieldType = fullTypeName(messageFieldModel);
-    string methodName = fullScope + "::add";
-    methodName += messageFieldModel.namePascal();
-    string methodReturn = "void";
-    string methodParameters = "";
-
-    string fieldValueName = "mData->m";
-    fieldValueName += messageFieldModel.namePascal() + "Collection";
-    string statement = fieldValueName + ".addValue(value);";
-
-    switch (messageFieldModel.fieldCategory())
-    {
-        case MessageFieldModel::FieldCategory::boolType:
-        case MessageFieldModel::FieldCategory::numericType:
-        case MessageFieldModel::FieldCategory::enumType:
-        {
-            methodParameters += fieldType + " value";
-            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
-
-            sourceFileWriter.writeLineIndented(statement);
-
-            sourceFileWriter.writeMethodImplementationClosing();
-            break;
-        }
-
-        case MessageFieldModel::FieldCategory::stringType:
-        case MessageFieldModel::FieldCategory::bytesType:
-        case MessageFieldModel::FieldCategory::messageType:
-        {
-            methodParameters += "const ";
-            methodParameters += fieldType + " & value";
-            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
-
-            sourceFileWriter.writeLineIndented(statement);
-
-            sourceFileWriter.writeMethodImplementationClosing();
-            break;
-        }
-
-        default:
-            break;
-    }
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageFieldAddNewRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                                          const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                                          const std::string & fullScope) const
-{
-    string fieldType = fullTypeName(messageFieldModel);
-    string methodName = fullScope + "::addNew";
-    methodName += messageFieldModel.namePascal();
-    string methodReturn = fieldType + " &";
-    string methodParameters = "";
-
-    switch (messageFieldModel.fieldCategory())
-    {
-        case MessageFieldModel::FieldCategory::messageType:
-        {
-            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
-
-            string fieldValueName = "mData->m";
-            fieldValueName += messageFieldModel.namePascal() + "Collection";
-            string statement = "return ";
-            statement += fieldValueName + ".addNewValue();";
-            sourceFileWriter.writeLineIndented(statement);
-
-            sourceFileWriter.writeMethodImplementationClosing();
-            break;
-        }
-            
-        default:
-            break;
-    }
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageFieldClearRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                                         const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                                         const std::string & fullScope) const
-{
-    string methodName = fullScope + "::clear";
-    methodName += messageFieldModel.namePascal();
-    string methodReturn = "void";
-    string methodParameters = "";
-
-    string fieldValueName = "mData->m";
-    fieldValueName += messageFieldModel.namePascal() + "Collection";
-    string statement = fieldValueName + ".clearValue();";
-
-    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
-
-    sourceFileWriter.writeLineIndented(statement);
-
-    sourceFileWriter.writeMethodImplementationClosing();
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageFieldHasToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                               const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                               const std::string & fullScope, const OneofModel * oneofModel) const
-{
-    string methodName = fullScope + "::has";
-    methodName += messageFieldModel.namePascal();
-    string methodReturn = "bool";
-    string methodParameters = "";
-
-    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
-
-    string statement;
-    if (oneofModel != nullptr)
-    {
-        string oneofEnumClassName = oneofModel->namePascal() + "Choices";
-        string oneofEnumInstanceName = "mData->mCurrent";
-        oneofEnumInstanceName += oneofModel->namePascal() + "Choice";
-
-        statement = oneofEnumInstanceName + " != " + oneofEnumClassName + "::" + messageFieldModel.name();
-        sourceFileWriter.writeIfOpening(statement);
-
-        statement = "return false;";
-        sourceFileWriter.writeLineIndented(statement);
-
-        sourceFileWriter.writeIfClosing();
-        sourceFileWriter.writeBlankLine();
-    }
-
-    string fieldValueName = "mData->m";
-    fieldValueName += messageFieldModel.namePascal() + "Value";
-    statement = "return ";
-    statement += fieldValueName + ".hasValue();";
-
-    sourceFileWriter.writeLineIndented(statement);
-
-    sourceFileWriter.writeMethodImplementationClosing();
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageFieldGetToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                               const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                               const std::string & fullScope, const OneofModel * oneofModel) const
-{
-    string fieldType = fullTypeName(messageFieldModel);
-    string methodName = fullScope + "::";
-    methodName += messageFieldModel.name();
-    string methodReturn = "";
-    string methodParameters = "";
-
-    string fieldValueName = "mData->m";
-    fieldValueName += messageFieldModel.namePascal() + "Value";
-    string statement = "return ";
-    statement += fieldValueName + ".value();";
-
-    switch (messageFieldModel.fieldCategory())
-    {
-        case MessageFieldModel::FieldCategory::boolType:
-        case MessageFieldModel::FieldCategory::numericType:
-        case MessageFieldModel::FieldCategory::enumType:
-        {
-            methodReturn += fieldType;
-            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
-
-            sourceFileWriter.writeLineIndented(statement);
-
-            sourceFileWriter.writeMethodImplementationClosing();
-            break;
-        }
-
-        case MessageFieldModel::FieldCategory::stringType:
-        case MessageFieldModel::FieldCategory::bytesType:
-        case MessageFieldModel::FieldCategory::messageType:
-        {
-            methodReturn += "const ";
-            methodReturn += fieldType + " &";
-            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters, true);
-
-            sourceFileWriter.writeLineIndented(statement);
-
-            sourceFileWriter.writeMethodImplementationClosing();
-            break;
-        }
-
-        default:
-            break;
-    }
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageFieldSetToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                               const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                               const std::string & fullScope, const OneofModel * oneofModel) const
-{
-    string fieldType = fullTypeName(messageFieldModel);
-    string methodName = fullScope + "::set";
-    methodName += messageFieldModel.namePascal();
-    string methodReturn = "void";
-    string methodParameters = "";
-
-    string fieldValueName = "mData->m";
-    fieldValueName += messageFieldModel.namePascal() + "Value";
-    string statement = fieldValueName + ".setValue(value);";
-
-    switch (messageFieldModel.fieldCategory())
-    {
-        case MessageFieldModel::FieldCategory::boolType:
-        case MessageFieldModel::FieldCategory::numericType:
-        case MessageFieldModel::FieldCategory::enumType:
-        {
-            methodParameters += fieldType + " value";
-            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
-
-            sourceFileWriter.writeLineIndented(statement);
-            break;
-        }
-
-        case MessageFieldModel::FieldCategory::stringType:
-        case MessageFieldModel::FieldCategory::bytesType:
-        case MessageFieldModel::FieldCategory::messageType:
-        {
-            methodParameters += "const ";
-            methodParameters += fieldType + " & value";
-            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
-
-            sourceFileWriter.writeLineIndented(statement);
-            break;
-        }
-
-        default:
-            break;
-    }
-
-    if (oneofModel != nullptr)
-    {
-        sourceFileWriter.writeBlankLine();
-
-        string oneofEnumClassName = oneofModel->namePascal() + "Choices";
-        string oneofEnumInstanceName = "mData->mCurrent";
-        oneofEnumInstanceName += oneofModel->namePascal() + "Choice";
-
-        statement = oneofEnumInstanceName + " = " + oneofEnumClassName + "::" + messageFieldModel.name() + ";";
-        sourceFileWriter.writeLineIndented(statement);
-    }
-
-    sourceFileWriter.writeMethodImplementationClosing();
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageFieldCreateNewToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                                     const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                                     const std::string & fullScope, const OneofModel * oneofModel) const
-{
-    string fieldType = fullTypeName(messageFieldModel);
-    string methodName = fullScope + "::createNew";
-    methodName += messageFieldModel.namePascal();
-    string methodReturn = fieldType + " &";
-    string methodParameters = "";
-
-    switch (messageFieldModel.fieldCategory())
-    {
-        case MessageFieldModel::FieldCategory::messageType:
-        {
-            sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
-
-            string fieldValueName = "mData->m";
-            fieldValueName += messageFieldModel.namePascal() + "Value";
-            string statement = "return ";
-            statement += fieldValueName + ".createNewValue();";
-            sourceFileWriter.writeLineIndented(statement);
-
-            if (oneofModel != nullptr)
-            {
-                sourceFileWriter.writeBlankLine();
-
-                string oneofEnumClassName = oneofModel->namePascal() + "Choices";
-                string oneofEnumInstanceName = "mData->mCurrent";
-                oneofEnumInstanceName += oneofModel->namePascal() + "Choice";
-
-                statement = oneofEnumInstanceName + " = " + oneofEnumClassName + "::" + messageFieldModel.name() + ";";
-                sourceFileWriter.writeLineIndented(statement);
-            }
-
-            sourceFileWriter.writeMethodImplementationClosing();
-            break;
-        }
-
-        default:
-            break;
-    }
-}
-
-void Protocol::CodeGeneratorCPP::writeMessageFieldClearToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                                 const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                                 const std::string & fullScope, const OneofModel * oneofModel) const
-{
-    string methodName = fullScope + "::clear";
-    methodName += messageFieldModel.namePascal();
-    string methodReturn = "void";
-    string methodParameters = "";
-
-    sourceFileWriter.writeMethodImplementationOpening(methodName, methodReturn, methodParameters);
-
-    string statement;
-    string oneofEnumClassName;
-    string oneofEnumInstanceName;
-    if (oneofModel != nullptr)
-    {
-        oneofEnumClassName = oneofModel->namePascal() + "Choices";
-        oneofEnumInstanceName = "mData->mCurrent";
-        oneofEnumInstanceName += oneofModel->namePascal() + "Choice";
-
-        statement = oneofEnumInstanceName + " != " + oneofEnumClassName + "::" + messageFieldModel.name();
-        sourceFileWriter.writeIfOpening(statement);
-
-        statement = "return;";
-        sourceFileWriter.writeLineIndented(statement);
-
-        sourceFileWriter.writeIfClosing();
-        sourceFileWriter.writeBlankLine();
-    }
-
-    string fieldValueName = "mData->m";
-    fieldValueName += messageFieldModel.namePascal() + "Value";
-    statement = fieldValueName + ".clearValue();";
-
-    sourceFileWriter.writeLineIndented(statement);
-
-    if (oneofModel != nullptr)
-    {
-        sourceFileWriter.writeBlankLine();
-
-        statement = oneofEnumInstanceName + " = " + oneofEnumClassName + "::none;";
-        sourceFileWriter.writeLineIndented(statement);
-    }
 
     sourceFileWriter.writeMethodImplementationClosing();
 }

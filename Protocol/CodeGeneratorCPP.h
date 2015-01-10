@@ -84,6 +84,47 @@ namespace MuddledManaged
             void writeMessageFieldToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
                                             const MessageFieldModel & messageFieldModel) const;
 
+            void writeMessageOneofFieldToHeader (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                 const MessageFieldModel & messageFieldModel, const OneofModel & oneofModel) const;
+
+            void writeMessageFieldSizeRepeatedToHeader (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                        const MessageFieldModel & messageFieldModel) const;
+
+            void writeMessageFieldGetRepeatedToHeader (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                       const MessageFieldModel & messageFieldModel) const;
+
+            void writeMessageFieldSetRepeatedToHeader (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                       const MessageFieldModel & messageFieldModel) const;
+
+            void writeMessageFieldAddRepeatedToHeader (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                       const MessageFieldModel & messageFieldModel) const;
+
+            void writeMessageFieldAddNewRepeatedToHeader (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                          const MessageFieldModel & messageFieldModel) const;
+
+            void writeMessageFieldClearRepeatedToHeader (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                         const MessageFieldModel & messageFieldModel) const;
+
+            void writeMessageFieldHasToHeader (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                               const MessageFieldModel & messageFieldModel,
+                                               const OneofModel * oneofModel = nullptr) const;
+
+            void writeMessageFieldGetToHeader (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                               const MessageFieldModel & messageFieldModel,
+                                               const OneofModel * oneofModel = nullptr) const;
+
+            void writeMessageFieldSetToHeader (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                               const MessageFieldModel & messageFieldModel,
+                                               const OneofModel * oneofModel = nullptr) const;
+
+            void writeMessageFieldCreateNewToHeader (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                     const MessageFieldModel & messageFieldModel,
+                                                     const OneofModel * oneofModel = nullptr) const;
+
+            void writeMessageFieldClearToHeader (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
+                                                 const MessageFieldModel & messageFieldModel,
+                                                 const OneofModel * oneofModel = nullptr) const;
+
             void writeMessageFieldBackingFieldsToHeader (CodeWriter & headerFileWriter, const ProtoModel & protoModel,
                                                          const MessageFieldModel & messageFieldModel) const;
 
@@ -135,62 +176,6 @@ namespace MuddledManaged
             void writeMessageValidToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
                                             const MessageModel & messageModel, const std::string & className,
                                             const std::string & fullScope) const;
-
-            void writeMessageFieldToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                            const MessageFieldModel & messageFieldModel, const std::string & className,
-                                            const std::string & fullScope) const;
-
-            void writeMessageOneofFieldToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                 const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                 const std::string & fullScope, const OneofModel * oneofModel) const;
-
-            void writeOneofToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                     const OneofModel & oneofModel, const std::string & className,
-                                     const std::string & fullScope) const;
-
-            void writeMessageFieldSizeRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                        const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                        const std::string & fullScope) const;
-
-            void writeMessageFieldGetRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                       const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                       const std::string & fullScope) const;
-
-            void writeMessageFieldSetRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                       const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                       const std::string & fullScope) const;
-
-            void writeMessageFieldAddRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                       const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                       const std::string & fullScope) const;
-
-            void writeMessageFieldAddNewRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                          const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                          const std::string & fullScope) const;
-
-            void writeMessageFieldClearRepeatedToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                         const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                         const std::string & fullScope) const;
-
-            void writeMessageFieldHasToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                               const MessageFieldModel & messageFieldModel, const std::string & className,
-                                               const std::string & fullScope, const OneofModel * oneofModel = nullptr) const;
-
-            void writeMessageFieldGetToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                               const MessageFieldModel & messageFieldModel, const std::string & className,
-                                               const std::string & fullScope, const OneofModel * oneofModel = nullptr) const;
-
-            void writeMessageFieldSetToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                               const MessageFieldModel & messageFieldModel, const std::string & className,
-                                               const std::string & fullScope, const OneofModel * oneofModel = nullptr) const;
-
-            void writeMessageFieldCreateNewToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                     const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                     const std::string & fullScope, const OneofModel * oneofModel = nullptr) const;
-
-            void writeMessageFieldClearToSource (CodeWriter & sourceFileWriter, const ProtoModel & protoModel,
-                                                 const MessageFieldModel & messageFieldModel, const std::string & className,
-                                                 const std::string & fullScope, const OneofModel * oneofModel = nullptr) const;
 
             static const std::string mHeaderFileExtension;
             static const std::string mSourceFileExtension;
